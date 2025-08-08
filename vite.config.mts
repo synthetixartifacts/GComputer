@@ -13,6 +13,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '~': path.resolve(__dirname, 'app'),
+      '@renderer': path.resolve(__dirname, 'app/renderer/src'),
+      '@views': path.resolve(__dirname, 'app/renderer/src/views'),
+      '@ts': path.resolve(__dirname, 'app/renderer/src/ts'),
+      '@features': path.resolve(__dirname, 'app/renderer/src/ts/features'),
+      '@components': path.resolve(__dirname, 'app/renderer/src/components'),
     },
   },
   server: {

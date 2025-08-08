@@ -12,7 +12,12 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["app/*"]
+      "~/*": ["app/*"],
+      "@renderer/*": ["app/renderer/src/*"],
+      "@views/*": ["app/renderer/src/views/*"],
+      "@ts/*": ["app/renderer/src/ts/*"],
+      "@features/*": ["app/renderer/src/ts/features/*"],
+      "@components/*": ["app/renderer/src/components/*"]
     }
   },
   "include": [

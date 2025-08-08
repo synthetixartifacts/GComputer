@@ -1,6 +1,6 @@
-import './styles/global.scss';
+import '../styles/global.scss';
 import { mount } from 'svelte';
-import App from './App.svelte';
+import App from '@views/App.svelte';
 
 const app = mount(App, { target: document.getElementById('app') as HTMLElement });
 
