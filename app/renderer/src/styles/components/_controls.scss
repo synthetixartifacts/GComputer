@@ -1,0 +1,79 @@
+@use '../base/mixins' as m;
+
+@layer components {
+  /* Buttons */
+  .btn {
+    @include m.interactive-base;
+    @include m.surface;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-weight: 600;
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+  }
+  .gc-icon-btn {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+  }
+  .btn:hover { @include m.hover-lift; }
+  .btn:active { @include m.press-in; }
+  .btn:focus-visible { @include m.focus-ring(); }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .btn--primary {
+    color: white;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+  .btn--secondary {
+    color: var(--color-text);
+    background-color: var(--color-surface);
+  }
+  .btn--link {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-accent);
+    padding: 0;
+    @include m.link-underline(2px);
+  }
+
+  /* Inputs */
+  .input {
+    @include m.interactive-base;
+    @include m.surface;
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.625rem;
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+  .input:hover { box-shadow: var(--shadow-sm); }
+  .input::placeholder { color: var(--color-muted); }
+  .input:focus-visible { @include m.focus-ring(); }
+  .input:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .field {
+    display: grid;
+    gap: 0.375rem;
+  }
+  .field__label {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+  .field__hint {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+  .field--invalid .input { border-color: #ef4444; }
+  .field--invalid .field__hint { color: #ef4444; }
+}
+
+

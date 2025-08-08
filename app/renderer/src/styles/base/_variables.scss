@@ -1,0 +1,79 @@
+// Design tokens (Sass variables) and CSS custom properties
+
+// Sass variables (reference via `variables.$name` when using @use)
+// Core palette — tech/silver mood
+$colorPrimary: #64748b; // slate-500 (techy neutral)
+$colorAccent: #4f46e5; // indigo-600 (accent)
+
+// Light theme tokens
+$colorBgLight: #f8fafc; // slate-50
+$colorSurfaceLight: #ffffff; // surface cards
+$colorBorderLight: #e5e7eb; // gray-200
+$colorTextLight: #111827; // gray-900
+$colorMutedLight: #6b7280; // gray-500
+
+// Dark theme tokens
+$colorBgDark: #0f172a; // slate-900
+$colorSurfaceDark: #111827; // gray-900 / near slate-900
+$colorBorderDark: #334155; // slate-700
+$colorTextDark: #e5e7eb; // gray-200
+$colorMutedDark: #94a3b8; // slate-400
+
+// Radii — flat look requested
+$borderRadiusMedium: 0; // flat edges for now
+
+// Shadows
+$shadowSm: 0 1px 2px rgba(0,0,0,0.06);
+$shadowMd: 0 2px 8px rgba(0,0,0,0.12);
+
+// Z-index scale
+$zHeader: 50;
+$zSidebar: 60;
+$zModal: 70;
+$zModalBackdrop: 65;
+
+// Typography
+$fontFamilySans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+  Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+// CSS variables exposed to the DOM
+@layer base {
+  :root {
+    /* semantic tokens (default to light) */
+    --color-primary: #{$colorPrimary};
+    --color-accent: #{$colorAccent};
+    --color-bg: #{$colorBgLight};
+    --color-surface: #{$colorSurfaceLight};
+    --color-border: #{$colorBorderLight};
+    --color-text: #{$colorTextLight};
+    --color-muted: #{$colorMutedLight};
+
+    --radius-md: #{$borderRadiusMedium};
+    --shadow-sm: #{$shadowSm};
+    --shadow-md: #{$shadowMd};
+
+    --z-header: #{$zHeader};
+    --z-sidebar: #{$zSidebar};
+    --z-modal: #{$zModal};
+    --z-modal-backdrop: #{$zModalBackdrop};
+
+    --font-sans: #{$fontFamilySans};
+
+    /* motion tokens */
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --duration-fast: 120ms;
+    --duration-normal: 220ms;
+    --duration-slow: 360ms;
+  }
+
+  /* Dark theme overrides */
+  [data-theme='dark'] {
+    --color-bg: #{$colorBgDark};
+    --color-surface: #{$colorSurfaceDark};
+    --color-border: #{$colorBorderDark};
+    --color-text: #{$colorTextDark};
+    --color-muted: #{$colorMutedDark};
+  }
+}
+
+

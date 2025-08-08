@@ -1,0 +1,41 @@
+@use './mixins' as m;
+@layer base {
+  html, body, #app {
+    height: 100%;
+  }
+
+  html, body {
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply antialiased;
+  }
+
+  /* Links */
+  a {
+    color: var(--color-primary);
+    @include m.link-underline(2px);
+  }
+  a:focus-visible { @include m.focus-ring(); }
+
+  /* Buttons (native) */
+  button {
+    border-radius: var(--radius-md);
+  }
+
+  /* Inputs */
+  input, select, textarea {
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  input::placeholder, textarea::placeholder { color: var(--color-muted); }
+}
+
+
