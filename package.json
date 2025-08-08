@@ -2,8 +2,13 @@
   "name": "gcomputer",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/main/index.cjs",
   "scripts": {
+    "dev": "concurrently -k -n \"renderer,main,preload,electron\" -c \"cyan,magenta,green,yellow\" \"vite\" \"npm:dev:main\" \"npm:dev:preload\" \"wait-on tcp:5173 dist/main/index.cjs && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron dist/main/index.cjs\"",
+    "dev:main": "esbuild app/main/main.ts --bundle --format=cjs --outfile=dist/main/index.cjs --platform=node --external:electron --sourcemap --watch",
+    "dev:preload": "esbuild app/preload/index.ts --bundle --format=cjs --outfile=dist/preload/index.cjs --platform=node --external:electron --sourcemap --watch",
+    "build": "rm -rf dist && esbuild app/main/main.ts --bundle --format=cjs --outfile=dist/main/index.cjs --platform=node --external:electron --sourcemap && esbuild app/preload/index.ts --bundle --format=cjs --outfile=dist/preload/index.cjs --platform=node --external:electron --sourcemap && vite build",
+    "typecheck": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,12 +21,15 @@
     "cross-env": "^10.0.0",
     "electron": "^37.2.6",
     "electron-builder": "^26.0.12",
+    "esbuild": "^0.23.0",
     "postcss": "^8.5.6",
     "sass": "^1.90.0",
     "svelte": "^5.38.0",
+    "svelte-preprocess": "^6.0.3",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.9.2",
-    "vite": "^7.1.1"
+    "vite": "^7.1.1",
+    "wait-on": "^8.0.2"
   },
   "dependencies": {
     "better-sqlite3": "^12.2.0",
