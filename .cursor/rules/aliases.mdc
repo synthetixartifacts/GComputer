@@ -1,0 +1,16 @@
+---
+name: "Renderer import aliases"
+description: "Use path aliases for renderer imports; keep imports stable and readable."
+globs: ["app/renderer/src/**/*", "vite.config.mts", "tsconfig.json"]
+alwaysApply: true
+---
+
+- Prefer aliases over deep relative imports in renderer code:
+  - `@views/*` → `app/renderer/src/views/*`
+  - `@features/*` → `app/renderer/src/ts/features/*`
+  - `@ts/*` → `app/renderer/src/ts/*`
+  - `@components/*` → `app/renderer/src/components/*`
+  - `@renderer/*` → `app/renderer/src/*`
+- If moving files, update imports to aliases rather than changing relative paths.
+- Do not introduce new alias schemes; extend existing ones if truly needed.
+

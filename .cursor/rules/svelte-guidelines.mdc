@@ -1,0 +1,12 @@
+---
+name: "Svelte guidelines (renderer)"
+description: "Keep views thin; use feature stores/services for logic; avoid Node APIs in views."
+globs: ["app/renderer/src/**/*.svelte"]
+alwaysApply: true
+---
+
+- Views should be mostly declarative; defer state and IO to feature `store.ts` / `service.ts`.
+- Use Svelte stores for shared state; derive when possible.
+- Prefer explicit subscribe/unsubscribe for stores in this codebase.
+- Never import Node/Electron modules in views; use preload-exposed APIs.
+

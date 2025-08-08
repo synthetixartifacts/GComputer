@@ -1,0 +1,14 @@
+---
+name: "Electron security"
+description: "Maintain secure defaults and use preload for IPC."
+globs: ["app/main/**/*.ts", "app/preload/**/*.ts", "app/renderer/**/*"]
+alwaysApply: true
+---
+
+- BrowserWindow:
+  - `contextIsolation: true`
+  - `nodeIntegration: false`
+- Preload exposes a minimal, whitelisted API via `contextBridge`.
+- No direct Node/Electron imports in renderer views or TS.
+- Validate and sanitize any file system interactions.
+

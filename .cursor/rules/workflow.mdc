@@ -1,0 +1,12 @@
+---
+name: "Workflow & scripts"
+description: "How to run, build, and typecheck."
+globs: ["**/*"]
+alwaysApply: true
+---
+
+- Dev: `npm run dev` (Vite + esbuild + Electron; port 5173 by default).
+- Typecheck: `npm run typecheck`.
+- Build: `npm run build` → outputs to `dist/` (main, preload, renderer).
+- Keep doc updates concise in `docs/` when changing structure or scripts.
+

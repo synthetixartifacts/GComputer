@@ -1,0 +1,16 @@
+---
+name: "TypeScript style & quality"
+description: "Strict TS, explicit types for exported APIs, clear naming, early returns."
+globs: ["**/*.ts", "app/renderer/src/**/*.svelte"]
+alwaysApply: true
+---
+
+- TS strict everywhere; avoid `any` at all costs (only at unavoidable boundaries).
+- Exported/public functions and interfaces must be explicitly typed.
+- Naming:
+  - Variables/functions: camelCase
+  - Types/components: PascalCase
+  - Folders: kebab-case
+- Control flow: prefer early returns; avoid deep nesting (>2–3 levels).
+- Keep functions focused; extract helpers instead of long bodies.
+

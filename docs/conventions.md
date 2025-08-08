@@ -1,0 +1,34 @@
+## Conventions (DRY + KISS)
+
+### Code organization
+- Feature-first under `app/renderer/src/ts/features/<feature>/` with `types.ts`, `service.ts`, `store.ts`.
+- Views under `app/renderer/src/views/` compose features.
+- Shared UI under `app/renderer/src/components/`.
+- Global styles under `app/renderer/src/styles/`.
+
+### Naming
+- Variables/functions: `camelCase` (clear, descriptive).
+- Types/interfaces/enums: `PascalCase`.
+- Svelte files: `PascalCase.svelte`.
+- Folders: `kebab-case`.
+- Avoid abbreviations; prefer full words.
+
+### TypeScript
+- Strict mode on. No `any` (except unavoidable boundaries).
+- Exported functions/interfaces must be typed explicitly.
+- Avoid deep nesting; use early returns and helper functions.
+
+### Svelte (Svelte 5)
+- Keep views dumb; push IO/state to feature `service/store`.
+- Prefer stores for cross-component state.
+- Use path aliases (`@views`, `@features`, `@components`, `@ts`).
+
+### Electron security
+- `contextIsolation: true`, `nodeIntegration: false` in BrowserWindow.
+- Only expose whitelisted APIs via preload.
+
+### Commits & PRs
+- Conventional Commits: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`.
+- Small, focused PRs with a brief description.
+
+
