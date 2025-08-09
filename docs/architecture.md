@@ -18,12 +18,21 @@ app/
       components/       # shared UI components
       views/            # page-level Svelte views
         App.svelte
-        BrowseView.svelte
+        HomeView.svelte
+        AboutView.svelte
+        StyleguideView.svelte
       ts/               # TypeScript entry + feature logic
         main.ts
         features/
           browse/
             types.ts
+            service.ts
+            store.ts
+          router/
+            types.ts
+            service.ts
+            store.ts
+          ui/
             service.ts
             store.ts
 ```
@@ -38,6 +47,11 @@ app/
 - Renderer: `app/renderer/index.html` → `/src/ts/main.ts` → mounts `@views/App.svelte`.
 - Main: `app/main/main.ts` creates window, loads dev server or `dist/renderer/index.html`.
 - Preload: `app/preload/index.ts` (IPC exposure; currently minimal).
+
+### Routing
+- Simple hash-based router implemented under `@features/router/`.
+- Store: `currentRoute` with explicit subscribe/unsubscribe in views.
+- Service: `initRouter`, `disposeRouter`, `navigate` update `location.hash`.
 
 ### Build scripts
 - `npm run dev`: Vite (renderer) + esbuild watch (main/preload) + Electron.

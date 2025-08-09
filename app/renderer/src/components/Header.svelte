@@ -2,7 +2,7 @@
   export let onToggleTheme: () => void;
   export let onToggleSidebar: () => void;
   export let title: string = 'GComputer';
-  export let theme: 'light' | 'dark' = 'light';
+  export let theme: 'light' | 'dark' | 'fun' = 'light';
 </script>
 
 <header class="gc-header">
@@ -12,13 +12,14 @@
   </div>
   <div class="flex items-center gap-2">
     <button class="btn btn--secondary gc-icon-btn" on:click={onToggleTheme} aria-label="Toggle theme">
-      {#if theme === 'dark'}
+      {#if theme === 'fun'}
+        🎉
+      {:else if theme === 'dark'}
         🌙
       {:else}
         ☀️
       {/if}
     </button>
-    <a class="btn btn--link" href="#/styleguide">Styleguide</a>
   </div>
   
 </header>

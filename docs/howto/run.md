@@ -11,7 +11,7 @@ Start the dev environment (Vite + esbuild + Electron):
 npm run dev
 ```
 
-http://localhost:5173/
+Renderer dev URL: http://localhost:5173/
 
 Behavior:
 - Vite dev server serves the Svelte renderer on port 5173.
@@ -19,6 +19,7 @@ Behavior:
 - Electron launches and loads the dev server.
 
 If port 5173 is busy, stop the other process or change `server.port` in `vite.config.mts`.
+Aliases are defined in `vite.config.mts` and `tsconfig.json` (must match).
 
 ---
 

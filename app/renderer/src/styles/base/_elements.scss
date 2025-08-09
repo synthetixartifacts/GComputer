@@ -16,11 +16,27 @@
     @apply antialiased;
   }
 
+  /* App layout: flex column ensures footer sits at the bottom when content is short */
+  #app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Main content area expands, pushing footer to the bottom */
+  main {
+    flex: 1 0 auto;
+  }
+
   /* Links */
   a {
     color: var(--color-primary);
     @include m.link-underline(2px);
+    background-position: 0 100%;
+    box-shadow: none;
+    border: 0;
   }
+  a:hover { box-shadow: none; }
   a:focus-visible { @include m.focus-ring(); }
 
   /* Buttons (native) */

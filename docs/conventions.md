@@ -5,6 +5,7 @@
 - Views under `app/renderer/src/views/` compose features.
 - Shared UI under `app/renderer/src/components/`.
 - Global styles under `app/renderer/src/styles/`.
+ - Use existing aliases: `@renderer`, `@views`, `@ts`, `@features`, `@components`.
 
 ### Naming
 - Variables/functions: `camelCase` (clear, descriptive).
@@ -19,9 +20,13 @@
 - Avoid deep nesting; use early returns and helper functions.
 
 ### Svelte (Svelte 5)
-- Keep views dumb; push IO/state to feature `service/store`.
-- Prefer stores for cross-component state.
-- Use path aliases (`@views`, `@features`, `@components`, `@ts`).
+- Keep views declarative; push IO/state to feature `service/store`.
+- Prefer Svelte stores for shared state; explicitly subscribe/unsubscribe.
+- Use path aliases (`@renderer`, `@views`, `@features`, `@components`, `@ts`).
+
+### Router
+- Hash-based routing under `@features/router/` with a `Route` union type.
+- Public API: `initRouter`, `disposeRouter`, `navigate`.
 
 ### Electron security
 - `contextIsolation: true`, `nodeIntegration: false` in BrowserWindow.

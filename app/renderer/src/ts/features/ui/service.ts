@@ -5,7 +5,7 @@ export function initTheme(): void {
 }
 
 export function toggleTheme(): void {
-  themeMode.update((m) => (m === 'light' ? 'dark' : 'light'));
+  themeMode.update((m) => (m === 'light' ? 'dark' : m === 'dark' ? 'fun' : 'light'));
 }
 
 export function openSidebar(): void { sidebarOpen.set(true); }
