@@ -35,7 +35,7 @@
     <div class="stack-md">
       <h3 class="text-lg font-semibold">Typography</h3>
       <p>Body text — Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-      <a href="#/styleguide" class="btn btn--link">Link</a>
+      <a href="#/test/styleguide" class="btn btn--link">Link</a>
       <ul class="list-disc pl-5">
         <li>List item one</li>
         <li>List item two</li>
@@ -50,8 +50,8 @@
 
   <div class="stack-md">
     <h3 class="text-lg font-semibold">Layout Helpers</h3>
-    <div class="container-page" style="background: var(--color-surface); border: 1px dashed var(--color-border); padding: 1rem;">Container demo</div>
-    <div class="stack-md" style="background: var(--color-surface); border: 1px dashed var(--color-border); padding: 1rem;">
+    <div class="container-page demo-box">Container demo</div>
+    <div class="stack-md demo-box">
       <div>Stack item A</div>
       <div>Stack item B</div>
       <div>Stack item C</div>

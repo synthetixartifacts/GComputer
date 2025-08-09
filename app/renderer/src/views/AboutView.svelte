@@ -11,7 +11,7 @@
     <p>
       For now, this is placeholder text. Navigation is handled via hash-based routes, and pages are
       shown one at a time. Header and footer are always present; the menu contains links to navigate
-      between pages.
+      between pages under Settings → About.
     </p>
   </div>
   

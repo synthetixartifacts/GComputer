@@ -5,6 +5,7 @@
 @use './base/layout';
 @use './components/controls';
 @use './components/layout-components';
+@use './components/nav-tree';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

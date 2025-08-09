@@ -7,7 +7,6 @@ const config = {
       includePaths: ['app/renderer/src/styles'],
     },
     postcss: true,
-    typescript: true,
   }),
 };
 

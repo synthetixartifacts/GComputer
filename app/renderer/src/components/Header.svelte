@@ -25,10 +25,4 @@
       {/if}
     </button>
   </div>
-  
 </header>
-
-<style>
-</style>
-
-

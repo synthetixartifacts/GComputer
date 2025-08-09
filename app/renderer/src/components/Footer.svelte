@@ -5,8 +5,3 @@
 <footer class="gc-footer">
   © {year} GComputer — All rights reserved
 </footer>
-
-<style>
-</style>
-
-

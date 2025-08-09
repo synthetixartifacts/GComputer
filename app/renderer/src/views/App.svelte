@@ -1,17 +1,22 @@
 <script lang="ts">
-  import Header from '@components/Header.svelte';
-  import Footer from '@components/Footer.svelte';
-  import Sidebar from '@components/Sidebar.svelte';
-  import Modal from '@components/Modal.svelte';
+  import HeaderComponent from '@components/Header.svelte';
+  import FooterComponent from '@components/Footer.svelte';
+  import SidebarComponent from '@components/Sidebar.svelte';
+  import ModalComponent from '@components/Modal.svelte';
   import StyleguideView from '@views/StyleguideView.svelte';
   import HomeView from '@views/HomeView.svelte';
   import AboutView from '@views/AboutView.svelte';
+  import CategoryItem1View from '@views/CategoryItem1View.svelte';
+  import CategoryItem2View from '@views/CategoryItem2View.svelte';
+  import SettingsConfigView from '@views/SettingsConfigView.svelte';
+  import Test1View from '@views/Test1View.svelte';
   import { onMount, onDestroy } from 'svelte';
   import { sidebarOpen, modalOpen, themeMode, type ThemeMode } from '@features/ui/store';
   import { initTheme, toggleTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
   import type { Route } from '@features/router/types';
   import { initRouter, disposeRouter } from '@features/router/service';
+  import { activeRoute } from '@features/navigation/store';
 
   let route: Route = 'home';
   let currentTheme: ThemeMode = 'light';
@@ -21,7 +26,10 @@
   const unsubTheme = themeMode.subscribe((v) => (currentTheme = v));
   const unsubSidebar = sidebarOpen.subscribe((v) => (isSidebarOpen = v));
   const unsubModal = modalOpen.subscribe((v) => (isModalOpen = v));
-  const unsubRoute = currentRoute.subscribe((r) => (route = r));
+  const unsubRoute = currentRoute.subscribe((r) => {
+    route = r;
+    activeRoute.set(r);
+  });
   onMount(() => {
     initTheme();
     initRouter();
@@ -36,27 +44,34 @@
   });
 </script>
 
-<Header onToggleTheme={toggleTheme} onToggleSidebar={toggleSidebar} theme={currentTheme} />
+<HeaderComponent onToggleTheme={toggleTheme} onToggleSidebar={toggleSidebar} theme={currentTheme} />
 
-<Sidebar open={isSidebarOpen} onClose={closeSidebar} />
+<SidebarComponent open={isSidebarOpen} onClose={closeSidebar} />
 
 <main class="container-page stack-lg py-6">
-  {#if route === 'styleguide'}
-    <StyleguideView />
-  {:else if route === 'about'}
-    <AboutView />
-  {:else}
+  {#if route === 'home'}
     <HomeView />
+  {:else if route === 'category.item1'}
+    <CategoryItem1View />
+  {:else if route === 'category.item2'}
+    <CategoryItem2View />
+  {:else if route === 'settings.config'}
+    <SettingsConfigView />
+  {:else if route === 'settings.about'}
+    <AboutView />
+  {:else if route === 'test.styleguide'}
+    <StyleguideView />
+  {:else if route === 'test.test1'}
+    <Test1View />
   {/if}
 </main>
 
-<Modal open={isModalOpen} onClose={closeModal} title="Welcome">
+<ModalComponent open={isModalOpen} onClose={closeModal} title="Welcome">
   <p>This is a demo modal.</p>
-</Modal>
+ </ModalComponent>
 
-<Footer />
+<FooterComponent />
 
-<style lang="scss">
-</style>
+ 
 
 

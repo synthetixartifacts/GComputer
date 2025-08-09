@@ -19,7 +19,4 @@
   </div>
 {/if}
 
-<style>
-</style>
-
 

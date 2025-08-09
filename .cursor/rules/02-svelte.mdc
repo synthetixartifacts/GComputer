@@ -1,0 +1,10 @@
+Title: Svelte conventions
+
+Summary: Keep Svelte views declarative and free of side-effects and styles.
+
+Rules:
+- No `<style>` blocks in `.svelte` files.
+- No inline `style` attributes; use classes and SCSS.
+- Explicitly subscribe/unsubscribe Svelte stores in views as per codebase pattern.
+- Do not import Node/Electron in Svelte; use preload APIs via services.
+

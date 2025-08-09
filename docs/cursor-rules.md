@@ -26,6 +26,9 @@ High-signal guidance for AI assistants working in this repo.
 - TS strict; avoid `any` and deep nesting.
 - Views keep minimal logic; heavy work goes in feature services/stores.
 - Don’t enable `nodeIntegration` in renderer; use preload for IPC.
+- Do not write styles in Svelte files. No `<style>` blocks and no inline `style="..."` attributes in `.svelte`.
+- Place component/page styles in SCSS partials under `app/renderer/src/styles/` and import them via `app/renderer/src/styles/global.scss`.
+- Use the existing categories: `base/` for tokens/layout, `components/` for reusable UI, and `pages/` if page-specific styling is required.
 
 ### When adding a feature
 1) Create `app/renderer/src/ts/features/<name>/{types.ts,service.ts,store.ts}`.
