@@ -3,6 +3,7 @@
   import { expandedKeys, effectiveExpanded, activeRoute } from '@features/navigation/store';
   import { navigate } from '@features/router/service';
   import type { Route } from '@features/router/types';
+  import { t as tStore } from '@features/i18n/store';
 
   export let items: MenuItem[] = [];
   export let onNavigate: () => void = () => {};
@@ -27,6 +28,12 @@
       onNavigate();
     }
   }
+
+  $: t = $tStore;
+  function displayLabel(item: MenuItem): string {
+    if (item.i18nKey) return t(item.i18nKey);
+    return item.label;
+  }
 </script>
 
 <ul class="nav-tree">
@@ -42,7 +49,7 @@
         {#if item.children}
           <span class="chevron {expandedState[item.label] ? 'open' : ''}">▸</span>
         {/if}
-        <span class="label">{item.label}</span>
+        <span class="label">{displayLabel(item)}</span>
       </button>
       {#if item.children && expandedState[item.label]}
         <div class="children">

@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
+import { registerSettingsIpc } from './settings';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -23,7 +24,10 @@ async function createMainWindow(): Promise<void> {
   }
 }
 
-app.whenReady().then(createMainWindow);
+app.whenReady().then(() => {
+  registerSettingsIpc();
+  createMainWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

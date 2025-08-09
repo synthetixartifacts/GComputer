@@ -1,0 +1,90 @@
+{
+  "app": {
+    "title": "GComputer",
+    "footer": "© {year} GComputer — Tous droits réservés",
+    "menu": {
+      "home": "Accueil",
+      "category": "Catégorie",
+      "item1": "Élément 1",
+      "item2": "Élément 2",
+      "settings": "Paramètres",
+      "config": "Configuration",
+      "about": "À propos",
+      "test": "Test",
+      "styleguide": "Guide de style",
+      "test1": "Test 1",
+      "menu": "Menu",
+      "close": "Fermer"
+    },
+    "actions": {
+      "toggleSidebar": "Basculer le panneau",
+      "toggleTheme": "Basculer le thème",
+      "openModal": "Ouvrir la modale",
+      "browse": "Parcourir"
+    }
+  },
+  "pages": {
+    "home": {
+      "hello": "Bonjour — GComputer",
+      "configured": "Svelte + Tailwind + SCSS est configuré."
+    },
+    "about": {
+      "title": "À propos",
+      "desc1": "GComputer est une application de bureau Electron + Svelte. Cette page contiendra des informations sur l'application, son objectif et des liens vers la documentation.",
+      "desc2": "Pour l'instant, c'est un texte de remplacement. La navigation est gérée via des routes basées sur le hash, et les pages sont affichées une par une. L'en-tête et le pied de page sont toujours présents; le menu contient des liens pour naviguer entre les pages sous Paramètres → À propos."
+    },
+    "styleguide": {
+      "title": "Guide de style",
+      "buttons": "Boutons",
+      "primary": "Bouton principal",
+      "secondary": "Bouton secondaire",
+      "link": "Bouton lien",
+      "inputs": "Champs",
+      "text": "Texte",
+      "placeholder": "Espace réservé",
+      "hint": "Ceci est une aide",
+      "invalid": "Invalide",
+      "invalidPlaceholder": "Entrée invalide",
+      "error": "Message d'erreur",
+      "typography": "Typographie",
+      "body": "Texte de corps — Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      "layout": "Aides de mise en page",
+      "containerDemo": "Démo de conteneur",
+      "stackA": "Élément A",
+      "stackB": "Élément B",
+      "stackC": "Élément C",
+      "modal": "Modale",
+      "openModal": "Ouvrir la modale",
+      "modalTitle": "Modale de démonstration",
+      "modalContent": "Le contenu de la modale va ici."
+    },
+    "browse": {
+      "pathPlaceholder": "Chemin..."
+    },
+    "category": {
+      "item1": {
+        "title": "Catégorie — Élément 1",
+        "content": "Contenu pour l'élément 1 de la catégorie."
+      },
+      "item2": {
+        "title": "Catégorie — Élément 2",
+        "content": "Contenu pour l'élément 2 de la catégorie."
+      }
+    },
+    "test": {
+      "test1": {
+        "title": "Test — Test 1",
+        "content": "Contenu de test."
+      }
+    },
+    "settings": {
+      "config": {
+        "title": "Paramètres — Configuration",
+        "desc": "La configuration de l'application sera affichée ici.",
+        "theme": "Thème",
+        "language": "Langue"
+      }
+    }
+  }
+}
+

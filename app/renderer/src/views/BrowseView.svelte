@@ -2,6 +2,7 @@
   import { onDestroy } from 'svelte';
   import { pathStore, itemsStore, browse } from '@features/browse/store';
   import type { BrowseItem } from '@features/browse/types';
+  import { t as tStore } from '@features/i18n/store';
 
   let pathValue: string = '';
   let items: BrowseItem[] = [];
@@ -17,12 +18,13 @@
     const input = event.target as HTMLInputElement;
     pathStore.set(input.value);
   }
+  $: t = $tStore;
 </script>
 
 <div class="space-y-4">
   <div class="flex items-center gap-2 justify-center">
-    <input class="border rounded px-3 py-2 w-64" value={pathValue} on:input={onPathInput} placeholder="Path..." />
-    <button class="button" on:click={browse}>Browse</button>
+    <input class="border rounded px-3 py-2 w-64" value={pathValue} on:input={onPathInput} placeholder={t('pages.browse.pathPlaceholder')} />
+    <button class="button" on:click={browse}>{t('app.actions.browse')}</button>
   </div>
 
   {#if items.length}

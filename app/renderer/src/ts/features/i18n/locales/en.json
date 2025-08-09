@@ -1,0 +1,90 @@
+{
+  "app": {
+    "title": "GComputer",
+    "footer": "© {year} GComputer — All rights reserved",
+    "menu": {
+      "home": "Home",
+      "category": "Category",
+      "item1": "Item 1",
+      "item2": "Item 2",
+      "settings": "Settings",
+      "config": "Config",
+      "about": "About",
+      "test": "Test",
+      "styleguide": "Styleguide",
+      "test1": "Test 1",
+      "menu": "Menu",
+      "close": "Close"
+    },
+    "actions": {
+      "toggleSidebar": "Toggle sidebar",
+      "toggleTheme": "Toggle theme",
+      "openModal": "Open Modal",
+      "browse": "Browse"
+    }
+  },
+  "pages": {
+    "home": {
+      "hello": "Hello World — GComputer",
+      "configured": "Svelte + Tailwind + SCSS is configured."
+    },
+    "about": {
+      "title": "About",
+      "desc1": "GComputer is an Electron + Svelte desktop app. This page will contain information about the application, its purpose, and links to documentation.",
+      "desc2": "For now, this is placeholder text. Navigation is handled via hash-based routes, and pages are shown one at a time. Header and footer are always present; the menu contains links to navigate between pages under Settings → About."
+    },
+    "styleguide": {
+      "title": "Styleguide",
+      "buttons": "Buttons",
+      "primary": "Primary Button",
+      "secondary": "Secondary Button",
+      "link": "Link Button",
+      "inputs": "Inputs",
+      "text": "Text",
+      "placeholder": "Placeholder",
+      "hint": "This is a hint",
+      "invalid": "Invalid",
+      "invalidPlaceholder": "Invalid input",
+      "error": "Error message",
+      "typography": "Typography",
+      "body": "Body text — Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      "layout": "Layout Helpers",
+      "containerDemo": "Container demo",
+      "stackA": "Stack item A",
+      "stackB": "Stack item B",
+      "stackC": "Stack item C",
+      "modal": "Modal",
+      "openModal": "Open Modal",
+      "modalTitle": "Demo Modal",
+      "modalContent": "Modal content goes here."
+    },
+    "browse": {
+      "pathPlaceholder": "Path..."
+    },
+    "category": {
+      "item1": {
+        "title": "Category — Item 1",
+        "content": "Content for Category Item 1."
+      },
+      "item2": {
+        "title": "Category — Item 2",
+        "content": "Content for Category Item 2."
+      }
+    },
+    "test": {
+      "test1": {
+        "title": "Test — Test 1",
+        "content": "Testing view content."
+      }
+    },
+    "settings": {
+      "config": {
+        "title": "Settings — Config",
+        "desc": "Application configuration will go here.",
+        "theme": "Theme",
+        "language": "Language"
+      }
+    }
+  }
+}
+

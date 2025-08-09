@@ -17,6 +17,8 @@
   import type { Route } from '@features/router/types';
   import { initRouter, disposeRouter } from '@features/router/service';
   import { activeRoute } from '@features/navigation/store';
+  import { initSettings } from '@features/settings/service';
+  import { initI18n } from '@features/i18n/service';
 
   let route: Route = 'home';
   let currentTheme: ThemeMode = 'light';
@@ -30,8 +32,10 @@
     route = r;
     activeRoute.set(r);
   });
-  onMount(() => {
+  onMount(async () => {
     initTheme();
+    const s = await initSettings();
+    await initI18n(s.locale);
     initRouter();
     return () => disposeRouter();
   });

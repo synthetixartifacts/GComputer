@@ -3,26 +3,29 @@ import type { MenuItem } from './types';
 import type { Route } from '@features/router/types';
 
 export const menuItems = writable<MenuItem[]>([
-  { label: 'Home', route: 'home' },
+  { label: 'Home', i18nKey: 'app.menu.home', route: 'home' },
   {
     label: 'Category',
+    i18nKey: 'app.menu.category',
     children: [
-      { label: 'Item 1', route: 'category.item1' },
-      { label: 'Item 2', route: 'category.item2' },
+      { label: 'Item 1', i18nKey: 'app.menu.item1', route: 'category.item1' },
+      { label: 'Item 2', i18nKey: 'app.menu.item2', route: 'category.item2' },
     ],
   },
   {
     label: 'Settings',
+    i18nKey: 'app.menu.settings',
     children: [
-      { label: 'Config', route: 'settings.config' },
-      { label: 'About', route: 'settings.about' },
+      { label: 'Config', i18nKey: 'app.menu.config', route: 'settings.config' },
+      { label: 'About', i18nKey: 'app.menu.about', route: 'settings.about' },
     ],
   },
   {
     label: 'Test',
+    i18nKey: 'app.menu.test',
     children: [
-      { label: 'Styleguide', route: 'test.styleguide' },
-      { label: 'Test 1', route: 'test.test1' },
+      { label: 'Styleguide', i18nKey: 'app.menu.styleguide', route: 'test.styleguide' },
+      { label: 'Test 1', i18nKey: 'app.menu.test1', route: 'test.test1' },
     ],
   },
 ]);
