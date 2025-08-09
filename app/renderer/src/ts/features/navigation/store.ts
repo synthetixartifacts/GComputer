@@ -6,7 +6,6 @@ export const menuItems = writable<MenuItem[]>([
   { label: 'Home', route: 'home' },
   {
     label: 'Category',
-    defaultOpen: true,
     children: [
       { label: 'Item 1', route: 'category.item1' },
       { label: 'Item 2', route: 'category.item2' },
@@ -14,7 +13,6 @@ export const menuItems = writable<MenuItem[]>([
   },
   {
     label: 'Settings',
-    defaultOpen: true,
     children: [
       { label: 'Config', route: 'settings.config' },
       { label: 'About', route: 'settings.about' },
@@ -22,7 +20,6 @@ export const menuItems = writable<MenuItem[]>([
   },
   {
     label: 'Test',
-    defaultOpen: true,
     children: [
       { label: 'Styleguide', route: 'test.styleguide' },
       { label: 'Test 1', route: 'test.test1' },

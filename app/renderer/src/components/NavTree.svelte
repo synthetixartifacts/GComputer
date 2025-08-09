@@ -13,10 +13,6 @@
   import { onDestroy } from 'svelte';
   onDestroy(() => { unsubRoute(); unsubExpanded(); });
 
-  function isExpanded(label: string): boolean {
-    return !!expandedState[label];
-  }
-
   function toggle(label: string): void {
     expandedKeys.update((v) => ({ ...v, [label]: !v[label] }));
   }
@@ -37,17 +33,18 @@
   {#each items as item}
     <li>
       <button
+        type="button"
         class="nav-item {item.children ? 'has-children' : ''} {item.route === currentRoute ? 'active' : ''}"
         on:click={() => handleClick(item)}
-        aria-expanded={item.children ? isExpanded(item.label) : undefined}
+        aria-expanded={item.children ? !!expandedState[item.label] : undefined}
         aria-current={item.route === currentRoute ? 'page' : undefined}
       >
         {#if item.children}
-          <span class="chevron {isExpanded(item.label) ? 'open' : ''}">▸</span>
+          <span class="chevron {expandedState[item.label] ? 'open' : ''}">▸</span>
         {/if}
         <span class="label">{item.label}</span>
       </button>
-      {#if item.children && isExpanded(item.label)}
+      {#if item.children && expandedState[item.label]}
         <div class="children">
           <svelte:self items={item.children} onNavigate={onNavigate} />
         </div>
