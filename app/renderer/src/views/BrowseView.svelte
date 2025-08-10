@@ -2,7 +2,7 @@
   import { onDestroy } from 'svelte';
   import { pathStore, itemsStore, browse } from '@features/browse/store';
   import type { BrowseItem } from '@features/browse/types';
-  import { t as tStore } from '@features/i18n/store';
+  import { t as tStore } from '@ts/i18n/store';
 
   let pathValue: string = '';
   let items: BrowseItem[] = [];
@@ -18,7 +18,10 @@
     const input = event.target as HTMLInputElement;
     pathStore.set(input.value);
   }
-  $: t = $tStore;
+  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  const unsubT = tStore.subscribe((fn) => (t = fn));
+  import { onDestroy as onDestroyLocal } from 'svelte';
+  onDestroyLocal(() => unsubT());
 </script>
 
 <div class="space-y-4">

@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
+import { setApplicationMenuForLocale } from './menu';
 import fs from 'node:fs/promises';
 import fssync from 'node:fs';
 import path from 'node:path';
@@ -98,6 +99,10 @@ export async function setSetting<K extends keyof AppSettings>(key: K, value: App
   cachedSettings = next;
   await writeSettingsToDisk(next);
   broadcastSettingsChanged(next);
+  // Update native menu if locale changed
+  if (key === 'locale') {
+    setApplicationMenuForLocale(next.locale);
+  }
   return next;
 }
 

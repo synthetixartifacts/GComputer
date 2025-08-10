@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
-import { registerSettingsIpc } from './settings';
+import { registerSettingsIpc, getAllSettings } from './settings';
+import { setApplicationMenuForLocale } from './menu';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -26,6 +27,8 @@ async function createMainWindow(): Promise<void> {
 
 app.whenReady().then(() => {
   registerSettingsIpc();
+  // Initialize menu based on saved locale
+  getAllSettings().then((s) => setApplicationMenuForLocale(s.locale)).catch(() => setApplicationMenuForLocale('en'));
   createMainWindow();
 });
 

@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
-  import { initSettings, setLocale as setLocaleSetting, setThemeMode as setThemeSetting } from '@features/settings/service';
+  import { onDestroy } from 'svelte';
+  import { setLocale as setLocaleSetting, setThemeMode as setThemeSetting } from '@features/settings/service';
   import { settingsStore } from '@features/settings/store';
   import type { ThemeMode, Locale } from '@features/settings/types';
-  import { t as tStore } from '@features/i18n/store';
-  import { initI18n, setLocale as setI18nLocale } from '@features/i18n/service';
+  import { t as tStore } from '@ts/i18n/store';
 
   let theme: ThemeMode = 'light';
   let locale: Locale = 'en';
@@ -12,13 +11,10 @@
     theme = s.themeMode;
     locale = s.locale;
   });
-  $: t = $tStore;
-
-  onMount(async () => {
-    await initSettings();
-    await initI18n(locale);
-  });
+  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  const unsubT = tStore.subscribe((fn) => (t = fn));
   onDestroy(() => unsub());
+  onDestroy(() => unsubT());
 
   async function onThemeChange(e: Event) {
     const value = (e.target as HTMLSelectElement).value as ThemeMode;
@@ -28,7 +24,6 @@
   async function onLocaleChange(e: Event) {
     const value = (e.target as HTMLSelectElement).value as Locale;
     await setLocaleSetting(value);
-    setI18nLocale(value);
   }
 </script>
 

@@ -3,29 +3,29 @@ import type { MenuItem } from './types';
 import type { Route } from '@features/router/types';
 
 export const menuItems = writable<MenuItem[]>([
-  { label: 'Home', i18nKey: 'app.menu.home', route: 'home' },
+  { label: 'app.menu.home', i18nKey: 'app.menu.home', route: 'home' },
   {
-    label: 'Category',
+    label: 'app.menu.category',
     i18nKey: 'app.menu.category',
     children: [
-      { label: 'Item 1', i18nKey: 'app.menu.item1', route: 'category.item1' },
-      { label: 'Item 2', i18nKey: 'app.menu.item2', route: 'category.item2' },
+      { label: 'app.menu.item1', i18nKey: 'app.menu.item1', route: 'category.item1' },
+      { label: 'app.menu.item2', i18nKey: 'app.menu.item2', route: 'category.item2' },
     ],
   },
   {
-    label: 'Settings',
+    label: 'app.menu.settings',
     i18nKey: 'app.menu.settings',
     children: [
-      { label: 'Config', i18nKey: 'app.menu.config', route: 'settings.config' },
-      { label: 'About', i18nKey: 'app.menu.about', route: 'settings.about' },
+      { label: 'app.menu.config', i18nKey: 'app.menu.config', route: 'settings.config' },
+      { label: 'app.menu.about', i18nKey: 'app.menu.about', route: 'settings.about' },
     ],
   },
   {
-    label: 'Test',
+    label: 'app.menu.test',
     i18nKey: 'app.menu.test',
     children: [
-      { label: 'Styleguide', i18nKey: 'app.menu.styleguide', route: 'test.styleguide' },
-      { label: 'Test 1', i18nKey: 'app.menu.test1', route: 'test.test1' },
+      { label: 'app.menu.styleguide', i18nKey: 'app.menu.styleguide', route: 'test.styleguide' },
+      { label: 'app.menu.test1', i18nKey: 'app.menu.test1', route: 'test.test1' },
     ],
   },
 ]);

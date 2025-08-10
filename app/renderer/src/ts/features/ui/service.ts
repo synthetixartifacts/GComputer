@@ -1,11 +1,8 @@
-import { themeMode, sidebarOpen, modalOpen, type ThemeMode, setThemeDom } from './store';
+import { sidebarOpen, modalOpen, setThemeDom } from './store';
+import { themeModeStore } from '@features/settings/store';
 
 export function initTheme(): void {
-  themeMode.subscribe((mode) => setThemeDom(mode));
-}
-
-export function toggleTheme(): void {
-  themeMode.update((m) => (m === 'light' ? 'dark' : m === 'dark' ? 'fun' : 'light'));
+  themeModeStore.subscribe((mode) => setThemeDom(mode));
 }
 
 export function openSidebar(): void { sidebarOpen.set(true); }

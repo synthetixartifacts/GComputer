@@ -35,6 +35,17 @@ app/
           ui/
             service.ts
             store.ts
+          settings/
+            types.ts
+            service.ts
+            store.ts
+          i18n/
+            types.ts
+            service.ts
+            store.ts
+            locales/
+              en.json
+              fr.json
 ```
 
 ### Principles
@@ -46,7 +57,14 @@ app/
 ### Entry points
 - Renderer: `app/renderer/index.html` → `/src/ts/main.ts` → mounts `@views/App.svelte`.
 - Main: `app/main/main.ts` creates window, loads dev server or `dist/renderer/index.html`.
-- Preload: `app/preload/index.ts` (IPC exposure; currently minimal).
+- Preload: `app/preload/index.ts` (IPC exposure). Exposes `window.gc.settings` with `all/get/set/subscribe`.
+
+### Settings & i18n
+- Main process persists `settings.json` under `app.getPath('userData')` and exposes IPC handlers `settings:all/get/set`.
+- Preload whitelists a `settings` API via `contextBridge`.
+- Renderer `@features/settings` manages an `AppSettings` store and writes via preload.
+- Renderer `@ts/i18n` provides `locale` and `t()` and loads catalogs from bundled JSON.
+- Theme and locale are synchronized from settings; theme is applied to DOM via `data-theme` attribute.
 
 ### Routing
 - Simple hash-based router implemented under `@features/router/`.

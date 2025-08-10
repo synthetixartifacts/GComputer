@@ -10,6 +10,10 @@ export default defineConfig({
       configFile: path.resolve(__dirname, 'svelte.config.js'),
     }),
   ],
+  optimizeDeps: {
+    // Workaround for Node versions lacking crypto.hash used by Vite's dep optimizer
+    disabled: true,
+  },
   build: {
     outDir: path.resolve(__dirname, 'dist/renderer'),
     emptyOutDir: true,

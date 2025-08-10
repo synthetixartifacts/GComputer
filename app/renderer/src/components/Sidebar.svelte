@@ -3,14 +3,16 @@
   import { menuItems } from '@features/navigation/store';
   import type { MenuItem } from '@features/navigation/types';
   import { onDestroy } from 'svelte';
-  import { t as tStore } from '@features/i18n/store';
+  import { t as tStore } from '@ts/i18n/store';
 
   export let open: boolean = false;
   export let onClose: () => void;
   let items: MenuItem[] = [];
   const unsubscribe = menuItems.subscribe((v) => (items = v));
   onDestroy(() => unsubscribe());
-  $: t = $tStore;
+  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  const unsubT = tStore.subscribe((fn) => (t = fn));
+  onDestroy(() => unsubT());
 </script>
 
 {#if open}

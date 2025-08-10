@@ -11,44 +11,55 @@
   import SettingsConfigView from '@views/SettingsConfigView.svelte';
   import Test1View from '@views/Test1View.svelte';
   import { onMount, onDestroy } from 'svelte';
-  import { sidebarOpen, modalOpen, themeMode, type ThemeMode } from '@features/ui/store';
-  import { initTheme, toggleTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
+  import { sidebarOpen, modalOpen } from '@features/ui/store';
+  import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
   import type { Route } from '@features/router/types';
   import { initRouter, disposeRouter } from '@features/router/service';
   import { activeRoute } from '@features/navigation/store';
   import { initSettings } from '@features/settings/service';
-  import { initI18n } from '@features/i18n/service';
+  import { initI18n } from '@ts/i18n/service';
+  import { t as tStore } from '@ts/i18n/store';
+  import { themeModeStore } from '@features/settings/store';
+  import { setThemeMode } from '@features/settings/service';
 
   let route: Route = 'home';
-  let currentTheme: ThemeMode = 'light';
+  let currentTheme: 'light' | 'dark' | 'fun' = 'light';
   let isSidebarOpen: boolean = false;
   let isModalOpen: boolean = false;
+  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  const unsubT = tStore.subscribe((fn) => (t = fn));
 
-  const unsubTheme = themeMode.subscribe((v) => (currentTheme = v));
+  const unsubTheme = themeModeStore.subscribe((v) => (currentTheme = v));
+  // DOM updates handled in initTheme
   const unsubSidebar = sidebarOpen.subscribe((v) => (isSidebarOpen = v));
   const unsubModal = modalOpen.subscribe((v) => (isModalOpen = v));
   const unsubRoute = currentRoute.subscribe((r) => {
     route = r;
     activeRoute.set(r);
   });
-  onMount(async () => {
+  onMount(() => {
     initTheme();
-    const s = await initSettings();
-    await initI18n(s.locale);
+    initSettings().then((s) => initI18n(s.locale));
     initRouter();
-    return () => disposeRouter();
   });
 
   onDestroy(() => {
+    unsubT();
     unsubTheme();
     unsubSidebar();
     unsubModal();
     unsubRoute();
+    disposeRouter();
   });
+
+  function navigateTheme(): void {
+    const next = currentTheme === 'light' ? 'dark' : currentTheme === 'dark' ? 'fun' : 'light';
+    setThemeMode(next);
+  }
 </script>
 
-<HeaderComponent onToggleTheme={toggleTheme} onToggleSidebar={toggleSidebar} theme={currentTheme} />
+<HeaderComponent onToggleTheme={navigateTheme} onToggleSidebar={toggleSidebar} theme={currentTheme} />
 
 <SidebarComponent open={isSidebarOpen} onClose={closeSidebar} />
 
@@ -70,8 +81,8 @@
   {/if}
 </main>
 
-<ModalComponent open={isModalOpen} onClose={closeModal} title="Welcome">
-  <p>This is a demo modal.</p>
+<ModalComponent open={isModalOpen} onClose={closeModal} title="app.pages.styleguide.modalTitle">
+  <p>{t('app.pages.styleguide.modalContent')}</p>
  </ModalComponent>
 
 <FooterComponent />

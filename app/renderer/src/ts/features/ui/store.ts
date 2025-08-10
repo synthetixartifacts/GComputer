@@ -1,14 +1,8 @@
 import { writable } from 'svelte/store';
+import type { ThemeMode } from '@features/settings/types';
 
-export type ThemeMode = 'light' | 'dark' | 'fun';
-
-export const themeMode = writable<ThemeMode>('light');
 export const sidebarOpen = writable<boolean>(false);
 export const modalOpen = writable<boolean>(false);
-
-export function toggleTheme(): void {
-  themeMode.update((m) => (m === 'light' ? 'dark' : 'light'));
-}
 
 export function setThemeDom(mode: ThemeMode): void {
   const root = document.documentElement;

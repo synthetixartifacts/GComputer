@@ -1,8 +1,11 @@
 <script lang="ts">
   import Modal from '@components/Modal.svelte';
   let showModal = false;
-  import { t as tStore } from '@features/i18n/store';
-  $: t = $tStore;
+  import { t as tStore } from '@ts/i18n/store';
+  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  const unsubT = tStore.subscribe((fn) => (t = fn));
+  import { onDestroy } from 'svelte';
+  onDestroy(() => unsubT());
 </script>
 
 <section class="container-page stack-lg">

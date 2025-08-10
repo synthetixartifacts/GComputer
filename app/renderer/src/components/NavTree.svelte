@@ -3,7 +3,7 @@
   import { expandedKeys, effectiveExpanded, activeRoute } from '@features/navigation/store';
   import { navigate } from '@features/router/service';
   import type { Route } from '@features/router/types';
-  import { t as tStore } from '@features/i18n/store';
+  import { t as tStore } from '@ts/i18n/store';
 
   export let items: MenuItem[] = [];
   export let onNavigate: () => void = () => {};
@@ -29,7 +29,9 @@
     }
   }
 
-  $: t = $tStore;
+  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  const unsubT = tStore.subscribe((fn) => (t = fn));
+  onDestroy(() => unsubT());
   function displayLabel(item: MenuItem): string {
     if (item.i18nKey) return t(item.i18nKey);
     return item.label;
