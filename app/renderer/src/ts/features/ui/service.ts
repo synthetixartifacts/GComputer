@@ -1,8 +1,9 @@
 import { sidebarOpen, modalOpen, setThemeDom } from './store';
 import { themeModeStore } from '@features/settings/store';
 
-export function initTheme(): void {
-  themeModeStore.subscribe((mode) => setThemeDom(mode));
+export function initTheme(): () => void {
+  const unsubscribe = themeModeStore.subscribe((mode) => setThemeDom(mode));
+  return unsubscribe;
 }
 
 export function openSidebar(): void { sidebarOpen.set(true); }

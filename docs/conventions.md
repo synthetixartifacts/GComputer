@@ -21,7 +21,7 @@
 
 ### Svelte (Svelte 5)
 - Keep views declarative; push IO/state to feature `service/store`.
-- Prefer Svelte stores for shared state; explicitly subscribe/unsubscribe.
+- Prefer Svelte stores for shared state; explicitly subscribe/unsubscribe. When subscribing in `onMount`, return the unsubscribe function to avoid leaks.
 - Use path aliases (`@renderer`, `@views`, `@features`, `@components`, `@ts`).
 
 ### Router
@@ -31,6 +31,7 @@
 ### Electron security
 - `contextIsolation: true`, `nodeIntegration: false` in BrowserWindow.
 - Only expose whitelisted APIs via preload.
+- Never import Node/Electron modules in the renderer; use preload-exposed APIs.
 
 ### Commits & PRs
 - Conventional Commits: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`.

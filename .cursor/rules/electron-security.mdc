@@ -11,4 +11,5 @@ alwaysApply: true
 - Preload exposes a minimal, whitelisted API via `contextBridge`.
 - No direct Node/Electron imports in renderer views or TS.
 - Validate and sanitize any file system interactions.
+- Main process i18n for native menus is kept in `app/main/i18n/` (do not import renderer i18n).
 

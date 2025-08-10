@@ -1,4 +1,8 @@
-import type { Locale } from './settings';
+import type { Locale } from '../settings';
+
+// Minimal i18n catalog for the native application menu in the main process.
+// The renderer's i18n is intentionally not reused here to avoid cross-process coupling
+// and bundling renderer UI assets into main. Keep this catalog small and focused.
 
 type MenuLabels = {
   app: string;

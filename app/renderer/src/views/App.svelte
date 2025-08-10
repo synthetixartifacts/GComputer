@@ -39,9 +39,12 @@
     activeRoute.set(r);
   });
   onMount(() => {
-    initTheme();
+    const cleanupTheme = initTheme();
     initSettings().then((s) => initI18n(s.locale));
     initRouter();
+    return () => {
+      cleanupTheme?.();
+    };
   });
 
   onDestroy(() => {
@@ -81,8 +84,8 @@
   {/if}
 </main>
 
-<ModalComponent open={isModalOpen} onClose={closeModal} title="app.pages.styleguide.modalTitle">
-  <p>{t('app.pages.styleguide.modalContent')}</p>
+<ModalComponent open={isModalOpen} onClose={closeModal} title="pages.styleguide.modalTitle">
+  <p>{t('pages.styleguide.modalContent')}</p>
  </ModalComponent>
 
 <FooterComponent />

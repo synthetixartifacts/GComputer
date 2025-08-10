@@ -10,9 +10,10 @@ export default defineConfig({
       configFile: path.resolve(__dirname, 'svelte.config.js'),
     }),
   ],
+  // Vite 5.1+: disable discovery to avoid unnecessary pre-bundling in this project
   optimizeDeps: {
-    // Workaround for Node versions lacking crypto.hash used by Vite's dep optimizer
-    disabled: true,
+    noDiscovery: true,
+    include: [],
   },
   build: {
     outDir: path.resolve(__dirname, 'dist/renderer'),

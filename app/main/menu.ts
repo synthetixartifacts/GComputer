@@ -1,6 +1,6 @@
 import { app, Menu } from 'electron';
 import type { Locale } from './settings';
-import { getMenuLabelsForLocale } from './menu_i18n';
+import { getMenuLabelsForLocale } from './i18n/menu';
 
 export function setApplicationMenuForLocale(locale: Locale): void {
   const L = getMenuLabelsForLocale(locale, app.name);

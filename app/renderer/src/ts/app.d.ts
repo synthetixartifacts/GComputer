@@ -2,22 +2,13 @@
 
 
 declare global {
-  type ThemeMode = 'light' | 'dark' | 'fun';
-  type Locale = 'en' | 'fr';
-
-  interface AppSettings {
-    version: number;
-    locale: Locale;
-    themeMode: ThemeMode;
-  }
-
   interface Window {
     gc: {
       settings: {
-        all: () => Promise<AppSettings>;
-        get: <K extends keyof AppSettings>(key: K) => Promise<AppSettings[K]>;
-        set: <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => Promise<AppSettings>;
-        subscribe: (callback: (settings: AppSettings) => void) => () => void;
+        all: () => Promise<import('@features/settings/types').AppSettings>;
+        get: <K extends keyof import('@features/settings/types').AppSettings>(key: K) => Promise<import('@features/settings/types').AppSettings[K]>;
+        set: <K extends keyof import('@features/settings/types').AppSettings>(key: K, value: import('@features/settings/types').AppSettings[K]) => Promise<import('@features/settings/types').AppSettings>;
+        subscribe: (callback: (settings: import('@features/settings/types').AppSettings) => void) => () => void;
       };
     };
   }

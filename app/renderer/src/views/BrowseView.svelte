@@ -26,12 +26,12 @@
 
 <div class="space-y-4">
   <div class="flex items-center gap-2 justify-center">
-    <input class="border rounded px-3 py-2 w-64" value={pathValue} on:input={onPathInput} placeholder={t('pages.browse.pathPlaceholder')} />
-    <button class="button" on:click={browse}>{t('app.actions.browse')}</button>
+    <input class="input w-64" value={pathValue} on:input={onPathInput} placeholder={t('pages.browse.pathPlaceholder')} />
+    <button class="btn btn--primary" on:click={browse}>{t('app.actions.browse')}</button>
   </div>
 
   {#if items.length}
-    <ul class="bg-white rounded border divide-y">
+    <ul class="bg-[var(--color-surface)] rounded border border-[var(--color-border)] divide-y">
       {#each items as it}
         <li class="px-4 py-2">{it.dir ? '📁' : '📄'} {it.name}</li>
       {/each}

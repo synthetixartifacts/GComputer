@@ -1,7 +1,7 @@
 <script lang="ts">
   export let open: boolean = false;
   export let onClose: () => void;
-  export let title: string = 'app.pages.styleguide.modalTitle';
+  export let title: string = 'pages.styleguide.modalTitle';
   import { t as tStore } from '@ts/i18n/store';
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
   const unsubT = tStore.subscribe((fn) => (t = fn));

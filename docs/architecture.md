@@ -58,13 +58,14 @@ app/
 - Renderer: `app/renderer/index.html` → `/src/ts/main.ts` → mounts `@views/App.svelte`.
 - Main: `app/main/main.ts` creates window, loads dev server or `dist/renderer/index.html`.
 - Preload: `app/preload/index.ts` (IPC exposure). Exposes `window.gc.settings` with `all/get/set/subscribe`.
+ - Main i18n: Native menu labels live in `app/main/i18n/menu.ts` to keep main independent of renderer bundles.
 
 ### Settings & i18n
 - Main process persists `settings.json` under `app.getPath('userData')` and exposes IPC handlers `settings:all/get/set`.
 - Preload whitelists a `settings` API via `contextBridge`.
 - Renderer `@features/settings` manages an `AppSettings` store and writes via preload.
-- Renderer `@ts/i18n` provides `locale` and `t()` and loads catalogs from bundled JSON.
-- Theme and locale are synchronized from settings; theme is applied to DOM via `data-theme` attribute.
+- Renderer `@ts/i18n` provides `locale` and `t()` and loads catalogs from bundled JSON (`en.json`, `fr.json`).
+- Theme and locale are synchronized from settings; theme is applied to DOM via `data-theme` attribute and unsubscribes cleanly on unmount.
 
 ### Routing
 - Simple hash-based router implemented under `@features/router/`.
