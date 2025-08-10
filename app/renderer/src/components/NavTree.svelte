@@ -32,10 +32,6 @@
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
   const unsubT = tStore.subscribe((fn) => (t = fn));
   onDestroy(() => unsubT());
-  function displayLabel(item: MenuItem): string {
-    if (item.i18nKey) return t(item.i18nKey);
-    return item.label;
-  }
 </script>
 
 <ul class="nav-tree">
@@ -51,7 +47,7 @@
         {#if item.children}
           <span class="chevron {expandedState[item.label] ? 'open' : ''}">▸</span>
         {/if}
-        <span class="label">{displayLabel(item)}</span>
+        <span class="label">{item.i18nKey ? t(item.i18nKey) : item.label}</span>
       </button>
       {#if item.children && expandedState[item.label]}
         <div class="children">
