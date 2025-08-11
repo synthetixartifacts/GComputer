@@ -13,6 +13,8 @@
       "test": "Test",
       "styleguide": "Guide de style",
       "test1": "Test 1",
+      "db": "BD",
+      "db.testTable": "Table de test",
       "menu": "Menu",
       "close": "Fermer"
     },
@@ -75,6 +77,16 @@
       "test1": {
         "title": "Test — Test 1",
         "content": "Contenu de test."
+      }
+    },
+    "db": {
+      "testTable": {
+        "title": "Table de test",
+        "column1": "Colonne 1",
+        "column2": "Colonne 2",
+        "add": "Ajouter une ligne",
+        "truncate": "Vider la table",
+        "save": "Enregistrer les modifications"
       }
     },
     "settings": {

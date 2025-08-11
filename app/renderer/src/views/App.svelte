@@ -10,6 +10,7 @@
   import CategoryItem2View from '@views/CategoryItem2View.svelte';
   import SettingsConfigView from '@views/SettingsConfigView.svelte';
   import Test1View from '@views/Test1View.svelte';
+  import TestDbTableView from '@views/TestDbTableView.svelte';
   import { onMount, onDestroy } from 'svelte';
   import { sidebarOpen, modalOpen } from '@features/ui/store';
   import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
@@ -81,6 +82,8 @@
     <StyleguideView />
   {:else if route === 'test.test1'}
     <Test1View />
+  {:else if route === 'test.db.test-table'}
+    <TestDbTableView />
   {/if}
 </main>
 

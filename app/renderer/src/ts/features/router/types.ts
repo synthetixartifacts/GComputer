@@ -5,7 +5,8 @@ export type Route =
   | 'settings.config'
   | 'settings.about'
   | 'test.styleguide'
-  | 'test.test1';
+  | 'test.test1'
+  | 'test.db.test-table';
 
 export const ROUTES: Route[] = [
   'home',
@@ -15,6 +16,7 @@ export const ROUTES: Route[] = [
   'settings.about',
   'test.styleguide',
   'test.test1',
+  'test.db.test-table',
 ];
 
 

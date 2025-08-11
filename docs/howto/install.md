@@ -29,6 +29,19 @@ Recommended versions: Node.js 22 LTS, npm 10+, Git.
   npm ci
   ```
 
+### Drizzle CLI (optional)
+
+Drizzle Studio and codegen are available via workspace scripts; no global install needed.
+
+From repo root you can run:
+```bash
+# Launch Drizzle Studio UI
+npm --workspace @gcomputer/db run drizzle:studio
+
+# Generate migrations after editing schema.ts
+npm --workspace @gcomputer/db run drizzle:generate
+```
+
 ---
 
 ### Windows

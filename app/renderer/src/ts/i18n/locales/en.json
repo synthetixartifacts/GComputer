@@ -13,6 +13,8 @@
       "test": "Test",
       "styleguide": "Styleguide",
       "test1": "Test 1",
+      "db": "DB",
+      "db.testTable": "Test table",
       "menu": "Menu",
       "close": "Close"
     },
@@ -75,6 +77,16 @@
       "test1": {
         "title": "Test — Test 1",
         "content": "Testing view content."
+      }
+    },
+    "db": {
+      "testTable": {
+        "title": "Test table",
+        "column1": "Column 1",
+        "column2": "Column 2",
+        "add": "Add row",
+        "truncate": "Truncate table",
+        "save": "Save changes"
       }
     },
     "settings": {

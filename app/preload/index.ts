@@ -28,6 +28,25 @@ const settingsApi = {
 
 contextBridge.exposeInMainWorld('gc', {
   settings: settingsApi,
+  db: {
+    test: {
+      list(filters?: { column1?: string; column2?: string }) {
+        return ipcRenderer.invoke('db:test:list', filters);
+      },
+      insert(payload: { column1: string | null; column2: string | null }) {
+        return ipcRenderer.invoke('db:test:insert', payload);
+      },
+      update(payload: { id: number; column1?: string | null; column2?: string | null }) {
+        return ipcRenderer.invoke('db:test:update', payload);
+      },
+      delete(id: number) {
+        return ipcRenderer.invoke('db:test:delete', id);
+      },
+      truncate() {
+        return ipcRenderer.invoke('db:test:truncate');
+      },
+    },
+  },
 });
 
 export {};
