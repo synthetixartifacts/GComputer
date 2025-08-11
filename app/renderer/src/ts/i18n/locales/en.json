@@ -13,8 +13,10 @@
       "test": "Test",
       "styleguide": "Styleguide",
       "test1": "Test 1",
-      "db": "DB",
-      "db.testTable": "Test table",
+      "db": {
+        "label": "DB",
+        "testTable": "Test table"
+      },
       "menu": "Menu",
       "close": "Close"
     },

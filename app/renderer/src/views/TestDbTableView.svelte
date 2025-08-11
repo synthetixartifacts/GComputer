@@ -1,7 +1,7 @@
 <script lang="ts">
   import Table from '@components/Table.svelte';
   import { onDestroy, onMount } from 'svelte';
-  import { testRows, testFilters, editingRowIds, pendingEdits, refreshTestRows, setFilter, toggleEdit, stageEdit, saveAllEdits, addRow, removeRow, truncateTable } from '@features/db/store';
+  import { testRows, testFilters, editingRowIds, pendingEdits, refreshTestRows, setFilter, toggleEdit, stageEdit, saveAllEdits, addRow, removeRow, truncateTable, saveEditsForRow } from '@features/db/store';
   import type { TestRow } from '@features/db/types';
   import { t as tStore } from '@ts/i18n/store';
 
@@ -29,7 +29,8 @@
     unsubT();
   });
 
-  const columns = [
+  let columns: Array<{ id: string; title: string; editable?: boolean; width?: string }> = [];
+  $: columns = [
     { id: 'id', title: 'ID', width: '80px' },
     { id: 'column1', title: t('pages.db.testTable.column1'), editable: true },
     { id: 'column2', title: t('pages.db.testTable.column2'), editable: true },
@@ -46,8 +47,13 @@
     stageEdit(rowId, columnId as 'column1' | 'column2', value);
   }
 
-  function onToggleEdit(e: CustomEvent<{ rowId: number }>) {
-    toggleEdit(e.detail.rowId);
+  async function onToggleEdit(e: CustomEvent<{ rowId: number }>) {
+    const id = e.detail.rowId;
+    if (editing.has(id)) {
+      await saveEditsForRow(id);
+    } else {
+      toggleEdit(id);
+    }
   }
 
   async function onDelete(e: CustomEvent<{ rowId: number }>) {

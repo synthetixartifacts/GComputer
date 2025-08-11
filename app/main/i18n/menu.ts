@@ -55,7 +55,6 @@ const catalogs: Record<Locale, Record<string, string>> = {
     'menu.hide': 'Hide',
     'menu.hideOthers': 'Hide Others',
     'menu.unhide': 'Show All',
-    // App-specific (kept here for future native menu items)
     'menu.test': 'Test',
     'menu.db': 'DB',
     'menu.db.testTable': 'Test table',
@@ -84,7 +83,6 @@ const catalogs: Record<Locale, Record<string, string>> = {
     'menu.hide': 'Masquer',
     'menu.hideOthers': 'Masquer les autres',
     'menu.unhide': 'Tout afficher',
-    // App-specific (conservé ici pour de futurs éléments du menu natif)
     'menu.test': 'Test',
     'menu.db': 'BD',
     'menu.db.testTable': 'Table de test',
