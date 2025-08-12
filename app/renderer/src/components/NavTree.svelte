@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { MenuItem } from '@features/navigation/types';
   import { expandedKeys, effectiveExpanded, activeRoute } from '@features/navigation/store';
+  import { toggleExpanded } from '@features/navigation/service';
   import { navigate } from '@features/router/service';
   import type { Route } from '@features/router/types';
   import { t as tStore } from '@ts/i18n/store';
@@ -15,7 +16,7 @@
   onDestroy(() => { unsubRoute(); unsubExpanded(); });
 
   function toggle(label: string): void {
-    expandedKeys.update((v) => ({ ...v, [label]: !v[label] }));
+    toggleExpanded(label);
   }
 
   function handleClick(item: MenuItem): void {

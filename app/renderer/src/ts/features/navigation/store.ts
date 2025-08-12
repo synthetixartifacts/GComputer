@@ -59,7 +59,8 @@ export const effectiveExpanded = derived([
   function applyDefaults(items: MenuItem[], acc: Record<string, boolean>): Record<string, boolean> {
     for (const item of items) {
       if (item.children && item.children.length > 0) {
-        if (item.defaultOpen) acc[item.label] = true;
+        // Apply defaultOpen only when user has not explicitly chosen a state
+        if (item.defaultOpen && typeof acc[item.label] === 'undefined') acc[item.label] = true;
         applyDefaults(item.children, acc);
       }
     }
@@ -73,7 +74,10 @@ export const effectiveExpanded = derived([
       if (item.children && item.children.length > 0) {
         subtreeContains = expandAncestorsForActive(item.children, acc);
         if (subtreeContains) {
-          acc[item.label] = true;
+          // Expand ancestors for active route unless the user explicitly collapsed them
+          if (acc[item.label] !== false) {
+            acc[item.label] = true;
+          }
         }
       }
       const isSelf = !!item.route && item.route === active;
