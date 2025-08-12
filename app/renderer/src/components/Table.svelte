@@ -17,6 +17,8 @@
   export let filterPlaceholder: string = 'Filter';
   export let showDefaultActions: boolean = true;
   export let labels: { edit?: string; done?: string; delete?: string } = {};
+  export let density: 'regular' | 'compact' = 'regular';
+  export let emptyMessage: string = 'No data';
 
   const dispatch = createEventDispatcher<{
     filterChange: { columnId: string; value: string };
@@ -35,7 +37,10 @@
 </script>
 
 <div class="gc-table-wrapper">
-  <table class="gc-table">
+  <div class="gc-table__toolbar">
+    <slot name="header-actions" />
+  </div>
+  <table class="gc-table" class:gc-table--compact={density === 'compact'}>
     <thead>
       <tr>
         {#each columns as col}
@@ -58,55 +63,61 @@
       </tr>
     </thead>
     <tbody>
-      {#each rows as row (row.id)}
+      {#if rows.length === 0}
         <tr>
-          {#each columns as col}
-            <td>
-              {#if col.editable && editingRowIds.has(row.id)}
-                <input
-                  class="input input--dense"
-                  value={(col.access ? col.access(row) : row[col.id]) ?? ''}
-                  on:input={(e) => onCellInput(row.id, col.id, (e.target as HTMLInputElement).value)}
-                />
-              {:else}
-                <span class="gc-table__cell-text">{(col.access ? col.access(row) : row[col.id]) ?? ''}</span>
+          <td class="gc-table__empty" colspan={columns.length + 1}>{emptyMessage}</td>
+        </tr>
+      {:else}
+        {#each rows as row (row.id)}
+          <tr>
+            {#each columns as col}
+              <td>
+                {#if col.editable && editingRowIds.has(row.id)}
+                  <input
+                    class="input input--dense"
+                    value={(col.access ? col.access(row) : row[col.id]) ?? ''}
+                    on:input={(e) => onCellInput(row.id, col.id, (e.target as HTMLInputElement).value)}
+                  />
+                {:else}
+                  <span class="gc-table__cell-text">{(col.access ? col.access(row) : row[col.id]) ?? ''}</span>
+                {/if}
+              </td>
+            {/each}
+            <td class="gc-table__actions">
+              <slot name="actions" {row} />
+              {#if showDefaultActions}
+                <button class="btn btn--secondary btn--sm" on:click={() => dispatch('toggleEdit', { rowId: row.id })}>
+                  {#if editingRowIds.has(row.id)}
+                    <!-- Check icon -->
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                    <span>{labels.done ?? 'Done'}</span>
+                  {:else}
+                    <!-- Pencil icon -->
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M12 20h9" />
+                      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+                    </svg>
+                    <span>{labels.edit ?? 'Edit'}</span>
+                  {/if}
+                </button>
+                <button class="btn btn--secondary btn--sm" on:click={() => dispatch('deleteRow', { rowId: row.id })}>
+                  <!-- Trash icon -->
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6" />
+                    <path d="M14 11v6" />
+                    <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                  </svg>
+                  <span>{labels.delete ?? 'Delete'}</span>
+                </button>
               {/if}
             </td>
-          {/each}
-          <td class="gc-table__actions">
-            <slot name="actions" {row} />
-            {#if showDefaultActions}
-              <button class="btn btn--secondary btn--sm" on:click={() => dispatch('toggleEdit', { rowId: row.id })}>
-                {#if editingRowIds.has(row.id)}
-                  <!-- Check icon -->
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M20 6L9 17l-5-5" />
-                  </svg>
-                  <span>{labels.done ?? 'Done'}</span>
-                {:else}
-                  <!-- Pencil icon -->
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M12 20h9" />
-                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
-                  </svg>
-                  <span>{labels.edit ?? 'Edit'}</span>
-                {/if}
-              </button>
-              <button class="btn btn--secondary btn--sm" on:click={() => dispatch('deleteRow', { rowId: row.id })}>
-                <!-- Trash icon -->
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="3 6 5 6 21 6" />
-                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                  <path d="M10 11v6" />
-                  <path d="M14 11v6" />
-                  <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
-                </svg>
-                <span>{labels.delete ?? 'Delete'}</span>
-              </button>
-            {/if}
-          </td>
-        </tr>
-      {/each}
+          </tr>
+        {/each}
+      {/if}
     </tbody>
   </table>
 </div>

@@ -172,7 +172,12 @@
         "title": "Table",
         "desc": "Reusable table component demo.",
         "name": "Name",
-        "age": "Age"
+        "age": "Age",
+        "compactDensity": "Compact",
+        "regularDensity": "Regular",
+        "showEmpty": "Show empty",
+        "reset": "Reset",
+        "empty": "No data available"
       }
     },
     "browse": {

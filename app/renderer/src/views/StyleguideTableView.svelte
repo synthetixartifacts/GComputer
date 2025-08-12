@@ -19,6 +19,7 @@
   let filters: Record<string, string> = {};
   let editingRowIds: Set<number> = new Set();
   let rows: DemoRow[] = baseRows.slice();
+  let dense: boolean = false;
 
   function applyFilters(): void {
     const name = (filters['name'] ?? '').toLowerCase();
@@ -90,8 +91,22 @@
     on:deleteRow={onDeleteRow}
     filterPlaceholder={t('components.table.filter')}
     labels={{ edit: t('components.table.edit'), done: t('components.table.done'), delete: t('components.table.delete') }}
+    density={dense ? 'compact' : 'regular'}
+    emptyMessage={t('pages.styleguide.table.empty')}
     {columns}
-  />
+  >
+    <div slot="header-actions" class="flex gap-2">
+      <button class="btn btn--secondary btn--sm" on:click={() => (dense = !dense)}>
+        {dense ? t('pages.styleguide.table.regularDensity') : t('pages.styleguide.table.compactDensity')}
+      </button>
+      <button class="btn btn--secondary btn--sm" on:click={() => (rows = [])}>
+        {t('pages.styleguide.table.showEmpty')}
+      </button>
+      <button class="btn btn--secondary btn--sm" on:click={() => (rows = baseRows.slice())}>
+        {t('pages.styleguide.table.reset')}
+      </button>
+    </div>
+  </Table>
 </section>
 
 

@@ -172,7 +172,12 @@
         "title": "Table",
         "desc": "Démonstration du composant de tableau réutilisable.",
         "name": "Nom",
-        "age": "Âge"
+        "age": "Âge",
+        "compactDensity": "Compact",
+        "regularDensity": "Normal",
+        "showEmpty": "Afficher vide",
+        "reset": "Réinitialiser",
+        "empty": "Aucune donnée disponible"
       }
     },
     "browse": {

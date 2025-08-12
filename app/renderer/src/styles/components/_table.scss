@@ -9,6 +9,7 @@
     width: 100%;
     border-collapse: collapse;
   }
+  .gc-table__toolbar { display: flex; justify-content: flex-end; gap: 0.5rem; padding: 0.5rem; border-bottom: 1px solid var(--color-border); }
   .gc-table thead th {
     text-align: left;
     font-weight: 600;
@@ -16,6 +17,8 @@
     border-bottom: 1px solid var(--color-border);
     background: color-mix(in oklab, var(--color-surface), var(--color-border) 20%);
   }
+  .gc-table--compact thead th { padding: 0.25rem 0.375rem; }
+  .gc-table--compact tbody td { padding: 0.25rem 0.375rem; }
   .gc-table tbody td {
     padding: 0.5rem;
     border-bottom: 1px solid var(--color-border);
@@ -30,6 +33,7 @@
   }
   .gc-table__actions-col { width: 160px; }
   .gc-table__actions { display: flex; gap: 0.5rem; }
+  .gc-table__empty { text-align: center; padding: 1rem; color: var(--color-muted); }
 }
 
 
