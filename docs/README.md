@@ -7,6 +7,9 @@
 - Packaging: see `package.md`
 - Cursor rules (human readable): see `docs/cursor-rules.md`
 
+Notes:
+- Styles follow a consolidated backdrop pattern: `.gc-sidebar-backdrop, .gc-modal-backdrop` share core rules; context-specific z-index is applied per component.
+
 Key modules right now:
 - Views: `HomeView.svelte`, `AboutView.svelte`, `StyleguideView.svelte` wired via a simple hash router.
 - Features: `@features/router` (hash routing), `@features/ui` (theme, sidebar, modal), `@features/browse` (placeholder).

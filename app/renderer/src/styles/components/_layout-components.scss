@@ -21,15 +21,23 @@
     color: var(--color-muted);
   }
 
-  /* Sidebar */
-  .gc-sidebar-backdrop {
+  /* Backdrops (shared) */
+  .gc-sidebar-backdrop,
+  .gc-modal-backdrop {
     position: fixed;
+    margin: 0;
     inset: 0;
     background: rgba(0,0,0,0.5);
-    z-index: var(--z-sidebar-backdrop);
   }
+  /* Maintain specific stacking for each backdrop */
+  .gc-sidebar-backdrop { z-index: var(--z-sidebar-backdrop); }
+  /* Modal backdrop is inside .gc-modal stacking context; keep lower than dialog */
+  .gc-modal-backdrop { z-index: 0; }
+
+  /* Sidebar */
   .gc-sidebar {
     position: fixed;
+    margin: 0;
     inset: 0 auto 0 0;
     width: 280px;
     transform: translateX(-100%);
@@ -41,12 +49,6 @@
   .gc-sidebar--open { transform: translateX(0); }
 
   /* Modal */
-  .gc-modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 0;
-  }
   .gc-modal {
     position: fixed;
     inset: 0;

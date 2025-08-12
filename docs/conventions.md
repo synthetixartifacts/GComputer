@@ -19,6 +19,11 @@
 - Exported functions/interfaces must be typed explicitly.
 - Avoid deep nesting; use early returns and helper functions.
 
+### Styles (SCSS)
+- Place global tokens/utilities under `app/renderer/src/styles/base/`.
+- Place reusable component styles under `app/renderer/src/styles/components/`.
+- Do not write styles in Svelte files. Avoid inline `style` attributes.
+
 ### Svelte (Svelte 5)
 - Keep views declarative; push IO/state to feature `service/store`.
 - Prefer Svelte stores for shared state; explicitly subscribe/unsubscribe. When subscribing in `onMount`, return the unsubscribe function to avoid leaks.

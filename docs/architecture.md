@@ -54,6 +54,11 @@ app/
 - Shared components live in `components/`.
 - Path aliases for clarity: `@views`, `@features`, `@ts`, `@components`, `@renderer`.
 
+#### Styling
+- Global tokens and utilities live in `styles/base/` (variables, mixins, motion).
+- Reusable component/layout styles live in `styles/components/`.
+
+
 ### Entry points
 - Renderer: `app/renderer/index.html` → `/src/ts/main.ts` → mounts `@views/App.svelte`.
 - Main: `app/main/main.ts` creates window, loads dev server or `dist/renderer/index.html`.
