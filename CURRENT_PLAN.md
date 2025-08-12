@@ -33,9 +33,9 @@ Purpose: Create a complete, clean, and reusable styleguide under `test > stylegu
   - Rename `StyleguideView.svelte` → `StyleguideBaseView.svelte`
   - Create `StyleguideOverviewView.svelte` linking to all subpages
   - Update routes and menu: `test.styleguide` → Overview, `test.styleguide.base` → Base
-- [ ] 3) Foundations page enrichments (in Base view): add tokens showcase (colors, spacing scale, radii, shadows, motion), with small swatches/blocks only
-- [ ] 4) Inputs coverage: add checkbox, radio, switch/toggle, number, range, date/time, file; unify invalid/disabled states using existing `.field` patterns
-- [ ] 5) Buttons coverage: add `btn--danger` variant and loading state example; ensure accessible labels for icon-only buttons
+- [x] 3) Foundations page enrichments (in Base view): add tokens showcase (colors, spacing scale, radii, shadows, motion), with small swatches/blocks only
+- [x] 4) Inputs coverage: add checkbox, radio, switch/toggle, number, range, date/time, file; unify invalid/disabled states using existing `.field` patterns
+- [x] 5) Buttons coverage: add `btn--danger` variant and loading state example; ensure accessible labels for icon-only buttons
 - [ ] 6) Table demos: add compact density variant, empty state example, and a header-actions slot sample
 - [ ] 7) Components demos: add Header/Footer/Sidebar/NavTree samples; document props; avoid coupling in demos
 - [ ] 8) NavTree API review: allow controlled `currentRoute` and `expanded` via props (keep stores behind a thin adapter); update demo to prop-driven instance

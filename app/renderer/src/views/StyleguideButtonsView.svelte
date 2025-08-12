@@ -18,6 +18,7 @@
     <div class="flex flex-wrap gap-2 items-center">
       <button class="btn btn--primary" on:click={noop}>{t('pages.styleguide.buttons.primary')}</button>
       <button class="btn btn--secondary" on:click={noop}>{t('pages.styleguide.buttons.secondary')}</button>
+      <button class="btn btn--danger" on:click={noop}>{t('pages.styleguide.buttons.danger')}</button>
       <a class="btn btn--link" href="#/test/styleguide/buttons">{t('pages.styleguide.buttons.link')}</a>
     </div>
   </div>
@@ -48,6 +49,10 @@
   <div class="stack-md">
     <h3 class="text-lg font-semibold">{t('pages.styleguide.buttons.withIcons')}</h3>
     <div class="flex flex-wrap gap-2 items-center">
+      <button class="btn btn--primary inline-flex items-center gap-2" aria-busy="true">
+        <span class="spinner" aria-hidden="true"></span>
+        <span>{t('pages.styleguide.buttons.loading')}</span>
+      </button>
       <button class="btn btn--primary inline-flex items-center gap-2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
         <span>{t('pages.styleguide.buttons.add')}</span>
