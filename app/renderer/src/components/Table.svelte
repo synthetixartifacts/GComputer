@@ -1,4 +1,28 @@
 <script lang="ts">
+  /**
+   * Reusable data table component with filtering, inline editing and action slots.
+   *
+   * Props:
+   * - columns: column definitions including id, title, editability and widths
+   * - rows: array of row objects (each requires a numeric `id`)
+   * - filters: map of columnId -> filter value (controlled by parent)
+   * - editingRowIds: Set of row ids currently in edit mode
+   * - filterPlaceholder: placeholder for header filter inputs
+   * - showDefaultActions: whether to render the built-in edit/delete actions
+   * - labels: i18n strings for actions and inputs
+   * - density: 'regular' | 'compact' paddings
+   * - emptyMessage: message when there are no rows
+   *
+   * Slots:
+   * - header-actions: toolbar area above the table
+   * - actions: per-row custom actions (receives { row })
+   *
+   * Events:
+   * - filterChange: { columnId, value }
+   * - editCell: { rowId, columnId, value }
+   * - toggleEdit: { rowId }
+   * - deleteRow: { rowId }
+   */
   import { createEventDispatcher } from 'svelte';
 
   interface ColumnDef<TRow extends { id: number }> {

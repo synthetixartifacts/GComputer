@@ -37,12 +37,12 @@ Purpose: Create a complete, clean, and reusable styleguide under `test > stylegu
 - [x] 4) Inputs coverage: add checkbox, radio, switch/toggle, number, range, date/time, file; unify invalid/disabled states using existing `.field` patterns
 - [x] 5) Buttons coverage: add `btn--danger` variant and loading state example; ensure accessible labels for icon-only buttons
 - [x] 6) Table demos: add compact density variant, empty state example, and a header-actions slot sample
-- [ ] 7) Components demos: add Header/Footer/Sidebar/NavTree samples; document props; avoid coupling in demos
-- [ ] 8) NavTree API review: allow controlled `currentRoute` and `expanded` via props (keep stores behind a thin adapter); update demo to prop-driven instance
-- [ ] 9) Accessibility pass: Modal focus trap and `aria-labelledby`; Drawer `aria-labelledby`; audit tab order and focus-visible styles
-- [ ] 10) i18n pass: add missing keys for new demos/labels in `en.json` and `fr.json`
-- [ ] 11) Light doc notes: short usage notes in component files where helpful (no long docs)
-- [ ] 12) Typecheck/build verification and quick manual QA through each subpage
+- [x] 7) Components demos: add Header/Footer/Sidebar/NavTree samples; document props; avoid coupling in demos
+- [x] 8) NavTree API review: allow controlled `currentRoute` and `expanded` via props (keep stores behind a thin adapter); update demo to prop-driven instance
+- [x] 9) Accessibility pass: Modal focus trap and `aria-labelledby`; Drawer `aria-labelledby`; audit tab order and focus-visible styles
+- [x] 10) i18n pass: add missing keys for new demos/labels in `en.json` and `fr.json`
+- [x] 11) Light doc notes: short usage notes in component files where helpful (no long docs)
+- [x] 12) Typecheck/build verification and quick manual QA through each subpage
 
 ### Notes
 - Keep edits lean; prefer props and slots over bespoke demo logic.
