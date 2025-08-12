@@ -35,20 +35,20 @@
     <textarea
       class="flex-1 resize-none rounded-md border px-3 py-2 leading-relaxed bg-white dark:bg-gray-800"
       rows="1"
-      placeholder={t('pages.chatbot.composer.placeholder')}
+      placeholder={t('pages.styleguide.chatbot.composer.placeholder')}
       bind:value
       on:keydown={handleKeydown}
       disabled={disabled}
-      aria-label={t('pages.chatbot.composer.inputLabel')}
+      aria-label={t('pages.styleguide.chatbot.composer.inputLabel')}
       bind:this={textareaRef}
     ></textarea>
     <button
       type="button"
       class="btn btn--primary"
-      aria-label={t('pages.chatbot.composer.send')}
+      aria-label={t('pages.styleguide.chatbot.composer.send')}
       on:click={trySend}
       disabled={disabled}
-    >{t('pages.chatbot.composer.send')}</button>
+    >{t('pages.styleguide.chatbot.composer.send')}</button>
   </div>
 </div>
 

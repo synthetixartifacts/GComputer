@@ -47,14 +47,6 @@ Feature API
   - `replaceThreadMessages(threadId, messages)`
 - Service: `sendMessage({ threadId, content }, { delayMs? })`
 
-i18n keys
----------
-- `app.menu.styleguide.chatbot`
-- `pages.chatbot.title`, `pages.chatbot.desc`
-- `pages.chatbot.conversationLabel`
-- `pages.chatbot.role.user`, `pages.chatbot.role.assistant`
-- `pages.chatbot.composer.inputLabel`, `pages.chatbot.composer.placeholder`, `pages.chatbot.composer.send`
-
 A11y
 ----
 - Conversation region labelled via `aria-label`.

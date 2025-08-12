@@ -20,9 +20,9 @@
 </script>
 
 <section class="container-page stack-lg">
-  <h2 class="text-2xl font-bold">{t('pages.chatbot.title')}</h2>
-  <p class="text-sm opacity-80">{t('pages.chatbot.desc')}</p>
-  <div class="border rounded-md p-3 h-[540px] md:h-[640px]" role="region" aria-label={t('pages.chatbot.conversationLabel')}>
+  <h2 class="text-2xl font-bold">{t('pages.styleguide.chatbot.title')}</h2>
+  <p class="text-sm opacity-80">{t('pages.styleguide.chatbot.desc')}</p>
+  <div class="border rounded-md p-3 h-[540px] md:h-[640px]" role="region" aria-label={t('pages.styleguide.chatbot.conversationLabel')}>
     <ChatThread threadId={threadId} />
   </div>
 </section>
