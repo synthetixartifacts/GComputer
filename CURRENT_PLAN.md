@@ -1,48 +1,30 @@
-## Styleguide Master Plan
+## Styleguide Additions Plan (New Sections)
 
-Purpose: Create a complete, clean, and reusable styleguide under `test > styleguide`, organized into clear sections. Each example must be styling-only or a reusable component demo.
+Goal: Add missing sections our app will need, focusing on media and file browsing patterns. All demos must be styling-only or reusable components.
 
-### Current sections (as-is)
-- Base: `@views/StyleguideView.svelte` (typography, inline icons)
-- Inputs: `@views/StyleguideInputsView.svelte`
-- Buttons: `@views/StyleguideButtonsView.svelte`
-- Table: `@views/StyleguideTableView.svelte`
-- Components: `@views/StyleguideComponentsView.svelte` (Modal, Drawer demos)
-
-### High-level gaps to address
-- Foundations: No explicit colors/tokens, spacing scale, radii, shadows, motion examples
-- Inputs: Missing checkbox, radio, switch/toggle, number, range, date/time, file
-- Buttons: Missing sizes (btn--sm is referenced but not styled), danger/destructive, loading state
-- Table: Only base demo; no density variants, empty state, slot patterns showcased
-- Components: Missing Header/Footer/Sidebar/NavTree demos and usage guidelines; NavTree coupled to global store (consider prop-driven API)
-- Overview: `test.styleguide` duplicates Base; add an Overview page with links to sub-sections
-- Accessibility/i18n: Ensure ARIA attributes, focus management (Modal), and keys for all labels
+### New sections to add
+- Media: image/gallery display (grid, aspect-ratio variants, captions, alt overlays, fullscreen/lightbox)
+- Files: file explorer patterns (view toggle: list vs grid/thumb, selection highlight, basic metadata layout)
+- Optional next (later):
+  - Feedback: toasts/alerts/progress/loading states
+  - Navigation: breadcrumbs/tabs/pagination for browsing contexts
+  - Data display: badges/chips/avatars/cards
 
 ### Definition of done
-- All sections present, discoverable from Overview
-- Examples are minimal, deterministic, and do not include ad hoc logic that should live in components
-- All components demoed are reusable and prop-driven (no hidden global coupling in examples)
-- Typecheck passes; no linter errors introduced
+- New sections appear under `test > styleguide` with clear titles and minimal deterministic demos
+- Reusable, prop-driven components only; no app-specific logic
+- a11y and i18n for all labels
+- Typecheck and build pass
 
 ---
 
-### Step-by-step plan (execute ONE at a time)
+### Step-by-step (execute ONE at a time)
 
-- [x] 1) Buttons polish: add size utilities (`.btn--sm`, `.btn--lg`) and standardize icon close buttons (Drawer close = `btn btn--secondary gc-icon-btn` to match Modal). No UI behavior changes.
-- [x] 2) Restructure Base vs Overview:
-  - Rename `StyleguideView.svelte` → `StyleguideBaseView.svelte`
-  - Create `StyleguideOverviewView.svelte` linking to all subpages
-  - Update routes and menu: `test.styleguide` → Overview, `test.styleguide.base` → Base
-- [x] 3) Foundations page enrichments (in Base view): add tokens showcase (colors, spacing scale, radii, shadows, motion), with small swatches/blocks only
-- [x] 4) Inputs coverage: add checkbox, radio, switch/toggle, number, range, date/time, file; unify invalid/disabled states using existing `.field` patterns
-- [x] 5) Buttons coverage: add `btn--danger` variant and loading state example; ensure accessible labels for icon-only buttons
-- [x] 6) Table demos: add compact density variant, empty state example, and a header-actions slot sample
-- [x] 7) Components demos: add Header/Footer/Sidebar/NavTree samples; document props; avoid coupling in demos
-- [x] 8) NavTree API review: allow controlled `currentRoute` and `expanded` via props (keep stores behind a thin adapter); update demo to prop-driven instance
-- [x] 9) Accessibility pass: Modal focus trap and `aria-labelledby`; Drawer `aria-labelledby`; audit tab order and focus-visible styles
-- [x] 10) i18n pass: add missing keys for new demos/labels in `en.json` and `fr.json`
-- [x] 11) Light doc notes: short usage notes in component files where helpful (no long docs)
-- [x] 12) Typecheck/build verification and quick manual QA through each subpage
+- [x] 1) Wire routes/menu/i18n and create stub views for Media and Files
+- [x] 2) Media: reusable `GalleryGrid.svelte` + `ImageCard.svelte` using existing `Modal` for lightbox; demo with alt overlays and captions
+- [x] 3) Files: reusable `FileList.svelte`, `FileGrid.svelte`, and `ViewToggle.svelte`; demo switching views with sample data
+- [x] 4) a11y/i18n pass for new components; ensure keyboard and labels are correct
+- [x] 5) Typecheck/build and quick QA of new pages
 
 ### Notes
 - Keep edits lean; prefer props and slots over bespoke demo logic.

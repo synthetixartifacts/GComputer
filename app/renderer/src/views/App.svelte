@@ -17,6 +17,8 @@
   import TestDbTableView from '@views/TestDbTableView.svelte';
   import { onMount, onDestroy } from 'svelte';
   import StyleguideComponentsView from '@views/StyleguideComponentsView.svelte';
+  import StyleguideMediaView from '@views/StyleguideMediaView.svelte';
+  import StyleguideFilesView from '@views/StyleguideFilesView.svelte';
   import { sidebarOpen, modalOpen } from '@features/ui/store';
   import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
@@ -95,6 +97,10 @@
     <StyleguideTableView />
   {:else if route === 'test.styleguide.components'}
     <StyleguideComponentsView />
+  {:else if route === 'test.styleguide.media'}
+    <StyleguideMediaView />
+  {:else if route === 'test.styleguide.files'}
+    <StyleguideFilesView />
   {:else if route === 'test.test1'}
     <Test1View />
   {:else if route === 'test.db.test-table'}

@@ -17,7 +17,9 @@
         "inputs": "Inputs",
         "buttons": "Buttons",
         "table": "Table",
-        "components": "Components"
+        "components": "Components",
+        "media": "Media",
+        "files": "Files"
       },
       "test1": "Test 1",
       "db": {
@@ -178,6 +180,22 @@
         "showEmpty": "Show empty",
         "reset": "Reset",
         "empty": "No data available"
+      }
+      ,
+      "media": {
+        "title": "Media",
+        "desc": "Image gallery patterns with captions and lightbox.",
+        "lightboxTitle": "Image preview"
+      },
+      "files": {
+        "title": "Files",
+        "desc": "File explorer demo with list and grid views.",
+        "listView": "List view",
+        "gridView": "Grid view",
+        "name": "Name",
+        "size": "Size",
+        "type": "Type",
+        "modified": "Modified"
       }
     },
     "browse": {

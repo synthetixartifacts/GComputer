@@ -17,7 +17,9 @@
         "inputs": "Champs",
         "buttons": "Boutons",
         "table": "Tableau",
-        "components": "Composants"
+        "components": "Composants",
+        "media": "Médias",
+        "files": "Fichiers"
       },
       "test1": "Test 1",
       "db": {
@@ -178,6 +180,22 @@
         "showEmpty": "Afficher vide",
         "reset": "Réinitialiser",
         "empty": "Aucune donnée disponible"
+      }
+      ,
+      "media": {
+        "title": "Médias",
+        "desc": "Modèles de galerie d'images avec légendes et visionneuse.",
+        "lightboxTitle": "Aperçu d'image"
+      },
+      "files": {
+        "title": "Fichiers",
+        "desc": "Explorateur de fichiers en liste et grille.",
+        "listView": "Vue liste",
+        "gridView": "Vue grille",
+        "name": "Nom",
+        "size": "Taille",
+        "type": "Type",
+        "modified": "Modifié"
       }
     },
     "browse": {
