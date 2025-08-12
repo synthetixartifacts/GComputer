@@ -11,7 +11,14 @@
       "config": "Configuration",
       "about": "À propos",
       "test": "Test",
-      "styleguide": "Guide de style",
+      "styleguide": {
+        "label": "Guide de style",
+        "base": "Éléments de base",
+        "inputs": "Champs",
+        "buttons": "Boutons",
+        "table": "Tableau",
+        "components": "Composants"
+      },
       "test1": "Test 1",
       "db": {
         "label": "BD",
@@ -60,7 +67,72 @@
       "modal": "Modale",
       "openModal": "Ouvrir la modale",
       "modalTitle": "Modale de démonstration",
-      "modalContent": "Le contenu de la modale va ici."
+      "modalContent": "Le contenu de la modale va ici.",
+      "base": {
+        "title": "Éléments de base",
+        "textSection": "Texte",
+        "example": "Exemple",
+        "body": "Texte de corps — Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+        "bold": "Gras",
+        "italic": "Italique",
+        "listItemA": "Élément A",
+        "listItemB": "Élément B",
+        "listItemC": "Élément C",
+        "iconSection": "Icônes",
+        "iconExample": "Icône en ligne",
+        "iconInButton": "Icône dans un bouton",
+        "iconInLink": "Icône dans un lien"
+      },
+      "inputs": {
+        "title": "Champs",
+        "desc": "Tous les types de champs avec leurs états.",
+        "text": "Champ texte",
+        "placeholder": "Espace réservé",
+        "hint": "Ceci est une aide",
+        "disabled": "Champ désactivé",
+        "disabledHint": "Ce champ est désactivé",
+        "invalid": "Champ invalide",
+        "error": "Ce champ comporte une erreur",
+        "select": "Sélection",
+        "choose": "Choisir une option",
+        "multi": "Sélection multiple",
+        "multiHint": "Utilisez Ctrl/Cmd pour sélectionner plusieurs",
+        "textarea": "Zone de texte",
+        "textareaHint": "Entrée multi-ligne"
+      },
+      "buttons": {
+        "title": "Boutons et liens",
+        "desc": "Éléments cliquables avec variantes et états.",
+        "variants": "Variantes",
+        "states": "États",
+        "primary": "Bouton principal",
+        "secondary": "Bouton secondaire",
+        "link": "Bouton lien",
+        "disabled": "Désactivé",
+        "withIcons": "Avec icônes",
+        "add": "Ajouter",
+        "delete": "Supprimer",
+        "more": "Plus"
+      },
+      "components": {
+        "title": "Composants",
+        "desc": "Composants UI comme le panneau latéral et la modale.",
+        "sidebar": {
+          "title": "Panneau latéral",
+          "open": "Ouvrir le panneau"
+        },
+        "modal": {
+          "title": "Modale",
+          "open": "Ouvrir la modale",
+          "content": "Ceci est une modale réutilisable."
+        }
+      },
+      "table": {
+        "title": "Table",
+        "desc": "Démonstration du composant de tableau réutilisable.",
+        "name": "Nom",
+        "age": "Âge"
+      }
     },
     "browse": {
       "pathPlaceholder": "Chemin..."
@@ -98,6 +170,15 @@
         "theme": "Thème",
         "language": "Langue"
       }
+    }
+  }
+  ,
+  "components": {
+    "table": {
+      "edit": "Modifier",
+      "done": "Terminé",
+      "delete": "Supprimer",
+      "filter": "Filtrer"
     }
   }
 }

@@ -91,6 +91,8 @@
     on:editCell={onEditCell}
     on:toggleEdit={onToggleEdit}
     on:deleteRow={onDelete}
+    filterPlaceholder={t('components.table.filter')}
+    labels={{ edit: t('components.table.edit'), done: t('components.table.done'), delete: t('components.table.delete') }}
     columns={columns}
   />
 

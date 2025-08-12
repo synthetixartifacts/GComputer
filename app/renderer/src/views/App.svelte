@@ -4,6 +4,9 @@
   import SidebarComponent from '@components/Sidebar.svelte';
   import ModalComponent from '@components/Modal.svelte';
   import StyleguideView from '@views/StyleguideView.svelte';
+  import StyleguideTableView from '@views/StyleguideTableView.svelte';
+  import StyleguideInputsView from '@views/StyleguideInputsView.svelte';
+  import StyleguideButtonsView from '@views/StyleguideButtonsView.svelte';
   import HomeView from '@views/HomeView.svelte';
   import AboutView from '@views/AboutView.svelte';
   import CategoryItem1View from '@views/CategoryItem1View.svelte';
@@ -12,6 +15,7 @@
   import Test1View from '@views/Test1View.svelte';
   import TestDbTableView from '@views/TestDbTableView.svelte';
   import { onMount, onDestroy } from 'svelte';
+  import StyleguideComponentsView from '@views/StyleguideComponentsView.svelte';
   import { sidebarOpen, modalOpen } from '@features/ui/store';
   import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
@@ -80,6 +84,16 @@
     <AboutView />
   {:else if route === 'test.styleguide'}
     <StyleguideView />
+  {:else if route === 'test.styleguide.base'}
+    <StyleguideView />
+  {:else if route === 'test.styleguide.inputs'}
+    <StyleguideInputsView />
+  {:else if route === 'test.styleguide.buttons'}
+    <StyleguideButtonsView />
+  {:else if route === 'test.styleguide.table'}
+    <StyleguideTableView />
+  {:else if route === 'test.styleguide.components'}
+    <StyleguideComponentsView />
   {:else if route === 'test.test1'}
     <Test1View />
   {:else if route === 'test.db.test-table'}

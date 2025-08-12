@@ -11,7 +11,14 @@
       "config": "Config",
       "about": "About",
       "test": "Test",
-      "styleguide": "Styleguide",
+      "styleguide": {
+        "label": "Styleguide",
+        "base": "Base Elements",
+        "inputs": "Inputs",
+        "buttons": "Buttons",
+        "table": "Table",
+        "components": "Components"
+      },
       "test1": "Test 1",
       "db": {
         "label": "DB",
@@ -60,7 +67,72 @@
       "modal": "Modal",
       "openModal": "Open Modal",
       "modalTitle": "Demo Modal",
-      "modalContent": "Modal content goes here."
+      "modalContent": "Modal content goes here.",
+      "base": {
+        "title": "Base Elements",
+        "textSection": "Text",
+        "example": "Example",
+        "body": "Body text — Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+        "bold": "Bold",
+        "italic": "Italic",
+        "listItemA": "List item A",
+        "listItemB": "List item B",
+        "listItemC": "List item C",
+        "iconSection": "Icons",
+        "iconExample": "Inline icon",
+        "iconInButton": "Icon in button",
+        "iconInLink": "Icon in link"
+      },
+      "inputs": {
+        "title": "Inputs",
+        "desc": "All input element types with common states.",
+        "text": "Text input",
+        "placeholder": "Placeholder",
+        "hint": "This is a hint",
+        "disabled": "Disabled input",
+        "disabledHint": "This input is disabled",
+        "invalid": "Invalid input",
+        "error": "This field has an error",
+        "select": "Select",
+        "choose": "Choose an option",
+        "multi": "Multi select",
+        "multiHint": "Use Ctrl/Cmd to select multiple",
+        "textarea": "Text area",
+        "textareaHint": "Multi-line input"
+      },
+      "buttons": {
+        "title": "Buttons & Links",
+        "desc": "Clickable elements with variants and states.",
+        "variants": "Variants",
+        "states": "States",
+        "primary": "Primary Button",
+        "secondary": "Secondary Button",
+        "link": "Link Button",
+        "disabled": "Disabled",
+        "withIcons": "With icons",
+        "add": "Add",
+        "delete": "Delete",
+        "more": "More"
+      },
+      "components": {
+        "title": "Components",
+        "desc": "UI components like Sidebar and Modal.",
+        "sidebar": {
+          "title": "Sidebar",
+          "open": "Open sidebar"
+        },
+        "modal": {
+          "title": "Modal",
+          "open": "Open modal",
+          "content": "This is a reusable modal component."
+        }
+      },
+      "table": {
+        "title": "Table",
+        "desc": "Reusable table component demo.",
+        "name": "Name",
+        "age": "Age"
+      }
     },
     "browse": {
       "pathPlaceholder": "Path..."
@@ -98,6 +170,15 @@
         "theme": "Theme",
         "language": "Language"
       }
+    }
+  }
+  ,
+  "components": {
+    "table": {
+      "edit": "Edit",
+      "done": "Done",
+      "delete": "Delete",
+      "filter": "Filter"
     }
   }
 }

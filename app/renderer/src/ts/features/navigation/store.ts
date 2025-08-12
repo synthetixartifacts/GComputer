@@ -24,7 +24,17 @@ export const menuItems = writable<MenuItem[]>([
     label: 'app.menu.test',
     i18nKey: 'app.menu.test',
     children: [
-      { label: 'app.menu.styleguide', i18nKey: 'app.menu.styleguide', route: 'test.styleguide' },
+      {
+        label: 'app.menu.styleguide.label',
+        i18nKey: 'app.menu.styleguide.label',
+        children: [
+          { label: 'app.menu.styleguide.base', i18nKey: 'app.menu.styleguide.base', route: 'test.styleguide.base' },
+          { label: 'app.menu.styleguide.inputs', i18nKey: 'app.menu.styleguide.inputs', route: 'test.styleguide.inputs' },
+          { label: 'app.menu.styleguide.buttons', i18nKey: 'app.menu.styleguide.buttons', route: 'test.styleguide.buttons' },
+          { label: 'app.menu.styleguide.table', i18nKey: 'app.menu.styleguide.table', route: 'test.styleguide.table' },
+          { label: 'app.menu.styleguide.components', i18nKey: 'app.menu.styleguide.components', route: 'test.styleguide.components' },
+        ],
+      },
       { label: 'app.menu.test1', i18nKey: 'app.menu.test1', route: 'test.test1' },
       {
         label: 'app.menu.db.label',

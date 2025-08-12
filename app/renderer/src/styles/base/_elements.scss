@@ -39,6 +39,14 @@
   a:hover { box-shadow: none; }
   a:focus-visible { @include m.focus-ring(); }
 
+  /* Headings — ensure clear visual hierarchy */
+  h1 { font-size: 2rem; font-weight: 700; line-height: 1.2; }
+  h2 { font-size: 1.75rem; font-weight: 700; line-height: 1.25; }
+  h3 { font-size: 1.5rem; font-weight: 600; line-height: 1.3; }
+  h4 { font-size: 1.25rem; font-weight: 600; line-height: 1.35; }
+  h5 { font-size: 1.125rem; font-weight: 600; line-height: 1.4; }
+  h6 { font-size: 1rem; font-weight: 600; line-height: 1.45; text-transform: none; }
+
   /* Buttons (native) */
   button {
     border-radius: var(--radius-md);
