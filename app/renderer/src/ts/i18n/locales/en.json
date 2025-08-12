@@ -10,7 +10,7 @@
       "settings": "Settings",
       "config": "Config",
       "about": "About",
-      "test": "Test",
+      "test": "Development",
       "styleguide": {
         "label": "Styleguide",
         "base": "Base Elements",
@@ -21,7 +21,7 @@
         "media": "Media",
         "files": "Files"
       },
-      "test1": "Test 1",
+      "test1": "",
       "db": {
         "label": "DB",
         "testTable": "Test table"

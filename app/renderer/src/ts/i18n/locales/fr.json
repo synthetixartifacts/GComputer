@@ -10,7 +10,7 @@
       "settings": "Paramètres",
       "config": "Configuration",
       "about": "À propos",
-      "test": "Test",
+      "test": "Développement",
       "styleguide": {
         "label": "Guide de style",
         "base": "Éléments de base",
@@ -21,7 +21,7 @@
         "media": "Médias",
         "files": "Fichiers"
       },
-      "test1": "Test 1",
+      "test1": "",
       "db": {
         "label": "BD",
         "testTable": "Table de test"
