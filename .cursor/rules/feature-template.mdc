@@ -14,4 +14,3 @@ When creating a new feature `<name>`:
 2) Create a view file under `app/renderer/src/views/` as needed (e.g., `NameView.svelte`).
 3) Use aliases for imports (e.g., `@features/<name>/store`).
 4) Wire the view in `App.svelte` (or via router later).
-

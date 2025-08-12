@@ -6,6 +6,8 @@
 - How to run: see `docs/howto/run.md`
 - Packaging: see `package.md`
 - Cursor rules (human readable): see `docs/cursor-rules.md`
+ - Features:
+   - Chatbot UI: see `docs/howto/chatbot.md`
 
 Notes:
 - Styles follow a consolidated backdrop pattern: `.gc-sidebar-backdrop, .gc-modal-backdrop` share core rules; context-specific z-index is applied per component.

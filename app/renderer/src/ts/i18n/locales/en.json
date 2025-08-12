@@ -19,7 +19,8 @@
         "table": "Table",
         "components": "Components",
         "media": "Media",
-        "files": "Files"
+        "files": "Files",
+        "chatbot": "Chatbot"
       },
       "test1": "",
       "db": {
@@ -48,11 +49,9 @@
     },
     "styleguide": {
       "title": "Styleguide",
-      "buttons": "Buttons",
       "primary": "Primary Button",
       "secondary": "Secondary Button",
       "link": "Link Button",
-      "inputs": "Inputs",
       "text": "Text",
       "placeholder": "Placeholder",
       "hint": "This is a hint",
@@ -89,23 +88,7 @@
         "iconInButton": "Icon in button",
         "iconInLink": "Icon in link"
       },
-      "inputs": {
-        "title": "Inputs",
-        "desc": "All input element types with common states.",
-        "text": "Text input",
-        "placeholder": "Placeholder",
-        "hint": "This is a hint",
-        "disabled": "Disabled input",
-        "disabledHint": "This input is disabled",
-        "invalid": "Invalid input",
-        "error": "This field has an error",
-        "select": "Select",
-        "choose": "Choose an option",
-        "multi": "Multi select",
-        "multiHint": "Use Ctrl/Cmd to select multiple",
-        "textarea": "Text area",
-        "textareaHint": "Multi-line input"
-      },
+      
       "inputs": {
         "title": "Inputs",
         "desc": "All input element types with common states.",
@@ -196,6 +179,20 @@
         "size": "Size",
         "type": "Type",
         "modified": "Modified"
+      },
+      "chatbot": {
+        "title": "Chatbot",
+        "desc": "Conversational UI demo for the assistant.",
+        "conversationLabel": "Conversation",
+        "role": {
+          "user": "User",
+          "assistant": "Assistant"
+        },
+        "composer": {
+          "inputLabel": "Message input",
+          "placeholder": "Type a message...",
+          "send": "Send"
+        }
       }
     },
     "browse": {

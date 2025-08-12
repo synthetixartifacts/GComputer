@@ -19,6 +19,7 @@
   import StyleguideComponentsView from '@views/StyleguideComponentsView.svelte';
   import StyleguideMediaView from '@views/StyleguideMediaView.svelte';
   import StyleguideFilesView from '@views/StyleguideFilesView.svelte';
+  import StyleguideChatbotView from '@views/StyleguideChatbotView.svelte';
   import { sidebarOpen, modalOpen } from '@features/ui/store';
   import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
@@ -101,6 +102,8 @@
     <StyleguideMediaView />
   {:else if route === 'test.styleguide.files'}
     <StyleguideFilesView />
+  {:else if route === 'test.styleguide.chatbot'}
+    <StyleguideChatbotView />
   {:else if route === 'test.test1'}
     <Test1View />
   {:else if route === 'test.db.test-table'}

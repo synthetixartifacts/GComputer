@@ -8,4 +8,3 @@ Rules:
 - Do not import Node/Electron in renderer views or TS. Use preload-exposed IPC only.
 - TS strict. Avoid `any`.
 - Styling must follow `01-styles.mdc`.
-

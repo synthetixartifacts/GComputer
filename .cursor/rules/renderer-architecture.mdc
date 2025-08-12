@@ -13,6 +13,7 @@ alwaysApply: true
   - `service.ts`: IO (e.g., IPC via preload), side-effects
   - `store.ts`: Svelte stores, state transitions
 - Shared UI (`src/components/`): atomic/composable components.
+  - Chat UI components live under `src/components/chat/` (e.g., `ChatThread`, `ChatComposer`).
 - Styles (`src/styles/`): global styles; keep component styles local in Svelte where possible.
 - Entry: `index.html` → `/src/ts/main.ts` → mount `@views/App.svelte`.
 

@@ -51,10 +51,12 @@ function createFallbackApi(): SettingsApi {
   };
 }
 
+let cachedFallbackApi: SettingsApi | null = null;
 function api(): SettingsApi {
   const win = window as any;
   if (win && win.gc && win.gc.settings) return win.gc.settings as SettingsApi;
-  return createFallbackApi();
+  if (!cachedFallbackApi) cachedFallbackApi = createFallbackApi();
+  return cachedFallbackApi;
 }
 
 export async function initSettings(): Promise<AppSettings> {
@@ -65,12 +67,16 @@ export async function initSettings(): Promise<AppSettings> {
 }
 
 export async function setLocale(locale: Locale): Promise<void> {
-  await api().set('locale', locale);
+  const next = await api().set('locale', locale);
+  // Optimistically update local stores for immediate UI response
+  settingsStore.set(next);
   setI18nLocale(locale);
 }
 
 export async function setThemeMode(mode: ThemeMode): Promise<void> {
-  await api().set('themeMode', mode);
+  const next = await api().set('themeMode', mode);
+  // Optimistically update local store so subscribers (e.g., theme DOM) react immediately
+  settingsStore.set(next);
 }
 
 

@@ -19,7 +19,8 @@
         "table": "Tableau",
         "components": "Composants",
         "media": "Médias",
-        "files": "Fichiers"
+        "files": "Fichiers",
+        "chatbot": "Chatbot"
       },
       "test1": "",
       "db": {
@@ -196,6 +197,20 @@
         "size": "Taille",
         "type": "Type",
         "modified": "Modifié"
+      },
+      "chatbot": {
+        "title": "Chatbot",
+        "desc": "Démo d'interface conversationnelle pour l'assistant.",
+        "conversationLabel": "Conversation",
+        "role": {
+          "user": "Utilisateur",
+          "assistant": "Assistant"
+        },
+        "composer": {
+          "inputLabel": "Zone de saisie",
+          "placeholder": "Écrire un message...",
+          "send": "Envoyer"
+        }
       }
     },
     "browse": {
