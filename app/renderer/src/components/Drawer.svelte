@@ -13,7 +13,7 @@
     {#if title}
       <h2 class="text-base font-semibold">{title}</h2>
     {/if}
-    <button class="btn gc-icon-btn" on:click={onClose} aria-label="Close">✕</button>
+    <button class="btn btn--secondary gc-icon-btn" on:click={onClose} aria-label="Close">✕</button>
   </div>
   <div class="grid gap-2">
     <slot />

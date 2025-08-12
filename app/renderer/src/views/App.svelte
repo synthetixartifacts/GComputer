@@ -3,7 +3,8 @@
   import FooterComponent from '@components/Footer.svelte';
   import SidebarComponent from '@components/Sidebar.svelte';
   import ModalComponent from '@components/Modal.svelte';
-  import StyleguideView from '@views/StyleguideView.svelte';
+  import StyleguideOverviewView from '@views/StyleguideOverviewView.svelte';
+  import StyleguideBaseView from '@views/StyleguideBaseView.svelte';
   import StyleguideTableView from '@views/StyleguideTableView.svelte';
   import StyleguideInputsView from '@views/StyleguideInputsView.svelte';
   import StyleguideButtonsView from '@views/StyleguideButtonsView.svelte';
@@ -83,9 +84,9 @@
   {:else if route === 'settings.about'}
     <AboutView />
   {:else if route === 'test.styleguide'}
-    <StyleguideView />
+    <StyleguideOverviewView />
   {:else if route === 'test.styleguide.base'}
-    <StyleguideView />
+    <StyleguideBaseView />
   {:else if route === 'test.styleguide.inputs'}
     <StyleguideInputsView />
   {:else if route === 'test.styleguide.buttons'}

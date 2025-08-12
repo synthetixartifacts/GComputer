@@ -32,6 +32,20 @@
   </div>
 
   <div class="stack-md">
+    <h3 class="text-lg font-semibold">{t('pages.styleguide.buttons.sizes')}</h3>
+    <div class="flex flex-wrap gap-2 items-center">
+      <button class="btn btn--primary btn--sm">{t('pages.styleguide.buttons.primary')} — {t('pages.styleguide.buttons.small')}</button>
+      <button class="btn btn--primary">{t('pages.styleguide.buttons.primary')} — {t('pages.styleguide.buttons.medium')}</button>
+      <button class="btn btn--primary btn--lg">{t('pages.styleguide.buttons.primary')} — {t('pages.styleguide.buttons.large')}</button>
+    </div>
+    <div class="flex flex-wrap gap-2 items-center">
+      <button class="btn btn--secondary btn--sm">{t('pages.styleguide.buttons.secondary')} — {t('pages.styleguide.buttons.small')}</button>
+      <button class="btn btn--secondary">{t('pages.styleguide.buttons.secondary')} — {t('pages.styleguide.buttons.medium')}</button>
+      <button class="btn btn--secondary btn--lg">{t('pages.styleguide.buttons.secondary')} — {t('pages.styleguide.buttons.large')}</button>
+    </div>
+  </div>
+
+  <div class="stack-md">
     <h3 class="text-lg font-semibold">{t('pages.styleguide.buttons.withIcons')}</h3>
     <div class="flex flex-wrap gap-2 items-center">
       <button class="btn btn--primary inline-flex items-center gap-2">
