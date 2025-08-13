@@ -14,6 +14,7 @@
     <a class="btn btn--secondary" href="#/test/styleguide/buttons">{t('app.menu.styleguide.buttons')}</a>
     <a class="btn btn--secondary" href="#/test/styleguide/table">{t('app.menu.styleguide.table')}</a>
     <a class="btn btn--secondary" href="#/test/styleguide/components">{t('app.menu.styleguide.components')}</a>
+    <a class="btn btn--secondary" href="#/test/styleguide/search">{t('app.menu.styleguide.search')}</a>
   </div>
 </section>
 

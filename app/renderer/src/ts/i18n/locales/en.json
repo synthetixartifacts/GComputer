@@ -18,6 +18,7 @@
         "buttons": "Buttons",
         "table": "Table",
         "components": "Components",
+        "search": "Search",
         "media": "Media",
         "files": "Files",
         "chatbot": "Chatbot"
@@ -170,6 +171,21 @@
         "empty": "No data available"
       }
       ,
+      "search": {
+        "title": "Search",
+        "desc": "Reusable search box with auto-suggestions and results.",
+        "howto": "Try queries: 'ap' (suggestions only), 'apple' (multiple results), 'john' (single result), 'zzzz' (no results).",
+        "box": {
+          "placeholder": "Search...",
+          "clear": "Clear",
+          "suggestions": "Suggestions"
+        },
+        "results": {
+          "title": "Results",
+          "none": "No results",
+          "count": "{count} results"
+        }
+      },
       "media": {
         "title": "Media",
         "desc": "Image gallery patterns with captions and lightbox.",

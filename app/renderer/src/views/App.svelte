@@ -17,6 +17,7 @@
   import TestDbTableView from '@views/TestDbTableView.svelte';
   import { onMount, onDestroy } from 'svelte';
   import StyleguideComponentsView from '@views/StyleguideComponentsView.svelte';
+  import StyleguideSearchView from '@views/StyleguideSearchView.svelte';
   import StyleguideMediaView from '@views/StyleguideMediaView.svelte';
   import StyleguideFilesView from '@views/StyleguideFilesView.svelte';
   import StyleguideChatbotView from '@views/StyleguideChatbotView.svelte';
@@ -101,6 +102,8 @@
     <StyleguideTableView />
   {:else if route === 'test.styleguide.components'}
     <StyleguideComponentsView />
+  {:else if route === 'test.styleguide.search'}
+    <StyleguideSearchView />
   {:else if route === 'test.styleguide.media'}
     <StyleguideMediaView />
   {:else if route === 'test.styleguide.files'}

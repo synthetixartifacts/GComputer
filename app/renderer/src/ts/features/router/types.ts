@@ -10,6 +10,7 @@ export type Route =
   | 'test.styleguide.buttons'
   | 'test.styleguide.table'
   | 'test.styleguide.components'
+  | 'test.styleguide.search'
   | 'test.test1'
   | 'test.db.test-table'
   | 'test.styleguide.media'
@@ -31,6 +32,7 @@ export const ROUTES: Route[] = [
   'test.styleguide.buttons',
   'test.styleguide.table',
   'test.styleguide.components',
+  'test.styleguide.search',
   'test.test1',
   'test.db.test-table',
   'test.styleguide.media',

@@ -1,4 +1,60 @@
 ## Development Features Section — Local File Access Plan
+## Styleguide Search — Reusable Search Component Plan
+---
+
+Goal: Add a new styleguide page to demo a reusable, configurable Search UI with auto-suggestions and results, backed by a feature module with fake data for deterministic testing.
+
+### Requirements
+- Reusable components under `@components/search/`:
+  - `SearchBox.svelte` (input + suggestion dropdown, keyboard nav, a11y)
+  - `SearchResults.svelte` (list rendering, highlighting, empty/loading states)
+- Feature logic under `@features/search/` with `types.ts`, `service.ts`, `store.ts`.
+- New route `test.styleguide.search`, menu item, and i18n strings (EN/FR).
+- Demo page `@views/StyleguideSearchView.svelte` with HOWTO and sample queries to trigger various UI states.
+
+### Architecture decisions
+- Follow existing patterns: thin Svelte view, logic in `@features/*` service/store.
+- Keep renderer free of Node/Electron; UI-only fake data in the feature service.
+- Component props/events to make search reusable across the app (not tied to demo data).
+- Aliases for imports per workspace rules (e.g., `@components/*`, `@features/*`).
+
+### Component design (initial)
+- SearchBox.svelte
+  - Props: `value`, `placeholder`, `minChars`, `maxSuggestions`, `suggestions`, `getSuggestionLabel`, `autoFocus`, `showClear`.
+  - Events: `input` (value), `submit` (query), `selectSuggestion` (item), `clear`.
+  - A11y: proper roles/aria for combobox + listbox; keyboard nav (Up/Down/Enter/Escape).
+- SearchResults.svelte
+  - Props: `results`, `loading`, `highlightQuery`, `emptyLabel`, `resultRenderer?` (slot or render prop), `variant` ('list' | 'grid').
+  - Events: `itemClick` (item).
+
+### Data & types (feature)
+- `SearchItem`: `{ id: string; title: string; subtitle?: string; description?: string; type?: 'doc'|'image'|'video'|'person'|'product'; tags?: string[] }`.
+- `Suggestion`: `{ id: string; label: string; type?: string }`.
+- Store state: `{ query: string; suggestions: Suggestion[]; results: SearchItem[]; loading: boolean; selectedIndex: number|null }`.
+- Service: `initDemoData()`, `getSuggestions(query)`, `runSearch(query)` with simple scoring (title > tags > description) and limits.
+
+### HOWTO scenarios (should be visible on the page)
+- "ap" → suggestions appear, 0 results
+- "apple" → multiple results
+- "john" → exactly 1 result (person)
+- "zzzz" → no results (empty state)
+- "type:video" → filters to videos (later iteration; mention as upcoming)
+
+### Step-by-step (execute ONE at a time)
+- [ ] 1) Scaffold: add route `test.styleguide.search`, menu item, i18n keys, and `StyleguideSearchView.svelte` with HOWTO text (no logic yet).
+- [ ] 2) Create feature `@features/search/{types.ts,service.ts,store.ts}` with demo dataset and basic suggest/search.
+- [x] 3) Build `@components/search/SearchBox.svelte` (controlled input, suggestions, a11y, keyboard nav).
+- [ ] 4) Build `@components/search/SearchResults.svelte` (list layout, highlight, empty/loading states).
+- [ ] 5) Wire the demo view to feature + components; seed data; show live interactions.
+- [ ] 6) i18n: component labels (placeholder, clear, noResults, suggestions, resultsCount) in EN/FR. 
+- [ ] 7) Typecheck/build; small style polish; ensure no lints.
+- [ ] 8) docs/howto/search.md: quick usage notes and extension ideas.
+
+### Definition of done
+- Navigating to `#/test/styleguide/search` shows a HOWTO and an interactive search demo using reusable components.
+- Components are self-contained, typed, and accept props/events suitable for reuse elsewhere.
+- Basic a11y (roles/aria, keyboard nav) and i18n for labels.
+
 ---
 
 ## Table-based File Listing Enhancements Plan

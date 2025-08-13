@@ -18,6 +18,7 @@
         "buttons": "Boutons",
         "table": "Tableau",
         "components": "Composants",
+        "search": "Recherche",
         "media": "Médias",
         "files": "Fichiers",
         "chatbot": "Chatbot"
@@ -188,6 +189,21 @@
         "empty": "Aucune donnée disponible"
       }
       ,
+      "search": {
+        "title": "Recherche",
+        "desc": "Champ de recherche réutilisable avec auto-suggestions et résultats.",
+        "howto": "Essayez: 'ap' (suggestions seulement), 'apple' (plusieurs résultats), 'john' (un seul résultat), 'zzzz' (aucun résultat).",
+        "box": {
+          "placeholder": "Rechercher...",
+          "clear": "Effacer",
+          "suggestions": "Suggestions"
+        },
+        "results": {
+          "title": "Résultats",
+          "none": "Aucun résultat",
+          "count": "{count} résultats"
+        }
+      },
       "media": {
         "title": "Médias",
         "desc": "Modèles de galerie d'images avec légendes et visionneuse.",
