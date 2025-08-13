@@ -85,12 +85,15 @@
     {rows}
     {filters}
     {editingRowIds}
-    on:filterChange={onFilterChange}
+    on:filterChange={(e) => {
+      if (e.detail.columnId === '__clear_all__') { filters = {}; applyFilters(); return; }
+      onFilterChange(e);
+    }}
     on:editCell={onEditCell}
     on:toggleEdit={onToggleEdit}
     on:deleteRow={onDeleteRow}
     filterPlaceholder={t('components.table.filter')}
-    labels={{ edit: t('components.table.edit'), done: t('components.table.done'), delete: t('components.table.delete') }}
+    labels={{ edit: t('components.table.edit'), done: t('components.table.done'), delete: t('components.table.delete'), clearFilters: t('components.table.clearFilters'), clearFilter: t('components.table.clearFilter') }}
     density={dense ? 'compact' : 'regular'}
     emptyMessage={t('pages.styleguide.table.empty')}
     {columns}

@@ -278,7 +278,9 @@
       "edit": "Modifier",
       "done": "Terminé",
       "delete": "Supprimer",
-      "filter": "Filtrer"
+      "filter": "Filtrer",
+      "clearFilters": "Effacer les filtres",
+      "clearFilter": "Effacer"
     }
   }
 }

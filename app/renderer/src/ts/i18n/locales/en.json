@@ -259,8 +259,10 @@
     "table": {
       "edit": "Edit",
       "done": "Done",
-      "delete": "Delete",
-      "filter": "Filter"
+        "delete": "Delete",
+        "filter": "Filter",
+        "clearFilters": "Clear filters",
+        "clearFilter": "Clear"
     }
   }
 }
