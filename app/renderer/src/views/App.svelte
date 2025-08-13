@@ -21,6 +21,7 @@
   import StyleguideMediaView from '@views/StyleguideMediaView.svelte';
   import StyleguideFilesView from '@views/StyleguideFilesView.svelte';
   import StyleguideChatbotView from '@views/StyleguideChatbotView.svelte';
+  import StyleguideRecordView from '@views/StyleguideRecordView.svelte';
   import FeaturesOverviewView from '@views/FeaturesOverviewView.svelte';
   import FeatureLocalFilesView from '@views/FeatureLocalFilesView.svelte';
   import FeatureLocationTbdView from '@views/FeatureLocationTbdView.svelte';
@@ -110,6 +111,8 @@
     <StyleguideFilesView />
   {:else if route === 'test.styleguide.chatbot'}
     <StyleguideChatbotView />
+  {:else if route === 'test.styleguide.record'}
+    <StyleguideRecordView />
   {:else if route === 'test.features'}
     <FeaturesOverviewView />
   {:else if route === 'test.features.local-files'}

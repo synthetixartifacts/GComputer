@@ -19,6 +19,7 @@
         "table": "Table",
         "components": "Components",
         "search": "Search",
+        "record": "Record",
         "media": "Media",
         "files": "Files",
         "chatbot": "Chatbot"
@@ -191,6 +192,19 @@
         "desc": "Image gallery patterns with captions and lightbox.",
         "lightboxTitle": "Image preview"
       },
+      "record": {
+        "title": "Record Audio",
+        "desc": "Reusable audio recording components with multiple trigger variants.",
+        "labels": {
+          "start": "Record",
+          "stop": "Stop",
+          "save": "Save",
+          "cancel": "Cancel",
+          "rerecord": "Re-record",
+          "recording": "Recording...",
+          "idle": "Idle"
+        }
+      },
       "files": {
         "title": "Files",
         "desc": "File explorer demo with list and grid views.",
@@ -272,6 +286,15 @@
   }
   ,
   "components": {
+    "audioRecorder": {
+      "start": "Record",
+      "stop": "Stop",
+      "save": "Save",
+      "cancel": "Cancel",
+      "rerecord": "Re-record",
+      "recording": "Recording...",
+      "idle": "Idle"
+    },
     "table": {
       "edit": "Edit",
       "done": "Done",

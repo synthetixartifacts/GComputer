@@ -11,6 +11,7 @@ export type Route =
   | 'test.styleguide.table'
   | 'test.styleguide.components'
   | 'test.styleguide.search'
+  | 'test.styleguide.record'
   | 'test.test1'
   | 'test.db.test-table'
   | 'test.styleguide.media'
@@ -33,6 +34,7 @@ export const ROUTES: Route[] = [
   'test.styleguide.table',
   'test.styleguide.components',
   'test.styleguide.search',
+  'test.styleguide.record',
   'test.test1',
   'test.db.test-table',
   'test.styleguide.media',

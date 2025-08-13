@@ -19,6 +19,7 @@
         "table": "Tableau",
         "components": "Composants",
         "search": "Recherche",
+        "record": "Enregistrer",
         "media": "Médias",
         "files": "Fichiers",
         "chatbot": "Chatbot"
@@ -209,6 +210,19 @@
         "desc": "Modèles de galerie d'images avec légendes et visionneuse.",
         "lightboxTitle": "Aperçu d'image"
       },
+      "record": {
+        "title": "Enregistrer l'audio",
+        "desc": "Composants d'enregistrement audio réutilisables avec plusieurs variantes de déclencheur.",
+        "labels": {
+          "start": "Enregistrer",
+          "stop": "Arrêter",
+          "save": "Enregistrer",
+          "cancel": "Annuler",
+          "rerecord": "Réenregistrer",
+          "recording": "Enregistrement...",
+          "idle": "Inactif"
+        }
+      },
       "files": {
         "title": "Fichiers",
         "desc": "Explorateur de fichiers en liste et grille.",
@@ -290,6 +304,15 @@
   }
   ,
   "components": {
+    "audioRecorder": {
+      "start": "Enregistrer",
+      "stop": "Arrêter",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "rerecord": "Réenregistrer",
+      "recording": "Enregistrement...",
+      "idle": "Inactif"
+    },
     "table": {
       "edit": "Modifier",
       "done": "Terminé",

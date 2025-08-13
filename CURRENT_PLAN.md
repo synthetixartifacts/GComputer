@@ -1,144 +1,59 @@
-## Development Features Section — Local File Access Plan
-## Styleguide Search — Reusable Search Component Plan
----
+Audio Recorder Styleguide — Execution Plan
 
-Goal: Add a new styleguide page to demo a reusable, configurable Search UI with auto-suggestions and results, backed by a feature module with fake data for deterministic testing.
+Overview
+- Add a reusable, configurable `AudioRecorder` UI component using the MediaRecorder API.
+- Create a new styleguide page under `test/styleguide/record` to demo three trigger variants:
+  - Button recorder
+  - Big circular icon recorder
+  - Simple icon-only recorder
+- Each instance supports: start/stop, playback, save/download, cancel, and re-record.
+- Design for configurability (constraints, mime type, labels, durations, etc.).
 
-### Requirements
-- Reusable components under `@components/search/`:
-  - `SearchBox.svelte` (input + suggestion dropdown, keyboard nav, a11y)
-  - `SearchResults.svelte` (list rendering, highlighting, empty/loading states)
-- Feature logic under `@features/search/` with `types.ts`, `service.ts`, `store.ts`.
-- New route `test.styleguide.search`, menu item, and i18n strings (EN/FR).
-- Demo page `@views/StyleguideSearchView.svelte` with HOWTO and sample queries to trigger various UI states.
+Step-by-step Tasks
+- [x] 1) Routing and Navigation
+  - Add route id `test.styleguide.record` to `@features/router/types` and wire it in `@views/App.svelte`.
+  - Add nav menu item under Styleguide in `@features/navigation/store`.
+  - Create view shell `@views/StyleguideRecordView.svelte` (placeholder content).
 
-### Architecture decisions
-- Follow existing patterns: thin Svelte view, logic in `@features/*` service/store.
-- Keep renderer free of Node/Electron; UI-only fake data in the feature service.
-- Component props/events to make search reusable across the app (not tied to demo data).
-- Aliases for imports per workspace rules (e.g., `@components/*`, `@features/*`).
+- [x] 2) Reusable Component: `@components/audio/AudioRecorder.svelte`
+  - Implement recording via `navigator.mediaDevices.getUserMedia` + `MediaRecorder`.
+  - Props (with defaults):
+    - variant: 'button' | 'icon' | 'circle'
+    - size: 'sm' | 'md' | 'lg'
+    - constraints: MediaStreamConstraints (default: { audio: true })
+    - mimeType: string (default: 'audio/webm;codecs=opus' if supported)
+    - audioBitsPerSecond?: number
+    - maxDurationMs?: number
+    - allowReRecord: boolean (default: true)
+    - allowDownload: boolean (default: true)
+    - showPlaybackControls: boolean (default: true)
+    - labels?: Partial<Record<'start'|'stop'|'save'|'cancel'|'rerecord'|'recording'|'idle', string>>
+    - class?: string
+  - Events: `start`, `stop` (with Blob), `save` (with Blob), `cancel`, `error`.
+  - States: idle → recording → recorded; support cancel and re-record.
+  - Cleanup: stop tracks, revoke object URLs, clear timers.
 
-### Component design (initial)
-- SearchBox.svelte
-  - Props: `value`, `placeholder`, `minChars`, `maxSuggestions`, `suggestions`, `getSuggestionLabel`, `autoFocus`, `showClear`.
-  - Events: `input` (value), `submit` (query), `selectSuggestion` (item), `clear`.
-  - A11y: proper roles/aria for combobox + listbox; keyboard nav (Up/Down/Enter/Escape).
-- SearchResults.svelte
-  - Props: `results`, `loading`, `highlightQuery`, `emptyLabel`, `resultRenderer?` (slot or render prop), `variant` ('list' | 'grid').
-  - Events: `itemClick` (item).
+- [x] 3) Styleguide Page Integration
+  - Implement `StyleguideRecordView.svelte` showcasing:
+    - Basic button variant
+    - Big circular icon variant
+    - Simple icon-only variant
+  - Each instance: record, playback, save/download, cancel, re-record.
 
-### Data & types (feature)
-- `SearchItem`: `{ id: string; title: string; subtitle?: string; description?: string; type?: 'doc'|'image'|'video'|'person'|'product'; tags?: string[] }`.
-- `Suggestion`: `{ id: string; label: string; type?: string }`.
-- Store state: `{ query: string; suggestions: Suggestion[]; results: SearchItem[]; loading: boolean; selectedIndex: number|null }`.
-- Service: `initDemoData()`, `getSuggestions(query)`, `runSearch(query)` with simple scoring (title > tags > description) and limits.
+- [x] 4) i18n Strings
+  - Add menu and page strings to `@ts/i18n/locales/en.json` and `fr.json`.
+  - Add component label strings (start/stop/save/cancel/rerecord/recording/idle).
 
-### HOWTO scenarios (should be visible on the page)
-- "ap" → suggestions appear, 0 results
-- "apple" → multiple results
-- "john" → exactly 1 result (person)
-- "zzzz" → no results (empty state)
-- "type:video" → filters to videos (later iteration; mention as upcoming)
+- [x] 5) Typecheck and Build
+  - Run `npm run typecheck` and fix issues.
+  - Verify dev run for UI interaction sanity.
 
-### Step-by-step (execute ONE at a time)
-- [ ] 1) Scaffold: add route `test.styleguide.search`, menu item, i18n keys, and `StyleguideSearchView.svelte` with HOWTO text (no logic yet).
-- [ ] 2) Create feature `@features/search/{types.ts,service.ts,store.ts}` with demo dataset and basic suggest/search.
-- [x] 3) Build `@components/search/SearchBox.svelte` (controlled input, suggestions, a11y, keyboard nav).
-- [ ] 4) Build `@components/search/SearchResults.svelte` (list layout, highlight, empty/loading states).
-- [ ] 5) Wire the demo view to feature + components; seed data; show live interactions.
-- [ ] 6) i18n: component labels (placeholder, clear, noResults, suggestions, resultsCount) in EN/FR. 
-- [ ] 7) Typecheck/build; small style polish; ensure no lints.
-- [ ] 8) docs/howto/search.md: quick usage notes and extension ideas.
+- [ ] 6) Docs (light)
+  - Add short usage snippet to `docs/howto` or note in styleguide page.
 
-### Definition of done
-- Navigating to `#/test/styleguide/search` shows a HOWTO and an interactive search demo using reusable components.
-- Components are self-contained, typed, and accept props/events suitable for reuse elsewhere.
-- Basic a11y (roles/aria, keyboard nav) and i18n for labels.
-
----
-
-## Table-based File Listing Enhancements Plan
-
-Goal: Use the native reusable `@components/Table.svelte` for the file list (list view), adding configurable sorting and filtering per column with visual sort indicators.
-
-### Findings
-- `@components/Table.svelte` exists and is used by `StyleguideTableView`. It supports editing, filtering, actions. No built-in sorting yet and filters are always text inputs.
-- We need: per-column sortable/filterable flags, filter types (text/number/date/select), and sort indicators.
-
-### Step-by-step (execute ONE at a time)
-- [x] 1) Extend `@components/Table.svelte` to support sorting (asc/desc/none) with icons and ARIA `aria-sort`. Add per-column config: `sortable`, `filterable`, `filterType`, `filterOptions`, `sortAccessor`. Keep defaults: sorting enabled, filtering enabled, text filter.
-- [x] 2) Replace FileList list rendering to use `@components/Table.svelte` for files: columns [Name (string), Size (number), Type (string), Modified (date)]. Configure appropriate filter types and sort accessors (sizeBytes, lastModified). Hide actions column.
-- [x] 3) Add file-list-specific mapping into `@features/files-access/service.ts` to provide raw values (sizeBytes, lastModified) alongside formatted strings, and update the view to pass both raw and display values correctly to the table component.
-- [x] 4) Add simple column filter presets for Size (select: <1MB, 1–50MB, 50–500MB, 500MB–1GB, >1GB) and Modified (date input), and wire filtering in the view using table `filterChange` event.
-- [ ] 5) Typecheck/build; adjust styles if needed to align sort icons with table header spacing.
-
----
-
-## Table Filters UX Improvements Plan
-
-Goal: Add a default "Clear filters" control and per-column clear buttons to the reusable table component so all usages benefit.
-
-### Step-by-step (execute ONE at a time)
-- [ ] 1) Enhance `@components/Table.svelte`:
-  - Add a toolbar "Clear filters" button (enabled only when any filter is active), emits `clearAllFilters` event.
-  - Add per-column clear button (small "X") beside each filter control that emits `filterChange` with empty value for that column.
-  - Extend `labels` to include `clearFilters` and `clearColumnFilter`. Keep sensible defaults.
-  - Keep component controlled (parents own `filters`).
-- [ ] 2) Wire usages to handle `clearAllFilters`:
-  - `@views/StyleguideTableView.svelte`: reset `filters = {}` and re-run local filtering.
-  - `@views/StyleguideFilesView.svelte`: reset `filters = {}`.
-  - `@views/FeatureLocalFilesView.svelte`: reset `filters = {}`.
-- [ ] 3) i18n: add `components.table.clearFilters` and `components.table.clearFilter` in EN/FR and pass via `labels` where used in styleguide demos.
-- [ ] 4) Typecheck/build; quick visual pass for button spacing in toolbar and header filters.
-
-### Definition of done
-- Table renders a default Clear filters control, enabled only when filters are active.
-- Each filter cell shows a clear X when a value is set; clicking it clears that column filter.
-- All current usages handle `clearAllFilters` and labels are localized in demos.
-
-### Definition of done
-- File list list-view uses `@components/Table.svelte` with working asc/desc sorting and default filters per column.
-- Size and Modified columns support correct sorting using raw values.
-- Filters operate according to configured types and presets.
+Notes
+- Renderer-only APIs; no Node/Electron imports in views or component.
+- Provide sensible defaults and flexible props for scalability.
+- Accessible controls; use existing button styles (`btn`, `gc-icon-btn`).
 
 
-Goal: Create a new Development → Features section to prototype, review, and test app features. First feature: local file access via a browser folder picker, rendering selected folder contents using existing file UI components. Also add a placeholder page for a specific-location view (TBD).
-
-### Scope (v1)
-- New menu group under Development: Features
-- Routes and views for:
-  - Features overview
-  - Local files (folder picker) — initial stub followed by listing implementation
-  - Specific location (TBD)
-- Use only browser capabilities (no Node/Electron in renderer). Later iterations may add preload-bridged native dialogs.
-
-### Architecture decisions
-- Follow feature-first structure; views thin, logic in `@features/*` services/stores.
-- For v1 listing, use `<input type="file" webkitdirectory>` to select a folder and enumerate files via the File API.
-- Reuse `@components/FileList.svelte` and `@components/FileGrid.svelte` with a `ViewToggle`.
-- Add i18n keys for menu and pages (EN/FR).
-
----
-
-### Step-by-step (execute ONE at a time)
-
-- [ ] 1) Scaffold Features section: add routes (`test.features`, `test.features.local-files`, `test.features.location-tbd`), menu items (EN/FR), and views (`FeaturesOverviewView`, `FeatureLocalFilesView` stub, `FeatureLocationTbdView` stub). Wire in `App.svelte`.
-- [ ] 2) Implement Local Files folder picker UI: render the folder chooser in `FeatureLocalFilesView` and show basic selected count.
-- [x] 2) Implement Local Files folder picker UI: render the folder chooser in `FeatureLocalFilesView` and show basic selected count.
-- [x] 3) Create feature module `@features/files-access/{types.ts, service.ts, store.ts}`; move file listing logic into service/store, expose typed items for UI.
-- [x] 4) Render selected folder contents using `ViewToggle` + `FileList`/`FileGrid`; compute size and modified date; handle empty state.
-- [x] 5) Add i18n strings for page headings, descriptions, actions (EN/FR); ensure accessibility labels.
-- [x] 6) Add placeholder content for the Specific Location page and note next steps (e.g., preload IPC for native dialogs and directory bookmarks).
-- [x] 7) Typecheck/build; fix any issues.
-- [x] 8) Document usage briefly in `docs/howto` (folder picker limitations, security notes).
-
-### Definition of done (v1)
-- Development → Features appears in the menu with Local files and Specific location items.
-- Navigating to Local files shows the page and (later steps) lists selected folder contents using existing file UI.
-- No Node/Electron APIs used in renderer; complies with preload security model.
-- `npm run typecheck` passes.
-
-### Future iterations (not in v1)
-- Preload IPC to open native directory dialogs and read directories via Node.
-- Permissioned scopes for directories; persisted folder bookmarks in settings.
-- Grouping by directories and previews for supported media types.

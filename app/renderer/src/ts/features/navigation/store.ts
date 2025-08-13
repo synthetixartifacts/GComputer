@@ -34,6 +34,7 @@ export const menuItems = writable<MenuItem[]>([
           { label: 'app.menu.styleguide.table', i18nKey: 'app.menu.styleguide.table', route: 'test.styleguide.table' },
           { label: 'app.menu.styleguide.components', i18nKey: 'app.menu.styleguide.components', route: 'test.styleguide.components' },
           { label: 'app.menu.styleguide.search', i18nKey: 'app.menu.styleguide.search', route: 'test.styleguide.search' },
+          { label: 'app.menu.styleguide.record', i18nKey: 'app.menu.styleguide.record', route: 'test.styleguide.record' },
           { label: 'app.menu.styleguide.media', i18nKey: 'app.menu.styleguide.media', route: 'test.styleguide.media' },
           { label: 'app.menu.styleguide.files', i18nKey: 'app.menu.styleguide.files', route: 'test.styleguide.files' },
           { label: 'app.menu.styleguide.chatbot', i18nKey: 'app.menu.styleguide.chatbot', route: 'test.styleguide.chatbot' },
