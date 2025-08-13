@@ -136,6 +136,7 @@
           <th
             style:width={col.width}
             class:gc-table__sortable={enableSorting && col.sortable !== false}
+            class:gc-table__header--sorted={enableSorting && col.sortable !== false && sortColumnId === col.id && !!sortDirection}
             aria-sort={sortColumnId === col.id ? (sortDirection === 'asc' ? 'ascending' : sortDirection === 'desc' ? 'descending' : 'none') : 'none'}
             on:click={() => onHeaderClick(col)}
           >
@@ -262,7 +263,7 @@
         {#each displayedRows as row (row.id)}
           <tr>
             {#each columns as col}
-              <td>
+              <td class:gc-table__cell--sorted={enableSorting && sortColumnId === col.id && !!sortDirection}>
                 {#if col.editable && editingRowIds.has(row.id)}
                   <input
                     class="input input--dense"

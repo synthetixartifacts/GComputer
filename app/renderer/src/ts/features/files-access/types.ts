@@ -13,6 +13,9 @@ export type UiFileItem = {
   size: string;
   type: 'file' | 'folder';
   date: string;
+  location: string;
+  sizeBytes: number;
+  lastModified: number;
 };
 
 

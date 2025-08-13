@@ -229,21 +229,23 @@
           "send": "Send"
         }
       }
-      ,
-      "features": {
-        "title": "Features",
-        "localFiles": {
-          "title": "Local files",
-          "desc": "Pick a folder and preview its contents.",
-          "empty": "No files selected",
-          "summary": "{count} files selected in {folder}",
-          "folder": "Folder",
-          "chooseAria": "Choose a folder"
-        },
-        "locationTbd": {
-          "title": "Specific location (TBD)",
-          "desc": "Placeholder for a fixed location browser."
-        }
+    },
+    "features": {
+      "title": "Features",
+      "localFiles": {
+        "title": "Local files",
+        "desc": "Pick a folder and preview its contents.",
+        "empty": "No files selected",
+        "summary": "{count} files selected in {folder}",
+        "folder": "Folder",
+        "chooseAria": "Choose a folder",
+        "recursive": "Recursive",
+        "location": "Location",
+        "unload": "Unload"
+      },
+      "locationTbd": {
+        "title": "Specific location (TBD)",
+        "desc": "Placeholder for a fixed location browser."
       }
     },
     "browse": {
