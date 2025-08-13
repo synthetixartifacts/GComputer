@@ -22,6 +22,11 @@
         "files": "Fichiers",
         "chatbot": "Chatbot"
       },
+      "features": {
+        "label": "Fonctionnalités",
+        "localFiles": "Fichiers locaux",
+        "locationTbd": "Emplacement spécifique (À définir)"
+      },
       "test1": "",
       "db": {
         "label": "BD",
@@ -210,6 +215,22 @@
           "inputLabel": "Zone de saisie",
           "placeholder": "Écrire un message...",
           "send": "Envoyer"
+        }
+      }
+      ,
+      "features": {
+        "title": "Fonctionnalités",
+        "localFiles": {
+          "title": "Fichiers locaux",
+          "desc": "Choisissez un dossier et prévisualisez son contenu.",
+          "empty": "Aucun fichier sélectionné",
+          "summary": "{count} fichiers sélectionnés dans {folder}",
+          "folder": "Dossier",
+          "chooseAria": "Choisir un dossier"
+        },
+        "locationTbd": {
+          "title": "Emplacement spécifique (À définir)",
+          "desc": "Espace réservé pour un explorateur d'emplacement fixe."
         }
       }
     },

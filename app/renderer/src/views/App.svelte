@@ -20,6 +20,9 @@
   import StyleguideMediaView from '@views/StyleguideMediaView.svelte';
   import StyleguideFilesView from '@views/StyleguideFilesView.svelte';
   import StyleguideChatbotView from '@views/StyleguideChatbotView.svelte';
+  import FeaturesOverviewView from '@views/FeaturesOverviewView.svelte';
+  import FeatureLocalFilesView from '@views/FeatureLocalFilesView.svelte';
+  import FeatureLocationTbdView from '@views/FeatureLocationTbdView.svelte';
   import { sidebarOpen, modalOpen } from '@features/ui/store';
   import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
@@ -104,6 +107,12 @@
     <StyleguideFilesView />
   {:else if route === 'test.styleguide.chatbot'}
     <StyleguideChatbotView />
+  {:else if route === 'test.features'}
+    <FeaturesOverviewView />
+  {:else if route === 'test.features.local-files'}
+    <FeatureLocalFilesView />
+  {:else if route === 'test.features.location-tbd'}
+    <FeatureLocationTbdView />
   {:else if route === 'test.test1'}
     <Test1View />
   {:else if route === 'test.db.test-table'}

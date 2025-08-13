@@ -39,6 +39,14 @@ export const menuItems = writable<MenuItem[]>([
         ],
       },
       {
+        label: 'app.menu.features.label',
+        i18nKey: 'app.menu.features.label',
+        children: [
+          { label: 'app.menu.features.localFiles', i18nKey: 'app.menu.features.localFiles', route: 'test.features.local-files' },
+          { label: 'app.menu.features.locationTbd', i18nKey: 'app.menu.features.locationTbd', route: 'test.features.location-tbd' },
+        ],
+      },
+      {
         label: 'app.menu.db.label',
         i18nKey: 'app.menu.db.label',
         children: [

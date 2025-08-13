@@ -1,57 +1,42 @@
-## Chatbot Styleguide and Feature Skeleton Plan
+## Development Features Section — Local File Access Plan
 
-Goal: Add a new styleguide section and a scalable feature skeleton to design the main chat thread UI/UX for conversations with an AI assistant. This includes a reusable thread layout, message bubbles, and a composer (input) area. No backend integration yet; prepare clean abstractions for future growth.
+Goal: Create a new Development → Features section to prototype, review, and test app features. First feature: local file access via a browser folder picker, rendering selected folder contents using existing file UI components. Also add a placeholder page for a specific-location view (TBD).
 
 ### Scope (v1)
-- Focus only on the main chat thread area: message list and composer.
-- Clear differentiation between user and assistant messages.
-- Reusable components designed to be embedded in future views/threads.
-- All logic isolated in `@features/chatbot/*`; views are thin; UI in `@components/chat/*`.
-
-### Deliverables
-- New menu item under `Test → Styleguide → Chatbot`.
-- New route: `test.styleguide.chatbot`.
-- New view: `@views/StyleguideChatbotView.svelte` demonstrating the chat UI.
-- New feature skeleton: `@features/chatbot/{types.ts, service.ts, store.ts}`.
-- New reusable components: `@components/chat/ChatMessageBubble.svelte`, `ChatMessageList.svelte`, `ChatComposer.svelte`, `ChatThread.svelte`.
-- i18n keys in `en.json` and `fr.json` for menu labels, page title, and composer placeholders/actions.
-
-### Non-goals (for later iterations)
-- Sidebar/discussion list, attachments/uploads, code formatting, streaming tokens, tool-calls, persistence, multi-thread management.
+- New menu group under Development: Features
+- Routes and views for:
+  - Features overview
+  - Local files (folder picker) — initial stub followed by listing implementation
+  - Specific location (TBD)
+- Use only browser capabilities (no Node/Electron in renderer). Later iterations may add preload-bridged native dialogs.
 
 ### Architecture decisions
-- Use Svelte stores in `@features/chatbot/store.ts` for in-memory thread state.
-- `@features/chatbot/service.ts` will expose IO boundaries (later to wire IPC/HTTP). For v1 it will only simulate.
-- Components are stateless where possible and driven by props; state lives in stores.
-- Keep styling with Tailwind utility classes consistent with existing patterns; minimal SCSS additions if necessary.
+- Follow feature-first structure; views thin, logic in `@features/*` services/stores.
+- For v1 listing, use `<input type="file" webkitdirectory>` to select a folder and enumerate files via the File API.
+- Reuse `@components/FileList.svelte` and `@components/FileGrid.svelte` with a `ViewToggle`.
+- Add i18n keys for menu and pages (EN/FR).
 
 ---
 
 ### Step-by-step (execute ONE at a time)
 
-- [x] 1) Scaffold feature: create `@features/chatbot/{types.ts, service.ts, store.ts}` with strict types, minimal stores, and stubs (no UI yet)
-- [x] 2) Add i18n keys (EN/FR) for: menu `app.menu.styleguide.chatbot`, page `pages.chatbot.*`, composer placeholders/actions
-- [x] 3) Add route type and wiring: extend `@features/router/types.ts`, update `@views/App.svelte` switch, create `@views/StyleguideChatbotView.svelte` (stub)
-- [x] 4) Add navigation item under `Test → Styleguide` in `@features/navigation/store.ts`
-- [x] 5) Build core UI components in `@components/chat/*`:
-  - `ChatMessageBubble.svelte` (user vs assistant variants)
-  - `ChatMessageList.svelte` (virtualized-ready API, autoscroll to bottom)
-  - `ChatComposer.svelte` (textarea + send button, multiline, disabled states)
-  - `ChatThread.svelte` (composition of list + composer)
-- [x] 6) Implement the styleguide view demo: seed sample messages in store, wire composer to append user messages, simulate assistant response with delay in service
-- [x] 7) a11y/i18n pass: labels, aria attributes, keyboard handling, focus management on send
-- [x] 8) Typecheck/build run and fix issues
-- [x] 9) Add brief docs: `docs/howto/chatbot.md` with usage snippets and component props
+- [ ] 1) Scaffold Features section: add routes (`test.features`, `test.features.local-files`, `test.features.location-tbd`), menu items (EN/FR), and views (`FeaturesOverviewView`, `FeatureLocalFilesView` stub, `FeatureLocationTbdView` stub). Wire in `App.svelte`.
+- [ ] 2) Implement Local Files folder picker UI: render the folder chooser in `FeatureLocalFilesView` and show basic selected count.
+- [x] 2) Implement Local Files folder picker UI: render the folder chooser in `FeatureLocalFilesView` and show basic selected count.
+- [x] 3) Create feature module `@features/files-access/{types.ts, service.ts, store.ts}`; move file listing logic into service/store, expose typed items for UI.
+- [x] 4) Render selected folder contents using `ViewToggle` + `FileList`/`FileGrid`; compute size and modified date; handle empty state.
+- [x] 5) Add i18n strings for page headings, descriptions, actions (EN/FR); ensure accessibility labels.
+- [x] 6) Add placeholder content for the Specific Location page and note next steps (e.g., preload IPC for native dialogs and directory bookmarks).
+- [x] 7) Typecheck/build; fix any issues.
+- [x] 8) Document usage briefly in `docs/howto` (folder picker limitations, security notes).
 
 ### Definition of done (v1)
-- New menu item navigates to the Chatbot styleguide view.
-- Chat thread demo shows user and assistant messages distinctly.
-- Typing and sending in composer appends to the thread and shows a simulated assistant reply.
-- Components are reusable and typed; no renderer imports of Node/Electron APIs.
-- `npm run typecheck` and `npm run build` succeed.
+- Development → Features appears in the menu with Local files and Specific location items.
+- Navigating to Local files shows the page and (later steps) lists selected folder contents using existing file UI.
+- No Node/Electron APIs used in renderer; complies with preload security model.
+- `npm run typecheck` passes.
 
-### Risks/mitigations
-- Over-engineering v1: keep stores minimal; simulate only basic responses.
-- Styling drift: follow existing Tailwind patterns; reuse variables where applicable.
-- Future growth: typed boundaries in `service.ts` and `types.ts` to evolve without breaking UI.
-
+### Future iterations (not in v1)
+- Preload IPC to open native directory dialogs and read directories via Node.
+- Permissioned scopes for directories; persisted folder bookmarks in settings.
+- Grouping by directories and previews for supported media types.

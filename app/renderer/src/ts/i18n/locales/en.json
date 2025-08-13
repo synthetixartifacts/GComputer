@@ -22,6 +22,11 @@
         "files": "Files",
         "chatbot": "Chatbot"
       },
+      "features": {
+        "label": "Features",
+        "localFiles": "Local files",
+        "locationTbd": "Specific location (TBD)"
+      },
       "test1": "",
       "db": {
         "label": "DB",
@@ -192,6 +197,22 @@
           "inputLabel": "Message input",
           "placeholder": "Type a message...",
           "send": "Send"
+        }
+      }
+      ,
+      "features": {
+        "title": "Features",
+        "localFiles": {
+          "title": "Local files",
+          "desc": "Pick a folder and preview its contents.",
+          "empty": "No files selected",
+          "summary": "{count} files selected in {folder}",
+          "folder": "Folder",
+          "chooseAria": "Choose a folder"
+        },
+        "locationTbd": {
+          "title": "Specific location (TBD)",
+          "desc": "Placeholder for a fixed location browser."
         }
       }
     },

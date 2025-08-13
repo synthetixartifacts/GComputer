@@ -14,7 +14,10 @@ export type Route =
   | 'test.db.test-table'
   | 'test.styleguide.media'
   | 'test.styleguide.files'
-  | 'test.styleguide.chatbot';
+  | 'test.styleguide.chatbot'
+  | 'test.features'
+  | 'test.features.local-files'
+  | 'test.features.location-tbd';
 
 export const ROUTES: Route[] = [
   'home',
@@ -33,6 +36,9 @@ export const ROUTES: Route[] = [
   'test.styleguide.media',
   'test.styleguide.files',
   'test.styleguide.chatbot',
+  'test.features',
+  'test.features.local-files',
+  'test.features.location-tbd',
 ];
 
 
