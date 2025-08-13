@@ -1,9 +1,10 @@
 import { writable } from 'svelte/store';
 import type { FileAccessItem, UiFileItem } from './types';
-import { mapFilesToItems, deriveRootFolderName, toUiItems } from './service';
+import { mapFilesToItems, deriveRootFolderName, toUiItems, deriveRootFolderPath } from './service';
 
 export const pickedItems = writable<FileAccessItem[]>([]);
 export const rootFolderName = writable<string | null>(null);
+export const rootFolderPath = writable<string | null>(null);
 export const uiItems = writable<UiFileItem[]>([]);
 export const isRecursive = writable<boolean>(false);
 
@@ -11,6 +12,7 @@ export function setPickedFiles(files: File[] | FileList): void {
   const items = mapFilesToItems(files);
   pickedItems.set(items);
   rootFolderName.set(deriveRootFolderName(items));
+  rootFolderPath.set(deriveRootFolderPath(items));
   let recursive: boolean = false;
   const unsub = isRecursive.subscribe((v) => (recursive = v));
   unsub();
@@ -28,6 +30,7 @@ export function setRecursive(value: boolean): void {
 export function unloadPickedFiles(): void {
   pickedItems.set([]);
   rootFolderName.set(null);
+  rootFolderPath.set(null);
   uiItems.set([]);
 }
 

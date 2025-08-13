@@ -2,6 +2,7 @@ export type FileAccessItem = {
   id: string;
   name: string;
   relativePath: string | null;
+  absolutePath: string | null;
   sizeBytes: number;
   lastModified: number;
   mimeType: string;

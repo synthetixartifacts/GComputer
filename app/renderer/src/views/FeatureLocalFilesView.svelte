@@ -4,7 +4,7 @@
   import ViewToggle from '@components/ViewToggle.svelte';
   import FileGrid from '@components/FileGrid.svelte';
   import Table from '@components/Table.svelte';
-  import { setPickedFiles, rootFolderName as rootNameStore, uiItems, isRecursive as isRecursiveStore, setRecursive, unloadPickedFiles } from '@features/files-access/store';
+  import { setPickedFiles, rootFolderName as rootNameStore, rootFolderPath as rootPathStore, uiItems, isRecursive as isRecursiveStore, setRecursive, unloadPickedFiles } from '@features/files-access/store';
   import type { UiFileItem } from '@features/files-access/types';
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
   const unsubT = tStore.subscribe((fn) => (t = fn));
@@ -12,6 +12,7 @@
 
   let selectedCount: number = 0;
   let rootFolderName: string | null = null;
+  let rootFolderPath: string | null = null;
   let viewMode: 'list' | 'grid' = 'list';
   let filesForUi: UiFileItem[] = [];
   let isRecursive: boolean = false;
@@ -119,6 +120,7 @@
   }
 
   const unsubRoot = rootNameStore.subscribe((v) => (rootFolderName = v));
+  const unsubRootPath = rootPathStore.subscribe((v) => (rootFolderPath = v));
   const unsubUi = uiItems.subscribe((v) => {
     filesForUi = v;
     selectedCount = v.length;
@@ -126,6 +128,7 @@
   const unsubRecursive = isRecursiveStore.subscribe((v) => (isRecursive = v));
   onDestroy(() => {
     unsubRoot();
+    unsubRootPath();
     unsubUi();
     unsubRecursive();
   });
@@ -136,6 +139,9 @@
   <p class="opacity-80">{t('pages.features.localFiles.desc')}</p>
 
   <div class="stack-md">
+    {#if rootFolderPath}
+      <h2 class="text-xl font-semibold break-words" title={rootFolderPath}>{rootFolderPath}</h2>
+    {/if}
     <div class="flex items-center gap-3">
       <input id="folder-input" type="file" webkitdirectory multiple class="sr-only" on:change={onFolderChange} aria-label={t('pages.features.localFiles.chooseAria')} />
       <label for="folder-input" class="btn btn--primary w-max">{t('app.actions.browse')}</label>
