@@ -45,6 +45,9 @@
     @include m.transition(transform);
     z-index: var(--z-sidebar);
     padding: 1rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
   .gc-sidebar--open { transform: translateX(0); }
 
