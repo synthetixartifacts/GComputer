@@ -149,4 +149,19 @@ export function toUiItems(items: FileAccessItem[], options: { recursive: boolean
   return [...folderItems, ...rootFiles];
 }
 
+export async function listFilesFromPath(absPath: string): Promise<FileAccessItem[]> {
+  if (!absPath || typeof absPath !== 'string') return [];
+  // Use preload-bridged API
+  const raw = await window.gc.fs.listDirectory(absPath);
+  return raw.map((i) => ({
+    id: `${i.absolutePath}-${i.lastModified}-${i.sizeBytes}`,
+    name: i.name,
+    relativePath: i.relativePath,
+    absolutePath: i.absolutePath,
+    sizeBytes: i.sizeBytes,
+    lastModified: i.lastModified,
+    mimeType: 'application/octet-stream',
+  }));
+}
+
 

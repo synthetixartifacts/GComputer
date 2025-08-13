@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
 import { registerSettingsIpc, getAllSettings } from './settings';
+import { registerFsIpc } from './fs';
 import { registerDbIpc, runDbMigrations } from './db';
 import { setApplicationMenuForLocale } from './menu';
 
@@ -28,6 +29,7 @@ async function createMainWindow(): Promise<void> {
 
 app.whenReady().then(() => {
   registerSettingsIpc();
+  registerFsIpc();
     registerDbIpc();
     // Ensure DB is migrated before use (dev path)
     try { runDbMigrations(); } catch {}

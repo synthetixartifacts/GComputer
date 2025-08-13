@@ -24,7 +24,7 @@
   import StyleguideRecordView from '@views/StyleguideRecordView.svelte';
   import FeaturesOverviewView from '@views/FeaturesOverviewView.svelte';
   import FeatureLocalFilesView from '@views/FeatureLocalFilesView.svelte';
-  import FeatureLocationTbdView from '@views/FeatureLocationTbdView.svelte';
+  import FeatureSavedLocalFolderView from '@views/FeatureDefaultFolderView.svelte';
   import { sidebarOpen, modalOpen } from '@features/ui/store';
   import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
@@ -117,8 +117,8 @@
     <FeaturesOverviewView />
   {:else if route === 'test.features.local-files'}
     <FeatureLocalFilesView />
-  {:else if route === 'test.features.location-tbd'}
-    <FeatureLocationTbdView />
+  {:else if route === 'test.features.saved-local-folder'}
+    <FeatureSavedLocalFolderView />
   {:else if route === 'test.test1'}
     <Test1View />
   {:else if route === 'test.db.test-table'}

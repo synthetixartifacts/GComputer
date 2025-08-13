@@ -27,7 +27,7 @@
       "features": {
         "label": "Features",
         "localFiles": "Local files",
-        "locationTbd": "Specific location (TBD)"
+        "savedLocalFolder": "Saved local folder"
       },
       "test1": "",
       "db": {
@@ -243,9 +243,9 @@
         "location": "Location",
         "unload": "Unload"
       },
-      "locationTbd": {
-        "title": "Specific location (TBD)",
-        "desc": "Placeholder for a fixed location browser."
+      "savedLocalFolder": {
+        "title": "Saved local folder",
+        "desc": "Always shows the contents of the saved folder (recursive)."
       }
     },
     "browse": {

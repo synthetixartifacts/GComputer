@@ -19,7 +19,7 @@ export type Route =
   | 'test.styleguide.chatbot'
   | 'test.features'
   | 'test.features.local-files'
-  | 'test.features.location-tbd';
+  | 'test.features.saved-local-folder';
 
 export const ROUTES: Route[] = [
   'home',
@@ -42,7 +42,7 @@ export const ROUTES: Route[] = [
   'test.styleguide.chatbot',
   'test.features',
   'test.features.local-files',
-  'test.features.location-tbd',
+  'test.features.saved-local-folder',
 ];
 
 

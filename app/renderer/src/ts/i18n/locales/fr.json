@@ -27,7 +27,7 @@
       "features": {
         "label": "Fonctionnalités",
         "localFiles": "Fichiers locaux",
-        "locationTbd": "Emplacement spécifique (À définir)"
+        "savedLocalFolder": "Dossier local enregistré"
       },
       "test1": "",
       "db": {
@@ -261,9 +261,9 @@
         "location": "Emplacement",
         "unload": "Décharger"
       },
-      "locationTbd": {
-        "title": "Emplacement spécifique (À définir)",
-        "desc": "Espace réservé pour un explorateur d'emplacement fixe."
+      "savedLocalFolder": {
+        "title": "Dossier local enregistré",
+        "desc": "Affiche toujours le contenu du dossier enregistré (récursif)."
       }
     },
     "browse": {

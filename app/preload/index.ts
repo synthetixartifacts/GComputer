@@ -28,6 +28,11 @@ const settingsApi = {
 
 contextBridge.exposeInMainWorld('gc', {
   settings: settingsApi,
+  fs: {
+    listDirectory(path: string) {
+      return ipcRenderer.invoke('fs:list-directory', { path });
+    },
+  },
   db: {
     test: {
       list(filters?: { column1?: string; column2?: string }) {

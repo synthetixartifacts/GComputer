@@ -10,6 +10,9 @@ declare global {
         set: <K extends keyof import('@features/settings/types').AppSettings>(key: K, value: import('@features/settings/types').AppSettings[K]) => Promise<import('@features/settings/types').AppSettings>;
         subscribe: (callback: (settings: import('@features/settings/types').AppSettings) => void) => () => void;
       };
+      fs: {
+        listDirectory: (path: string) => Promise<Array<{ name: string; absolutePath: string; relativePath: string; sizeBytes: number; lastModified: number }>>;
+      };
       db: {
         test: {
           list: (filters?: { column1?: string; column2?: string }) => Promise<Array<{ id: number; column1: string | null; column2: string | null }>>;
