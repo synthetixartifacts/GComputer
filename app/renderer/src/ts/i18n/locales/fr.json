@@ -176,6 +176,12 @@
           "title": "Modale",
           "open": "Ouvrir la modale",
           "content": "Ceci est une modale réutilisable."
+        },
+        "progress": {
+          "title": "Barre de progression",
+          "bump": "Augmenter de 10%",
+          "reset": "Réinitialiser",
+          "indeterminate": "Indéterminée"
         }
       },
       "table": {

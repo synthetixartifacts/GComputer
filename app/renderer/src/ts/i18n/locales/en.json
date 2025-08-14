@@ -158,6 +158,12 @@
           "title": "Modal",
           "open": "Open modal",
           "content": "This is a reusable modal component."
+        },
+        "progress": {
+          "title": "Progress bar",
+          "bump": "Increase 10%",
+          "reset": "Reset",
+          "indeterminate": "Indeterminate"
         }
       },
       "table": {
