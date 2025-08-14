@@ -15,8 +15,8 @@ app/
     index.html
     src/
       styles/           # global styles (Tailwind, SCSS)
-      components/       # shared UI components
-      views/            # page-level Svelte views
+       components/       # shared UI components (e.g., Table, FileList, ViewToggle, NavTree, Modal, chat/*, search/*)
+       views/            # page-level Svelte views (thin; compose components)
         App.svelte
         HomeView.svelte
         AboutView.svelte
@@ -28,7 +28,7 @@ app/
             types.ts
             service.ts
             store.ts
-          router/
+           router/       
             types.ts
             service.ts
             store.ts
@@ -57,12 +57,13 @@ app/
 #### Styling
 - Global tokens and utilities live in `styles/base/` (variables, mixins, motion).
 - Reusable component/layout styles live in `styles/components/`.
+- Avoid inline styles in Svelte; prefer utility classes and SCSS.
 
 
 ### Entry points
 - Renderer: `app/renderer/index.html` → `/src/ts/main.ts` → mounts `@views/App.svelte`.
 - Main: `app/main/main.ts` creates window, loads dev server or `dist/renderer/index.html`.
-- Preload: `app/preload/index.ts` (IPC exposure). Exposes `window.gc.settings` with `all/get/set/subscribe`.
+- Preload: `app/preload/index.ts` (IPC exposure). Exposes `window.gc.settings`, `window.gc.fs.listDirectory`, and `window.gc.db.test` with typed methods.
  - Main i18n: Native menu labels live in `app/main/i18n/menu.ts` to keep main independent of renderer bundles.
 
 ### Settings & i18n
@@ -73,7 +74,7 @@ app/
 - Theme and locale are synchronized from settings; theme is applied to DOM via `data-theme` attribute and unsubscribes cleanly on unmount.
 
 ### Routing
-- Simple hash-based router implemented under `@features/router/`.
+- Simple hash-based router implemented under `@features/router/`. Dev-only routes are gated at build time.
 - Store: `currentRoute` with explicit subscribe/unsubscribe in views.
 - Service: `initRouter`, `disposeRouter`, `navigate` update `location.hash`.
 

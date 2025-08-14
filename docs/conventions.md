@@ -32,11 +32,13 @@
 ### Router
 - Hash-based routing under `@features/router/` with a `Route` union type.
 - Public API: `initRouter`, `disposeRouter`, `navigate`.
+- Gate dev-only routes via `import.meta.env.DEV` (do not expose in production).
 
 ### Electron security
 - `contextIsolation: true`, `nodeIntegration: false` in BrowserWindow.
 - Only expose whitelisted APIs via preload.
 - Never import Node/Electron modules in the renderer; use preload-exposed APIs.
+ - Hide dev-only menu items in production (`process.env.NODE_ENV !== 'production'`).
 
 ### Commits & PRs
 - Conventional Commits: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`.

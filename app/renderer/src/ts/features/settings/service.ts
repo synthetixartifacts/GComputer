@@ -53,8 +53,8 @@ function createFallbackApi(): SettingsApi {
 
 let cachedFallbackApi: SettingsApi | null = null;
 function api(): SettingsApi {
-  const win = window as any;
-  if (win && win.gc && win.gc.settings) return win.gc.settings as SettingsApi;
+  const impl: unknown = (window as Window & typeof globalThis).gc?.settings;
+  if (impl) return impl as SettingsApi;
   if (!cachedFallbackApi) cachedFallbackApi = createFallbackApi();
   return cachedFallbackApi;
 }

@@ -43,9 +43,11 @@ export function setApplicationMenuForLocale(locale: Locale): void {
     {
       label: L.view,
       submenu: [
-        { role: 'reload', label: L.reload },
-        { role: 'toggleDevTools', label: L.toggleDevTools },
-        { type: 'separator' },
+        ...(process.env.NODE_ENV !== 'production' ? ([
+          { role: 'reload', label: L.reload },
+          { role: 'toggleDevTools', label: L.toggleDevTools },
+          { type: 'separator' },
+        ] as Electron.MenuItemConstructorOptions[]) : []),
         { role: 'resetZoom', label: L.resetZoom },
         { role: 'zoomIn', label: L.zoomIn },
         { role: 'zoomOut', label: L.zoomOut },

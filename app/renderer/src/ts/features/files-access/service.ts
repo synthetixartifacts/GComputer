@@ -1,12 +1,12 @@
 import type { FileAccessItem, UiFileItem } from './types';
 
 export function mapFilesToItems(files: FileList | File[]): FileAccessItem[] {
-  const array = Array.from(files as any as File[]);
+  const array = Array.from(files as File[]);
   return array.map((f) => ({
     id: `${f.name}-${f.lastModified}-${f.size}`,
     name: f.name,
-    relativePath: (f as any).webkitRelativePath || null,
-    absolutePath: ((f as any).path as string | undefined) ?? null,
+    relativePath: (f as unknown as { webkitRelativePath?: string }).webkitRelativePath || null,
+    absolutePath: ((f as unknown as { path?: string }).path as string | undefined) ?? null,
     sizeBytes: f.size,
     lastModified: f.lastModified,
     mimeType: f.type || 'application/octet-stream',

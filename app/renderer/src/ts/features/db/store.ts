@@ -39,9 +39,10 @@ export async function saveAllEdits(): Promise<void> {
   pendingEdits.update((m) => (edits = m));
   const ids = Object.keys(edits).map((k) => Number(k));
   for (const id of ids) {
-    const payload: any = { id };
-    if ('column1' in (edits[id] ?? {})) payload.column1 = (edits[id] as any).column1 ?? null;
-    if ('column2' in (edits[id] ?? {})) payload.column2 = (edits[id] as any).column2 ?? null;
+    const payload: { id: number; column1?: string | null; column2?: string | null } = { id };
+    const edit = edits[id] ?? {};
+    if (Object.prototype.hasOwnProperty.call(edit, 'column1')) payload.column1 = (edit.column1 as string | null | undefined) ?? null;
+    if (Object.prototype.hasOwnProperty.call(edit, 'column2')) payload.column2 = (edit.column2 as string | null | undefined) ?? null;
     await updateTestRow(payload);
   }
   // clear staged edits and editing state, then refresh
@@ -66,10 +67,10 @@ export async function saveEditsForRow(id: number): Promise<void> {
 
   const payload: { id: number; column1?: string | null; column2?: string | null } = { id };
   if (Object.prototype.hasOwnProperty.call(edit, 'column1')) {
-    payload.column1 = (edit as any).column1 ?? null;
+    payload.column1 = (edit.column1 as string | null | undefined) ?? null;
   }
   if (Object.prototype.hasOwnProperty.call(edit, 'column2')) {
-    payload.column2 = (edit as any).column2 ?? null;
+    payload.column2 = (edit.column2 as string | null | undefined) ?? null;
   }
 
   await updateTestRow(payload);

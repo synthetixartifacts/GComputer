@@ -10,10 +10,9 @@
   import StyleguideButtonsView from '@views/StyleguideButtonsView.svelte';
   import HomeView from '@views/HomeView.svelte';
   import AboutView from '@views/AboutView.svelte';
-  import CategoryItem1View from '@views/CategoryItem1View.svelte';
-  import CategoryItem2View from '@views/CategoryItem2View.svelte';
+  
   import SettingsConfigView from '@views/SettingsConfigView.svelte';
-  import Test1View from '@views/Test1View.svelte';
+  
   import TestDbTableView from '@views/TestDbTableView.svelte';
   import { onMount, onDestroy } from 'svelte';
   import StyleguideComponentsView from '@views/StyleguideComponentsView.svelte';
@@ -83,44 +82,40 @@
 <main class="container-page stack-lg py-6">
   {#if route === 'home'}
     <HomeView />
-  {:else if route === 'category.item1'}
-    <CategoryItem1View />
-  {:else if route === 'category.item2'}
-    <CategoryItem2View />
+  
   {:else if route === 'settings.config'}
     <SettingsConfigView />
   {:else if route === 'settings.about'}
     <AboutView />
-  {:else if route === 'test.styleguide'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide'}
     <StyleguideOverviewView />
-  {:else if route === 'test.styleguide.base'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide.base'}
     <StyleguideBaseView />
-  {:else if route === 'test.styleguide.inputs'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide.inputs'}
     <StyleguideInputsView />
-  {:else if route === 'test.styleguide.buttons'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide.buttons'}
     <StyleguideButtonsView />
-  {:else if route === 'test.styleguide.table'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide.table'}
     <StyleguideTableView />
-  {:else if route === 'test.styleguide.components'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide.components'}
     <StyleguideComponentsView />
-  {:else if route === 'test.styleguide.search'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide.search'}
     <StyleguideSearchView />
-  {:else if route === 'test.styleguide.media'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide.media'}
     <StyleguideMediaView />
-  {:else if route === 'test.styleguide.files'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide.files'}
     <StyleguideFilesView />
-  {:else if route === 'test.styleguide.chatbot'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide.chatbot'}
     <StyleguideChatbotView />
-  {:else if route === 'test.styleguide.record'}
+  {:else if import.meta.env.DEV && route === 'test.styleguide.record'}
     <StyleguideRecordView />
-  {:else if route === 'test.features'}
+  {:else if import.meta.env.DEV && route === 'test.features'}
     <FeaturesOverviewView />
-  {:else if route === 'test.features.local-files'}
+  {:else if import.meta.env.DEV && route === 'test.features.local-files'}
     <FeatureLocalFilesView />
-  {:else if route === 'test.features.saved-local-folder'}
+  {:else if import.meta.env.DEV && route === 'test.features.saved-local-folder'}
     <FeatureSavedLocalFolderView />
-  {:else if route === 'test.test1'}
-    <Test1View />
+  
   {:else if route === 'test.db.test-table'}
     <TestDbTableView />
   {/if}

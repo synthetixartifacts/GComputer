@@ -20,9 +20,8 @@ function createFallbackDbApi(): DbApi {
 }
 
 function api(): DbApi {
-  const win = window as any;
-  const impl: DbApi | undefined = win?.gc?.db?.test;
-  return impl ?? createFallbackDbApi();
+  const impl: unknown = (window as Window & typeof globalThis).gc?.db?.test;
+  return (impl as DbApi) ?? createFallbackDbApi();
 }
 
 export async function listTestRows(filters?: TestFilters): Promise<TestRow[]> {

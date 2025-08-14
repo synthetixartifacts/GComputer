@@ -151,7 +151,11 @@
 <div class="stack-md">
   {#if showViewToggle}
     <div class="flex items-center gap-3">
-      <ViewToggle mode={viewMode} on:change={(e) => (viewMode = e.detail.mode)} />
+      <ViewToggle
+        mode={viewMode}
+        labels={{ list: t('pages.styleguide.files.listView'), grid: t('pages.styleguide.files.gridView') }}
+        on:change={(e) => (viewMode = e.detail.mode)}
+      />
     </div>
   {/if}
 
