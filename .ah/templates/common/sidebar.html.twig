@@ -1,0 +1,37 @@
+
+{% if app.user %}
+<div id="sidebarMain" class="sidebar sidebar-left">
+
+    <div class="agent_list_wrap">
+        <a class="sidebar-title see-all" id="sidebar_all_agent_top" href="/">
+            {{ 'chatbot.discussion.start'|trans }}
+        </a>
+        <div class="agent_list"></div>
+        <a class="sidebar-link" id="sidebar_all_agent" href="/">
+            {{ 'chatbot.agent.seeAll'|trans }}
+        </a>
+    </div>
+
+
+    <div class="discussion_list_wrap">
+        <a class="sidebar-title see-all" id="sidebar_all_discussions_top" href="/discussions">
+            {{ 'chatbot.discussion.my'|trans }}
+        </a>
+        <div class="discussion_list"></div>
+        <a class="sidebar-link" id="sidebar_all_discussions" href="/discussions">
+            {{ 'chatbot.discussion.seeAll'|trans }}
+        </a>
+    </div>
+
+    <div class="account_button">
+        <a id="sidebar_my_account" class="button_type2" href="/account/profile">
+            {# <div class="avatar">
+                TT
+            </div> #}
+            <div class="username">
+                {{ app.user.firstName }} {{ app.user.lastName }}
+            </div>
+        </a>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,76 @@
+// DOM BALISE
+document,
+html,
+body {
+    width  : 100%;
+    height : 100%;
+    margin : 0;
+    padding: 0;
+
+    font-weight: 400;
+    font-family: $font_base;
+    font-size  : $font_size_default;
+
+    color           : $color_base;
+    background-color: $color_accent_5;
+}
+
+
+h1, h2, h3 {
+    font-family: $font_title;
+    margin-top : 0;
+    //   color: $color_accent_1;
+}
+
+h1 {
+    font-weight: 800;
+    font-size  : 2.5em;
+}
+
+h2 {
+    font-size: 1.4em;
+}
+
+h3 {
+    font-size: 1.1em;
+}
+
+
+hr {
+    &.clear {
+        clear: both;
+    }
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+    @include transitionQuick();
+
+    color      : $color_base;
+    font-weight: bold;
+    // text-decoration: none;
+
+    &:hover {
+        color: $color_accent_1;
+    }
+
+}
+
+
+
+
+
+select {
+    min-width: 250px;
+}
+
+textarea, select, input, button {
+    padding: 10px;
+}
+
+#policy_button {
+    color: $color_grey_light;
+}

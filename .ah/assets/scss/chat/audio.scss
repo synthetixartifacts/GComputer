@@ -1,0 +1,212 @@
+.record-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+
+.record-button {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    .record-icon {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: #ff4444;
+        border-radius: 50%;
+        margin: 0 auto;
+        transition: all 0.3s ease;
+    }
+
+    #record-status {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+        color: white;
+        font-weight: bold;
+    }
+
+    .record-waves {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        border: 2px solid #ff4444;
+        border-radius: 50%;
+        opacity: 0;
+
+        &:nth-child(2) { animation-delay: 0.3s; }
+        &:nth-child(3) { animation-delay: 0.6s; }
+    }
+
+    &.recording {
+        .record-icon {
+            animation: pulse 1s ease infinite;
+        }
+
+        .record-waves {
+            animation: wave 2s linear infinite;
+        }
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes wave {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.8);
+        opacity: 0;
+    }
+}
+
+
+// Common mixins
+@mixin audio-button-base {
+    position: relative;
+    background-color: $color_accent_60;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    @include transitionBase();
+
+    &:hover {
+        background-color: $color_accent_4;
+        // transform       : rotate(360deg);
+    }
+}
+
+@mixin audio-icon {
+    position: absolute;
+    display: block;
+    top: 7px;
+    left: 9px;
+    content: '';
+    height: 20px;
+    width: 20px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url('../../images/play_white.png');
+}
+
+@mixin audio-icon-playing {
+    left: 6px !important;
+    background-image: url('../../images/pause_white.png');
+}
+
+// Original audio controls
+.audio-controls {
+    margin: 5px 0;
+
+    .play-audio {
+        @include audio-button-base;
+
+        &:before {
+            @include audio-icon;
+        }
+
+        &.playing {
+            &:before {
+                @include audio-icon-playing;
+            }
+        }
+    }
+
+    .audio-player {
+        display: none;
+    }
+}
+
+// TTS audio controls
+.ai-audio-tts {
+    margin: 5px 0;
+
+    .audio_tts_ready {
+        @include audio-button-base;
+
+        &:before {
+            @include audio-icon;
+        }
+    }
+
+    &.playing {
+        .audio_tts_ready:before {
+            @include audio-icon-playing;
+        }
+    }
+
+    &.ready {
+        .audio_tts_ready {
+            background-color: $color_accent_1;
+        }
+    }
+
+    &.loading {
+        .audio_tts_ready {
+            opacity: 0.7;
+            cursor: wait;
+
+            &:before {
+                width: 10px;
+                height: 10px;
+                left: 6px !important;
+                animation: spin 0.5s linear infinite;
+            }
+        }
+    }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.chat-text {
+
+    .ai-audio-tts {
+        margin-bottom: -10px;
+
+        .audio_tts_ready {
+            width : 25px;
+            height: 25px;
+            margin: inherit;
+            margin-left: 15px;
+
+            &::before {
+                width : 13px;
+                height: 13px;
+                top   : 6px;
+                left  : 7px;
+            }
+        }
+    }
+
+}

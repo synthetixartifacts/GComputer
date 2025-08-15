@@ -1,0 +1,21 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}PAGETITLE{% endblock %}
+
+{% block styles %}
+    {{ parent() }}
+    {# {{ encore_entry_link_tags('styles_dev') }} #}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# {{ encore_entry_script_tags('app_dev') }} #}
+{% endblock %}
+
+
+{% block content_alone %}
+
+{# <h1>{{ latestAgent.name }}</h1>
+<p>{{ latestAgent.description }}</p> #}
+{% endblock %}

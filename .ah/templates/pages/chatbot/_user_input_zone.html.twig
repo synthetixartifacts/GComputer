@@ -1,0 +1,53 @@
+
+<div id="user-input-wrap" class="user-input-wrap">
+    <div id="file-list" class="file-list"></div>
+
+    <div id="drop-zone" class="drop-zone">
+        <div class="drop-info">
+            {{ 'chatbot.file.maxSize'|trans }}
+        </div>
+        <input type="file" id="file-input" style="display: none;" multiple>
+    </div>
+
+    <div class="user-input max-width">
+        <div class="user-textarea-input-wrap">
+            <div id="user-textarea-input"
+                class="user-textarea-input"
+                current-number-line="1"
+                default-placeholder="{{ 'chatbot.messageBox.placeholder'|trans }}"
+                contenteditable="true"></div>
+        </div>
+
+        <div class="agent_name">
+            <span class="label"></span>
+            <span id="up_agent" class="up_agent"><img src="{{ asset('build/images/stars.png') }}" /></span>
+        </div>
+
+        <div class="right_options">
+            <div id="fullmessage_button" class="option_button"></div>
+            <div id="record_button" class="option_button" title="Record Audio"></div>
+            <div id="file_button" class="option_button"></div>
+            <div id="settings_button" class="option_button"></div>
+        </div>
+
+        <span class="user-submit-message"></span>
+    </div>
+    <div class="can_make_error">
+        <span class="can_make_error_span">{{ 'chatbot.error.canMake'|trans }} |</span>
+        <a href="#" id="policy_button">{{ 'policy.link'|trans }}</a>
+    </div>
+</div>
+
+
+<div id="record_stop_pop" class="popup">
+    <div class="record-button-container">
+        <div id="record_button_main" class="record-button">
+            <div class="record-icon">
+                <div id="record-status">{{ 'chatbot.record.start'|trans }}</div>
+            </div>
+            <div class="record-waves"></div>
+            <div class="record-waves"></div>
+            <div class="record-waves"></div>
+        </div>
+    </div>
+</div>

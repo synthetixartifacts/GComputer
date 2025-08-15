@@ -1,0 +1,39 @@
+
+<div id="chatbot-settings" class="popup">
+    <div class="close-popup">x</div>
+
+    <h2><span class="agent-name"></span> - {{ 'Settings'|trans }}</h2>
+
+    <div class="section custom-instructions" id="custom-instructions-team">
+        <h3>{{ 'chatbot.settings.customTeam'|trans }}</h3>
+        <div class="infos"></div>
+        <textarea id="custom-instructions-input-team"></textarea>
+    </div>
+
+    <div class="section custom-instructions" id="custom-instructions">
+        <h3>{{ 'chatbot.settings.custom'|trans }}</h3>
+        <div class="infos"></div>
+        <textarea id="custom-instructions-input"></textarea>
+    </div>
+
+    {#
+    <div class="section memory">
+        <h3>{{ 'Memory'|trans }}</h3>
+        <div class="memory-list">
+            {{ 'chatbot.settings.nomemory'|trans }}
+        </div>
+    </div>
+    #}
+
+    <div class="buttons">
+        <div id="save_settings_msg"></div>
+        <button type="button" id="save_settings_button">{{ 'Save'|trans }}</button>
+    </div>
+
+    {#
+    <div class="enter_type checkbox-container">
+        <label for="enter_key_type">CTRL+Enter to submit</label>
+        <input type="checkbox" class="checkbox" name="enter_key_type" id="enter_key_type" />
+    </div>
+    #}
+</div>

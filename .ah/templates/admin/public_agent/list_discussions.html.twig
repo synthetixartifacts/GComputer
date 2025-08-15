@@ -1,0 +1,38 @@
+{% extends 'admin/public_agent/layout.html.twig' %}
+
+{% block content_title %}Discussions for Public Agent: {{ agent.name }} ({{ agent.code }}){% endblock %}
+
+{% block main %}
+    <div class="mb-3">
+        <a href="{{ path('admin_public_agents') }}" class="btn btn-secondary">Back to Public Agents List</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Message Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for discussion in discussions %}
+            <tr>
+                <td>{{ discussion.id }}</td>
+                <td>{{ discussion.createdAt|date('Y-m-d H:i:s') }}</td>
+                <td>{{ discussion.updatedAt|date('Y-m-d H:i:s') }}</td>
+                <td>{{ discussion.messages.count }}</td> {# Assuming messages is a Doctrine Collection #}
+                <td>
+                    <a href="{{ path('admin_public_discussion_view', {'id': discussion.id}) }}" class="btn btn-info btn-sm">View Thread</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No discussions found for this agent.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %} 

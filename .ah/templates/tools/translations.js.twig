@@ -1,0 +1,8 @@
+{# templates/translations.js.twig #}
+const translations = {
+{% for domain in domains %}
+    {% for key, translation in translations[domain] %}
+    '{{ domain }}.{{ key }}': '{{ translation|e('js') }}',
+    {% endfor %}
+{% endfor %}
+};

@@ -1,0 +1,492 @@
+
+
+body.chatbot {
+
+    #chatzone {
+        display: none;
+
+        &::before, &::after {
+            position         : fixed;
+            content          : "";
+            top              : -25px;
+            left             : calc(12.5% - 32px);
+            right            : calc(12.5% - 32px);;
+            height           : 1px;
+            background-image : url('../../images/fade_bg.png');
+            background-repeat: repeat-x;
+            background-size  : contain;
+            z-index          : 1;
+            opacity          : 0;
+            @include transitionBase();
+
+            // @media (max-height: $layoutHeightSwitcher) {
+            //     // top: calc($headerDefaultHeight - 1.4vh);
+            // }
+            // @media (min-height: $layoutHeightSwitcher) {
+            //     // top: calc($headerTopHeight - 5.5vh);
+            //     top: 0;
+            // }
+        }
+
+        &::after {
+            transform: rotate(180deg);
+            top: auto;
+
+            @media (max-height: $layoutHeightSwitcher) {
+                bottom: $chatbotUserMsgBoxHeight + $footerDefaultHeight;
+            }
+            @media (min-height: $layoutHeightSwitcher) {
+                bottom: calc($headerTopHeight + 120px);
+            }
+        }
+
+        // Padding for top - bottom div
+        // Help manage position fixed header/footer
+        .starter-chat-pad {
+            display: block;
+
+            @media (max-height: $layoutHeightSwitcher) {
+                height: calc($headerDefaultHeight + $padding_half);
+            }
+            @media (min-height: $layoutHeightSwitcher) {
+                height: calc($headerTopHeight - 2vh);
+            }
+        }
+        .ender-chat-pad {
+            display: block;
+
+            @media (max-height: $layoutHeightSwitcher) {
+                height: calc($chatbotUserMsgBoxHeight + $footerDefaultHeight);
+            }
+
+            @media (min-height: $layoutHeightSwitcher) {
+                height: calc($chatbotUserMsgBoxHeight + 100px);
+            }
+
+            @media (min-height: 1150px) {
+                height: calc($headerTopHeight + $chatbotUserMsgBoxHeight + 200px);
+            }
+        }
+
+
+        // SCROLL BUTTONS
+        &.chatzone-scrollable-to-top {
+            &::before {
+                // opacity: 1;
+
+                @media (max-height: $layoutHeightSwitcher) {
+                    // height: 65px;
+                }
+                @media (min-height: $layoutHeightSwitcher) {
+                    // height: 150px;
+                }
+            }
+        }
+
+        &.chatzone-scrollable-to-bottom {
+            &::after {
+                // opacity: 1;
+                // height: 150px;
+
+                @media (max-height: $layoutHeightSwitcher) {
+                    // height: 65px;
+                }
+                @media (min-height: $layoutHeightSwitcher) {
+                    // height: 150px;
+                }
+            }
+        }
+    }
+
+
+
+
+    #main-chat {
+        display: flex;
+        flex-direction: column;
+
+        .chat-text:not(.file-list) {
+            position  : relative;
+            align-self: flex-start;
+            overflow-wrap: break-word;
+            white-space: normal;
+
+            max-width: 100%;
+            padding: 20px;
+            margin-bottom: 55px;
+
+            // border: 2px solid rgb($color_grey_light, 0.3);
+            border-radius: $border_radius;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+
+            background-color: $color_accent_30;
+
+            &.chat-ai {
+                background-color: white;
+            }
+
+
+            p {
+                margin: 0;
+                padding: 8px 0;
+                white-space: break-spaces;
+            }
+
+            h1 {
+                font-size: 1.9em;
+            }
+
+            h1, h2 {
+                margin: 10px 0;
+            }
+            h3, h4, h5 {
+                margin: 5px 0;
+            }
+            h1, h2, h3, h4, h5 {
+                padding-top: 15px;
+            }
+
+
+            code {
+                white-space: normal;
+            }
+
+            ol, ul {
+                padding-inline-start: 20px;
+                margin: 10px 0;
+            }
+
+            // Code Block
+            .code-section {
+                padding: 0;
+                margin: 15px 0 30px;
+                white-space:unset ;
+                border: 1px solid rgb($color_grey_light, 0.5);
+                background-color: rgb($color_grey_light, 0.1);
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                overflow-x: auto;
+                position: relative;
+
+                .code-header {
+                    position: relative;
+                    padding: 5px 5px 5px 15px;
+                    display: flex;
+                    align-items: center;
+                    background-color: white;
+                    font-size: 0.8em;
+                    font-weight: bold;
+                    color: $color_accent_1;
+
+                    .language {
+                        font-family: 'Courier New', monospace;
+                    }
+
+                    .copy_code {
+                        @include transitionQuick();
+                        position     : sticky;
+                        top          : 2em;
+                        margin-left  : auto;
+                        padding      : 5px;
+                        padding-left : 50px;
+                        padding-right: 10px;
+                        cursor       : pointer;
+                        border-radius: 4px;
+                        transition   : background-color 0.3s ease;
+                        z-index      : 9;
+
+                        &.sticky {
+                            opacity: 0.85;
+                        }
+
+                        &:before {
+                            position         : absolute;
+                            display          : block;
+                            content          : '';
+                            left             : 30px;
+                            height           : 20px;
+                            width            : 20px;
+                            background-image : url('../../images/copy.png');
+                            background-repeat: no-repeat;
+                        }
+
+
+                        &:hover {
+                            color: $color_accent_60;
+                        }
+                    }
+                }
+
+                .code {
+                    white-space: pre-wrap;
+                    margin: 0;
+                    padding: 20px 15px 25px;
+                    display: block;
+                    font-family: 'Courier New', monospace;
+                    font-size: 0.9em;
+                    background-color: $color_accent_5;
+                }
+            }
+
+        }
+
+        .chat-text {
+            .ai-text-copy {
+                // display: none;
+            }
+
+            &:hover {
+                .copy_msg {
+                    @include transitionQuick();
+                    opacity: 1;
+                }
+            }
+
+            .thinking-process {
+                // display       : none;
+                padding-bottom: 10px;
+
+                .still-thinking {
+
+                }
+
+                &.done-thinking {
+                    cursor: pointer;
+                }
+
+                .thinking-label {
+                    font-size: 12px;
+                    color: $color_grey;
+                }
+
+                .content {
+                    display: none;
+                    font-size: 14px;
+                    color: $color_grey_dark;
+                    border-bottom: 1px solid $color_grey_dark;
+                }
+            }
+
+            .mermaid-diagram {
+                position: relative;
+                border: 1px solid #e0e0e0;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                border-radius: 6px;
+                margin: 10px 0;
+                overflow: hidden;
+
+                .mermaid-header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    padding: 5px 10px;
+                    background-color: rgb($color_accent_30, 0.1);
+                    border-bottom: 1px solid #e0e0e0;
+                }
+
+                .mermaid-copy,
+                .mermaid-toggle,
+                .mermaid-download {
+                    @include transitionQuick();
+                    position: relative;
+                    margin-left: 20px;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    opacity: .7;
+                    width: 20px;
+                    height: 20px;
+
+                    &:hover {
+                        opacity: 1;
+                        transform: scale(1.15);
+                    }
+                }
+
+                .mermaid-copy {
+                    &:before {
+                        @include transitionQuick();
+                        position: absolute;
+                        display: block;
+                        content: '';
+                        top: 0;
+                        right: 0;
+                        height: 20px;
+                        width: 20px;
+                        background-image: url('../../images/copy_28.png');
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                    }
+
+                    &.copied:before {
+                        // background-image: url('../../images/check.png');
+                    }
+                }
+
+                .mermaid-toggle {
+                    &:before {
+                        @include transitionQuick();
+                        position: absolute;
+                        display: block;
+                        content: '';
+                        top: 0;
+                        right: 0;
+                        height: 20px;
+                        width: 20px;
+                        background-image: url('../../images/toggle_28.png');
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                    }
+
+                    &.showing-code:before {
+                        background-image: url('../../images/toggle_28.png');
+                    }
+                }
+
+                .mermaid-download {
+                    &:before {
+                        @include transitionQuick();
+                        position: absolute;
+                        display: block;
+                        content: '';
+                        top: 0;
+                        right: 0;
+                        height: 20px;
+                        width: 20px;
+                        background-image: url('../../images/download.png');
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                    }
+                }
+
+                .mermaid-container {
+                    padding: 20px;
+                }
+
+                .mermaid-code {
+                    margin: 0;
+                    padding: 10px;
+                    background-color: #f8f8f8;
+                    font-family: monospace;
+                    white-space: pre-wrap;
+                    overflow-x: auto;
+                }
+            }
+        }
+
+
+        .ai-text-copy {
+            position: absolute;
+            bottom: -28px;
+            right: 20px;
+            font-size: 14px;
+
+            .copy_msg {
+                @include transitionQuick();
+                position     : relative;
+                // margin-top   : -50px;
+                margin-left  : auto;
+                padding      : 5px;
+                padding-left : 50px;
+                padding-right: 10px;
+                cursor       : pointer;
+                border-radius: 4px;
+                transition   : background-color 0.3s ease;
+                color        : $color_accent_60;
+                opacity      : 0.4;
+
+                &:hover {
+                    color: $color_accent_1;
+
+                    &::before {
+                        opacity: 1;
+                    }
+                }
+
+                &:before {
+                    @include transitionQuick();
+                    opacity: .6;
+                    position         : absolute;
+                    display          : block;
+                    content          : '';
+                    left             : 30px;
+                    height           : 20px;
+                    width            : 20px;
+                    background-image : url('../../images/copy.png');
+                    background-repeat: no-repeat;
+                }
+            }
+
+        }
+
+        .thinking {
+            padding: 8px 15px;
+            display: none;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+
+            .loader__element {
+                border-radius: 100%;
+                border: 2px solid $color_accent_2;
+                margin: calc(3px * 2);
+            }
+
+            .loader__element:nth-child(1) {
+                animation: preloader .6s ease-in-out alternate infinite;
+            }
+            .loader__element:nth-child(2) {
+                animation: preloader .6s ease-in-out alternate .2s infinite;
+            }
+            .loader__element:nth-child(3) {
+                animation: preloader .6s ease-in-out alternate .4s infinite;
+            }
+
+            @keyframes preloader {
+                100% {
+                    transform: scale(2);
+                }
+            }
+        }
+    }
+
+
+    #new_conversation_infos {
+        text-align: center;
+        padding-top: 30px;
+
+        .image {
+            padding-bottom: 25px;
+        }
+
+        .name {
+            font-size: 2.5em;
+            font-weight: bold;
+            padding-bottom: 15px;
+        }
+
+        .description {
+            font-size: 1.5em;
+        }
+    }
+
+}
+
+
+
+@keyframes copy-scale-animation {
+    0% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.2);
+    }
+    50% {
+        transform: scale(0.9);
+    }
+    75% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

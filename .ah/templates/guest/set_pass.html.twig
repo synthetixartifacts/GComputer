@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Set Password - Welcome to Agent Hub{% endblock %}
+
+{% block styles %}
+    {{ parent() }}
+    {# {{ encore_entry_link_tags('styles_dev') }} #}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+
+{% block content_alone %}
+<img src="{{ asset('build/images/era_800_png.png') }}" alt="Logo" title="Groupe Conseil ERA" id="logo" />
+
+<div id="login" class="master_middle bubble_div">
+    <h1>{{ 'guest_create_pass'|trans|raw }}</h1>
+
+    {{ form_start(form) }}
+
+        <div class="input_line">
+            {{ form_row(form.password.first) }}
+        </div>
+        <div class="input_line">
+            {{ form_row(form.password.second) }}
+        </div>
+
+        <button type="submit">
+            {{ 'guest_save_pass_button'|trans}}
+        </button>
+    {{ form_end(form) }}
+
+
+    <br/><br/>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <br/>
+
+    <div class="login_options" style="padding-bottom: 0;">
+        <a href="{{ path('app_login') }}{{ 'guest_switch_current'|trans }}">{{ 'guest_back_login'|trans }}</a>
+    </div>
+</div>
+{% endblock %}
