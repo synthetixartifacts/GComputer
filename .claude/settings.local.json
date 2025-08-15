@@ -1,8 +1,11 @@
 {
   "permissions": {
-    "defaultMode": "acceptEdits",
     "allow": [
-      "Bash(npm run build:*)"
-    ]
+      "Bash(npm run build:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run package:all:*)",
+      "Bash(npm install)"
+    ],
+    "defaultMode": "acceptEdits"
   }
 }

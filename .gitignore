@@ -6,3 +6,4 @@ dist/
 out/
 coverage/
 node_modules
+release/
