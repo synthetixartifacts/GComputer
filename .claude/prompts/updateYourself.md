@@ -26,3 +26,8 @@ Think about this, make your master plan clearly setup and then go on and execute
 For your execution you will create a CURRENT_PLAN.md with all you plan steps well defined. All clearly setup for you to later iterate. Really this time you will only think about creating your perfect plan in that file well segmeneted with clear indicator that its a step by step with uncheck yet item.
 
 Once you created that plan you will execute one task at a time. ONE AT A TIME, then check it the telling yourself to go to the next one, one at a time.
+
+------
+
+Your GOAL is really to only update to understading of the app and only if needed the TODO.md file for possible recommandations.
+But really this step is for you to update file that will be use to trigger youself again so make sure to use this step so that the next time you are called, you will know more about this project. This is your sole purpose, learn and get better from where you are right now, you output MUST be a state where we can clearly say: He knows more about the project than before" 

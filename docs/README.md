@@ -18,7 +18,7 @@ Notes:
 
 Key modules right now:
 - Views: 21 `@views/*` components wired via hash router with dev/prod gating
-- Features: 9 production features with consistent types/service/store architecture:
+- Features: 10 production features with consistent types/service/store architecture:
   - `@features/router` - Type-safe hash routing with 19 routes
   - `@features/settings` - Persistent configuration with IPC + localStorage fallback  
   - `@features/ui` - Global UI state (theme, sidebar, modal)
@@ -29,7 +29,7 @@ Key modules right now:
   - `@features/search` - Search infrastructure with suggestions
   - `@features/chatbot` - Chat interface with thread management
   - `@features/navigation` - Hierarchical menu system
-- Components: 16 production-ready UI components including Table, FileList, SearchBox, Modal, NavTree, and specialized chat/audio components
+- Components: 16 production-ready UI components including advanced Table (filtering/sorting/editing), FileList, SearchBox, Modal, NavTree, complete chat system, and audio recording
 
 Short project pitch: Desktop app to index everything on your computer (files, photos, videos, docs, code, audio), extract metadata and embeddings, and enable natural search + chat with your content. See `project.md` for full brainstorm.
 

@@ -70,7 +70,7 @@ app/
         app.d.ts          # Global type declarations
         vite-env.d.ts     # Vite environment types
         
-        features/         # 9 feature modules (business logic)
+        features/         # 10 feature modules (business logic)
           router/         # Hash-based routing with type safety
             types.ts      # Route union type (19 routes)
             service.ts    # Navigation functions
@@ -121,9 +121,9 @@ app/
             service.ts    # Chat operations
             store.ts      # Conversation state
           
-          navigation/     # Menu system
+          navigation/     # Hierarchical menu system
             types.ts      # MenuItem interface
-            service.ts    # Menu operations
+            service.ts    # Menu operations  
             store.ts      # Navigation state
       
       styles/             # SCSS design system
