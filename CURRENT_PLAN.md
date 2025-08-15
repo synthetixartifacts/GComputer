@@ -1,179 +1,186 @@
-### Objective
+# CURRENT ANALYSIS & DOCUMENTATION PLAN
 
-Create a precise, step-by-step plan to validate and standardize our renderer views so they exclusively compose reusable components from `app/renderer/src/components/`, with logic living in feature `service.ts`/`store.ts`. Execute tasks one at a time. Do not implement changes until this plan is approved.
+## Objective
 
-### Principles
+Conduct comprehensive analysis of the GComputer codebase to create authoritative documentation, validate existing docs against implementation, and provide recommendations for the scalable "everything app" vision.
 
-- Views are thin: declarative composition of components + feature stores/services.
-- Reusable UI/behaviors live in `@components/*` or `@features/<name>/*` as appropriate.
-- Use alias imports (`@components/*`, `@views/*`, `@features/*`, `@ts/*`, `@renderer/*`).
-- TS strict: no `any` in public surfaces; explicit types for exported APIs.
-- Electron safety: renderer has no Node/Electron imports; use preload bridges only.
-- i18n: all user-facing strings via `@ts/i18n/store`; English fallback; keys stable.
-- Styles: global only for tokens/layout; component styles local in Svelte where possible.
+## Context
 
-### Current inventory snapshot (for audit reference)
+- App is at UX/UI foundation stage with reusable component architecture
+- Vision: Single app abstraction layer over OS, filesystem, internet
+- Future: Vocal interaction, computer control agents, vision capabilities
+- Current: Component library, routing, i18n, theming, database foundation
 
-- Components:
-  - Core: `Drawer`, `Footer`, `Header`, `Modal`, `Sidebar`, `NavTree`, `Table`, `ViewToggle`
-  - Media: `ImageCard`, `GalleryGrid`
-  - Files: `FileList`, `FileGrid`
-  - Audio: `audio/AudioRecorder`
-  - Chat: `chat/ChatComposer`, `chat/ChatMessageBubble`, `chat/ChatMessageList`, `chat/ChatThread`
-  - Search: `search/SearchBox`, `search/SearchResults`
-- Views to audit:
-  - `AboutView`, `App` (entry), `BrowseView`, `CategoryItem1View`, `CategoryItem2View`,
-    `FeatureDefaultFolderView`, `FeatureLocalFilesView`, `FeaturesOverviewView`, `HomeView`,
-    `SettingsConfigView`, `StyleguideBaseView`, `StyleguideButtonsView`, `StyleguideChatbotView`,
-    `StyleguideComponentsView`, `StyleguideFilesView`, `StyleguideInputsView`, `StyleguideMediaView`,
-    `StyleguideOverviewView`, `StyleguideRecordView`, `StyleguideSearchView`, `StyleguideTableView`,
-    `Test1View`, `TestDbTableView`
-- Features present:
-  - `browse`, `chatbot`, `db`, `files-access`, `navigation`, `router`, `search`, `settings`, `ui`
-- Styles:
-  - `styles/base/*`, `styles/components/*`, `styles/global.scss`
+## Execution Protocol
 
-### Execution protocol
+- Execute ONE task at a time, in sequence
+- Mark complete before moving to next
+- Validate findings against actual code
+- Maintain comprehensive DOC.md throughout
 
-- Execute exactly one checklist item at a time, in order.
-- After each item: run typecheck, fix lints, and minimally document changes where helpful.
-- Use alias imports; do not import Node/Electron in renderer.
-- Commit per item with descriptive message; avoid mixing concerns.
+---
 
-### Phase 1 — Baseline and guardrails
+## Phase 1: Deep Code Analysis
 
-- [x] Validate alias usage across renderer (`@components/*`, `@views/*`, `@features/*`, `@ts/*`, `@renderer/*`). Replace deep relatives where found.
-- [x] Confirm no Node/Electron imports in views/components; ensure preload-only access to bridges.
-- [x] Verify `@ts/i18n/service.initI18n(locale)` used during init; confirm `@ts/i18n/store.t` subscription pattern in views/components using i18n.
-- [x] Confirm feature folder structure for existing features (`types.ts`, `service.ts`, `store.ts`) and exported types.
+- [ ] **1.1** - Analyze project structure vs documented structure
+  - Compare actual file tree with docs/architecture.md
+  - Identify new files, moved files, changed patterns
+  - Document current vs expected structure
 
-Acceptance: no alias violations; renderer has zero Node/Electron imports; i18n and feature structure consistent.
+- [ ] **1.2** - Validate .cursor rules against actual implementation
+  - Check if code follows stated conventions
+  - Identify violations or outdated rules
+  - Document current coding patterns in use
 
-### Phase 2 — View-by-view audit to enforce component composition
+- [ ] **1.3** - Examine feature architecture implementation
+  - Analyze actual feature folder structure
+  - Document service/store patterns in use
+  - Check consistency across features
 
-- [x] Placeholder cleanup: identify and remove empty/placeholder views created for initial menu scaffolding. Candidates include `CategoryItem1View.svelte`, `CategoryItem2View.svelte`, `Test1View.svelte`, and any other views with only stub content. For each removal, also remove related navigation entries and routes.
-- [x] Navigation pruning: update `@features/navigation/store` and router to eliminate dead links and removed views; verify i18n keys are pruned.
-- [x] Dev-only visibility: mark styleguide and any test/demo views as dev-only in navigation (use `import.meta.env.DEV`), keeping them hidden in production menus.
-  
-Status: Completed
-- Removed placeholder views: `CategoryItem1View.svelte`, `CategoryItem2View.svelte`, `Test1View.svelte`.
-- Pruned routes from `@features/router/types` and removed imports/usages in `@views/App.svelte`.
-- Removed empty "Category" menu group from `@features/navigation/store`.
-- Gated styleguide/features/db test items in `@views/App.svelte` and `@features/navigation/store` using `import.meta.env.DEV`.
+- [ ] **1.4** - Validate component architecture
+  - Catalog all components and their APIs
+  - Document reusable patterns
+  - Check component composition in views
 
-- [x] `AboutView.svelte`: ensure static content uses shared layout components; extract any repeated layout into a small component if needed.
- - [x] `App.svelte`: verify thin entry composition; no business logic; only bootstrapping and layout.
-- [x] `BrowseView.svelte`: ensure use of `GalleryGrid`, `ImageCard`, `search/*` as relevant; remove bespoke DOM for grids/lists. (OK for now; simple demo input + list driven by feature store.)
-- [ ] `CategoryItem1View.svelte`: audit for custom UI; componentize if repeated elsewhere.
-- [ ] `CategoryItem2View.svelte`: same as above.
-- [x] `FeatureDefaultFolderView.svelte`: confirm adoption of `FileList` (done) and remove leftover table logic.
-- [x] `FeatureLocalFilesView.svelte`: confirm adoption of `FileList` (done) and remove leftover imports.
-- [x] `FeaturesOverviewView.svelte`: ensure uses `NavTree`/cards components rather than bespoke lists. (Links OK; dev-gated via menus.)
-- [x] `HomeView.svelte`: ensure shell uses `Header`, `Sidebar`, `Footer`, etc.; no bespoke navigation markup.
-- [x] `SettingsConfigView.svelte`: extract repeated control groups into small reusable controls if any (e.g., labeled rows). (Uses shared field classes; OK.)
-- [x] `StyleguideBaseView.svelte`: ensure demos reference actual components; avoid hardcoded duplicates. (Tokens showcase OK.)
-- [x] `StyleguideButtonsView.svelte`: ensure all buttons use shared classes and/or components; document variants.
-- [x] `StyleguideChatbotView.svelte`: ensure usage of `chat/*` components; remove ad-hoc chat markup. (Assumed OK per component usage elsewhere; will recheck in Phase 3.)
-- [x] `StyleguideComponentsView.svelte`: verify it only composes components for showcase.
-- [x] `StyleguideFilesView.svelte`: confirm `FileList` usage (done) and demo props coverage.
-- [x] `StyleguideInputsView.svelte`: standardize inputs using `styles/components/_controls.scss`; consider small input components if repeated.
-- [x] `StyleguideMediaView.svelte`: ensure `GalleryGrid`/`ImageCard` usage; dedupe any custom gallery markup.
-- [x] `StyleguideOverviewView.svelte`: cross-links to all component demos; no inline duplicates.
-- [x] `StyleguideRecordView.svelte`: ensure `audio/AudioRecorder` usage; no custom media recorder wiring in view.
-- [x] `StyleguideSearchView.svelte`: ensure `search/SearchBox` and `search/SearchResults` usage; mock service via feature store.
-- [x] `StyleguideTableView.svelte`: ensure exclusive use of `Table` component with i18n labels.
-- [ ] `Test1View.svelte`: audit and either delete if obsolete or align to components.
-- [x] `TestDbTableView.svelte`: ensure `Table` usage and db data mapping is in feature service/store.
+---
 
-Acceptance per view: no bespoke tables/grids/lists; i18n via store; imports via aliases; business logic extracted to features.
+## Phase 2: Documentation Validation
 
-### Phase 3 — Extract or enhance reusable components
+- [ ] **2.1** - Cross-reference docs/README.md with current state
+  - Check if links are current
+  - Validate described features
+  - Document gaps or outdated info
 
-- [x] Table: verify column typing, sorting, filtering coverage; document API; add density and empty states (already present) and verify accessibility attributes. (OK)
-- [x] FileList: confirm API is sufficient for all file views (done for list/grid, filters, i18n); add slot(s) for row actions if needed later; document usage. (OK)
-- [x] Search components: confirm `SearchBox` emits consistent events; `SearchResults` accepts typed items; add empty/Loading props. (OK)
-- [x] Layout: validate `Header`, `Footer`, `Sidebar`, `Drawer`, `Modal` APIs; add keyboard accessibility, focus traps for `Modal/Drawer` if missing. (Modal focus trap OK)
-- [x] Navigation: ensure `NavTree` is the single navigation tree component; document data shape. (OK)
-- [x] Media: confirm `GalleryGrid` and `ImageCard` cover current needs; add selection/hover slots if needed. (OK for demo)
-- [x] Chat: ensure `chat/*` expose a clear API to render threads and compose messages with i18n. (OK)
-- [x] Audio: validate `AudioRecorder` props/events; add error and permission states. (OK)
+- [ ] **2.2** - Validate docs/architecture.md accuracy
+  - Compare described architecture with implementation
+  - Check process descriptions (main/preload/renderer)
+  - Document architectural evolution
 
-Acceptance: components have explicit props/events typing, i18n labels, minimal docs, and cover all view use-cases.
+- [ ] **2.3** - Check docs/conventions.md vs actual practices
+  - Validate naming conventions in codebase
+  - Check TypeScript usage patterns
+  - Document style patterns actually used
 
-### Phase 4 — i18n completion
+- [ ] **2.4** - Validate docs/howto/* guides
+  - Test installation steps accuracy
+  - Check run commands work
+  - Validate component usage examples
 
-- [x] Ensure all components/views use i18n strings; remove literal UI strings. (Updated `ViewToggle` to accept labels; wired in `FileList`.)
-- [x] Add missing keys to `en.json` and `fr.json`; verify English fallback. (Checked keys in use; menu placeholders pruned earlier.)
-- [x] Validate dynamic placeholders for labels/tooltips/ARIA. (Modal close labels, counts, and placeholders verified.)
+---
 
-Acceptance: zero hardcoded user-facing strings; both locales compile; placeholders render.
+## Phase 3: Implementation Deep Dive
 
-### Phase 5 — Type-safety and stores/services
+- [ ] **3.1** - Analyze Electron architecture implementation
+  - Document main process capabilities
+  - Catalog preload API surface
+  - Check security model implementation
 
-- [x] Verify every `service.ts` and `store.ts` has explicit, exported types for public functions. (Reviewed core features.)
-- [x] Remove residual `any` in public surfaces; replace with generics or discriminated unions. (Tightened `db/store`, `db/service`, `settings/service`, `files-access/service`.)
-- [x] Confirm `Ui` mapping functions live in service or dedicated mappers (e.g., files-access mapping to `UiFileItem`). (OK — see `files-access/service.ts`.)
+- [ ] **3.2** - Examine database integration
+  - Document current schema
+  - Check migration system
+  - Analyze IPC database patterns
 
-Acceptance: no implicit any; exported APIs documented and typed; UI mapping centralized.
+- [ ] **3.3** - Study i18n implementation
+  - Check localization coverage
+  - Document key management
+  - Validate English/French completeness
 
-### Phase 6 — Electron security and preload APIs
+- [ ] **3.4** - Analyze routing and navigation
+  - Document current route structure
+  - Check dev/prod gating
+  - Validate navigation patterns
 
-- [x] Audit preload `index.ts` exposed API surface; ensure minimal, whitelisted methods (e.g., fs listDirectory), with types. (OK)
-- [x] Validate renderer uses only `window.gc.*` or equivalent bridges and never imports Node/Electron. (Verified in Phase 1)
-- [x] Sanitize inputs for fs interactions; handle errors robustly in main. (Main fs IPC guards errors; harmless on failures.)
-- [x] Gate dev-only main menu items (reload/devtools) behind NODE_ENV check.
+---
 
-Acceptance: preload surface minimal and typed; renderer safe; main sanitizes inputs.
+## Phase 4: Component System Analysis
 
-### Phase 7 — Styles and theming
+- [ ] **4.1** - Catalog all UI components
+  - Document component APIs
+  - Check reusability patterns
+  - Identify component gaps
 
-- [x] Ensure components keep styles local; global SCSS holds tokens, resets, generic tables/forms. (Verified)
-- [x] Confirm `_variables.scss` usage and color tokens; avoid hardcoded colors in components. (Replaced inline opacity style on neutral sort icon with class)
-- [x] Standardize spacing/typography via utilities; remove inline styles (where present in core components).
+- [ ] **4.2** - Analyze view composition patterns
+  - Document how views use components
+  - Check for code duplication
+  - Validate thin view principle
 
-Acceptance: consistent theming; minimal global bleed; no inline styles for core UI.
+- [ ] **4.3** - Study styling architecture
+  - Document SCSS organization
+  - Check theming implementation
+  - Validate no-styles-in-Svelte rule
 
-### Phase 8 — QA: Typecheck, build, and smoke
+---
 
-- [ ] Run `npm run typecheck`; resolve all issues.
-- [ ] Run `npm run build`; fix build errors/warnings.
-- [ ] Smoke-run dev to validate flows for files, search, chat, db table.
+## Phase 5: Build System & Dependencies
 
-Acceptance: green typecheck/build; manual smoke passes major flows.
+- [ ] **5.1** - Analyze build configuration
+  - Document Vite/esbuild setup
+  - Check path aliases implementation
+  - Validate development workflow
 
-### Phase 9 — Linting/format and guardrails
+- [ ] **5.2** - Examine dependency usage
+  - Document key dependencies and their usage
+  - Check for unused dependencies
+  - Analyze workspace structure
 
-- [x] Ensure ESLint/TS config enforces strict rules; extend rules if needed (no implicit any, alias-only imports in renderer). (TypeScript strict already enforced; alias rules followed.)
-- [x] Add/prep commit hook or CI step for typecheck/lint (if not present). (Scripts include `typecheck`; CI can run `npm run typecheck` + `npm run build`.)
+- [ ] **5.3** - Validate development commands
+  - Test all npm scripts
+  - Document development workflow
+  - Check hot reload behavior
 
-Acceptance: CI or local hooks catch violations early; consistent formatting.
+---
 
-### Phase 11 — Production gating for dev-only menus/pages
+## Phase 6: Future Vision Alignment
 
-- [x] Renderer navigation: gate Styleguide and any test/dev menu items behind `import.meta.env.DEV` in `@features/navigation/store`; ensure they do not render in production.
-- [x] Router: optionally avoid registering dev-only routes in production; verify 404 fallback for direct deep links. (ROUTES now dev-gated.)
-- [x] Main native menu: gate any Developer/Debug menus in `app/main/menu.ts` (and strings in `app/main/i18n/menu.ts`) using `process.env.NODE_ENV !== 'production'`.
-- [ ] Docs: add a short note about dev-only gating and how to toggle.
+- [ ] **6.1** - Assess architecture scalability
+  - Evaluate component reusability for "everything app"
+  - Check patterns for future features
+  - Document extensibility points
 
-Acceptance: production builds do not expose dev/test menus; dev builds show them as expected; direct links to hidden routes are handled gracefully.
+- [ ] **6.2** - Analyze current feature foundations
+  - Document existing file/search infrastructure
+  - Check database schema for future needs
+  - Evaluate IPC patterns for expansion
 
-### Phase 10 — Documentation plan (sub-plan to execute after code is aligned)
+---
 
-- [x] Update `docs/architecture.md`: reflect finalized component/view/feature structure and Electron security model.
-- [x] Update `docs/conventions.md`: alias usage, naming, TS strictness, i18n rules, styles strategy.
-- [x] Update `docs/howto/*`:
-  - [x] `howto/local-files.md`: using `FileList` with examples and props table. (Already present; references `FileList` usage.)
-  - [x] `howto/run.md` and `howto/install.md`: up-to-date scripts and steps.
-  - [x] `howto/chatbot.md`: composing chat components with stores/services.
-- [x] Create `docs/howto/table.md`: `Table` API, columns, filters, sorting, i18n.
-- [x] Create `docs/howto/search.md`: `SearchBox`/`SearchResults` contract and events.
-- [x] Add minimal inline docs in components where API warrants clarification (props/events blocks). (Table, Modal already describe props; FileList usage visible in Styleguide.)
-- [x] Ensure `README.md` links to key howtos and highlights alias rules.
+## Phase 7: Master Documentation Creation
 
-Acceptance: concise, high-signal docs with examples; direct links from README; minimal but sufficient inline docs.
+- [ ] **7.1** - Create comprehensive DOC.md
+  - Consolidate all findings
+  - Document current reality vs docs
+  - Create single source of truth
 
-### After approval
+- [ ] **7.2** - Update existing docs based on findings
+  - Refresh outdated sections
+  - Add missing information
+  - Fix broken references
 
-- Execute items strictly one-by-one, top to bottom.
-- After each item: typecheck, lint, minimal docs, commit.
-- Pause after each phase for a quick review before proceeding.
+- [ ] **7.3** - Create TODO.md with recommendations
+  - List improvement opportunities
+  - Suggest architectural refinements
+  - Prioritize recommendations
+
+---
+
+## Phase 8: Validation & Quality Check
+
+- [ ] **8.1** - Run comprehensive testing
+  - Execute npm run typecheck
+  - Test npm run build
+  - Validate npm run dev
+
+- [ ] **8.2** - Cross-validate all documentation
+  - Check DOC.md completeness
+  - Validate updated docs accuracy
+  - Ensure consistency across files
+
+---
+
+## Success Criteria
+
+- Comprehensive understanding of current codebase
+- Accurate, up-to-date documentation
+- Clear roadmap for "everything app" evolution
+- Clean foundation for future development
+- Single source of truth (DOC.md) established
