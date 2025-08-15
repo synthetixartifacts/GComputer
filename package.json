@@ -20,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@electron/rebuild": "^4.0.1",
     "@sveltejs/vite-plugin-svelte": "^6.1.0",
     "@types/better-sqlite3": "^7.6.13",
     "autoprefixer": "^10.4.21",
