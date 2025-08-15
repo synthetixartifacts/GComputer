@@ -1,0 +1,16 @@
+@layer base {
+  /* Common layout helpers */
+  .container-page {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .stack-md > * + * {
+    margin-top: 1rem;
+  }
+
+  .stack-lg > * + * {
+    margin-top: 1.5rem;
+  }
+}
+
+

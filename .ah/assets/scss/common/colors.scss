@@ -1,0 +1,40 @@
+// Filepath: assets/scss/common/_colors.scss
+// SCSS FOR ITEM WITH COLOR
+
+// Define your colors in a map
+$accent-colors: (
+    1: $color_accent_1,
+    2: $color_accent_2,
+    3: $color_accent_3,
+    4: $color_accent_4,
+    5: $color_accent_5
+);
+
+// Mixin for setting color and border-color
+@mixin set-colors($property, $index) {
+    #{$property}_accent_#{$index} {
+        #{$property}: map-get($accent-colors, $index);
+    }
+}
+
+// Generate color and border-color classes
+@each $index, $color in $accent-colors {
+    @include set-colors(color, $index);
+    @include set-colors(border-color, $index);
+}
+
+.color_accent_1 {
+    color: $color_accent_1;
+}
+
+.alert {
+    padding-bottom: 20px;
+
+    &.alert-success {
+        color: $color_green;
+    }
+
+    &.alert-error {
+        color: $color_red;
+    }
+}

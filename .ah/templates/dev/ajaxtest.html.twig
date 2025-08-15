@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajax API Tester{% endblock %}
+
+{% block styles %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('styles_dev') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('app_dev') }}
+{% endblock %}
+
+
+{% block content_alone %}
+<div id="chatzone" class="chatzone">
+    <div class="starter-chat-pad"></div>
+
+    <div id="main-chat">
+        <h2>Ajax API Tester</h2>
+
+        <h3>Select and configure Endpoint</h3>
+        <select id="object_selector">
+            <option value="/api/v1/test">Test API v1</option>
+            <option value="">Custom</option>
+        </select>
+
+        <br/><br/>
+        <div id="custom_object_field" style="margin-bottom: 5px">
+            <textarea
+                name="endpoint_test_url"
+                id="endpoint_test_url"
+                placeholder="Enter a full endpoint">/api/v1/test</textarea>
+        </div>
+        <button id="ajax_call_button" type="button">Call API</button>
+
+        <hr/>
+
+        <div id="test_result_return_zone" style="display: none;">
+            <h3>Return received:</h3>
+            <div id="test_stream"></div>
+            <br/><br/>
+            <div id="test_uri_return"></div>
+        </div>
+    </div>
+
+    <div class="ender-chat-pad"></div>
+</div>
+{% endblock %}

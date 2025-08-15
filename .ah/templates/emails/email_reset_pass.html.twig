@@ -1,0 +1,17 @@
+<h1>{% trans %}emails.reset_password.title{% endtrans %}</h1>
+
+<p>
+    {% trans with {'%firstName%': firstName, '%lastName%': lastName} %}emails.reset_password.greeting{% endtrans %}
+</p>
+
+<p>
+    {% trans %}emails.reset_password.instruction{% endtrans %}
+    <br/>
+    <a href="{{ url('set_password', {'token': confirmationToken}) }}">{% trans %}emails.reset_password.button{% endtrans %}</a>
+</p>
+
+<p>
+    {% trans %}emails.reset_password.closing{% endtrans %}
+</p>
+
+<p>{% trans %}emails.reset_password.ps{% endtrans %}</p>

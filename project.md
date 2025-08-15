@@ -1,447 +1,337 @@
-# Brainstorm Project First draft
+# GComputer — Consolidated Project Document
 
-Projet «Librarian AI Desktop» — Document de cadrage initial
-
-## 1) Pitch & Vision
-
-**Une application desktop (Mac/Windows) qui indexe *tout* ce que contient ton ordinateur — photos, vidéos, documents, code, audio —, en extrait des métadonnées, tags visuels, résumés, embeddings, et te permet de *converser* avec ton contenu via une IA.**
-Exemples : “Trouve-moi les photos avec du rouge, plutôt des paysages”, “Montre les factures 2023 > 500 \$”, “Résume ce dossier client et liste les TODO”, “Tous les fichiers où j’évoque *contrat X*”.
+*(replaces the original brainstorm; adds the **Everything-App** vision while keeping the current base setup, goals, and technical plan)*
 
 ---
 
-## 2) Objectifs & non‑objectifs
+## 0) Quick Summary
 
-### Objectifs (V1 → V2)
-
-* **Index global** : explorer des répertoires choisis, lire métadonnées, textes, images, audio.
-* **Base locale** : stocker *chemin*, *type*, *hash*, *métadonnées*, *extraits textuels*, *embeddings*.
-* **Recherche naturelle** : par mots-clés + recherche sémantique (vectorielle).
-* **Chat IA** : poser des questions et obtenir des réponses avec références aux fichiers.
-* **Tagging visuel** (IA) : “rouge”, “paysage”, “animal”, “vélo”, etc.
-* **Résumé documents** (IA) : PDF, DOCX, TXT, Markdown, etc.
-* **Respect de la vie privée** : tout local par défaut, envoi à une API IA *opt‑in*.
-* **UX simple** : une *vue Recherche*, une *vue Chat*, une *vue Indexation*.
-
-### Non‑objectifs (V1)
-
-* Pas de synchronisation multi‑devices.
-* Pas d’édition avancée (retouche photo, édition PDF complexe).
-* Pas d’intégration OS profonde (Finder/Explorer extensions) au début.
+**What it is now.** A secure, typed **Electron + Svelte 5** desktop app with routing, settings (persisted in Main), i18n (en/fr), and a composable UI shell.
+**What it becomes.** The **Everything App** for your computer: unified search, chat, and **automation**. It can **see your screen** (with consent), **control apps** (with explicit approval), and **do tasks for you**—or explain how.
+**How we get there.** Expand today’s local-indexing foundation into **agents + tools**, **screen understanding**, and **OS automation adapters**, all under a **local-first, permissioned** model.
 
 ---
 
-## 3) Personae & cas d’usage
+## 1) Vision & Scope
 
-* **Créatif·ve/Photographe** : retrouver des images par couleur/objet/période.
-* **Consultant·e/Dev** : retrouver specs, tickets, docs de projet par concept.
-* **Parent** : *“Toutes les photos de Léo avec un vélo au coucher de soleil”.*
+**Ultimate vision.** A **local-first personal operating layer** that lets you do everything you can do on a computer—**faster, safer, explainable**—from one place: search, create, automate, control, and learn.
 
----
+**Core pillars**
 
-## 4) UX/UI — parcours clés
+1. **Understand** — Index files, windows, clipboard, and context; summarize and relate.
+2. **Decide** — Plan steps with an on-device or private model; show reasoning outlines.
+3. **Act** — Execute safe, auditable actions across apps/OS with granular consent.
+4. **Teach** — Explain what happened, suggest next steps, and coach the user.
 
-### Écrans
+**Out-of-scope (for now).**
 
-1. **Accueil / Indexation**
-
-   * Bouton “+ Ajouter un dossier à indexer”
-   * Progrès des jobs (fichiers traités, erreurs)
-   * Paramètres d’IA (local / cloud, modèles)
-2. **Recherche**
-
-   * Barre de recherche naturelle (NLP), filtres rapides (type, date, taille, tags)
-   * Résultats en grille (images) ou liste (docs) avec *highlights*
-   * Panneau de prévisualisation (métadonnées, extrait, chemin, actions)
-3. **Chat**
-
-   * Thread de conversation
-   * Réponses avec citations vers fichiers pertinents
-   * Boutons “Ouvrir”, “Afficher dans le Finder/Explorer”
-4. **Détail fichier**
-
-   * Métadonnées, tags, résumé, versions, historique d’accès
-
-### Principes UX
-
-* **Toujours explicable** : montrer *pourquoi* un résultat est retourné.
-* **Actions rapides** : “Ouvrir/Montrer le dossier/Copier le chemin”.
-* **Sécurité claire** : badge “Local Only” / “Cloud IA activée”.
+* Cross-device sync/cloud backup
+* Full app replacement (e.g., full IDE/DAW); we integrate and orchestrate instead
 
 ---
 
-## 5) Fonctionnalités — matrice MVP → V2
+## 2) Current State (implemented)
 
-| Domaine      | MVP (V1.0)                                 | V1.1                                 | V2                                                   |
-| ------------ | ------------------------------------------ | ------------------------------------ | ---------------------------------------------------- |
-| Indexation   | Scan dossiers choisis, watchers temps réel | Reprise sur crash, throttling        | Programmation/quotas par dossier                     |
-| Parsers      | TXT/MD/PDF/DOCX, EXIF images               | XLSX/CSV/JSON, PPTX                  | Code (langages), audio (transcription locale ou API) |
-| Vision       | Tags simples (couleur/objets courants)     | Détection scènes/personnes\*         | Reconnaissance visages **opt‑in**                    |
-| Embeddings   | Texte via API ou local                     | Images via CLIP/vision               | Audio/vidéo                                          |
-| Recherche    | Mot-clé + vectorielle                      | Filtres avancés (facettes)           | Requêtes combinées “type\:pdf AND sémantique”        |
-| Chat IA      | Q/R avec citations                         | Actions (créer résumé, générer TODO) | Chaînes d’outils (workflows)                         |
-| Sécurité     | Local par défaut                           | Chiffrement base optionnel           | Profils & RBAC                                       |
-| Mises à jour | Auto‑update                                | Canaux bêta/stable                   | Diff incrémentielle                                  |
+**Processes & responsibilities**
 
-\* éviter la biométrie par défaut, mentionner les implications.
+* **Main (`app/main/`)**
 
----
+  * Window lifecycle; loads dev server or built HTML
+  * **Settings** persisted at `userData/settings.json` (validated, versioned)
+  * IPC: `settings:all`, `settings:get`, `settings:set` (+ broadcast `settings:changed`)
+  * Native menu with localized labels (separate from renderer i18n)
+  * Security: `contextIsolation: true`, `nodeIntegration: false`
+* **Preload (`app/preload/`)**
 
-## 6) Architecture technique (Electron + TypeScript **recommandé**)
+  * Minimal API via `contextBridge`
+  * `window.gc.settings = { all,get,set,subscribe }`
+* **Renderer (`app/renderer/`)**
 
-### Rationale stack (court)
+  * Svelte 5 UI; hash router; i18n (en/fr); theme cycling (`light` → `dark` → `fun`)
+  * UI shell (header/footer/sidebar/modal)
 
-* **Electron** : multi‑plateforme éprouvée, écosystème immense, accès Node.
-* **TypeScript** : robustesse, maintenabilité, évolution long terme.
-* **UI** : léger mais structuré. Deux voies viables :
+**Directory layout**
 
-  * **Svelte + Tailwind** (léger, simple à prendre en main, très fluide), ou
-  * **React + Tailwind** (écosystème maximal).
-    → **Reco par défaut** : *Svelte + Tailwind* pour l’UI (plus léger que React), tout en gardant TypeScript pour la sûreté.
-* **DB** : **SQLite** (fichier local), ORM **Drizzle** (TS), extension vectorielle (**sqlite‑vec** / **sqlite‑vss**) pour la recherche sémantique.
-  Alternative : **Qdrant** local ou **FAISS**, mais SQLite simplifie le déploiement.
-* **Queue** : **BullMQ** (Redis) si besoin intensif… ou **p‑queue** (sans Redis) pour rester simple au début.
-* **Parsers** : `pdf-parse`/`pdfjs`, `mammoth` (docx), `xlsx`, `exifr`, `sharp`.
-* **Embeddings/IA** :
+```
+app/
+  main/            # Electron main → dist/main/index.cjs
+  preload/         # Preload (secure IPC) → dist/preload/index.cjs
+  renderer/
+    index.html
+    src/
+      styles/      # Tailwind + global SCSS
+      components/  # shared components
+      views/       # thin Svelte views
+      ts/
+        main.ts
+        features/
+          router/   # hash router (types, service, store)
+          settings/ # settings types/service/store
+          i18n/     # i18n types/service/store + locales/en.json, fr.json
+          ui/       # shell state (sidebar, modal, theme)
+          browse/   # placeholder
+```
 
-  * Cloud (OpenAI/Cohere/Anthropic/Voyage) pour démarrer,
-  * Option **local** : sentence‑transformers via ONNX/wasm (plus lourd, mais privé).
-* **Vision** : tags couleur/objet avec API vision (rapide) ou modèle local (CLIP/ONNX) plus tard.
+**Path aliases (renderer):** `@renderer/*`, `@views/*`, `@ts/*`, `@features/*`, `@components/*`.
 
-### Schéma (logique)
+**Build & scripts**
 
-* **Processus principal (Electron Main)**
+* `npm run dev` — Vite (renderer) + esbuild watch (main/preload) + Electron
+* `npm run build` — builds all to `dist/`
+* `npm run typecheck` — strict TS
 
-  * Démarre l’app, gère fenêtres, auto‑update, menu, *secure IPC*.
-  * Démarre **Scanner** (worker) et **Indexer** (worker).
-* **Preload**
+**Artifacts:**
+Main → `dist/main/index.cjs` · Preload → `dist/preload/index.cjs` · Renderer → `dist/renderer/`
 
-  * Pont sécurisé `ipcRenderer` ↔ `ipcMain` (API whitelisting).
-* **Renderer (UI)**
+**Libraries present (to be wired):** `better-sqlite3`, `drizzle-orm`, `exifr`, `mammoth`, `pdf-parse`, `sharp`.
 
-  * Vues Svelte (Indexation, Recherche, Chat).
-* **Services Node**
+**Conventions**
 
-  * **Scanner** (walk dossiers, watch changes)
-  * **Parsers** (extractions MIME‑spécifiques)
-  * **Embedding** (texte, image)
-  * **DB** (SQLite + vecteurs)
-  * **AI Connector** (OpenAI/Anthropic abstrait)
-  * **Search Engine** (BM25 + vecteurs + filtres)
-
-### Flux d’indexation
-
-1. **Découverte** : parcours initial + watchers (chokidar).
-2. **Dédup** : hash (xxhash/blake3) → éviter re‑parse.
-3. **Parsing** : texte/EXIF/métadonnées.
-4. **Chunking** : découpage smart (PDF, DOCX).
-5. **Embeddings** : stockage vecteurs.
-6. **Commit** : transaction SQLite.
-7. **Audit** : logs + erreurs réessayables.
+* Thin views; logic/IO in `features/*/{service,store}.ts`
+* Svelte stores with explicit subscriptions
+* Naming: camelCase (vars/fns), PascalCase (types & Svelte), folders kebab-case
 
 ---
 
-## 7) Modèle de données (ébauche)
+## 3) UX Structure (target)
 
-**tables**
+**Global elements**
+
+* **Command Palette** (⌘K / Ctrl+K): search, run actions, ask chat, open tools
+* **Context Bar**: shows current scope (workspace, app window, selection)
+* **Heads-Up Overlay** (permissioned): inline suggestions on top of apps
+
+**Primary screens**
+
+1. **Indexing** — choose folders, privacy toggles, job queue/progress
+2. **Search** — natural language + filters; list/grid; preview with metadata & actions
+3. **Chat** — conversational agent with **citations** and **actions**
+4. **Automations** — create/run workflows; history; approvals
+5. **Settings** — language, theme, folders, privacy, model/AI, automation permissions
+
+---
+
+## 4) Capabilities Map
+
+| Domain       | MVP (V1.0)                                           | Near-term (V1.1–V1.2)                                            | Long-term (V2)                                                     |
+| ------------ | ---------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Files/Search | Local index (TXT/MD/PDF/DOCX, EXIF). Keyword search. | Vector search (text). Facets & advanced filters.                 | Multi-modal search (image/audio). Cross-app linking & collections. |
+| Chat         | Q/A with citations to local files.                   | Tool-use (summarize, tag, rename). Memory of recent context.     | Project/goal agents spanning files, apps, and web (opt-in).        |
+| Screen Sense | —                                                    | Screen capture (consent), OCR, basic element detection.          | UI model of current app; intent detection; overlay suggestions.    |
+| Automation   | —                                                    | App actions: open, type, click, run CLI; file ops with approval. | Rich workflows: conditional steps, loops, schedulers, web RPA.     |
+| OS Control   | —                                                    | macOS: AppleScript/Shortcuts; Win: PowerShell/WinRT adapters.    | Native service w/ accessibility APIs; per-app sandboxes.           |
+| Voice        | —                                                    | Push-to-talk, TTS replies.                                       | Continuous assist; ear-con cues; low-latency streaming.            |
+| Privacy/Sec  | Local-first settings; explicit opt-ins.              | Per-tool scopes, just-in-time prompts, signed actions log.       | DB encryption; policy packs; enterprise RBAC/profile separation.   |
+
+---
+
+## 5) Architecture
+
+**Why this stack**
+
+* **Electron + TypeScript**: cross-platform, strong typing, controlled OS access
+* **Svelte 5 + Tailwind/SCSS**: fast, minimal UI runtime
+* **SQLite + Drizzle**: single-file DB with typed schema & migrations; add vector ext
+* **Composable services**: indexer, parsers, embeddings, search, automations, chat
+
+**Logical components**
+
+* **Main**: app lifecycle, secure IPC, menu, auto-update
+* **Preload**: whitelisted API surface
+* **Renderer**: UI (Search/Chat/Automations/Settings)
+* **Services (Node)**
+
+  * **Scanner** (walk + `chokidar` watchers)
+  * **Parsers** (`pdf-parse`, `mammoth`, `exifr`, `sharp`, later `xlsx/csv`)
+  * **Embedding** (driver: cloud/local ONNX)
+  * **DB** (SQLite/Drizzle; vector ext like `sqlite-vec`/`sqlite-vss`)
+  * **Search** (FTS/BM25 + vector fusion)
+  * **Automation Adapters**
+
+    * macOS: AppleScript/JXA, Shortcuts, shell
+    * Windows: PowerShell, COM/WinRT bridges
+    * Cross-platform: CLI processes, file ops, clipboard
+  * **Screen Understanding**
+
+    * Electron `desktopCapturer` (prompted), window bounds
+    * OCR (Tesseract/Onnx), simple detector (templates/vision model)
+  * **Agent Runtime**
+
+    * Planner (tool-selection) → **Approval** → Executor → Verifier
+
+**Action lifecycle (safety by design)**
+
+1. **Observe** (optional: screen, selection, clipboard)
+2. **Plan** (transparent steps; show diffs where possible)
+3. **Approve** (scoped, time-boxed permissions)
+4. **Act** (idempotent, cancellable)
+5. **Verify** (check post-conditions; show log)
+
+---
+
+## 6) Data Model (draft)
+
+**Core tables**
 
 * `files(id, path, dir, name, ext, size, mtime, ctime, hash, mime, kind, status)`
-* `file_meta(file_id, key, value)`  (EXIF, custom tags)
+* `file_meta(file_id, key, value)`        // EXIF/custom tags
 * `file_text(file_id, chunk_id, text, token_count)`
-* `file_vectors(file_id, chunk_id, embedding VECTOR)`
+* `file_vectors(file_id, chunk_id, embedding VECTOR)` // cosine
 * `tags(file_id, tag, source, confidence)`
 * `jobs(id, type, status, started_at, finished_at, error)`
+* `actions(id, kind, params_json, result_json, status, approved_by, created_at)` // audit
+* `permissions(id, tool, scope, granted_at, expires_at, rationale)`             // consent
 
-**index**
-
-* B‑Tree : `path`, `mtime`, `mime`, `tag`
-* Vectoriel : `file_vectors.embedding` (cosine)
-
----
-
-## 8) Sécurité, vie privée, conformité
-
-* **Local first** : *aucun* contenu n’est envoyé par défaut.
-* **Opt‑in clair** pour IA cloud, *data minimization* (envoi de *snippets* plutôt que fichiers entiers).
-* **IPC sécurisé** : `contextIsolation: true`, `nodeIntegration: false` côté renderer, API whitelisting en preload.
-* **Secrets** : stockés via keystore OS (Keychain macOS / DPAPI Windows).
-* **Chiffrement (option)** : SQLite chiffré (SQLCipher) si besoin.
-* **Biométrie** : reconnaissance visage *désactivée* par défaut; consentement explicite, information utilisateur.
-* **Logs** : *redaction* des chemins sensibles sur demande.
+**Indexes**
+B-tree on `path`, `mtime`, `tag`; vector index on `file_vectors.embedding`.
 
 ---
 
-## 9) Plateformes & packaging
+## 7) IPC Contracts
 
-* **Windows** : `.exe` via `electron-builder` (NSIS), auto‑update (nsis-web). Signature de code recommandée.
-* **macOS** : `.app` + `.dmg`, signature + **notarisation** Apple pour éviter Gatekeeper.
-* **Portable** (option) : build “portable” Windows; moins conseillé si DB locale lourde.
-* **Mises à jour** : provider GitHub Releases/S3, delta updates.
+**Current**
 
----
+* `settings:all` · `settings:get(key)` · `settings:set(key,value)`
+* Preload: `window.gc.settings = { all(), get(k), set(k,v), subscribe(fn) }`
 
-## 10) Observabilité & perf
+**Planned (examples)**
 
-* **Logs** : `electron-log` + fichiers par service.
-* **Metrics** : basiques en local (durée parse/embedding, queue depth).
-* **Perf** : workers multi‑process, chunking, back‑pressure, throttling IO, exclusion dossiers système, *ignore globs*.
-* **Cache** : thumbnails (sharp), embeddings (hash contenu).
+* `folders:add|remove|list`
+* `indexer:start|pause|resume|status`
+* `search:query` (text + filters + semantic) → results + snippets
+* `chat:ask` (prompt, scope) → answer + citations + suggested actions
+* `screen:capture` (prompted) → image + OCR text + regions
+* `automation:execute` (tool, params) → requires `permissions.grant`
+* `permissions:grant|revoke|list` (scopes: files, clipboard, app, window)
 
----
-
-## 11) Tests & qualité
-
-* **Unit** : Vitest/Jest (services parsing, DB).
-* **Intégration** : tests sur DB, embeddings simulés.
-* **E2E** : Playwright (parcours UI).
-* **Packaging smoke** : lancer l’app packagée dans CI.
-* **Lint/format** : ESLint + Prettier.
-* **Typed** : strict TS.
+*All APIs remain **preload-whitelisted**; no Node/Electron in renderer.*
 
 ---
 
-## 12) Alternatives de stack (panorama + verdict)
+## 8) Security & Privacy
 
-* **Electron + TypeScript + Svelte + Tailwind** ✅ **(Reco)**
-  Léger côté UI, robuste, très bon compromis long terme.
-* **Electron + TypeScript + React + Tailwind**
-  Écosystème massif, un peu plus lourd. Bon si tu veux maximiser les libs UI.
-* **Electron + Vanilla TS (+ jQuery au besoin)**
-  Ultra léger au début, risque d’architecture spaghetti si l’UI grossit.
-* **Tauri (Rust) + Svelte/React**
-  Bundles minuscules, perf top, mais Rust côté backend (nouvelle stack). Option V2.
-
-**Choix recommandé** : *Electron + TypeScript + Svelte + Tailwind + SQLite(+sqlite‑vec).*
-Raisons : productivité, maintenance, recherche vectorielle locale simple, bundle raisonnable, UI fluide.
+* **Local by default**; cloud AI **off** unless explicitly enabled
+* **Granular scopes**: e.g., “read \~/Documents/Invoices”, “control Finder only”
+* **Just-in-time consent** with TTL; revoke anytime
+* **Outbound minimization**: send deltas/snippets, never whole files silently
+* **Secrets**: OS keychain (Keychain/DPAPI)
+* **Optional** DB encryption (SQLCipher)
+* **Action log**: signed, human-readable; “dry-run” mode for every workflow
+* **Biometrics/people**: disabled by default; separate consent
 
 ---
 
-## 13) Plan de livraison (roadmap courte)
+## 9) Tech Stack (current & planned)
 
-**Semaine 1–2 (MVP tech)**
+**Current**
 
-* Squelette Electron (main/preload/renderer), TS, Vite.
-* DB SQLite + Drizzle, tables de base.
-* Scanner dossiers (walk + hash + watcher).
-* Parsers TXT/MD/PDF/DOCX (extraits texte).
-* Embeddings texte via API (clé .env, toggle local/offline).
-* Recherche (mot‑clé + vecteur) + vue Résultats.
+* **Electron** (Main/Preload/Renderer) · **TypeScript (strict)**
+* **Svelte 5** · **Tailwind CSS + SCSS** via `svelte-preprocess`
+* **Vite** (renderer) · **esbuild** (main/preload)
 
-**Semaine 3–4 (UX & IA)**
+**Present libs (to wire)**
 
-* Vue Chat avec citations, actions “ouvrir/montrer”.
-* Tagging visuel simple (API vision) + EXIF.
-* Résumés documents (API).
-* Paramètres (opt‑in cloud, quotas, dossiers exclus).
-* Build `.exe`/`.dmg`, auto‑update basique.
+* **SQLite** (`better-sqlite3`) + **Drizzle ORM**
+* Parsers: `exifr`, `mammoth`, `pdf-parse`
+* Imaging: `sharp`
 
-**Semaine 5+ (hardening)**
+**Planned additions**
 
-* Robustesse indexation (reprise, throttling).
-* Filtres avancés, facettes.
-* Option embeddings locaux (ONNX) + vision locale.
-* Chiffrement base (option).
-* Tests E2E & canaux bêta.
+* **Vector**: SQLite vector extension (e.g., `sqlite-vec`/`sqlite-vss`)
+* **Embeddings**: cloud (OpenAI/Cohere/Voyage/…) + local ONNX fallback
+* **OCR/Vision**: Tesseract/ONNX; later lightweight UI element detectors
+* **Automation**: AppleScript/JXA/Shortcuts (macOS), PowerShell/WinRT (Windows)
+* **Voice**: VAD + TTS/ASR provider adapters
+* **Scheduler**: in-process queue (bullmq-style semantics without Redis)
 
 ---
 
-## 14) Arborescence repo (proposée)
+## 10) Packaging & Releases
 
-```
-/app
-  /main        # process principal (TS)
-  /preload     # pont IPC sécurisé
-  /renderer    # UI Svelte + Tailwind
-  /services    # scanner, parsers, embeddings, db, search
-  /workers     # worker_threads/child_procs intensifs
-  /schemas     # Drizzle/SQL, migrations
-  /config      # .env templates, defaults
-  /assets      # icônes, logos
-/tests
-/scripts
-```
+* **electron-builder**
+
+  * macOS: `.app`/`.dmg`, hardened runtime + notarization
+  * Windows: `.exe` (NSIS), optional portable
+* Auto-update from GitHub Releases/S3; later delta updates
+* CI: typecheck → tests → build → signed artifacts → release notes
 
 ---
 
-## 15) Scripts NPM (exemple)
+## 11) Roadmap
 
-* `dev`: lancer Electron + Vite en dev
-* `build`: build UI + pack Electron
-* `lint`, `typecheck`, `test`, `e2e`
-* `pack:win`, `pack:mac`, `release`
+**Phase 1 — Core search foundation (in progress)**
 
----
+* Hook **SQLite + Drizzle** (migrations)
+* **Scanner + Parsers** (TXT/MD/PDF/DOCX, EXIF)
+* **Search (keyword)** UI with preview & quick actions
+* Settings: folders, language, theme, privacy toggles
 
-## 16) Exemples de snippets (ultra‑minimum)
+**Phase 2 — Semantic & Chat**
 
-### `main.ts` (création fenêtre + IPC minimal)
+* **Embeddings (cloud first)** with cache; toggle **local ONNX**
+* **Vector search** + hybrid ranking; facets/filters
+* **Chat with citations** and simple file actions (summarize, tag, rename)
 
-```ts
-import { app, BrowserWindow, ipcMain } from 'electron';
-import path from 'node:path';
-import fs from 'node:fs/promises';
+**Phase 3 — Automations (starter)**
 
-let win: BrowserWindow;
+* **Command Palette** to run safe built-ins (open/reveal, convert, rename batch)
+* **Automation Adapters** (macOS/Windows) for basic app control (open app, open file, run CLI)
+* **Approval UI** + **Action Log** + **Dry-run** for every action
 
-async function createWindow() {
-  win = new BrowserWindow({
-    width: 1200, height: 800,
-    webPreferences: {
-      preload: path.join(__dirname, '../preload/index.js'),
-      contextIsolation: true,
-      nodeIntegration: false,
-    }
-  });
-  await win.loadURL(process.env.VITE_DEV_SERVER_URL ?? `file://${path.join(__dirname, '../renderer/index.html')}`);
-}
+**Phase 4 — Screen Understanding**
 
-app.whenReady().then(createWindow);
+* **Screen capture (consent)** + OCR; detect common UI regions
+* Overlay suggestions: “copy table to CSV”, “fill this form”, “rename downloads by pattern”
+* Intent → plan → confirm → execute → verify loop
 
-// Exposition d’une API sécurisée côté main
-ipcMain.handle('fs:listDir', async (_evt, dir: string) => {
-  return await fs.readdir(dir, { withFileTypes: true }).then(entries =>
-    entries.map(e => ({ name: e.name, dir: e.isDirectory() }))
-  );
-});
-```
+**Phase 5 — Workflows & Coaching**
 
-### `preload/index.ts` (pont sécurisé)
-
-```ts
-import { contextBridge, ipcRenderer } from 'electron';
-
-contextBridge.exposeInMainWorld('api', {
-  listDir: (dir: string) => ipcRenderer.invoke('fs:listDir', dir)
-});
-```
-
-### `renderer/App.svelte` (appel API)
-
-```svelte
-<script lang="ts">
-  let path = '';
-  let items: Array<{name:string, dir:boolean}> = [];
-  async function browse() {
-    items = await (window as any).api.listDir(path);
-  }
-</script>
-
-<input bind:value={path} placeholder="Chemin..." />
-<button on:click={browse}>Lister</button>
-
-<ul>
-  {#each items as it}
-    <li>{it.dir ? '📁' : '📄'} {it.name}</li>
-  {/each}
-</ul>
-```
+* Visual workflow builder (if/then/loop, timers, schedules)
+* Domain packs (e.g., “Inbox Zero”, “Photo curation”, “Project kickoff”)
+* Voice push-to-talk; live coaching (“here’s how to do this in X app”)
 
 ---
 
-## 17) Choix IA & embeddings
+## 12) Risks & Mitigations
 
-* **Démarrage rapide** : Embeddings texte via API (OpenAI/Cohere/Voyage).
-
-  * *Pro* : qualité, zéro infra. *Con* : coût, confidentialité (opt‑in).
-* **Mode privé** : Embeddings locaux ONNX (ex. MiniLM).
-
-  * *Pro* : données locales. *Con* : taille modèle, CPU/GPU requis, perf.
-
-**Abstraction unique** : interface `EmbeddingProvider` avec drivers (cloud/local).
+* **OS automation fragility** → adapters per OS, retries, verifiers, user-visible diffs
+* **Privacy concerns** → explicit scopes, TTL permissions, signed logs, offline mode
+* **Model latency/cost** → caching, batching, local models where feasible
+* **Large corpora** → incremental indexing, content-hash dedupe, throttled embeds
+* **PDF/vision edge cases** → layered fallback (text → OCR → summarize failures)
 
 ---
 
-## 18) Gestion des images & médias
+## 13) How to Run (current repo)
 
-* **EXIF** : `exifr` (date, GPS, appareil).
-* **Thumbnails** : `sharp` (cache).
-* **Vision** : classes génériques (couleur dominante, scènes/objets fréquents).
-* **Audio** : plus tard : transcription (local Whisper/ONNX ou API).
-
----
-
-## 19) Stratégies de scan
-
-* **Initial** : BFS limité (prioriser types “riches”).
-* **Incrémental** : watchers + queue.
-* **Évitement** : `.git`, `node_modules`, caches système.
-* **Politesse** : limiter IO/CPU, pause/reprendre.
+* Install: `docs/howto/install.md`
+* Dev: `npm run dev`
+* Build: `npm run build`
+* Typecheck: `npm run typecheck`
+* Architecture: `docs/architecture.md`
+* Docs index: `docs/README.md`
 
 ---
 
-## 20) CI/CD & GitHub
+## 14) Next Concrete Steps
 
-* **Ne commite pas** les `.exe`/`.app`/artifacts ; publie en **Releases** via CI.
-* **GitHub Actions** :
-
-  * Lint + typecheck + tests
-  * Build multi‑plateforme
-  * Release draft avec notes changelog (Conventional Commits).
-* **.gitignore** : `dist/`, `out/`, `node_modules/`, `*.log`, `*.sqlite`.
-
----
-
-## 21) Paramétrage build (electron‑builder : aperçu)
-
-* AppId, nom produit, icônes.
-* **mac** : `hardenedRuntime`, `entitlements`, notarisation.
-* **win** : NSIS, oneClick on/off, install dir par défaut (`Program Files`).
-* Auto‑update : provider GitHub/S3.
+1. **Finalize DB schema** (files/text/vectors/tags/jobs/actions/permissions) and migrations.
+2. Implement **Scanner + Parsers** → write to DB; preview in Search UI.
+3. Add **Embeddings driver** (cloud) + cache; wire **vector search**.
+4. Ship **Chat with citations** and **basic actions** (summarize/rename/tag).
+5. Add **Command Palette** and first **Automation Adapters** (open app/file; run CLI).
+6. Introduce **Approval UI + Action Log + Dry-run**.
+7. Add **Screen capture + OCR** (opt-in) and minimal overlay suggestions.
 
 ---
 
-## 22) Points d’attention & risques
+## 15) Glossary
 
-* **Volume** : millions de fichiers → penser à la pagination, au *lazy embedding*.
-* **Coût IA** : prévoir quotas, batchs, caches.
-* **Confidentialité** : UX d’opt‑in claire, journaliser ce qui part au cloud.
-* **Perf Windows HDD** : throttling, exclusions.
-* **PDF complexes** : extraction fragile → fallback OCR (plus tard).
-
----
-
-## 23) Plan « première ligne de code » (pas à pas)
-
-1. **Pré‑requis** : Node ≥ 20, VS Code.
-2. `mkdir librarian-ai && cd librarian-ai`
-3. `npm init -y`
-4. Ajouter TS, Vite, Svelte : `npm i -D typescript vite svelte @sveltejs/vite-plugin-svelte`
-5. Electron : `npm i -D electron electron-builder concurrently cross-env`
-6. Config TS (`tsconfig.json`), Vite (`vite.config.ts`), scripts npm :
-
-   * `dev`: Vite (UI) + Electron main en watch
-   * `build`: build UI + packager
-7. Créer `app/main`, `app/preload`, `app/renderer`.
-8. Implémenter **snippets** ci‑dessus (main/preload/renderer).
-9. Lancer `npm run dev`, vérifier l’IPC `listDir`.
-10. Ajouter **SQLite + Drizzle** : tables `files`, `file_text`, etc.
-11. Implémenter un **Scanner** minimal (walk + insert DB).
-12. Ajouter un **EmbeddingProvider** factice (retourne vecteurs aléatoires) → brancher la recherche.
-13. Basculer vers embeddings réels (API), ajouter *toggle local/cloud*.
-14. Packager (`npm run build`), tester `.exe`/`.dmg`.
+* **Agent Runtime**: planner/executor/verifier that chooses tools to complete goals.
+* **Scope/Permission**: time-boxed authorization for a tool (e.g., “control Finder 5 min”).
+* **Dry-run**: simulated execution that shows intended changes without applying them.
+* **Vector Search**: nearest-neighbor retrieval over embeddings (semantic search).
 
 ---
 
-## 24) Glossaire rapide
-
-* **Embedding** : représentation vectorielle d’un contenu pour recherche sémantique.
-* **Vector DB** : base optimisée pour rechercher par similarité de vecteurs.
-* **IPC** : communication processus main ↔ renderer dans Electron.
-* **Watcher** : écoute les changements de fichiers.
-* **BM25** : algo de recherche plein texte classique (mot‑clé).
-
----
-
-## 25) Prochaines étapes concrètes (ma reco)
-
-1. Valider le **stack** : *Electron + TypeScript + Svelte + Tailwind + SQLite(+sqlite‑vec)*.
-2. Démarrer le **squelette** (main/preload/renderer) + **IPC sécurisé**.
-3. Brancher **SQLite + Drizzle** et créer les tables.
-4. Livrer **MVP Scanner** (un dossier) + **Recherche mots‑clés**.
-5. Ajouter **embeddings texte (API)** + **Recherche sémantique**.
-6. Créer **Vue Chat** avec citations et actions.
-7. Intégrer **tagging visuel** de base (API) + EXIF.
-8. **Packager** et tester sur Win/macOS, puis itérer.
-
----
-
-Si tu veux, je peux te générer un repo “starter” (scripts, config Vite/Electron, TS strict, Svelte/Tailwind, Drizzle/SQLite, IPC sécurisé) et t’accompagner étape par étape. Tu veux partir direct sur ce stack recommandé ou tu préfères une variante (React, Tauri, embeddings locaux dès J1) ?
+*End of document*

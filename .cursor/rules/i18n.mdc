@@ -1,0 +1,12 @@
+---
+name: "Renderer i18n"
+description: "How translations work in renderer"
+globs: ["app/renderer/src/ts/i18n/**/*", "app/renderer/src/views/**/*"]
+alwaysApply: true
+---
+
+- Use `@ts/i18n/service.initI18n(locale)` during app init to seed catalogs (`en.json`, `fr.json`).
+- Use `@ts/i18n/store.t` in Svelte: subscribe explicitly and unsubscribe on destroy.
+- Change language via `@features/settings/service.setLocale(locale)` which updates both settings and i18n store.
+- Keys are dot-notated; missing keys fallback to English or key string.
+

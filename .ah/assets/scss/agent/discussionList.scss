@@ -1,0 +1,202 @@
+#discussion_search_sentinel {
+    height: 0;
+    width: 100%;
+    position: relative;
+}
+
+/* The container in which the search controls live */
+#discussion_search_container {
+    /* Non-sticky (default) */
+    position: relative;
+    display: none;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+
+    @media (max-width: $size_mobile_break) {
+    }
+
+    /* Sticky state (toggled by JS) */
+    &.sticky {
+        position: fixed;
+        top: 40px;
+        /* We want it centered with a fixed width. */
+        left: 50%;
+        transform: translateX(-50%);
+        box-sizing: border-box;
+
+        padding: 10px;
+        z-index: 9;
+
+        max-width: $maxWidth;
+        background-color: $color_accent_5;
+        margin: 0; // Typically no margin in sticky mode, since it's positioned
+    }
+}
+
+/* Search Input */
+.discussion-search-input {
+    width: 100% !important;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+/* Clear Button (the "X") */
+.discussion-search-clear {
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    width: auto !important;
+    margin-left: -50px;
+    background-color: transparent;
+    color: black !important;
+
+    &:hover {
+        background-color: transparent !important;
+        color: $color_accent_1 !important;
+
+        &::before {
+            display: none !important;
+        }
+    }
+}
+
+/* Agent Dropdown */
+.discussion-search-agent {
+    margin-left: 25px;
+    width: 25% !important;
+    min-width: 0px !important;
+}
+
+/* Favorite Toggle */
+.discussion-favorite-toggle {
+    margin-left: 15px;
+    cursor: pointer;
+    padding: 8px;
+    padding-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: $color_grey_dark; /* Default gray state */
+    transition: color 0.2s ease, transform 0.2s ease;
+
+    &[data-state="favorites"] {
+        color: $color_accent_1; /* Orange/highlighted state when active */
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+/* Date Sort Toggle */
+.discussion-sort-toggle {
+    margin-left: 15px;
+    cursor: pointer;
+    padding: 8px;
+    padding-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: $color_grey_dark;
+    transition: color 0.2s ease, transform 0.2s ease;
+
+    &[data-sort="date_asc"]::after {
+        content: '↑';
+    }
+
+    &[data-sort="date_desc"]::after {
+        content: '↓';
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+/* The sentinel can be zero-height if you want. It's just for IntersectionObserver. */
+#discussion_search_sentinel {
+    height: 0;
+}
+
+#discussion_list {
+    display: none;
+
+    @media (max-height: $layoutHeightSwitcher) {
+        padding: calc($headerDefaultHeight + $padding_half) 0 0;
+    }
+
+    @media (min-height: $layoutHeightSwitcher) {
+        padding: calc($headerTopHeight - 2vh) 0 0;
+    }
+
+    #discussion_list_real {
+        width: 100%;
+        box-sizing: content-box;
+
+        .item {
+            a {
+                padding: 10px 0;
+                text-decoration: none;
+            }
+        }
+
+        .discussion-row {
+            /* Layout for each discussion row */
+            display: grid;
+            grid-template-columns: 70px minmax(0, 1fr) 180px;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.5rem;
+            box-sizing: content-box;
+        }
+
+        .discussion-date {
+            font-size: 0.7em;
+            color: $color_grey_dark;
+        }
+
+        .discussion-title {
+            font-size: 1.15em;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-sizing: content-box;
+        }
+
+        .discussion-agent {
+            text-align: right;
+            font-size: 0.8em;
+            color: $color_grey_dark;
+            white-space: nowrap;
+        }
+
+        /* Style for the favorite indicator in discussion titles */
+        .favorite-indicator {
+            margin-right: 5px;
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.1s ease;
+            font-size: 1em;
+            line-height: 1;
+            display: inline-block;
+            width: 1em;
+            text-align: center;
+            
+            &.favorited {
+                color: $color_accent_1;
+            }
+            
+            &.not-favorited {
+                color: $color_grey_dark;
+            }
+            
+            &:hover {
+                transform: scale(1.1);
+                color: $color_accent_1;
+            }
+        }
+    }
+}

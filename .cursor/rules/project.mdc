@@ -1,0 +1,26 @@
+---
+name: "Project Summary (GComputer)"
+description: "High-signal context for Cursor about this repo."
+globs: ["**/*"]
+alwaysApply: true
+---
+
+- Stack: Electron + TypeScript + Svelte + Tailwind + Vite.
+- Processes:
+  - Electron Main: `app/main/` → bundles to `dist/main/index.cjs`.
+  - Preload: `app/preload/` → secure IPC exposure → `dist/preload/index.cjs`.
+  - Renderer: `app/renderer/` → `index.html` → `/src/ts/main.ts` → mounts `@views/App.svelte`.
+- Renderer structure:
+  - `src/views/` (thin Svelte views)
+  - `src/ts/features/<name>/{types.ts,service.ts,store.ts}` (logic, IO, state)
+  - `src/components/` (shared UI)
+  - `src/styles/` (global styles)
+- Aliases:
+  - `@renderer/*` → `app/renderer/src/*`
+  - `@views/*` → `app/renderer/src/views/*`
+  - `@ts/*` → `app/renderer/src/ts/*`
+  - `@features/*` → `app/renderer/src/ts/features/*`
+  - `@components/*` → `app/renderer/src/components/*`
+- Scripts: `npm run dev`, `npm run build`, `npm run typecheck`.
+- Docs: see `docs/architecture.md`, `docs/conventions.md`, `docs/howto/*`.
+

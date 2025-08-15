@@ -1,0 +1,18 @@
+@layer base {
+  /* Use CSS variables for durations/easings provided in variables */
+  .ease-standard { transition-timing-function: var(--ease-standard); }
+  .duration-fast { transition-duration: var(--duration-fast); }
+  .duration-normal { transition-duration: var(--duration-normal); }
+  .duration-slow { transition-duration: var(--duration-slow); }
+
+  /* Generic transitions */
+  .transition-base { transition: all var(--duration-normal) var(--ease-standard); }
+
+  /* Fade utilities for modal/backdrops */
+  .fade-enter { opacity: 0; }
+  .fade-enter-active { opacity: 1; transition: opacity var(--duration-normal) var(--ease-standard); }
+  .fade-exit { opacity: 1; }
+  .fade-exit-active { opacity: 0; transition: opacity var(--duration-normal) var(--ease-standard); }
+}
+
+

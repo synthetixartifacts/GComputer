@@ -1,0 +1,79 @@
+@use '../base/mixins' as m;
+
+@layer components {
+  /* Header */
+  .gc-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    @include m.surface;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+  }
+
+  /* Footer */
+  .gc-footer {
+    @include m.surface;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    color: var(--color-muted);
+  }
+
+  /* Backdrops (shared) */
+  .gc-sidebar-backdrop,
+  .gc-modal-backdrop {
+    position: fixed;
+    margin: 0;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+  }
+  /* Maintain specific stacking for each backdrop */
+  .gc-sidebar-backdrop { z-index: var(--z-sidebar-backdrop); }
+  /* Modal backdrop is inside .gc-modal stacking context; keep lower than dialog */
+  .gc-modal-backdrop { z-index: 0; }
+
+  /* Sidebar */
+  .gc-sidebar {
+    position: fixed;
+    margin: 0;
+    inset: 0 auto 0 0;
+    width: 280px;
+    transform: translateX(-100%);
+    @include m.surface;
+    @include m.transition(transform);
+    z-index: var(--z-sidebar);
+    padding: 1rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .gc-sidebar--open { transform: translateX(0); }
+
+  /* Modal */
+  .gc-modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: var(--z-modal);
+  }
+  .gc-modal__dialog {
+    @include m.surface;
+    width: min(600px, calc(100% - 2rem));
+    padding: 1rem;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Demo helpers for styleguide (kept scoped and non-intrusive) */
+  .demo-box {
+    background: var(--color-surface);
+    border: 1px dashed var(--color-border);
+    padding: 1rem;
+  }
+}
+
+

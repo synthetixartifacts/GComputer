@@ -1,0 +1,407 @@
+// USER INPUT ZONE
+#user-input-wrap {
+    display: none;
+    position: fixed;
+    z-index: 10;
+
+    left  : 0;
+    right : 0;
+    top   : auto;
+    bottom: 0;
+
+    width           : 100vw;
+    height          : auto;
+    padding         : 20px 0;
+    margin          : auto;
+    box-sizing      : border-box;
+    background-color: white;
+    border-top      : 2px solid $color_accent_1;
+
+    &.full-message-popup {
+        @include transitionBase();
+        box-shadow: 0 0 500px 500px rgba($color_accent_1,  0.2) !important;
+
+        #user-textarea-input {
+            @include transitionBase();
+            height: 45vh !important;
+            max-height: 45vh !important;
+        }
+
+        #fullmessage_button {
+            &:before {
+                background-image: url('../../images/fullscreen_off.png') !important;
+            }
+        }
+    }
+
+    .agent_name {
+        position   : absolute;
+        bottom     : -20px;
+        width      : 110%;
+        left       : -3%;
+        margin-left: 25px;
+        background : white;
+        margin-top : -38px;
+        padding-top: 5px;
+        box-sizing : border-box;
+        height     : 26px;
+        font-size  : 12px;
+        color      : $color_accent_1;
+
+        // .label {}
+
+        .up_agent {
+            display: none;
+            cursor: pointer;
+
+            img {
+                @include transitionQuick();
+                width: 13px;
+                height: 13px;
+                margin-left: 10px;
+                opacity: 0.5;
+            }
+
+            &:hover {
+                img {
+                    opacity: 1;
+                }
+            }
+
+            &.selected {
+                img {
+                    transform: rotate(360deg) scale(1.45);
+                    opacity: 1;
+                }
+            }
+
+        }
+    }
+
+    .user-input {
+        box-sizing: border-box;
+        position  : relative;
+        margin: auto;
+        width: 75%;
+        max-width: 1150px;
+
+        @media (max-width: $size_mobile_break) {
+            width: 90%;
+        }
+
+        .user-textarea-input-wrap {
+            transition: none !important;
+
+            padding-bottom  : 12px;
+            padding-right   : 60px;
+
+            @media (min-height: $layoutHeightSwitcher) {
+                padding-bottom  : 25px;
+            }
+        }
+
+        #user-textarea-input {
+            max-width         : 1200px;
+            word-wrap         : break-word;
+            overflow-y        : scroll;
+            -ms-overflow-style: none;
+            scrollbar-width   : none;
+            font-size: 16px;
+            line-height: 16px;
+            line-height: 1.2; // Changed to relative unit
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            &:focus {
+                border    : none !important;
+                outline   : none !important;
+            }
+            &:focus-visible {
+                outline: none !important;
+                border-color: $color_accent_60 !important;
+            }
+
+            &::after {
+                content: '';
+                height: 20px;
+            }
+
+
+            min-height:100px;
+            max-height: 20vh;
+            @media (min-height: 850px) {
+                min-height: calc(10vh + 100px);
+            }
+            @media (min-height: 1150px) {
+                min-height: calc(10vh + 200px + 100px);
+            }
+
+            &.placeholder {
+                color: $color_grey;
+            }
+
+            // CopyPaste things - Don't keep color scheme
+            div, span, p, ul {
+                white-space: normal !important;
+                color      : $color_base !important;
+                line-height: inherit; // Added to maintain consistent line height
+                margin-top: 0;
+            }
+        }
+
+        .user-submit-message {
+            @include transitionQuick();
+            position: absolute;
+            top     : -3px;
+            right   : 15px;
+            width   : 30px;
+            cursor  : pointer;
+
+            // display         : inline-block;
+            width           : 40px;
+            height          : 40px;
+            border-radius   : 40px;
+            line-height     : 40px;
+
+            background-color: $color_accent_1;
+            color           : white;
+            font-weight     : bold;
+            font-size       : 36px;
+            text-align      : center;
+
+
+            &:before {
+                position         : absolute;
+                display          : block;
+                content          : '';
+                height           : 40px;
+                width            : 40px;
+                top              : 50%;
+                left             : 50%;
+                transform        : translate(-20%, -20%);
+                background-image : url('../../images/send.png');
+                background-repeat: no-repeat;
+            }
+
+            &:hover {
+                background-color: $color_accent_60;
+                transform: rotate(360deg);
+            }
+
+            @media (max-width: $size_mobile_break) {
+                top   : -10px;
+                right : 0;
+                width : 35px;
+                height: 35px;
+
+                &:before {
+                    height   : 25px;
+                    width    : 25px;
+                    transform: translate(-32%, -30%);
+                }
+            }
+        }
+
+        .right_options {
+            display  : flex;
+            position : absolute;
+            right    : 15px;
+            bottom     : -10px;
+            font-size: 12px;
+            color    : $color_accent_1;
+
+            #record_button {
+                display: none;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &:before {
+                    display          : block;
+                    content          : '';
+                    height           : 14px;
+                    width            : 14px;
+                    background-image : url('../../images/voice.png');
+                    background-repeat: no-repeat;
+                }
+
+                &.recording {
+                    background-image : url('../../images/voice_active.png');
+                }
+            }
+
+            #file_button {
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &:before {
+                    display          : block;
+                    content          : '';
+                    height           : 14px;
+                    width            : 14px;
+                    background-image : url('../../images/attachment.png');
+                    background-repeat: no-repeat;
+                }
+            }
+
+            .option_button {
+                @include transitionQuick();
+                margin: 0 5px;
+
+                &:hover {
+                    cursor: pointer;
+                    transform: rotate(360deg);
+                }
+
+                &:before {
+                    display          : block;
+                    content          : '';
+                    height           : 14px;
+                    width            : 14px;
+                    background-repeat: no-repeat;
+                    background-size  : contain;
+                }
+            }
+
+            #settings_button {
+                &:before {
+                    background-image : url('../../images/settings.png');
+                }
+            }
+
+            #fullmessage_button {
+                &:before {
+                    background-image: url('../../images/fullscreen.png');
+                }
+            }
+
+            #file_button {
+                &:before {
+                    background-image: url('../../images/attachment.png');
+                }
+            }
+        }
+    }
+
+    .enter_type {
+        padding-top    : 5px;
+        padding-right  : 5px;
+        font-size      : 10px;
+        text-align     : right;
+        // display        : flex;      // Use flexbox
+        align-items    : center;    // Vertically center items
+        justify-content: flex-end;  // Align items to the right
+        gap            : 5px;       // Add some space between the label and the checkbox
+        opacity        : 0.3;
+        margin-top     : -10px;
+
+        @media (max-width: $size_mobile_break) {
+            display: none;
+        }
+
+        #enter_key_type {
+            opacity   : 0.7;
+            margin-top: -3px;
+        }
+
+        label {
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    &.thinking {
+        // opacity: 0.65;
+        cursor: wait;
+
+        background-color: $color_accent_5;
+
+        #user-textarea-input, .user-textarea-input-wrap, .agent_name, .right_options {
+            background-color: $color_accent_5;
+        }
+
+        .user-submit-message {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+    }
+
+    &.streaming {
+        .user-submit-message {
+            background-color: #dc3545; // Red color for stop
+            cursor: pointer;
+            opacity: 1;
+
+            &:before {
+                background-image: none;
+                background-color: white;
+                width: 12px;
+                height: 12px;
+                border-radius: 2px;
+                transform: translate(-50%, -50%);
+            }
+
+            &:hover {
+                background-color: #c82333; // Darker red on hover
+                transform: none; // Remove rotation for stop button
+            }
+
+            @media (max-width: $size_mobile_break) {
+                &:before {
+                    width: 8px;
+                    height: 8px;
+                }
+            }
+        }
+    }
+
+    &.dragover {
+        // opacity: 0.5;
+
+        #drop-zone {
+            display: block;
+        }
+    }
+
+    #drop-zone {
+        display         : none;
+        position        : absolute;
+        left            : 0;
+        right           : 0;
+        top             : 0;
+        bottom          : 0px;
+        background-color: $color_accent_30;
+        z-index         : 2;
+
+        .drop-info {
+            position : absolute;
+            top      : 50%;
+            left     : 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    .can_make_error {
+        position: fixed;
+        bottom: 0px;
+        left     : 50%;
+        transform: translate(-50%, -50%);
+        font-size: 0.65em;
+        color: $color_grey_light;
+
+        .can_make_error_span {
+            // display: none;
+        }
+
+        @media (max-width: $size_mobile_break) {
+            .can_make_error_span {
+                display: none;
+            }
+        }
+    }
+}

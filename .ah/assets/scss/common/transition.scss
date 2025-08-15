@@ -1,0 +1,14 @@
+
+
+
+@mixin transitionBase() {
+    transition: all .75s ease-in-out;
+}
+
+@mixin transitionMedium() {
+    transition: all .5s ease-in-out;
+}
+
+@mixin transitionQuick() {
+    transition: all .3s ease-in-out;
+}

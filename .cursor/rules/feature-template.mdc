@@ -1,0 +1,16 @@
+---
+name: "Feature template"
+description: "Standard files when adding a new feature."
+globs: ["app/renderer/src/ts/features/**/*", "app/renderer/src/views/**/*"]
+alwaysApply: true
+---
+
+When creating a new feature `<name>`:
+
+1) Create `app/renderer/src/ts/features/<name>/` with files:
+   - `types.ts`
+   - `service.ts`
+   - `store.ts`
+2) Create a view file under `app/renderer/src/views/` as needed (e.g., `NameView.svelte`).
+3) Use aliases for imports (e.g., `@features/<name>/store`).
+4) Wire the view in `App.svelte` (or via router later).

@@ -1,0 +1,38 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'term.title'|trans }}{% endblock %}
+
+{% block styles %}
+    {{ parent() }}
+    {# {{ encore_entry_link_tags('styles_dev') }} #}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# {{ encore_entry_script_tags('app_dev') }} #}
+{% endblock %}
+
+
+{% block content_alone %}
+
+<!-- CHATBOT SECTION -->
+<div id="" class="single_page" style="text-align: left;">
+<h1>{{ 'term.title'|trans }}</h1>
+
+<div class="content_scroll" style="text-align: left;">
+    <div class="term">
+        {{ terms.content|raw }}
+    </div>
+
+    {# Version: {{ terms.version }} #}
+</div>
+
+<form action="{{ path('app_terms_of_use_accept') }}" method="post">
+    <button type="submit">
+        {{ 'Accept'|trans }}
+    </button>
+</form></div>
+
+
+{% endblock %}

@@ -1,0 +1,335 @@
+{
+  "app": {
+    "title": "GComputer",
+    "footer": "© {year} GComputer — Tous droits réservés",
+    "menu": {
+      "home": "Accueil",
+      "category": "Catégorie",
+      "item1": "Élément 1",
+      "item2": "Élément 2",
+      "settings": "Paramètres",
+      "config": "Configuration",
+      "about": "À propos",
+      "test": "Développement",
+      "styleguide": {
+        "label": "Guide de style",
+        "base": "Éléments de base",
+        "inputs": "Champs",
+        "buttons": "Boutons",
+        "table": "Tableau",
+        "components": "Composants",
+        "search": "Recherche",
+        "record": "Enregistrer",
+        "media": "Médias",
+        "files": "Fichiers",
+        "chatbot": "Chatbot"
+      },
+      "features": {
+        "label": "Fonctionnalités",
+        "localFiles": "Fichiers locaux",
+        "savedLocalFolder": "Dossier local enregistré"
+      },
+      "test1": "",
+      "db": {
+        "label": "BD",
+        "testTable": "Table de test"
+      },
+      "menu": "Menu",
+      "close": "Fermer"
+    },
+    "actions": {
+      "toggleSidebar": "Basculer le panneau",
+      "toggleTheme": "Basculer le thème",
+      "openModal": "Ouvrir la modale",
+      "browse": "Parcourir"
+    }
+  },
+  "pages": {
+    "home": {
+      "hello": "Bonjour — GComputer",
+      "configured": "Svelte + Tailwind + SCSS est configuré."
+    },
+    "about": {
+      "title": "À propos",
+      "desc1": "GComputer est une application de bureau Electron + Svelte. Cette page contiendra des informations sur l'application, son objectif et des liens vers la documentation.",
+      "desc2": "Pour l'instant, c'est un texte de remplacement. La navigation est gérée via des routes basées sur le hash, et les pages sont affichées une par une. L'en-tête et le pied de page sont toujours présents; le menu contient des liens pour naviguer entre les pages sous Paramètres → À propos."
+    },
+    "styleguide": {
+      "title": "Guide de style",
+      "buttons": "Boutons",
+      "primary": "Bouton principal",
+      "secondary": "Bouton secondaire",
+      "link": "Bouton lien",
+      "inputs": "Champs",
+      "text": "Texte",
+      "placeholder": "Espace réservé",
+      "hint": "Ceci est une aide",
+      "invalid": "Invalide",
+      "invalidPlaceholder": "Entrée invalide",
+      "error": "Message d'erreur",
+      "typography": "Typographie",
+      "body": "Texte de corps — Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      "layout": "Aides de mise en page",
+      "containerDemo": "Démo de conteneur",
+      "stackA": "Élément A",
+      "stackB": "Élément B",
+      "stackC": "Élément C",
+      "modal": "Modale",
+      "openModal": "Ouvrir la modale",
+      "modalTitle": "Modale de démonstration",
+      "modalContent": "Le contenu de la modale va ici.",
+      "base": {
+        "title": "Éléments de base",
+        "colors": "Couleurs",
+        "spacingRadii": "Espacement & Rayons",
+        "shadows": "Ombres",
+        "motion": "Mouvements",
+        "textSection": "Texte",
+        "example": "Exemple",
+        "body": "Texte de corps — Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+        "bold": "Gras",
+        "italic": "Italique",
+        "listItemA": "Élément A",
+        "listItemB": "Élément B",
+        "listItemC": "Élément C",
+        "iconSection": "Icônes",
+        "iconExample": "Icône en ligne",
+        "iconInButton": "Icône dans un bouton",
+        "iconInLink": "Icône dans un lien"
+      },
+      "inputs": {
+        "title": "Champs",
+        "desc": "Tous les types de champs avec leurs états.",
+        "text": "Champ texte",
+        "placeholder": "Espace réservé",
+        "hint": "Ceci est une aide",
+        "disabled": "Champ désactivé",
+        "disabledHint": "Ce champ est désactivé",
+        "invalid": "Champ invalide",
+        "error": "Ce champ comporte une erreur",
+        "select": "Sélection",
+        "choose": "Choisir une option",
+        "multi": "Sélection multiple",
+        "multiHint": "Utilisez Ctrl/Cmd pour sélectionner plusieurs",
+        "textarea": "Zone de texte",
+        "textareaHint": "Entrée multi-ligne"
+      },
+      "inputs": {
+        "title": "Champs",
+        "desc": "Tous les types de champs avec leurs états.",
+        "text": "Champ texte",
+        "placeholder": "Espace réservé",
+        "hint": "Ceci est une aide",
+        "disabled": "Champ désactivé",
+        "disabledHint": "Ce champ est désactivé",
+        "invalid": "Champ invalide",
+        "error": "Ce champ comporte une erreur",
+        "select": "Sélection",
+        "choose": "Choisir une option",
+        "multi": "Sélection multiple",
+        "multiHint": "Utilisez Ctrl/Cmd pour sélectionner plusieurs",
+        "textarea": "Zone de texte",
+        "textareaHint": "Entrée multi-ligne",
+        "checkbox": "Case à cocher",
+        "radioGroup": "Groupe radio",
+        "radioA": "Option A",
+        "radioB": "Option B",
+        "switch": "Interrupteur",
+        "on": "Activé",
+        "off": "Désactivé",
+        "number": "Nombre",
+        "range": "Curseur",
+        "date": "Date",
+        "time": "Heure",
+        "file": "Fichier",
+        "chooseFile": "Choisir un fichier",
+        "selectedFile": "Fichier sélectionné : {name}"
+      },
+      "buttons": {
+        "title": "Boutons et liens",
+        "desc": "Éléments cliquables avec variantes et états.",
+        "variants": "Variantes",
+        "sizes": "Tailles",
+        "states": "États",
+        "primary": "Bouton principal",
+        "secondary": "Bouton secondaire",
+        "danger": "Bouton danger",
+        "link": "Bouton lien",
+        "disabled": "Désactivé",
+        "small": "Petit",
+        "medium": "Moyen",
+        "large": "Grand",
+        "withIcons": "Avec icônes",
+        "loading": "Chargement",
+        "add": "Ajouter",
+        "delete": "Supprimer",
+        "more": "Plus"
+      },
+      "components": {
+        "title": "Composants",
+        "desc": "Composants UI comme le panneau latéral et la modale.",
+        "sidebar": {
+          "title": "Panneau latéral",
+          "open": "Ouvrir le panneau"
+        },
+        "modal": {
+          "title": "Modale",
+          "open": "Ouvrir la modale",
+          "content": "Ceci est une modale réutilisable."
+        },
+        "progress": {
+          "title": "Barre de progression",
+          "bump": "Augmenter de 10%",
+          "reset": "Réinitialiser",
+          "indeterminate": "Indéterminée"
+        }
+      },
+      "table": {
+        "title": "Table",
+        "desc": "Démonstration du composant de tableau réutilisable.",
+        "name": "Nom",
+        "age": "Âge",
+        "compactDensity": "Compact",
+        "regularDensity": "Normal",
+        "showEmpty": "Afficher vide",
+        "reset": "Réinitialiser",
+        "empty": "Aucune donnée disponible"
+      }
+      ,
+      "search": {
+        "title": "Recherche",
+        "desc": "Champ de recherche réutilisable avec auto-suggestions et résultats.",
+        "howto": "Essayez: 'ap' (suggestions seulement), 'apple' (plusieurs résultats), 'john' (un seul résultat), 'zzzz' (aucun résultat).",
+        "box": {
+          "placeholder": "Rechercher...",
+          "clear": "Effacer",
+          "suggestions": "Suggestions"
+        },
+        "results": {
+          "title": "Résultats",
+          "none": "Aucun résultat",
+          "count": "{count} résultats"
+        }
+      },
+      "media": {
+        "title": "Médias",
+        "desc": "Modèles de galerie d'images avec légendes et visionneuse.",
+        "lightboxTitle": "Aperçu d'image"
+      },
+      "record": {
+        "title": "Enregistrer l'audio",
+        "desc": "Composants d'enregistrement audio réutilisables avec plusieurs variantes de déclencheur.",
+        "labels": {
+          "start": "Enregistrer",
+          "stop": "Arrêter",
+          "save": "Enregistrer",
+          "cancel": "Annuler",
+          "rerecord": "Réenregistrer",
+          "recording": "Enregistrement...",
+          "idle": "Inactif"
+        }
+      },
+      "files": {
+        "title": "Fichiers",
+        "desc": "Explorateur de fichiers en liste et grille.",
+        "listView": "Vue liste",
+        "gridView": "Vue grille",
+        "name": "Nom",
+        "size": "Taille",
+        "type": "Type",
+        "modified": "Modifié"
+      },
+      "chatbot": {
+        "title": "Chatbot",
+        "desc": "Démo d'interface conversationnelle pour l'assistant.",
+        "conversationLabel": "Conversation",
+        "role": {
+          "user": "Utilisateur",
+          "assistant": "Assistant"
+        },
+        "composer": {
+          "inputLabel": "Zone de saisie",
+          "placeholder": "Écrire un message...",
+          "send": "Envoyer"
+        }
+      }
+    },
+    "features": {
+      "title": "Fonctionnalités",
+      "localFiles": {
+        "title": "Fichiers locaux",
+        "desc": "Choisissez un dossier et prévisualisez son contenu.",
+        "empty": "Aucun fichier sélectionné",
+        "summary": "{count} fichiers sélectionnés dans {folder}",
+        "folder": "Dossier",
+        "chooseAria": "Choisir un dossier",
+        "recursive": "Récursif",
+        "location": "Emplacement",
+        "unload": "Décharger"
+      },
+      "savedLocalFolder": {
+        "title": "Dossier local enregistré",
+        "desc": "Affiche toujours le contenu du dossier enregistré (récursif)."
+      }
+    },
+    "browse": {
+      "pathPlaceholder": "Chemin..."
+    },
+    "category": {
+      "item1": {
+        "title": "Catégorie — Élément 1",
+        "content": "Contenu pour l'élément 1 de la catégorie."
+      },
+      "item2": {
+        "title": "Catégorie — Élément 2",
+        "content": "Contenu pour l'élément 2 de la catégorie."
+      }
+    },
+    "test": {
+      "test1": {
+        "title": "Test — Test 1",
+        "content": "Contenu de test."
+      }
+    },
+    "db": {
+      "testTable": {
+        "title": "Table de test",
+        "column1": "Colonne 1",
+        "column2": "Colonne 2",
+        "add": "Ajouter une ligne",
+        "truncate": "Vider la table",
+        "save": "Enregistrer les modifications"
+      }
+    },
+    "settings": {
+      "config": {
+        "title": "Paramètres — Configuration",
+        "desc": "La configuration de l'application sera affichée ici.",
+        "theme": "Thème",
+        "language": "Langue"
+      }
+    }
+  }
+  ,
+  "components": {
+    "audioRecorder": {
+      "start": "Enregistrer",
+      "stop": "Arrêter",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "rerecord": "Réenregistrer",
+      "recording": "Enregistrement...",
+      "idle": "Inactif"
+    },
+    "table": {
+      "edit": "Modifier",
+      "done": "Terminé",
+      "delete": "Supprimer",
+      "filter": "Filtrer",
+      "clearFilters": "Effacer les filtres",
+      "clearFilter": "Effacer"
+    }
+  }
+}
+
+

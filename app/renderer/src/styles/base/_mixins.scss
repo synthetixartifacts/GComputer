@@ -1,0 +1,50 @@
+@use 'sass:map';
+@use './variables' as v;
+
+// Transition shorthand mixins
+@mixin transition($props: all, $duration: var(--duration-normal), $timing: var(--ease-standard)) {
+  transition: $props $duration $timing;
+}
+
+@mixin focus-ring($color: var(--color-accent)) {
+  outline: none;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px $color;
+}
+
+@mixin interactive-base {
+  border-radius: var(--radius-md);
+  @include transition(all);
+}
+
+@mixin surface {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+// Motion helpers
+@mixin hover-lift {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+@mixin press-in {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+// Link underline animation
+@mixin link-underline($thickness: 1px) {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% $thickness;
+  @include transition(background-size);
+
+  &:hover,
+  &:focus-visible {
+    background-size: 100% $thickness;
+  }
+}
+
+

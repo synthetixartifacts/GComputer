@@ -1,0 +1,19 @@
+<h1>{{ 'emails.welcome.title'|trans({}, null, locale) }}</h1>
+
+<p>
+    {{ 'emails.welcome.greeting'|trans({'%firstName%': firstName, '%lastName%': lastName}, null, locale) }}
+</p>
+
+<p>
+    {{ 'emails.welcome.instruction'|trans({}, null, locale) }}
+    <br/>
+    <a href="{{ url('set_password', {'token': confirmationToken}) }}{{'guest_switch_link'|trans({}, null, locale)}}">
+        {{ 'emails.welcome.button'|trans({}, null, locale) }}
+    </a>
+</p>
+
+<p>
+    {{ 'emails.welcome.closing'|trans({}, null, locale) }}
+</p>
+
+<p>{{ 'emails.welcome.ps'|trans({}, null, locale) }}</p>

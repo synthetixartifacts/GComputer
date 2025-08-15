@@ -1,0 +1,19 @@
+Title: Styling rules
+
+Summary: Centralize styles in SCSS partials; do not author styles in Svelte files.
+
+Rules:
+- Never add `<style>` blocks to `.svelte` files.
+- Never add inline `style="..."` attributes. Replace with semantic classes and SCSS.
+- Put component styles under `app/renderer/src/styles/components/` as SCSS partials and import via `app/renderer/src/styles/global.scss`.
+- Put base/layout tokens and helpers under `app/renderer/src/styles/base/`.
+- If page-specific styles are needed, create `app/renderer/src/styles/pages/_<page>.scss` and import in `global.scss`.
+- Prefer utility classes (Tailwind) and existing helpers before adding new SCSS.
+
+Context:
+- Stack: Electron + Svelte + Tailwind + SCSS. Global entry is `app/renderer/src/ts/main.ts` which imports `app/renderer/src/styles/global.scss`.
+
+Enforcement:
+- If a task suggests adding styles inside Svelte, instead propose/edit SCSS partials and wire them in `global.scss`.
+- When encountering inline styles in existing code, extract them to SCSS and replace with classes.
+

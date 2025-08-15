@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AgentHub{% endblock %}
+
+{% block styles %}
+    {{ parent() }}
+    {# If needed, re-include or comment out your Encore link tags:
+    {{ encore_entry_link_tags('styles_dev') }}
+    #}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ path('translations_js') }}"></script>
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+{% block content_alone %}
+
+    {# Include the partial templates #}
+    {% include 'pages/chatbot/_agent_list.html.twig' %}
+    {% include 'pages/chatbot/_discussion_list.html.twig' %}
+    {% include 'pages/chatbot/_chatbot_section.html.twig' %}
+    {% include 'pages/chatbot/_settings_popup.html.twig' %}
+    {% include 'pages/chatbot/_user_input_zone.html.twig' %}
+    {% include 'pages/chatbot/_policy_popup.html.twig' %}
+    {% include 'pages/chatbot/_account.html.twig' %}
+
+{% endblock %}

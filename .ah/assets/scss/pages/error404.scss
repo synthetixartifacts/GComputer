@@ -1,0 +1,39 @@
+.error-404 {
+    position        : absolute;
+    top             : 50%;
+    left            : 50%;
+    transform       : translate(-50%, -50%);
+    text-align      : center;
+    padding         : 2rem;
+    background-color: $color_accent_5;
+    border-radius   : $border_radius;
+
+    h1 {
+        font-size: 3rem;
+        color: $color_red;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .pcount {
+        font-size: 0.8em;
+    }
+
+    .btn-home {
+        display         : inline-block;
+        padding         : 0.5rem 1rem;
+        background-color: $color_accent_4;
+        color           : #ffffff;
+        text-decoration : none;
+        border-radius   : $border_radius_light;
+        transition      : background-color 0.3s ease;
+
+        &:hover {
+            background-color: $color_accent_3;
+        }
+    }
+}

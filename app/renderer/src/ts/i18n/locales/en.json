@@ -1,0 +1,317 @@
+{
+  "app": {
+    "title": "GComputer",
+    "footer": "© {year} GComputer — All rights reserved",
+    "menu": {
+      "home": "Home",
+      "category": "Category",
+      "item1": "Item 1",
+      "item2": "Item 2",
+      "settings": "Settings",
+      "config": "Config",
+      "about": "About",
+      "test": "Development",
+      "styleguide": {
+        "label": "Styleguide",
+        "base": "Base Elements",
+        "inputs": "Inputs",
+        "buttons": "Buttons",
+        "table": "Table",
+        "components": "Components",
+        "search": "Search",
+        "record": "Record",
+        "media": "Media",
+        "files": "Files",
+        "chatbot": "Chatbot"
+      },
+      "features": {
+        "label": "Features",
+        "localFiles": "Local files",
+        "savedLocalFolder": "Saved local folder"
+      },
+      "test1": "",
+      "db": {
+        "label": "DB",
+        "testTable": "Test table"
+      },
+      "menu": "Menu",
+      "close": "Close"
+    },
+    "actions": {
+      "toggleSidebar": "Toggle sidebar",
+      "toggleTheme": "Toggle theme",
+      "openModal": "Open Modal",
+      "browse": "Browse"
+    }
+  },
+  "pages": {
+    "home": {
+      "hello": "Hello World — GComputer",
+      "configured": "Svelte + Tailwind + SCSS is configured."
+    },
+    "about": {
+      "title": "About",
+      "desc1": "GComputer is an Electron + Svelte desktop app. This page will contain information about the application, its purpose, and links to documentation.",
+      "desc2": "For now, this is placeholder text. Navigation is handled via hash-based routes, and pages are shown one at a time. Header and footer are always present; the menu contains links to navigate between pages under Settings → About."
+    },
+    "styleguide": {
+      "title": "Styleguide",
+      "primary": "Primary Button",
+      "secondary": "Secondary Button",
+      "link": "Link Button",
+      "text": "Text",
+      "placeholder": "Placeholder",
+      "hint": "This is a hint",
+      "invalid": "Invalid",
+      "invalidPlaceholder": "Invalid input",
+      "error": "Error message",
+      "typography": "Typography",
+      "body": "Body text — Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      "layout": "Layout Helpers",
+      "containerDemo": "Container demo",
+      "stackA": "Stack item A",
+      "stackB": "Stack item B",
+      "stackC": "Stack item C",
+      "modal": "Modal",
+      "openModal": "Open Modal",
+      "modalTitle": "Demo Modal",
+      "modalContent": "Modal content goes here.",
+      "base": {
+        "title": "Base Elements",
+        "colors": "Colors",
+        "spacingRadii": "Spacing & Radii",
+        "shadows": "Shadows",
+        "motion": "Motion",
+        "textSection": "Text",
+        "example": "Example",
+        "body": "Body text — Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+        "bold": "Bold",
+        "italic": "Italic",
+        "listItemA": "List item A",
+        "listItemB": "List item B",
+        "listItemC": "List item C",
+        "iconSection": "Icons",
+        "iconExample": "Inline icon",
+        "iconInButton": "Icon in button",
+        "iconInLink": "Icon in link"
+      },
+      
+      "inputs": {
+        "title": "Inputs",
+        "desc": "All input element types with common states.",
+        "text": "Text input",
+        "placeholder": "Placeholder",
+        "hint": "This is a hint",
+        "disabled": "Disabled input",
+        "disabledHint": "This input is disabled",
+        "invalid": "Invalid input",
+        "error": "This field has an error",
+        "select": "Select",
+        "choose": "Choose an option",
+        "multi": "Multi select",
+        "multiHint": "Use Ctrl/Cmd to select multiple",
+        "textarea": "Text area",
+        "textareaHint": "Multi-line input",
+        "checkbox": "Checkbox",
+        "radioGroup": "Radio group",
+        "radioA": "Option A",
+        "radioB": "Option B",
+        "switch": "Switch",
+        "on": "On",
+        "off": "Off",
+        "number": "Number",
+        "range": "Range",
+        "date": "Date",
+        "time": "Time",
+        "file": "File input",
+        "chooseFile": "Choose file",
+        "selectedFile": "Selected file: {name}"
+      },
+      "buttons": {
+        "title": "Buttons & Links",
+        "desc": "Clickable elements with variants and states.",
+        "variants": "Variants",
+        "sizes": "Sizes",
+        "states": "States",
+        "primary": "Primary Button",
+        "secondary": "Secondary Button",
+        "danger": "Danger Button",
+        "link": "Link Button",
+        "disabled": "Disabled",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "withIcons": "With icons",
+        "loading": "Loading",
+        "add": "Add",
+        "delete": "Delete",
+        "more": "More"
+      },
+      "components": {
+        "title": "Components",
+        "desc": "UI components like Sidebar and Modal.",
+        "sidebar": {
+          "title": "Sidebar",
+          "open": "Open sidebar"
+        },
+        "modal": {
+          "title": "Modal",
+          "open": "Open modal",
+          "content": "This is a reusable modal component."
+        },
+        "progress": {
+          "title": "Progress bar",
+          "bump": "Increase 10%",
+          "reset": "Reset",
+          "indeterminate": "Indeterminate"
+        }
+      },
+      "table": {
+        "title": "Table",
+        "desc": "Reusable table component demo.",
+        "name": "Name",
+        "age": "Age",
+        "compactDensity": "Compact",
+        "regularDensity": "Regular",
+        "showEmpty": "Show empty",
+        "reset": "Reset",
+        "empty": "No data available"
+      }
+      ,
+      "search": {
+        "title": "Search",
+        "desc": "Reusable search box with auto-suggestions and results.",
+        "howto": "Try queries: 'ap' (suggestions only), 'apple' (multiple results), 'john' (single result), 'zzzz' (no results).",
+        "box": {
+          "placeholder": "Search...",
+          "clear": "Clear",
+          "suggestions": "Suggestions"
+        },
+        "results": {
+          "title": "Results",
+          "none": "No results",
+          "count": "{count} results"
+        }
+      },
+      "media": {
+        "title": "Media",
+        "desc": "Image gallery patterns with captions and lightbox.",
+        "lightboxTitle": "Image preview"
+      },
+      "record": {
+        "title": "Record Audio",
+        "desc": "Reusable audio recording components with multiple trigger variants.",
+        "labels": {
+          "start": "Record",
+          "stop": "Stop",
+          "save": "Save",
+          "cancel": "Cancel",
+          "rerecord": "Re-record",
+          "recording": "Recording...",
+          "idle": "Idle"
+        }
+      },
+      "files": {
+        "title": "Files",
+        "desc": "File explorer demo with list and grid views.",
+        "listView": "List view",
+        "gridView": "Grid view",
+        "name": "Name",
+        "size": "Size",
+        "type": "Type",
+        "modified": "Modified"
+      },
+      "chatbot": {
+        "title": "Chatbot",
+        "desc": "Conversational UI demo for the assistant.",
+        "conversationLabel": "Conversation",
+        "role": {
+          "user": "User",
+          "assistant": "Assistant"
+        },
+        "composer": {
+          "inputLabel": "Message input",
+          "placeholder": "Type a message...",
+          "send": "Send"
+        }
+      }
+    },
+    "features": {
+      "title": "Features",
+      "localFiles": {
+        "title": "Local files",
+        "desc": "Pick a folder and preview its contents.",
+        "empty": "No files selected",
+        "summary": "{count} files selected in {folder}",
+        "folder": "Folder",
+        "chooseAria": "Choose a folder",
+        "recursive": "Recursive",
+        "location": "Location",
+        "unload": "Unload"
+      },
+      "savedLocalFolder": {
+        "title": "Saved local folder",
+        "desc": "Always shows the contents of the saved folder (recursive)."
+      }
+    },
+    "browse": {
+      "pathPlaceholder": "Path..."
+    },
+    "category": {
+      "item1": {
+        "title": "Category — Item 1",
+        "content": "Content for Category Item 1."
+      },
+      "item2": {
+        "title": "Category — Item 2",
+        "content": "Content for Category Item 2."
+      }
+    },
+    "test": {
+      "test1": {
+        "title": "Test — Test 1",
+        "content": "Testing view content."
+      }
+    },
+    "db": {
+      "testTable": {
+        "title": "Test table",
+        "column1": "Column 1",
+        "column2": "Column 2",
+        "add": "Add row",
+        "truncate": "Truncate table",
+        "save": "Save changes"
+      }
+    },
+    "settings": {
+      "config": {
+        "title": "Settings — Config",
+        "desc": "Application configuration will go here.",
+        "theme": "Theme",
+        "language": "Language"
+      }
+    }
+  }
+  ,
+  "components": {
+    "audioRecorder": {
+      "start": "Record",
+      "stop": "Stop",
+      "save": "Save",
+      "cancel": "Cancel",
+      "rerecord": "Re-record",
+      "recording": "Recording...",
+      "idle": "Idle"
+    },
+    "table": {
+      "edit": "Edit",
+      "done": "Done",
+        "delete": "Delete",
+        "filter": "Filter",
+        "clearFilters": "Clear filters",
+        "clearFilter": "Clear"
+    }
+  }
+}
+
+

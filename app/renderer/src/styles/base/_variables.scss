@@ -1,0 +1,101 @@
+// Design tokens (Sass variables) and CSS custom properties
+
+// Sass variables (reference via `variables.$name` when using @use)
+// Core palette — tech/silver mood inspired by neutral Zinc scale
+$colorPrimary: #71717a; // zinc-500 (primary neutral for components)
+$colorAccent: #3b82f6; // blue-500 (widely used, accessible action color)
+
+// Light theme tokens (Zinc-based)
+$colorBgLight: #fafafa; // zinc-50
+$colorSurfaceLight: #ffffff; // surface cards
+$colorBorderLight: #e4e4e7; // zinc-200
+$colorTextLight: #18181b; // zinc-900
+$colorMutedLight: #a1a1aa; // zinc-400
+
+// Dark theme tokens (Zinc-based)
+$colorBgDark: #18181b; // zinc-900
+$colorSurfaceDark: #27272a; // zinc-800
+$colorBorderDark: #3f3f46; // zinc-700
+$colorTextDark: #e4e4e7; // zinc-200
+$colorMutedDark: #a1a1aa; // zinc-400
+
+// Radii — flat look requested
+$borderRadiusMedium: 0; // flat edges for now
+
+// Shadows
+$shadowSm: 0 1px 2px rgba(0,0,0,0.06);
+$shadowMd: 0 2px 8px rgba(0,0,0,0.12);
+
+// Z-index scale
+$zHeader: 50;
+$zSidebar: 60;
+$zSidebarBackdrop: 55;
+$zModal: 70;
+$zModalBackdrop: 65;
+
+// Typography
+$fontFamilySans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+  Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+// CSS variables exposed to the DOM
+@layer base {
+  :root {
+    /* semantic tokens (default to light) */
+    --color-primary: #{$colorPrimary};
+    --color-accent: #{$colorAccent};
+    --color-bg: #{$colorBgLight};
+    --color-surface: #{$colorSurfaceLight};
+    --color-border: #{$colorBorderLight};
+    --color-text: #{$colorTextLight};
+    --color-muted: #{$colorMutedLight};
+
+    --radius-md: #{$borderRadiusMedium};
+    --shadow-sm: #{$shadowSm};
+    --shadow-md: #{$shadowMd};
+
+    --z-header: #{$zHeader};
+    --z-sidebar: #{$zSidebar};
+    --z-sidebar-backdrop: #{$zSidebarBackdrop};
+    --z-modal: #{$zModal};
+    --z-modal-backdrop: #{$zModalBackdrop};
+
+    --font-sans: #{$fontFamilySans};
+
+    /* motion tokens */
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --duration-fast: 120ms;
+    --duration-normal: 220ms;
+    --duration-slow: 360ms;
+
+    /* interactive tokens */
+    --btn-sheen: linear-gradient(120deg, rgba(255,255,255,0.12), rgba(255,255,255,0) 40%, rgba(255,255,255,0.12));
+    --btn-sheen-secondary: linear-gradient(120deg, rgba(0,0,0,0.06), rgba(0,0,0,0) 40%, rgba(0,0,0,0.06));
+  }
+
+  /* Dark theme overrides */
+  [data-theme='dark'] {
+    --color-bg: #{$colorBgDark};
+    --color-surface: #{$colorSurfaceDark};
+    --color-border: #{$colorBorderDark};
+    --color-text: #{$colorTextDark};
+    --color-muted: #{$colorMutedDark};
+    --btn-sheen: linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0) 40%, rgba(255,255,255,0.08));
+    --btn-sheen-secondary: linear-gradient(120deg, rgba(255,255,255,0.03), rgba(255,255,255,0) 40%, rgba(255,255,255,0.03));
+  }
+
+  /* Fun theme: neutral surfaces with vibrant accent gradient */
+  [data-theme='fun'] {
+    --color-bg: #{$colorBgLight};
+    --color-surface: #{$colorSurfaceLight};
+    --color-border: #{$colorBorderLight};
+    --color-text: #{$colorTextLight};
+    --color-muted: #{$colorMutedLight};
+    --color-primary: #8b5cf6; /* violet-500 base for primary color fallback */
+    --color-accent: #22d3ee; /* cyan-400 used in gradient mix */
+    --accent-gradient: linear-gradient(135deg, #22d3ee, #6366f1 50%, #ec4899);
+    --btn-sheen: linear-gradient(120deg, rgba(255,255,255,0.18), rgba(255,255,255,0) 40%, rgba(255,255,255,0.18));
+    --btn-sheen-secondary: linear-gradient(120deg, rgba(0,0,0,0.06), rgba(0,0,0,0) 40%, rgba(0,0,0,0.06));
+  }
+}
+
+

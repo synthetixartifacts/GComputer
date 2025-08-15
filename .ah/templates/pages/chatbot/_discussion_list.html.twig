@@ -1,0 +1,53 @@
+<!-- Existing discussion list container -->
+<div id="discussion_list" class="">
+    <div class="starter-chat-pad"></div>
+    <div id="discussion_search_sentinel"></div>
+    <div id="discussion_search_container" class="discussion-search-container">
+        <!-- Text Search -->
+        <input
+            type="text"
+            id="discussion_search_input"
+            class="discussion-search-input"
+            placeholder="{{ 'chatbot.discussion.search.searchbarPlaceholder'|trans }}"
+        />
+
+        <!-- Clear Button (the "X") -->
+        <button
+            type="button"
+            id="discussion_search_clear"
+            class="discussion-search-clear"
+        >
+            ×
+        </button>
+
+        <!-- Agent Dropdown -->
+        <select
+            id="discussion_search_agent"
+            class="discussion-search-agent"
+        >
+            <option value="all">{{ 'chatbot.discussion.search.allAgentLabel'|trans }}</option>
+        </select>
+
+        <!-- Favorites Toggle -->
+        <div
+            id="discussion_favorite_toggle"
+            class="discussion-favorite-toggle"
+            data-state="all"
+            title="{{ 'chatbot.discussion.favorites.toggle'|trans }}"
+        >
+            &#10084;
+        </div>
+
+        <!-- Date Sort Toggle -->
+        <div
+            id="discussion_sort_toggle"
+            class="discussion-sort-toggle"
+            data-sort="date_desc"
+            title="{{ 'chatbot.discussion.sort.toggle'|trans }}"
+        ></div>
+    </div>
+
+    <div id="discussion_list_real"></div>
+
+    <div class="ender-chat-pad"></div>
+</div>

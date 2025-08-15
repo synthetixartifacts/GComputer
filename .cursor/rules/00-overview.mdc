@@ -1,0 +1,10 @@
+Title: Repo overview for agents
+
+Summary: High-signal constraints for this repository.
+
+Rules:
+- Use path aliases: `@renderer/*`, `@views/*`, `@ts/*`, `@features/*`, `@components/*`.
+- Views are thin Svelte files. Put logic into feature `service.ts` and `store.ts` files.
+- Do not import Node/Electron in renderer views or TS. Use preload-exposed IPC only.
+- TS strict. Avoid `any`.
+- Styling must follow `01-styles.mdc`.
