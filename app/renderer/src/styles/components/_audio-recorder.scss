@@ -1,0 +1,35 @@
+// Audio recorder component styles
+.gc-audio-recorder {
+  .gc-icon-btn {
+    width: 2.5rem; 
+    height: 2.5rem; 
+    border-radius: 9999px; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center;
+    border: 1px solid currentColor;
+  }
+
+  .gc-circle-btn {
+    width: 3.5rem; 
+    height: 3.5rem; 
+    border-radius: 9999px; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center;
+    background: var(--color-primary, #2563eb); 
+    color: white;
+  }
+}
+
+.gc-size-sm { 
+  transform: scale(0.9); 
+}
+
+.gc-size-md { 
+  transform: scale(1); 
+}
+
+.gc-size-lg { 
+  transform: scale(1.25); 
+}

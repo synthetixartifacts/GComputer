@@ -1,186 +1,201 @@
-# CURRENT ANALYSIS & DOCUMENTATION PLAN
+# IMPLEMENTATION PLAN: File Indexing & Search System
+*The first major "everything app" feature*
 
-## Objective
+## 🎯 Objective
 
-Conduct comprehensive analysis of the GComputer codebase to create authoritative documentation, validate existing docs against implementation, and provide recommendations for the scalable "everything app" vision.
+Implement a comprehensive file indexing and search system that scans, catalogs, and enables powerful search across all files on the user's computer. This establishes the foundation for the "everything app" vision.
 
-## Context
+## 🧠 Strategic Rationale
 
-- App is at UX/UI foundation stage with reusable component architecture
-- Vision: Single app abstraction layer over OS, filesystem, internet
-- Future: Vocal interaction, computer control agents, vision capabilities
-- Current: Component library, routing, i18n, theming, database foundation
+**Why File Indexing First:**
+- **Foundation Feature**: Every "everything app" needs to know what exists on the computer
+- **Enables Everything**: Search, AI, automation all depend on file knowledge
+- **Architecture Ready**: Database schema designed, IPC patterns established
+- **User Value**: Immediate utility - find anything instantly
+- **Scalable**: Supports future semantic search, AI analysis, automation
 
-## Execution Protocol
+## 📋 Success Criteria
 
-- Execute ONE task at a time, in sequence
-- Mark complete before moving to next
-- Validate findings against actual code
-- Maintain comprehensive DOC.md throughout
-
----
-
-## Phase 1: Deep Code Analysis
-
-- [ ] **1.1** - Analyze project structure vs documented structure
-  - Compare actual file tree with docs/architecture.md
-  - Identify new files, moved files, changed patterns
-  - Document current vs expected structure
-
-- [ ] **1.2** - Validate .cursor rules against actual implementation
-  - Check if code follows stated conventions
-  - Identify violations or outdated rules
-  - Document current coding patterns in use
-
-- [ ] **1.3** - Examine feature architecture implementation
-  - Analyze actual feature folder structure
-  - Document service/store patterns in use
-  - Check consistency across features
-
-- [ ] **1.4** - Validate component architecture
-  - Catalog all components and their APIs
-  - Document reusable patterns
-  - Check component composition in views
+- [ ] Users can scan folders and index all files
+- [ ] Fast text-based search across file names, content, metadata
+- [ ] Real-time progress tracking for indexing jobs
+- [ ] Production-ready performance (handles 100K+ files)
+- [ ] Clean UI integration with existing component library
+- [ ] Type-safe APIs throughout the stack
 
 ---
 
-## Phase 2: Documentation Validation
+## 🔧 EXECUTION PLAN
 
-- [ ] **2.1** - Cross-reference docs/README.md with current state
-  - Check if links are current
-  - Validate described features
-  - Document gaps or outdated info
+### Phase 1: Database Foundation
+*Establish the production database schema*
 
-- [ ] **2.2** - Validate docs/architecture.md accuracy
-  - Compare described architecture with implementation
-  - Check process descriptions (main/preload/renderer)
-  - Document architectural evolution
+- [ ] **1.1** - Migrate from test schema to production schema
+  - Update `packages/db/src/db/schema.ts` with production tables
+  - Generate and run migration from test table to files/metadata tables
+  - Validate database operations work with new schema
 
-- [ ] **2.3** - Check docs/conventions.md vs actual practices
-  - Validate naming conventions in codebase
-  - Check TypeScript usage patterns
-  - Document style patterns actually used
+- [ ] **1.2** - Create database service layer
+  - Build `app/main/indexing.ts` with file CRUD operations
+  - Implement job tracking (scan progress, status updates)
+  - Add efficient search queries with proper indexing
 
-- [ ] **2.4** - Validate docs/howto/* guides
-  - Test installation steps accuracy
-  - Check run commands work
-  - Validate component usage examples
+- [ ] **1.3** - Setup IPC handlers for indexing
+  - Add indexing IPC methods to `app/main/main.ts`
+  - Expose file search, scanning, and job management via preload
+  - Validate IPC communication works end-to-end
 
----
+### Phase 2: File System Scanning
+*Core indexing engine that discovers and processes files*
 
-## Phase 3: Implementation Deep Dive
+- [ ] **2.1** - Build recursive file scanner
+  - Create `app/main/scanner.ts` for efficient file system traversal
+  - Handle permissions, symlinks, and large directories gracefully
+  - Extract file metadata (size, dates, MIME types)
 
-- [ ] **3.1** - Analyze Electron architecture implementation
-  - Document main process capabilities
-  - Catalog preload API surface
-  - Check security model implementation
+- [ ] **2.2** - Implement text extraction
+  - Add text extraction for common formats (txt, md, pdf, docx)
+  - Handle encoding detection and large file chunking
+  - Store extracted content in `file_text` table
 
-- [ ] **3.2** - Examine database integration
-  - Document current schema
-  - Check migration system
-  - Analyze IPC database patterns
+- [ ] **2.3** - Create job management system
+  - Background scanning with progress tracking
+  - Pausable/resumable scan operations
+  - Error handling and retry logic for failed files
 
-- [ ] **3.3** - Study i18n implementation
-  - Check localization coverage
-  - Document key management
-  - Validate English/French completeness
+### Phase 3: Frontend Integration
+*UI components for indexing control and search*
 
-- [ ] **3.4** - Analyze routing and navigation
-  - Document current route structure
-  - Check dev/prod gating
-  - Validate navigation patterns
+- [ ] **3.1** - Build indexing interface
+  - Create `IndexingView.svelte` for scan management
+  - Add folder selection, progress display, job control
+  - Integrate with existing settings and navigation
 
----
+- [ ] **3.2** - Create search interface
+  - Build `SearchView.svelte` with advanced search capabilities
+  - File type filters, date ranges, size constraints
+  - Real-time search results with highlighted matches
 
-## Phase 4: Component System Analysis
+- [ ] **3.3** - Add search integration to existing views
+  - Global search in Header component
+  - File search in FileList/FileGrid components
+  - Quick search suggestions and recent searches
 
-- [ ] **4.1** - Catalog all UI components
-  - Document component APIs
-  - Check reusability patterns
-  - Identify component gaps
+### Phase 4: Performance & Polish
+*Optimization and production readiness*
 
-- [ ] **4.2** - Analyze view composition patterns
-  - Document how views use components
-  - Check for code duplication
-  - Validate thin view principle
+- [ ] **4.1** - Optimize database performance
+  - Add proper indexes for fast search queries
+  - Implement query optimization for large datasets
+  - Add database maintenance (cleanup, vacuum)
 
-- [ ] **4.3** - Study styling architecture
-  - Document SCSS organization
-  - Check theming implementation
-  - Validate no-styles-in-Svelte rule
+- [ ] **4.2** - Add search features
+  - Fuzzy search for typos and partial matches
+  - Search result ranking and relevance scoring
+  - Search history and saved searches
 
----
+- [ ] **4.3** - Performance testing & tuning
+  - Test with large file collections (100K+ files)
+  - Memory usage optimization
+  - Search response time optimization
 
-## Phase 5: Build System & Dependencies
+### Phase 5: User Experience
+*Polished features for production use*
 
-- [ ] **5.1** - Analyze build configuration
-  - Document Vite/esbuild setup
-  - Check path aliases implementation
-  - Validate development workflow
+- [ ] **5.1** - Add file preview integration
+  - Quick preview of search results
+  - Thumbnail generation for images
+  - Text snippets with search highlights
 
-- [ ] **5.2** - Examine dependency usage
-  - Document key dependencies and their usage
-  - Check for unused dependencies
-  - Analyze workspace structure
+- [ ] **5.2** - Implement smart features
+  - Duplicate file detection
+  - File organization suggestions
+  - Recent files and frequently accessed
 
-- [ ] **5.3** - Validate development commands
-  - Test all npm scripts
-  - Document development workflow
-  - Check hot reload behavior
-
----
-
-## Phase 6: Future Vision Alignment
-
-- [ ] **6.1** - Assess architecture scalability
-  - Evaluate component reusability for "everything app"
-  - Check patterns for future features
-  - Document extensibility points
-
-- [ ] **6.2** - Analyze current feature foundations
-  - Document existing file/search infrastructure
-  - Check database schema for future needs
-  - Evaluate IPC patterns for expansion
+- [ ] **5.3** - Add export/import capabilities
+  - Export search results to collections
+  - Import existing file indexes
+  - Backup and restore index data
 
 ---
 
-## Phase 7: Master Documentation Creation
+## 🏗️ Implementation Architecture
 
-- [ ] **7.1** - Create comprehensive DOC.md
-  - Consolidate all findings
-  - Document current reality vs docs
-  - Create single source of truth
+### Database Layer
+```
+files ← core file metadata
+├── file_meta ← extended metadata (EXIF, custom tags)
+├── file_text ← extracted text content (chunked)
+├── tags ← user and AI-generated tags
+└── jobs ← background processing tracking
+```
 
-- [ ] **7.2** - Update existing docs based on findings
-  - Refresh outdated sections
-  - Add missing information
-  - Fix broken references
+### Main Process APIs
+```
+window.gc.indexing = {
+  scanFolder(path: string): Promise<JobId>
+  getJobs(): Promise<Job[]>
+  pauseJob(id: JobId): Promise<void>
+  
+  searchFiles(query: SearchQuery): Promise<SearchResult[]>
+  getFileContent(id: number): Promise<FileContent>
+  updateFileTags(id: number, tags: string[]): Promise<void>
+}
+```
 
-- [ ] **7.3** - Create TODO.md with recommendations
-  - List improvement opportunities
-  - Suggest architectural refinements
-  - Prioritize recommendations
+### Feature Structure
+```
+app/renderer/src/ts/features/indexing/
+├── types.ts    # SearchQuery, SearchResult, Job interfaces
+├── service.ts  # Search operations, job management
+└── store.ts    # Search state, job progress, results
+```
 
 ---
 
-## Phase 8: Validation & Quality Check
+## 🔄 Execution Protocol
 
-- [ ] **8.1** - Run comprehensive testing
-  - Execute npm run typecheck
-  - Test npm run build
-  - Validate npm run dev
-
-- [ ] **8.2** - Cross-validate all documentation
-  - Check DOC.md completeness
-  - Validate updated docs accuracy
-  - Ensure consistency across files
+1. **One Task At A Time**: Complete each checkbox before proceeding
+2. **Validation**: Run tests and ensure quality after each task
+3. **Documentation**: Update component docs as new APIs are added
+4. **Integration**: Test with existing components and features
+5. **Performance**: Monitor build times and runtime performance
 
 ---
 
-## Success Criteria
+## 🚀 Expected Timeline
 
-- Comprehensive understanding of current codebase
-- Accurate, up-to-date documentation
-- Clear roadmap for "everything app" evolution
-- Clean foundation for future development
-- Single source of truth (DOC.md) established
+- **Phase 1**: Database Foundation (1-2 days)
+- **Phase 2**: File Scanning Engine (2-3 days)  
+- **Phase 3**: Frontend Integration (2-3 days)
+- **Phase 4**: Performance & Polish (1-2 days)
+- **Phase 5**: User Experience (1-2 days)
+
+**Total Estimate**: 7-12 days for complete file indexing system
+
+---
+
+## 🎁 Post-Implementation Benefits
+
+**Immediate User Value:**
+- Find any file instantly by name or content
+- Organize files with tags and collections
+- Discover duplicate files and cleanup opportunities
+
+**Foundation for Future Features:**
+- Semantic search with AI embeddings
+- File-based chat and Q&A
+- Automated file organization
+- Cross-application file integration
+
+**Technical Excellence:**
+- Production-ready performance
+- Type-safe APIs throughout
+- Clean, testable architecture
+- Extensible for future enhancements
+
+---
+
+*Plan Created: 2025-08-15*  
+*Target: First production "everything app" feature*  
+*Status: Ready for execution*

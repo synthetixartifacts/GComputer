@@ -25,7 +25,7 @@
    */
   import { createEventDispatcher } from 'svelte';
 
-  interface ColumnDef<TRow extends { id: number }> {
+  interface ColumnDef<TRow extends Record<string, any> & { id: number }> {
     id: keyof TRow & string;
     title: string;
     editable?: boolean;
@@ -39,8 +39,10 @@
     sortAccessor?: (row: TRow) => string | number | null | undefined;
   }
 
-  export let columns: ColumnDef<any>[] = [];
-  export let rows: Array<{ id: number; [k: string]: any }> = [];
+  type TableRow = Record<string, any> & { id: number };
+
+  export let columns: ColumnDef<TableRow>[] = [];
+  export let rows: TableRow[] = [];
   export let filters: Record<string, string> = {};
   export let editingRowIds: Set<number> = new Set();
   export let filterPlaceholder: string = 'Filter';
@@ -86,17 +88,17 @@
     }
   }
 
-  function getCellDisplay(row: any, col: ColumnDef<any>): string | number | null | undefined {
+  function getCellDisplay(row: TableRow, col: ColumnDef<TableRow>): string | number | null | undefined {
     return col.access ? col.access(row) : row[col.id];
   }
 
-  function getSortValue(row: any, col: ColumnDef<any>): string | number | null | undefined {
+  function getSortValue(row: TableRow, col: ColumnDef<TableRow>): string | number | null | undefined {
     if (col.sortAccessor) return col.sortAccessor(row);
     if (col.access) return col.access(row);
     return row[col.id];
   }
 
-  $: displayedRows = ((): Array<{ id: number; [k: string]: any }> => {
+  $: displayedRows = ((): TableRow[] => {
     if (!enableSorting || !sortColumnId || !sortDirection) return rows;
     const col = columns.find((c) => c.id === sortColumnId);
     if (!col) return rows;

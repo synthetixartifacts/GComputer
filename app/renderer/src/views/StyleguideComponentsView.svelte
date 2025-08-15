@@ -11,6 +11,7 @@
   import { openModal, closeModal } from '@features/ui/service';
   import { modalOpen } from '@features/ui/store';
   import { menuItems } from '@features/navigation/store';
+  import type { MenuItem } from '@features/navigation/types';
 
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
   const unsubT = tStore.subscribe((fn) => (t = fn));
@@ -24,7 +25,7 @@
   function openDemoDrawer(): void { demoDrawerOpen = true; }
   function closeDemoDrawer(): void { demoDrawerOpen = false; }
 
-  let demoMenu: any[] = [];
+  let demoMenu: MenuItem[] = [];
   const unsubMenu = menuItems.subscribe((v) => (demoMenu = v));
   onDestroy(() => { unsubMenu(); });
 
