@@ -83,7 +83,7 @@ app/
 **Artifacts:**
 Main → `dist/main/index.cjs` · Preload → `dist/preload/index.cjs` · Renderer → `dist/renderer/`
 
-**Libraries present (to be wired):** `better-sqlite3`, `drizzle-orm`, `exifr`, `mammoth`, `pdf-parse`, `sharp`.
+**Libraries present (to be wired):** `sql.js`, `drizzle-orm`, `exifr`, `mammoth`, `pdf-parse`, `sharp`.
 
 **Conventions**
 
@@ -231,7 +231,7 @@ B-tree on `path`, `mtime`, `tag`; vector index on `file_vectors.embedding`.
 
 **Present libs (to wire)**
 
-* **SQLite** (`better-sqlite3`) + **Drizzle ORM**
+* **SQLite** (`sql.js`) + **Drizzle ORM**
 * Parsers: `exifr`, `mammoth`, `pdf-parse`
 * Imaging: `sharp`
 

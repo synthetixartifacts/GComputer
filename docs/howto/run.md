@@ -23,9 +23,9 @@ Aliases are defined in `vite.config.mts` and `tsconfig.json` (must match).
 
 ---
 
-### Database (Drizzle + better-sqlite3)
+### Database (Drizzle + sql.js)
 
-The SQLite database and migrations live in the workspace package `packages/db`.
+The SQLite database and migrations live in the workspace package `packages/db`. Uses sql.js (pure JavaScript SQLite) for cross-platform compatibility.
 
 - DB file: `packages/db/data/gcomputer.db`
 - Schema: `packages/db/src/db/schema.ts`

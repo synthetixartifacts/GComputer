@@ -10,15 +10,15 @@ if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
 export const dbPath = path.join(dataDir, 'gcomputer.db');
 
-let SQL: any;
-let sqlite: any;
-let orm: any;
+let sqlJs: any;
+let database: any;
+let isInitialized = false;
 
-// Initialize database
+// Initialize database singleton
 export async function initDatabase() {
-  if (SQL) return { orm, saveDatabase };
+  if (isInitialized) return;
   
-  SQL = await initSqlJs();
+  sqlJs = await initSqlJs();
   let dbData: Uint8Array | undefined;
 
   // Load existing database if it exists
@@ -26,22 +26,26 @@ export async function initDatabase() {
     dbData = fs.readFileSync(dbPath);
   }
 
-  sqlite = new SQL.Database(dbData);
-  orm = drizzle(sqlite, { schema });
-  
-  return { orm, saveDatabase };
+  database = new sqlJs.Database(dbData);
+  isInitialized = true;
+}
+
+// Get ORM instance (ensures initialization)
+export async function getOrm() {
+  await initDatabase();
+  return drizzle(database, { schema });
 }
 
 // Save database function
 export function saveDatabase() {
-  if (!sqlite) throw new Error('Database not initialized');
-  const data = sqlite.export();
+  if (!isInitialized) throw new Error('Database not initialized');
+  const data = database.export();
   fs.writeFileSync(dbPath, data);
 }
 
-// Export orm for backward compatibility (will be undefined until initialized)
-export { orm };
-
-export function runMigrations() {
+// Run migrations
+export async function runMigrations() {
+  const orm = await getOrm();
   migrate(orm, { migrationsFolder: path.resolve('./drizzle') });
+  saveDatabase();
 }

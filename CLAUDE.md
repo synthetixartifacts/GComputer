@@ -39,7 +39,7 @@ app/
         i18n/     # Complete internationalization system
       styles/     # Complete SCSS design system (base/ and components/)
 
-packages/db/      # Drizzle + better-sqlite3 workspace
+packages/db/      # Drizzle + sql.js workspace
   src/db/
     schema.ts     # Current database schema
     schema-future.ts # Designed future schema for everything app
@@ -103,11 +103,12 @@ npm --workspace @gcomputer/db run drizzle:generate
 
 ## Database
 
-- **Technology**: SQLite with Drizzle ORM in workspace package `@gcomputer/db`
+- **Technology**: SQLite with sql.js (pure JavaScript) + Drizzle ORM in workspace package `@gcomputer/db`
 - **Location**: `packages/db/data/gcomputer.db`
 - **Schema**: `packages/db/src/db/schema.ts`
 - **Migrations**: Auto-generated in `packages/db/drizzle/`
 - **Access**: Via preload-exposed `window.gc.db` API
+- **Cross-platform**: Works on Windows/macOS/Linux without native compilation
 
 ## Key Features
 
@@ -130,10 +131,11 @@ npm --workspace @gcomputer/db run drizzle:generate
 **Specialized (3 categories)**: audio/AudioRecorder, chat/* (4 components), search/* (2 components)
 
 ### Database Integration
-- SQLite + Drizzle ORM in workspace package `@gcomputer/db`
+- SQLite with sql.js (pure JavaScript) + Drizzle ORM in workspace package `@gcomputer/db`
 - Current: Test table with full CRUD operations
 - Future: Complete schema designed for file indexing, embeddings, automation
 - IPC: Exposed via `window.gc.db.test.*`
+- Cross-platform compatible without native compilation
 
 ## Development Notes
 

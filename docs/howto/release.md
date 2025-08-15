@@ -190,16 +190,9 @@ The SQLite database (`packages/db/data/gcomputer.db`) is automatically included 
 
 ## Troubleshooting
 
-### Native Dependencies
+### Cross-Platform Compatibility
 
-If you encounter issues with native modules like `better-sqlite3`:
-
-```bash
-# Rebuild native modules for target platform
-npm run rebuild:native
-
-# For cross-platform builds, electron-builder handles this automatically
-```
+The app uses sql.js (pure JavaScript SQLite) which eliminates native compilation issues across Windows, macOS, and Linux platforms. No native module rebuilding is required.
 
 ### Build Errors
 
