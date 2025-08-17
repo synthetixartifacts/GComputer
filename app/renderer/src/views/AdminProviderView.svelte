@@ -1,13 +1,8 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { get } from 'svelte/store';
-  import AdminCrud from '@components/admin/AdminCrud.svelte';
-  import AdminFormModal from '@components/admin/AdminFormModal.svelte';
+  import AdminEntityManager from '@components/admin/AdminEntityManager.svelte';
   import { 
     providers, 
-    providerFilters, 
-    loadingState,
-    setLoading 
+    providerFilters
   } from '@features/admin/store';
   import { 
     listProviders, 
@@ -19,19 +14,18 @@
   import type { 
     Provider, 
     ProviderInsert, 
-    ProviderUpdate, 
-    AdminTableConfig,
-    AdminFieldConfig,
-    FormMode
+    ProviderUpdate,
+    AdminFieldConfig
   } from '@features/admin/types';
   import { t } from '@ts/i18n';
 
-  // Field configuration for providers - unified for both table and form
+  // Field configuration for providers
+  let fields: AdminFieldConfig<Provider>[];
   $: fields = [
     { 
       id: 'code', 
       title: $t('pages.admin.provider.code'), 
-      type: 'text',
+      type: 'text' as const,
       width: '120px',
       showInTable: true,
       showInForm: true,
@@ -41,7 +35,7 @@
     { 
       id: 'name', 
       title: $t('pages.admin.provider.name'), 
-      type: 'text',
+      type: 'text' as const,
       width: '200px',
       showInTable: true,
       showInForm: true,
@@ -51,7 +45,7 @@
     { 
       id: 'url', 
       title: $t('pages.admin.provider.url'), 
-      type: 'url',
+      type: 'url' as const,
       width: '250px',
       showInTable: true,
       showInForm: true,
@@ -61,18 +55,18 @@
     { 
       id: 'authentication', 
       title: $t('pages.admin.provider.authentication'), 
-      type: 'select',
+      type: 'select' as const,
       width: '150px',
       showInTable: true,
       showInForm: true,
       validation: { required: true },
-      options: AUTHENTICATION_OPTIONS,
-      access: (row) => AUTHENTICATION_OPTIONS.find(opt => opt.value === row.authentication)?.label || row.authentication
+      options: [...AUTHENTICATION_OPTIONS],
+      access: (row: Provider) => AUTHENTICATION_OPTIONS.find(opt => opt.value === row.authentication)?.label || row.authentication
     },
     { 
       id: 'configuration', 
       title: 'Configuration', 
-      type: 'textarea',
+      type: 'textarea' as const,
       showInTable: false,
       showInForm: true,
       placeholder: '{}',
@@ -86,152 +80,36 @@
       showInTable: true,
       showInForm: false,
       readonly: true,
-      access: (row) => new Date(row.createdAt).toLocaleDateString()
+      access: (row: Provider) => new Date(row.createdAt).toLocaleDateString()
     }
   ];
 
-  $: config = {
-    fields,
-    entityName: 'Providers',
-    singularName: 'Provider'
+  // Service configuration
+  const providerService = {
+    list: listProviders,
+    create: createProvider as (data: any) => Promise<Provider>,
+    update: updateProvider as (data: any) => Promise<Provider>,
+    delete: deleteProvider
   };
 
-  // Modal state
-  let modalOpen = false;
-  let modalMode: FormMode = 'create';
-  let currentProvider: Partial<Provider> = {};
-
-  onMount(async () => {
-    await loadProviders();
-  });
-
-  async function loadProviders() {
-    setLoading('providers', true);
-    try {
-      const result = await listProviders();
-      providers.set(result);
-    } catch (error) {
-      console.error('Failed to load providers:', error);
-    } finally {
-      setLoading('providers', false);
-    }
-  }
-
-  function handleFilterChange(event: CustomEvent<{ columnId: string; value: string }>) {
-    const { columnId, value } = event.detail;
-    providerFilters.update(current => ({ ...current, [columnId]: value }));
-  }
-
-  function handleEditRow(event: CustomEvent<{ rowId: number }>) {
-    const { rowId } = event.detail;
-    const provider = get(providers).find(p => p.id === rowId);
-    if (provider) {
-      currentProvider = { ...provider };
-      modalMode = 'edit';
-      modalOpen = true;
-    }
-  }
-
-  function handleViewRow(event: CustomEvent<{ rowId: number }>) {
-    const { rowId } = event.detail;
-    const provider = get(providers).find(p => p.id === rowId);
-    if (provider) {
-      currentProvider = { ...provider };
-      modalMode = 'view';
-      modalOpen = true;
-    }
-  }
-
-  async function handleDeleteRow(event: CustomEvent<{ rowId: number }>) {
-    const { rowId } = event.detail;
-    
-    try {
-      const result = await deleteProvider(rowId);
-      if (result.ok) {
-        providers.update(current => current.filter(provider => provider.id !== rowId));
-      }
-    } catch (error) {
-      console.error('Failed to delete provider:', error);
-    }
-  }
-
-  function handleCreateNew() {
-    currentProvider = {};
-    modalMode = 'create';
-    modalOpen = true;
-  }
-
-  function handleDuplicate(event: CustomEvent<{ rowId: number }>) {
-    const { rowId } = event.detail;
-    const original = get(providers).find(p => p.id === rowId);
-    
-    if (original) {
-      currentProvider = {
-        code: `${original.code}-copy`,
-        name: `${original.name} (Copy)`,
-        url: original.url,
-        authentication: original.authentication,
-        configuration: original.configuration
-      };
-      modalMode = 'create';
-      modalOpen = true;
-    }
-  }
-
-  async function handleModalSubmit(event: CustomEvent<{ data: Partial<Provider>; mode: FormMode }>) {
-    const { data, mode } = event.detail;
-    
-    try {
-      if (mode === 'create') {
-        const created = await createProvider(data as ProviderInsert);
-        if (created) {
-          providers.update(current => [...current, created]);
-          modalOpen = false;
-        }
-      } else if (mode === 'edit') {
-        const updated = await updateProvider({ id: currentProvider.id!, ...data } as ProviderUpdate);
-        if (updated) {
-          providers.update(current => 
-            current.map(provider => provider.id === currentProvider.id ? updated : provider)
-          );
-          modalOpen = false;
-        }
-      }
-    } catch (error) {
-      console.error(`Failed to ${mode} provider:`, error);
-    }
-  }
-
-  function handleModalClose() {
-    modalOpen = false;
-    currentProvider = {};
-  }
+  // No dependencies for providers (they are the root entity)
+  const dependencies: Array<{
+    store: any;
+    loader: () => Promise<any[]>;
+    name: string;
+  }> = [];
 </script>
 
-<AdminCrud
+<AdminEntityManager
   title={$t('pages.admin.provider.title')}
   description={$t('pages.admin.provider.desc')}
-  data={$providers}
-  {config}
-  filters={$providerFilters}
-  loading={$loadingState.providers}
   createButtonLabel={$t('pages.admin.provider.add')}
-  on:filterChange={handleFilterChange}
-  on:editRow={handleEditRow}
-  on:viewRow={handleViewRow}
-  on:deleteRow={handleDeleteRow}
-  on:createNew={handleCreateNew}
-  on:duplicate={handleDuplicate}
-/>
-
-<AdminFormModal
-  open={modalOpen}
-  mode={modalMode}
-  {fields}
   entityName="Providers"
   singularName="Provider"
-  data={currentProvider}
-  loading={$loadingState.providers}
-  on:submit={handleModalSubmit}
-  on:close={handleModalClose}
+  {fields}
+  dataStore={providers}
+  filtersStore={providerFilters}
+  loadingKey="providers"
+  service={providerService}
+  {dependencies}
 />

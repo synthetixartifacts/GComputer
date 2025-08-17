@@ -72,7 +72,7 @@
       title: field.title,
       editable: false, // Disable inline editing
       width: field.width,
-      access: field.access,
+      access: field.access as any, // Type assertion for compatibility
     }));
 
   // Transform data for table display
@@ -149,7 +149,7 @@
             </button>
             <button 
               class="btn btn--sm btn--danger admin-crud__action-btn"
-              on:click={() => handleDeleteRow({ detail: { rowId: row.id } })}
+              on:click={() => handleDeleteRow(new CustomEvent('delete', { detail: { rowId: row.id } }))}
               title="Delete this {config.singularName.toLowerCase()}"
             >
               🗑️
@@ -160,100 +160,3 @@
     </div>
   {/if}
 </div>
-
-<style lang="scss">
-  .admin-crud {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    gap: 1rem;
-
-    &__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1rem;
-      
-      @media (max-width: 768px) {
-        flex-direction: column;
-        align-items: stretch;
-      }
-    }
-
-    &__header-content {
-      flex: 1;
-    }
-
-    &__title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 0 0 0.5rem;
-      color: var(--color-text);
-    }
-
-    &__description {
-      margin: 0;
-      color: var(--color-text-muted);
-      font-size: 0.875rem;
-    }
-
-    &__actions {
-      display: flex;
-      gap: 0.5rem;
-      
-      @media (max-width: 768px) {
-        justify-content: stretch;
-        
-        .btn {
-          flex: 1;
-        }
-      }
-    }
-
-    &__table {
-      flex: 1;
-      overflow: hidden;
-    }
-
-    &__table-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    &__count {
-      font-size: 0.875rem;
-      color: var(--color-text-muted);
-    }
-
-    &__loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      padding: 2rem;
-      color: var(--color-text-muted);
-    }
-
-    &__row-actions {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-
-      @media (max-width: 768px) {
-        flex-direction: column;
-        gap: 0.25rem;
-      }
-    }
-
-    &__action-btn {
-      min-width: 2rem;
-      padding: 0.25rem 0.5rem;
-      font-size: 1rem;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-</style>

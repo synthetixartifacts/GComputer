@@ -9,6 +9,9 @@
 @use './components/table';
 @use './components/progress';
 @use './components/audio-recorder';
+@use './components/admin-forms';
+@use './components/admin-crud';
+@use './components/admin-fields';
 
 @tailwind base;
 @tailwind components;

@@ -59,19 +59,19 @@ export interface Agent {
 }
 
 // Filter types
-export interface ProviderFilters {
+export interface ProviderFilters extends Record<string, string> {
   code?: string;
   name?: string;
   url?: string;
 }
 
-export interface ModelFilters {
+export interface ModelFilters extends Record<string, string> {
   code?: string;
   name?: string;
   model?: string;
 }
 
-export interface AgentFilters {
+export interface AgentFilters extends Record<string, string> {
   code?: string;
   name?: string;
   version?: string;
@@ -175,7 +175,7 @@ export interface SelectOption {
 
 // Unified field configuration for both table display and form editing
 export interface AdminFieldConfig<T> {
-  id: keyof T & string;
+  id: string; // Changed from keyof T & string to just string for flexibility
   title: string;
   type?: FieldType;
   width?: string;

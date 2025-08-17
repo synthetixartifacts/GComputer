@@ -49,7 +49,7 @@
 
   function handleFieldChange(event: CustomEvent<{ fieldId: string; value: string }>) {
     const { fieldId, value } = event.detail;
-    formData[fieldId as keyof typeof formData] = value;
+    (formData as any)[fieldId] = value;
     
     // Clear error when user starts typing
     if (errors[fieldId]) {
@@ -93,14 +93,14 @@
     {
       id: 'column1',
       title: 'Column 1',
-      type: 'text',
+      type: 'text' as const,
       validation: { required: true },
       placeholder: 'Enter value for column 1'
     },
     {
       id: 'column2', 
       title: 'Column 2',
-      type: 'text',
+      type: 'text' as const,
       placeholder: 'Enter value for column 2'
     }
   ];
@@ -113,7 +113,7 @@
         <div class="admin-form__field">
           <AdminTextField
             {field}
-            value={formData[field.id]}
+            value={(formData as any)[field.id]}
             error={errors[field.id] || ''}
             disabled={loading || mode === 'view'}
             on:change={handleFieldChange}
@@ -147,36 +147,3 @@
     </div>
   </form>
 </Modal>
-
-<style lang="scss">
-  .admin-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 500px;
-    
-    &__fields {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    
-    &__field {
-      width: 100%;
-    }
-    
-    &__actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.75rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--color-border);
-      
-      .btn {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-    }
-  }
-</style>
