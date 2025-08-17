@@ -18,7 +18,16 @@ let isInitialized = false;
 export async function initDatabase(): Promise<void> {
   if (isInitialized) return;
   
-  sqlJs = await initSqlJs();
+  // Configure sql.js with proper WASM path for Electron
+  const wasmPath = path.resolve('./dist/main/sql-wasm.wasm');
+  sqlJs = await initSqlJs({
+    locateFile: (file: string) => {
+      if (file === 'sql-wasm.wasm') {
+        return wasmPath;
+      }
+      return file;
+    }
+  });
   let dbData: Uint8Array | undefined;
 
   // Load existing database if it exists
