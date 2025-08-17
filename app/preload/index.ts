@@ -51,6 +51,50 @@ contextBridge.exposeInMainWorld('gc', {
         return ipcRenderer.invoke('db:test:truncate');
       },
     },
+    admin: {
+      providers: {
+        list(filters?: { code?: string; name?: string; url?: string }) {
+          return ipcRenderer.invoke('db:admin:providers:list', filters);
+        },
+        insert(payload: { code: string; name: string; url: string; authentication: string; configuration?: string }) {
+          return ipcRenderer.invoke('db:admin:providers:insert', payload);
+        },
+        update(payload: { id: number; code?: string; name?: string; url?: string; authentication?: string; configuration?: string }) {
+          return ipcRenderer.invoke('db:admin:providers:update', payload);
+        },
+        delete(id: number) {
+          return ipcRenderer.invoke('db:admin:providers:delete', id);
+        },
+      },
+      models: {
+        list(filters?: { code?: string; name?: string; model?: string }) {
+          return ipcRenderer.invoke('db:admin:models:list', filters);
+        },
+        insert(payload: { code: string; name: string; model: string; inputPrice?: number; outputPrice?: number; endpoint: string; params?: string; messageLocation?: string; streamMessageLocation?: string; inputTokenCountLocation?: string; outputTokenCountLocation?: string; providerId: number }) {
+          return ipcRenderer.invoke('db:admin:models:insert', payload);
+        },
+        update(payload: { id: number; code?: string; name?: string; model?: string; inputPrice?: number; outputPrice?: number; endpoint?: string; params?: string; messageLocation?: string; streamMessageLocation?: string; inputTokenCountLocation?: string; outputTokenCountLocation?: string; providerId?: number }) {
+          return ipcRenderer.invoke('db:admin:models:update', payload);
+        },
+        delete(id: number) {
+          return ipcRenderer.invoke('db:admin:models:delete', id);
+        },
+      },
+      agents: {
+        list(filters?: { code?: string; name?: string; version?: string }) {
+          return ipcRenderer.invoke('db:admin:agents:list', filters);
+        },
+        insert(payload: { code: string; name: string; description?: string; version?: string; enable?: boolean; isSystem?: boolean; systemPrompt?: string; configuration?: string; modelId: number }) {
+          return ipcRenderer.invoke('db:admin:agents:insert', payload);
+        },
+        update(payload: { id: number; code?: string; name?: string; description?: string; version?: string; enable?: boolean; isSystem?: boolean; systemPrompt?: string; configuration?: string; modelId?: number }) {
+          return ipcRenderer.invoke('db:admin:agents:update', payload);
+        },
+        delete(id: number) {
+          return ipcRenderer.invoke('db:admin:agents:delete', id);
+        },
+      },
+    },
   },
 });
 

@@ -51,6 +51,27 @@ export const menuItems = writable<MenuItem[]>([
             },
           ],
         },
+        {
+          label: 'app.menu.admin.label',
+          i18nKey: 'app.menu.admin.label',
+          children: [
+            {
+              label: 'app.menu.admin.entity.label',
+              i18nKey: 'app.menu.admin.entity.label',
+              children: [
+                {
+                  label: 'app.menu.admin.entity.llm.label',
+                  i18nKey: 'app.menu.admin.entity.llm.label',
+                  children: [
+                    { label: 'app.menu.admin.entity.llm.provider', i18nKey: 'app.menu.admin.entity.llm.provider', route: 'test.admin.entity.provider' as Route },
+                    { label: 'app.menu.admin.entity.llm.model', i18nKey: 'app.menu.admin.entity.llm.model', route: 'test.admin.entity.model' as Route },
+                    { label: 'app.menu.admin.entity.llm.agent', i18nKey: 'app.menu.admin.entity.llm.agent', route: 'test.admin.entity.agent' as Route },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
       ] as MenuItem[])
     : []),
 ]);

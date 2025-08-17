@@ -34,6 +34,18 @@
         "label": "DB",
         "testTable": "Test table"
       },
+      "admin": {
+        "label": "Admin",
+        "entity": {
+          "label": "Entity",
+          "llm": {
+            "label": "LLM",
+            "provider": "Provider",
+            "model": "Model", 
+            "agent": "Agent"
+          }
+        }
+      },
       "menu": "Menu",
       "close": "Close"
     },
@@ -281,6 +293,54 @@
         "add": "Add row",
         "truncate": "Truncate table",
         "save": "Save changes"
+      }
+    },
+    "admin": {
+      "provider": {
+        "title": "AI Providers",
+        "desc": "Manage AI service providers and their configurations.",
+        "code": "Code",
+        "name": "Name",
+        "url": "URL",
+        "authentication": "Authentication",
+        "configuration": "Configuration",
+        "add": "Add Provider",
+        "edit": "Edit",
+        "delete": "Delete",
+        "duplicate": "Duplicate"
+      },
+      "model": {
+        "title": "AI Models",
+        "desc": "Manage AI models and their parameters.",
+        "code": "Code",
+        "name": "Name",
+        "model": "Model",
+        "inputPrice": "Input Price",
+        "outputPrice": "Output Price",
+        "endpoint": "Endpoint",
+        "params": "Parameters",
+        "provider": "Provider",
+        "add": "Add Model",
+        "edit": "Edit",
+        "delete": "Delete",
+        "duplicate": "Duplicate"
+      },
+      "agent": {
+        "title": "AI Agents",
+        "desc": "Manage AI agents and their configurations.",
+        "code": "Code",
+        "name": "Name",
+        "description": "Description",
+        "version": "Version",
+        "enable": "Enabled",
+        "isSystem": "System",
+        "systemPrompt": "System Prompt",
+        "model": "Model",
+        "provider": "Provider",
+        "add": "Add Agent",
+        "edit": "Edit",
+        "delete": "Delete",
+        "duplicate": "Duplicate"
       }
     },
     "settings": {

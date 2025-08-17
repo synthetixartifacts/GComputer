@@ -34,6 +34,18 @@
         "label": "BD",
         "testTable": "Table de test"
       },
+      "admin": {
+        "label": "Admin",
+        "entity": {
+          "label": "Entité",
+          "llm": {
+            "label": "LLM",
+            "provider": "Fournisseur",
+            "model": "Modèle",
+            "agent": "Agent"
+          }
+        }
+      },
       "menu": "Menu",
       "close": "Fermer"
     },
@@ -299,6 +311,54 @@
         "add": "Ajouter une ligne",
         "truncate": "Vider la table",
         "save": "Enregistrer les modifications"
+      }
+    },
+    "admin": {
+      "provider": {
+        "title": "Fournisseurs IA",
+        "desc": "Gérez les fournisseurs de services IA et leurs configurations.",
+        "code": "Code",
+        "name": "Nom",
+        "url": "URL",
+        "authentication": "Authentification",
+        "configuration": "Configuration",
+        "add": "Ajouter un fournisseur",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "duplicate": "Dupliquer"
+      },
+      "model": {
+        "title": "Modèles IA",
+        "desc": "Gérez les modèles IA et leurs paramètres.",
+        "code": "Code",
+        "name": "Nom",
+        "model": "Modèle",
+        "inputPrice": "Prix d'entrée",
+        "outputPrice": "Prix de sortie",
+        "endpoint": "Point de terminaison",
+        "params": "Paramètres",
+        "provider": "Fournisseur",
+        "add": "Ajouter un modèle",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "duplicate": "Dupliquer"
+      },
+      "agent": {
+        "title": "Agents IA",
+        "desc": "Gérez les agents IA et leurs configurations.",
+        "code": "Code",
+        "name": "Nom",
+        "description": "Description",
+        "version": "Version",
+        "enable": "Activé",
+        "isSystem": "Système",
+        "systemPrompt": "Prompt système",
+        "model": "Modèle",
+        "provider": "Fournisseur",
+        "add": "Ajouter un agent",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "duplicate": "Dupliquer"
       }
     },
     "settings": {

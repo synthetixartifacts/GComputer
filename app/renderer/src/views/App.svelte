@@ -24,6 +24,9 @@
   import FeaturesOverviewView from '@views/FeaturesOverviewView.svelte';
   import FeatureLocalFilesView from '@views/FeatureLocalFilesView.svelte';
   import FeatureSavedLocalFolderView from '@views/FeatureDefaultFolderView.svelte';
+  import AdminProviderView from '@views/AdminProviderView.svelte';
+  import AdminModelView from '@views/AdminModelView.svelte';
+  import AdminAgentView from '@views/AdminAgentView.svelte';
   import { sidebarOpen, modalOpen } from '@features/ui/store';
   import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
@@ -118,6 +121,12 @@
   
   {:else if route === 'test.db.test-table'}
     <TestDbTableView />
+  {:else if import.meta.env.DEV && route === 'test.admin.entity.provider'}
+    <AdminProviderView />
+  {:else if import.meta.env.DEV && route === 'test.admin.entity.model'}
+    <AdminModelView />
+  {:else if import.meta.env.DEV && route === 'test.admin.entity.agent'}
+    <AdminAgentView />
   {/if}
 </main>
 

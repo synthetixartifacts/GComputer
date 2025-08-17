@@ -21,6 +21,26 @@ declare global {
           delete: (id: number) => Promise<{ ok: true }>;
           truncate: () => Promise<{ ok: true }>;
         };
+        admin: {
+          providers: {
+            list: (filters?: import('@features/admin/types').ProviderFilters) => Promise<import('@features/admin/types').Provider[]>;
+            insert: (payload: import('@features/admin/types').ProviderInsert) => Promise<import('@features/admin/types').Provider | null>;
+            update: (payload: import('@features/admin/types').ProviderUpdate) => Promise<import('@features/admin/types').Provider | null>;
+            delete: (id: number) => Promise<{ ok: true }>;
+          };
+          models: {
+            list: (filters?: import('@features/admin/types').ModelFilters) => Promise<import('@features/admin/types').Model[]>;
+            insert: (payload: import('@features/admin/types').ModelInsert) => Promise<import('@features/admin/types').Model | null>;
+            update: (payload: import('@features/admin/types').ModelUpdate) => Promise<import('@features/admin/types').Model | null>;
+            delete: (id: number) => Promise<{ ok: true }>;
+          };
+          agents: {
+            list: (filters?: import('@features/admin/types').AgentFilters) => Promise<import('@features/admin/types').Agent[]>;
+            insert: (payload: import('@features/admin/types').AgentInsert) => Promise<import('@features/admin/types').Agent | null>;
+            update: (payload: import('@features/admin/types').AgentUpdate) => Promise<import('@features/admin/types').Agent | null>;
+            delete: (id: number) => Promise<{ ok: true }>;
+          };
+        };
       };
     };
   }
