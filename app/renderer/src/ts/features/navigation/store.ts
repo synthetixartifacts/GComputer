@@ -12,16 +12,16 @@ export const menuItems = writable<MenuItem[]>([
       { label: 'app.menu.about', i18nKey: 'app.menu.about', route: 'settings.about' },
     ],
   },
-  {
-    label: 'app.menu.test',
-    i18nKey: 'app.menu.test',
-    children: [
-      {
-        label: 'app.menu.styleguide.label',
-        i18nKey: 'app.menu.styleguide.label',
-        children: [
-          ...(import.meta.env.DEV
-            ? ([
+  ...(import.meta.env.DEV
+    ? ([
+        {
+          label: 'app.menu.test',
+          i18nKey: 'app.menu.test',
+          children: [
+            {
+              label: 'app.menu.styleguide.label',
+              i18nKey: 'app.menu.styleguide.label',
+              children: [
                 { label: 'app.menu.styleguide.base', i18nKey: 'app.menu.styleguide.base', route: 'test.styleguide.base' as Route },
                 { label: 'app.menu.styleguide.inputs', i18nKey: 'app.menu.styleguide.inputs', route: 'test.styleguide.inputs' as Route },
                 { label: 'app.menu.styleguide.buttons', i18nKey: 'app.menu.styleguide.buttons', route: 'test.styleguide.buttons' as Route },
@@ -32,35 +32,27 @@ export const menuItems = writable<MenuItem[]>([
                 { label: 'app.menu.styleguide.media', i18nKey: 'app.menu.styleguide.media', route: 'test.styleguide.media' as Route },
                 { label: 'app.menu.styleguide.files', i18nKey: 'app.menu.styleguide.files', route: 'test.styleguide.files' as Route },
                 { label: 'app.menu.styleguide.chatbot', i18nKey: 'app.menu.styleguide.chatbot', route: 'test.styleguide.chatbot' as Route },
-              ] as MenuItem[])
-            : []),
-        ],
-      },
-      {
-        label: 'app.menu.features.label',
-        i18nKey: 'app.menu.features.label',
-        children: [
-          ...(import.meta.env.DEV
-            ? ([
+              ],
+            },
+            {
+              label: 'app.menu.features.label',
+              i18nKey: 'app.menu.features.label',
+              children: [
                 { label: 'app.menu.features.localFiles', i18nKey: 'app.menu.features.localFiles', route: 'test.features.local-files' as Route },
                 { label: 'app.menu.features.savedLocalFolder', i18nKey: 'app.menu.features.savedLocalFolder', route: 'test.features.saved-local-folder' as Route },
-              ] as MenuItem[])
-            : []),
-        ],
-      },
-      {
-        label: 'app.menu.db.label',
-        i18nKey: 'app.menu.db.label',
-        children: [
-          ...(import.meta.env.DEV
-            ? ([
+              ],
+            },
+            {
+              label: 'app.menu.db.label',
+              i18nKey: 'app.menu.db.label',
+              children: [
                 { label: 'app.menu.db.testTable', i18nKey: 'app.menu.db.testTable', route: 'test.db.test-table' as Route },
-              ] as MenuItem[])
-            : []),
-        ],
-      },
-    ],
-  },
+              ],
+            },
+          ],
+        },
+      ] as MenuItem[])
+    : []),
 ]);
 
 export const expandedKeys = writable<Record<string, boolean>>({});
