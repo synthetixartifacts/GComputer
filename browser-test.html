@@ -287,6 +287,7 @@
                     alert('✅ Provider created successfully!');
                     hideCreateProviderForm();
                     loadProviders(); // Refresh list
+                    loadModels(); // Refresh models to show updated relationships
                     
                     // Clear form
                     document.getElementById('provider-code').value = '';

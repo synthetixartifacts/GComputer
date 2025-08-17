@@ -4,9 +4,11 @@
   import AdminTextField from './fields/AdminTextField.svelte';
   import AdminNumberField from './fields/AdminNumberField.svelte';
   import AdminSelectField from './fields/AdminSelectField.svelte';
+  import AdminRelationshipField from './fields/AdminRelationshipField.svelte';
   import AdminTextareaField from './fields/AdminTextareaField.svelte';
   import AdminBooleanField from './fields/AdminBooleanField.svelte';
   import type { AdminFieldConfig, FormMode } from '@features/admin/types';
+  import { prepareFormData, isRelationshipField, getDefaultValueForType } from '@features/admin/relationship-utils';
   import { t } from '@ts/i18n';
 
   type T = $$Generic<Record<string, any>>;
@@ -28,39 +30,35 @@
   let errors: Record<string, string> = {};
   let isSubmitting = false;
 
+  // Helper functions moved to relationship-utils.ts for reusability
+
   // Initialize form data when modal opens or data changes
   $: if (open) {
     initializeForm();
   }
 
   function initializeForm() {
-    formData = {};
     errors = {};
     
-    fields.forEach(field => {
-      if (field.showInForm !== false) {
-        const fieldKey = field.id as string;
-        if (mode === 'create') {
-          formData[fieldKey] = field.defaultValue ?? getDefaultValueForType(field.type);
-        } else {
-          formData[fieldKey] = data[fieldKey] ?? field.defaultValue ?? getDefaultValueForType(field.type);
+    if (mode === 'create') {
+      // For create mode, use default values
+      formData = {};
+      fields.forEach(field => {
+        if (field.showInForm !== false) {
+          formData[field.id] = field.defaultValue ?? getDefaultValueForType(field.type);
         }
-      }
-    });
+      });
+    } else {
+      // For edit/view mode, use generic form data preparation
+      formData = prepareFormData(data as T, fields);
+    }
+
+    console.warn('formData', formData);
+    
+    // Force reactive update
+    formData = { ...formData };
   }
 
-  function getDefaultValueForType(type?: string): any {
-    switch (type) {
-      case 'number': return null;
-      case 'boolean': return false;
-      case 'text':
-      case 'email':
-      case 'url':
-      case 'textarea': return '';
-      case 'select': return '';
-      default: return '';
-    }
-  }
 
   function validateField(field: AdminFieldConfig<T>, value: any): string {
     if (!field.validation) return '';
@@ -201,6 +199,15 @@
         <div class="admin-form__field">
           {#if field.type === 'number'}
             <AdminNumberField
+              {field}
+              value={formData[field.id]}
+              error={errors[field.id] || ''}
+              disabled={isSubmitting || loading || field.readonly || mode === 'view'}
+              on:change={handleFieldChange}
+              on:blur={handleFieldBlur}
+            />
+          {:else if field.type === 'relationship'}
+            <AdminRelationshipField
               {field}
               value={formData[field.id]}
               error={errors[field.id] || ''}

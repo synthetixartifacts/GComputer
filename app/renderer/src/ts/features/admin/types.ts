@@ -156,7 +156,7 @@ export interface AgentUpdate {
 export type AdminEntity = 'providers' | 'models' | 'agents';
 
 // Field types for forms
-export type FieldType = 'text' | 'number' | 'boolean' | 'select' | 'textarea' | 'email' | 'url';
+export type FieldType = 'text' | 'number' | 'boolean' | 'select' | 'textarea' | 'email' | 'url' | 'relationship';
 
 // Field validation rules
 export interface FieldValidation {
@@ -171,6 +171,13 @@ export interface FieldValidation {
 export interface SelectOption {
   label: string;
   value: string | number;
+}
+
+// Relationship field configuration
+export interface RelationshipConfig {
+  entityKey: string;      // Key in the data object (e.g., 'provider' for data.provider)
+  valueField: string;     // Field to use as value (e.g., 'id' for provider.id)
+  labelField: string;     // Field to display in options (e.g., 'name' for provider.name)
 }
 
 // Unified field configuration for both table display and form editing
@@ -190,6 +197,9 @@ export interface AdminFieldConfig<T> {
   helpText?: string;
   validation?: FieldValidation;
   options?: SelectOption[];
+  
+  // Relationship configuration (for type: 'relationship')
+  relationship?: RelationshipConfig;
   
   // Special configurations
   readonly?: boolean;

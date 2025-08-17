@@ -87,12 +87,17 @@
     { 
       id: 'modelId', 
       title: $t('pages.admin.agent.model'), 
-      type: 'select' as const,
+      type: 'relationship' as const,
       width: '150px',
       showInTable: true,
       showInForm: true,
       validation: { required: true },
       options: modelOptions,
+      relationship: {
+        entityKey: 'model',
+        valueField: 'id',
+        labelField: 'name'
+      },
       access: (row: Agent) => row.model?.name || 'Unknown'
     },
     { 

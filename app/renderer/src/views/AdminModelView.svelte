@@ -88,12 +88,17 @@
     { 
       id: 'providerId', 
       title: $t('pages.admin.model.provider'), 
-      type: 'select' as const,
+      type: 'relationship' as const,
       width: '150px',
       showInTable: true,
       showInForm: true,
       validation: { required: true },
       options: providerOptions,
+      relationship: {
+        entityKey: 'provider',
+        valueField: 'id',
+        labelField: 'name'
+      },
       access: (row: Model) => row.provider?.name || 'Unknown'
     },
     { 

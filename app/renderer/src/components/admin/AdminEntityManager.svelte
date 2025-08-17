@@ -178,15 +178,16 @@
       if (mode === 'create') {
         const created = await service.create(data);
         if (created) {
-          dataStore.update(current => [...current, created]);
+          // Refresh entire list to ensure we get complete relationship data
+          await loadEntities();
           modalOpen = false;
         }
       } else if (mode === 'edit') {
         const updated = await service.update({ id: currentEntity.id!, ...data });
         if (updated) {
-          dataStore.update(current => 
-            current.map(entity => entity.id === currentEntity.id ? updated : entity)
-          );
+          // Refresh entire list to ensure we get complete relationship data
+          // This is necessary because update operations may not return full relationship objects
+          await loadEntities();
           modalOpen = false;
         }
       }
