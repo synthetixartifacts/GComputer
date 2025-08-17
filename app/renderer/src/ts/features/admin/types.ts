@@ -155,15 +155,61 @@ export interface AgentUpdate {
 // Admin entity type union
 export type AdminEntity = 'providers' | 'models' | 'agents';
 
-// Table configuration for each entity
+// Field types for forms
+export type FieldType = 'text' | 'number' | 'boolean' | 'select' | 'textarea' | 'email' | 'url';
+
+// Field validation rules
+export interface FieldValidation {
+  required?: boolean;
+  min?: number;
+  max?: number;
+  pattern?: RegExp;
+  custom?: (value: any) => string | null;
+}
+
+// Select field option
+export interface SelectOption {
+  label: string;
+  value: string | number;
+}
+
+// Unified field configuration for both table display and form editing
+export interface AdminFieldConfig<T> {
+  id: keyof T & string;
+  title: string;
+  type?: FieldType;
+  width?: string;
+  
+  // Display configuration
+  showInTable?: boolean;
+  access?: (row: T) => string | number | null | undefined;
+  
+  // Form configuration
+  showInForm?: boolean;
+  placeholder?: string;
+  helpText?: string;
+  validation?: FieldValidation;
+  options?: SelectOption[];
+  
+  // Special configurations
+  readonly?: boolean;
+  defaultValue?: any;
+}
+
+// Updated table configuration
 export interface AdminTableConfig<T> {
-  columns: Array<{
-    id: keyof T & string;
-    title: string;
-    editable?: boolean;
-    width?: string;
-    access?: (row: T) => string | number | null | undefined;
-  }>;
+  fields: AdminFieldConfig<T>[];
+  entityName: string;
+  singularName: string;
+}
+
+// Form modes
+export type FormMode = 'create' | 'edit' | 'view';
+
+// Form configuration
+export interface AdminFormConfig<T> {
+  fields: AdminFieldConfig<T>[];
+  mode: FormMode;
   entityName: string;
   singularName: string;
 }

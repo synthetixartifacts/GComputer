@@ -26,14 +26,13 @@
   export let data: T[] = [];
   export let config: AdminTableConfig<T>;
   export let filters: Record<string, string> = {};
-  export let editingRowIds: Set<number> = new Set();
   export let loading: boolean = false;
   export let createButtonLabel: string = 'Create';
 
   const dispatch = createEventDispatcher<{
     filterChange: { columnId: string; value: string };
-    editCell: { rowId: number; columnId: string; value: string };
-    toggleEdit: { rowId: number };
+    editRow: { rowId: number };
+    viewRow: { rowId: number };
     deleteRow: { rowId: number };
     createNew: void;
     duplicate: { rowId: number };
@@ -43,12 +42,12 @@
     dispatch('filterChange', event.detail);
   }
 
-  function handleEditCell(event: CustomEvent<{ rowId: number; columnId: string; value: string }>) {
-    dispatch('editCell', event.detail);
+  function handleEditRow(rowId: number) {
+    dispatch('editRow', { rowId });
   }
 
-  function handleToggleEdit(event: CustomEvent<{ rowId: number }>) {
-    dispatch('toggleEdit', event.detail);
+  function handleViewRow(rowId: number) {
+    dispatch('viewRow', { rowId });
   }
 
   function handleDeleteRow(event: CustomEvent<{ rowId: number }>) {
@@ -64,6 +63,17 @@
   function handleDuplicate(rowId: number) {
     dispatch('duplicate', { rowId });
   }
+
+  // Transform config for table display - only show fields marked for table
+  $: tableColumns = config.fields
+    .filter(field => field.showInTable !== false)
+    .map(field => ({
+      id: field.id,
+      title: field.title,
+      editable: false, // Disable inline editing
+      width: field.width,
+      access: field.access,
+    }));
 
   // Transform data for table display
   $: tableRows = data.map(item => ({
@@ -99,20 +109,12 @@
   {:else}
     <div class="admin-crud__table">
       <Table
-        columns={config.columns}
+        columns={tableColumns}
         rows={tableRows}
         {filters}
-        {editingRowIds}
-        showDefaultActions={true}
-        labels={{
-          edit: 'Edit',
-          done: 'Done',
-          delete: 'Delete'
-        }}
+        editingRowIds={new Set()}
+        showDefaultActions={false}
         on:filterChange={handleFilterChange}
-        on:editCell={handleEditCell}
-        on:toggleEdit={handleToggleEdit}
-        on:deleteRow={handleDeleteRow}
       >
         <svelte:fragment slot="header-actions">
           <div class="admin-crud__table-actions">
@@ -123,13 +125,36 @@
         </svelte:fragment>
 
         <svelte:fragment slot="actions" let:row>
-          <button 
-            class="btn btn--sm btn--secondary"
-            on:click={() => handleDuplicate(row.id)}
-            title="Duplicate this {config.singularName.toLowerCase()}"
-          >
-            Duplicate
-          </button>
+          <div class="admin-crud__row-actions">
+            <button 
+              class="btn btn--sm btn--secondary"
+              on:click={() => handleViewRow(row.id)}
+              title="View this {config.singularName.toLowerCase()}"
+            >
+              View
+            </button>
+            <button 
+              class="btn btn--sm btn--primary"
+              on:click={() => handleEditRow(row.id)}
+              title="Edit this {config.singularName.toLowerCase()}"
+            >
+              Edit
+            </button>
+            <button 
+              class="btn btn--sm btn--secondary"
+              on:click={() => handleDuplicate(row.id)}
+              title="Duplicate this {config.singularName.toLowerCase()}"
+            >
+              Duplicate
+            </button>
+            <button 
+              class="btn btn--sm btn--danger"
+              on:click={() => handleDeleteRow({ detail: { rowId: row.id } })}
+              title="Delete this {config.singularName.toLowerCase()}"
+            >
+              Delete
+            </button>
+          </div>
         </svelte:fragment>
       </Table>
     </div>
@@ -208,6 +233,17 @@
       gap: 1rem;
       padding: 2rem;
       color: var(--color-text-muted);
+    }
+
+    &__row-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 0.25rem;
+      }
     }
   }
 </style>
