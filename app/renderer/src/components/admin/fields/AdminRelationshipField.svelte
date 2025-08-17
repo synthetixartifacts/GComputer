@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
   import type { AdminFieldConfig } from '@features/admin/types';
 
   type T = $$Generic<Record<string, any>>;
@@ -14,15 +14,8 @@
     blur: { fieldId: string; value: string | number };
   }>();
 
-  // Validate field configuration
-  $: if (field.type !== 'relationship' || !field.relationship) {
-    console.error(`AdminRelationshipField: Field '${field.id}' must have type 'relationship' and relationship configuration`);
-  }
-
-  // Initialize with the current value - keep as original type
+  // Reactive select value that syncs with the value prop
   let selectValue: string | number = value || '';
-  
-  // React to value changes from parent - preserve the original type
   $: selectValue = value || '';
 
   function handleChange(event: Event) {

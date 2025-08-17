@@ -126,14 +126,12 @@ export function validateRelationshipField<T>(field: AdminFieldConfig<T>): boolea
   if (field.type !== 'relationship') return true;
   
   if (!field.relationship) {
-    console.warn(`Relationship field '${field.id}' missing relationship configuration`);
     return false;
   }
   
   const { entityKey, valueField, labelField } = field.relationship;
   
   if (!entityKey || !valueField || !labelField) {
-    console.warn(`Relationship field '${field.id}' has incomplete relationship configuration`);
     return false;
   }
   

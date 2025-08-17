@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
   import Modal from '@components/Modal.svelte';
   import AdminTextField from './fields/AdminTextField.svelte';
   import AdminNumberField from './fields/AdminNumberField.svelte';
@@ -30,8 +30,6 @@
   let errors: Record<string, string> = {};
   let isSubmitting = false;
 
-  // Helper functions moved to relationship-utils.ts for reusability
-
   // Initialize form data when modal opens or data changes
   $: if (open) {
     initializeForm();
@@ -52,8 +50,6 @@
       // For edit/view mode, use generic form data preparation
       formData = prepareFormData(data as T, fields);
     }
-
-    console.warn('formData', formData);
     
     // Force reactive update
     formData = { ...formData };
