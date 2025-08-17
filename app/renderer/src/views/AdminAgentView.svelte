@@ -2,13 +2,12 @@
   import { onMount } from 'svelte';
   import { get } from 'svelte/store';
   import AdminCrud from '@components/admin/AdminCrud.svelte';
+  import AdminFormModal from '@components/admin/AdminFormModal.svelte';
   import { 
     agents, 
     models,
     agentFilters, 
-    editingRows, 
     loadingState,
-    setEditingRow,
     setLoading 
   } from '@features/admin/store';
   import { 
@@ -22,55 +21,133 @@
     Agent, 
     AgentInsert, 
     AgentUpdate, 
-    AdminTableConfig 
+    AdminTableConfig,
+    AdminFieldConfig,
+    FormMode
   } from '@features/admin/types';
   import { t } from '@ts/i18n';
 
-  // Table configuration for agents - using reactive statement to ensure translations are loaded
+  // Field configuration for agents
+  $: modelOptions = $models.map(m => ({ label: m.name, value: m.id }));
+  
+  $: fields = [
+    { 
+      id: 'code', 
+      title: $t('pages.admin.agent.code'), 
+      type: 'text',
+      width: '120px',
+      showInTable: true,
+      showInForm: true,
+      validation: { required: true, min: 2, max: 50 },
+      placeholder: 'Enter agent code'
+    },
+    { 
+      id: 'name', 
+      title: $t('pages.admin.agent.name'), 
+      type: 'text',
+      width: '180px',
+      showInTable: true,
+      showInForm: true,
+      validation: { required: true, min: 2, max: 100 },
+      placeholder: 'Enter agent name'
+    },
+    { 
+      id: 'description', 
+      title: $t('pages.admin.agent.description'), 
+      type: 'textarea',
+      width: '250px',
+      showInTable: true,
+      showInForm: true,
+      placeholder: 'Describe what this agent does'
+    },
+    { 
+      id: 'version', 
+      title: $t('pages.admin.agent.version'), 
+      type: 'text',
+      width: '80px',
+      showInTable: true,
+      showInForm: true,
+      defaultValue: '1.0',
+      placeholder: '1.0'
+    },
+    { 
+      id: 'enable', 
+      title: $t('pages.admin.agent.enable'), 
+      type: 'boolean',
+      width: '80px',
+      showInTable: true,
+      showInForm: true,
+      defaultValue: true,
+      access: (row) => row.enable ? 'Yes' : 'No'
+    },
+    { 
+      id: 'isSystem', 
+      title: $t('pages.admin.agent.isSystem'), 
+      type: 'boolean',
+      width: '80px',
+      showInTable: true,
+      showInForm: true,
+      defaultValue: false,
+      access: (row) => row.isSystem ? 'Yes' : 'No'
+    },
+    { 
+      id: 'modelId', 
+      title: $t('pages.admin.agent.model'), 
+      type: 'select',
+      width: '150px',
+      showInTable: true,
+      showInForm: true,
+      validation: { required: true },
+      options: modelOptions,
+      access: (row) => row.model?.name || 'Unknown'
+    },
+    { 
+      id: 'systemPrompt', 
+      title: 'System Prompt', 
+      type: 'textarea',
+      showInTable: false,
+      showInForm: true,
+      placeholder: 'You are a helpful AI assistant...'
+    },
+    { 
+      id: 'configuration', 
+      title: 'Configuration', 
+      type: 'textarea',
+      showInTable: false,
+      showInForm: true,
+      placeholder: '{\"useMemory\": true}',
+      defaultValue: '{}'
+    },
+    { 
+      id: 'provider', 
+      title: $t('pages.admin.agent.provider'), 
+      width: '120px',
+      showInTable: true,
+      showInForm: false,
+      readonly: true,
+      access: (row) => row.provider?.name || 'Unknown'
+    },
+    { 
+      id: 'createdAt', 
+      title: 'Created', 
+      width: '140px',
+      showInTable: true,
+      showInForm: false,
+      readonly: true,
+      access: (row) => new Date(row.createdAt).toLocaleDateString()
+    }
+  ];
+
   $: config = {
-    columns: [
-      { id: 'code', title: $t('pages.admin.agent.code'), editable: true, width: '120px' },
-      { id: 'name', title: $t('pages.admin.agent.name'), editable: true, width: '180px' },
-      { id: 'description', title: $t('pages.admin.agent.description'), editable: true, width: '250px' },
-      { id: 'version', title: $t('pages.admin.agent.version'), editable: true, width: '80px' },
-      { 
-        id: 'enable', 
-        title: $t('pages.admin.agent.enable'), 
-        editable: true, 
-        width: '80px',
-        access: (row) => row.enable ? 'Yes' : 'No'
-      },
-      { 
-        id: 'isSystem', 
-        title: $t('pages.admin.agent.isSystem'), 
-        editable: true, 
-        width: '80px',
-        access: (row) => row.isSystem ? 'Yes' : 'No'
-      },
-      { 
-        id: 'modelId', 
-        title: $t('pages.admin.agent.model'), 
-        width: '150px',
-        access: (row) => row.model?.name || 'Unknown'
-      },
-      { 
-        id: 'provider', 
-        title: $t('pages.admin.agent.provider'), 
-        width: '120px',
-        access: (row) => row.provider?.name || 'Unknown'
-      },
-      { 
-        id: 'createdAt', 
-        title: 'Created', 
-        width: '140px',
-        access: (row) => new Date(row.createdAt).toLocaleDateString()
-      },
-    ],
+    fields,
     entityName: 'Agents',
     singularName: 'Agent'
-  } as AdminTableConfig<Agent>;
+  };
 
-  let loading = false;
+  // Modal state
+  let modalOpen = false;
+  let modalMode: FormMode = 'create';
+  let currentAgent: Partial<Agent> = {};
 
   onMount(async () => {
     await Promise.all([loadAgents(), loadModels()]);
@@ -102,37 +179,24 @@
     agentFilters.update(current => ({ ...current, [columnId]: value }));
   }
 
-  async function handleEditCell(event: CustomEvent<{ rowId: number; columnId: string; value: string }>) {
-    const { rowId, columnId, value } = event.detail;
-    
-    try {
-      let processedValue: any = value;
-      
-      // Handle boolean fields
-      if (columnId === 'enable' || columnId === 'isSystem') {
-        processedValue = value.toLowerCase() === 'yes' || value === 'true';
-      } else if (columnId === 'modelId') {
-        processedValue = parseInt(value);
-      }
-      
-      const updateData: AgentUpdate = { id: rowId, [columnId]: processedValue };
-      const updated = await updateAgent(updateData);
-      
-      if (updated) {
-        agents.update(current => 
-          current.map(agent => agent.id === rowId ? updated : agent)
-        );
-      }
-    } catch (error) {
-      console.error('Failed to update agent:', error);
-      // Reload data on error
-      loadAgents();
+  function handleEditRow(event: CustomEvent<{ rowId: number }>) {
+    const { rowId } = event.detail;
+    const agent = get(agents).find(a => a.id === rowId);
+    if (agent) {
+      currentAgent = { ...agent };
+      modalMode = 'edit';
+      modalOpen = true;
     }
   }
 
-  function handleToggleEdit(event: CustomEvent<{ rowId: number }>) {
+  function handleViewRow(event: CustomEvent<{ rowId: number }>) {
     const { rowId } = event.detail;
-    setEditingRow('agents', rowId, !get(editingRows).agents.has(rowId));
+    const agent = get(agents).find(a => a.id === rowId);
+    if (agent) {
+      currentAgent = { ...agent };
+      modalMode = 'view';
+      modalOpen = true;
+    }
   }
 
   async function handleDeleteRow(event: CustomEvent<{ rowId: number }>) {
@@ -148,45 +212,24 @@
     }
   }
 
-  async function handleCreateNew() {
+  function handleCreateNew() {
     const modelsList = get(models);
-    const firstModel = modelsList[0];
-    
-    if (!firstModel) {
+    if (modelsList.length === 0) {
       alert('Please create a model first before adding agents.');
       return;
     }
-
-    const newAgent: AgentInsert = {
-      code: 'new-agent',
-      name: 'New Agent',
-      description: 'A new AI agent',
-      version: '1.0',
-      enable: true,
-      isSystem: false,
-      systemPrompt: 'You are a helpful AI assistant.',
-      configuration: '{}',
-      modelId: firstModel.id
-    };
-
-    try {
-      const created = await createAgent(newAgent);
-      if (created) {
-        agents.update(current => [...current, created]);
-        // Start editing the new row
-        setEditingRow('agents', created.id, true);
-      }
-    } catch (error) {
-      console.error('Failed to create agent:', error);
-    }
+    
+    currentAgent = {};
+    modalMode = 'create';
+    modalOpen = true;
   }
 
-  async function handleDuplicate(event: CustomEvent<{ rowId: number }>) {
+  function handleDuplicate(event: CustomEvent<{ rowId: number }>) {
     const { rowId } = event.detail;
     const original = get(agents).find(a => a.id === rowId);
     
     if (original) {
-      const duplicateData: AgentInsert = {
+      currentAgent = {
         code: `${original.code}-copy`,
         name: `${original.name} (Copy)`,
         description: original.description,
@@ -197,17 +240,38 @@
         configuration: original.configuration,
         modelId: original.modelId
       };
+      modalMode = 'create';
+      modalOpen = true;
+    }
+  }
 
-      try {
-        const created = await createAgent(duplicateData);
+  async function handleModalSubmit(event: CustomEvent<{ data: Partial<Agent>; mode: FormMode }>) {
+    const { data, mode } = event.detail;
+    
+    try {
+      if (mode === 'create') {
+        const created = await createAgent(data as AgentInsert);
         if (created) {
           agents.update(current => [...current, created]);
-          setEditingRow('agents', created.id, true);
+          modalOpen = false;
         }
-      } catch (error) {
-        console.error('Failed to duplicate agent:', error);
+      } else if (mode === 'edit') {
+        const updated = await updateAgent({ id: currentAgent.id!, ...data } as AgentUpdate);
+        if (updated) {
+          agents.update(current => 
+            current.map(agent => agent.id === currentAgent.id ? updated : agent)
+          );
+          modalOpen = false;
+        }
       }
+    } catch (error) {
+      console.error(`Failed to ${mode} agent:`, error);
     }
+  }
+
+  function handleModalClose() {
+    modalOpen = false;
+    currentAgent = {};
   }
 </script>
 
@@ -217,13 +281,24 @@
   data={$agents}
   {config}
   filters={$agentFilters}
-  editingRowIds={$editingRows.agents}
   loading={$loadingState.agents}
   createButtonLabel={$t('pages.admin.agent.add')}
   on:filterChange={handleFilterChange}
-  on:editCell={handleEditCell}
-  on:toggleEdit={handleToggleEdit}
+  on:editRow={handleEditRow}
+  on:viewRow={handleViewRow}
   on:deleteRow={handleDeleteRow}
   on:createNew={handleCreateNew}
   on:duplicate={handleDuplicate}
+/>
+
+<AdminFormModal
+  open={modalOpen}
+  mode={modalMode}
+  {fields}
+  entityName="Agents"
+  singularName="Agent"
+  data={currentAgent}
+  loading={$loadingState.agents}
+  on:submit={handleModalSubmit}
+  on:close={handleModalClose}
 />

@@ -2,13 +2,12 @@
   import { onMount } from 'svelte';
   import { get } from 'svelte/store';
   import AdminCrud from '@components/admin/AdminCrud.svelte';
+  import AdminFormModal from '@components/admin/AdminFormModal.svelte';
   import { 
     models, 
     providers,
     modelFilters, 
-    editingRows, 
     loadingState,
-    setEditingRow,
     setLoading 
   } from '@features/admin/store';
   import { 
@@ -22,49 +21,117 @@
     Model, 
     ModelInsert, 
     ModelUpdate, 
-    AdminTableConfig 
+    AdminTableConfig,
+    AdminFieldConfig,
+    FormMode
   } from '@features/admin/types';
   import { t } from '@ts/i18n';
 
-  // Table configuration for models - using reactive statement to ensure translations are loaded
+  // Field configuration for models
+  $: providerOptions = $providers.map(p => ({ label: p.name, value: p.id }));
+  
+  $: fields = [
+    { 
+      id: 'code', 
+      title: $t('pages.admin.model.code'), 
+      type: 'text',
+      width: '120px',
+      showInTable: true,
+      showInForm: true,
+      validation: { required: true, min: 2, max: 50 },
+      placeholder: 'Enter model code'
+    },
+    { 
+      id: 'name', 
+      title: $t('pages.admin.model.name'), 
+      type: 'text',
+      width: '180px',
+      showInTable: true,
+      showInForm: true,
+      validation: { required: true, min: 2, max: 100 },
+      placeholder: 'Enter model name'
+    },
+    { 
+      id: 'model', 
+      title: $t('pages.admin.model.model'), 
+      type: 'text',
+      width: '160px',
+      showInTable: true,
+      showInForm: true,
+      validation: { required: true },
+      placeholder: 'gpt-4, claude-3-sonnet, etc.'
+    },
+    { 
+      id: 'inputPrice', 
+      title: $t('pages.admin.model.inputPrice'), 
+      type: 'number',
+      width: '100px',
+      showInTable: true,
+      showInForm: true,
+      placeholder: '0.003',
+      access: (row) => row.inputPrice ? `$${row.inputPrice}` : ''
+    },
+    { 
+      id: 'outputPrice', 
+      title: $t('pages.admin.model.outputPrice'), 
+      type: 'number',
+      width: '100px',
+      showInTable: true,
+      showInForm: true,
+      placeholder: '0.015',
+      access: (row) => row.outputPrice ? `$${row.outputPrice}` : ''
+    },
+    { 
+      id: 'endpoint', 
+      title: $t('pages.admin.model.endpoint'), 
+      type: 'text',
+      width: '200px',
+      showInTable: true,
+      showInForm: true,
+      validation: { required: true },
+      placeholder: '/v1/chat/completions'
+    },
+    { 
+      id: 'providerId', 
+      title: $t('pages.admin.model.provider'), 
+      type: 'select',
+      width: '150px',
+      showInTable: true,
+      showInForm: true,
+      validation: { required: true },
+      options: providerOptions,
+      access: (row) => row.provider?.name || 'Unknown'
+    },
+    { 
+      id: 'params', 
+      title: 'Parameters', 
+      type: 'textarea',
+      showInTable: false,
+      showInForm: true,
+      placeholder: '{"max_tokens": 4096, "temperature": 0.7}',
+      defaultValue: '{}'
+    },
+    { 
+      id: 'createdAt', 
+      title: 'Created', 
+      width: '140px',
+      showInTable: true,
+      showInForm: false,
+      readonly: true,
+      access: (row) => new Date(row.createdAt).toLocaleDateString()
+    }
+  ];
+
   $: config = {
-    columns: [
-      { id: 'code', title: $t('pages.admin.model.code'), editable: true, width: '120px' },
-      { id: 'name', title: $t('pages.admin.model.name'), editable: true, width: '180px' },
-      { id: 'model', title: $t('pages.admin.model.model'), editable: true, width: '160px' },
-      { 
-        id: 'inputPrice', 
-        title: $t('pages.admin.model.inputPrice'), 
-        editable: true, 
-        width: '100px',
-        access: (row) => row.inputPrice ? `$${row.inputPrice}` : ''
-      },
-      { 
-        id: 'outputPrice', 
-        title: $t('pages.admin.model.outputPrice'), 
-        editable: true, 
-        width: '100px',
-        access: (row) => row.outputPrice ? `$${row.outputPrice}` : ''
-      },
-      { id: 'endpoint', title: $t('pages.admin.model.endpoint'), editable: true, width: '200px' },
-      { 
-        id: 'providerId', 
-        title: $t('pages.admin.model.provider'), 
-        width: '150px',
-        access: (row) => row.provider?.name || 'Unknown'
-      },
-      { 
-        id: 'createdAt', 
-        title: 'Created', 
-        width: '140px',
-        access: (row) => new Date(row.createdAt).toLocaleDateString()
-      },
-    ],
+    fields,
     entityName: 'Models',
     singularName: 'Model'
-  } as AdminTableConfig<Model>;
+  };
 
-  let loading = false;
+  // Modal state
+  let modalOpen = false;
+  let modalMode: FormMode = 'create';
+  let currentModel: Partial<Model> = {};
 
   onMount(async () => {
     await Promise.all([loadModels(), loadProviders()]);
@@ -96,37 +163,24 @@
     modelFilters.update(current => ({ ...current, [columnId]: value }));
   }
 
-  async function handleEditCell(event: CustomEvent<{ rowId: number; columnId: string; value: string }>) {
-    const { rowId, columnId, value } = event.detail;
-    
-    try {
-      let processedValue: any = value;
-      
-      // Handle numeric fields
-      if (columnId === 'inputPrice' || columnId === 'outputPrice') {
-        processedValue = value ? parseFloat(value) : null;
-      } else if (columnId === 'providerId') {
-        processedValue = parseInt(value);
-      }
-      
-      const updateData: ModelUpdate = { id: rowId, [columnId]: processedValue };
-      const updated = await updateModel(updateData);
-      
-      if (updated) {
-        models.update(current => 
-          current.map(model => model.id === rowId ? updated : model)
-        );
-      }
-    } catch (error) {
-      console.error('Failed to update model:', error);
-      // Reload data on error
-      loadModels();
+  function handleEditRow(event: CustomEvent<{ rowId: number }>) {
+    const { rowId } = event.detail;
+    const model = get(models).find(m => m.id === rowId);
+    if (model) {
+      currentModel = { ...model };
+      modalMode = 'edit';
+      modalOpen = true;
     }
   }
 
-  function handleToggleEdit(event: CustomEvent<{ rowId: number }>) {
+  function handleViewRow(event: CustomEvent<{ rowId: number }>) {
     const { rowId } = event.detail;
-    setEditingRow('models', rowId, !get(editingRows).models.has(rowId));
+    const model = get(models).find(m => m.id === rowId);
+    if (model) {
+      currentModel = { ...model };
+      modalMode = 'view';
+      modalOpen = true;
+    }
   }
 
   async function handleDeleteRow(event: CustomEvent<{ rowId: number }>) {
@@ -142,42 +196,24 @@
     }
   }
 
-  async function handleCreateNew() {
+  function handleCreateNew() {
     const providersList = get(providers);
-    const firstProvider = providersList[0];
-    
-    if (!firstProvider) {
+    if (providersList.length === 0) {
       alert('Please create a provider first before adding models.');
       return;
     }
-
-    const newModel: ModelInsert = {
-      code: 'new-model',
-      name: 'New Model',
-      model: 'new-model-v1',
-      endpoint: '/v1/chat/completions',
-      params: '{"max_tokens": 4096}',
-      providerId: firstProvider.id
-    };
-
-    try {
-      const created = await createModel(newModel);
-      if (created) {
-        models.update(current => [...current, created]);
-        // Start editing the new row
-        setEditingRow('models', created.id, true);
-      }
-    } catch (error) {
-      console.error('Failed to create model:', error);
-    }
+    
+    currentModel = {};
+    modalMode = 'create';
+    modalOpen = true;
   }
 
-  async function handleDuplicate(event: CustomEvent<{ rowId: number }>) {
+  function handleDuplicate(event: CustomEvent<{ rowId: number }>) {
     const { rowId } = event.detail;
     const original = get(models).find(m => m.id === rowId);
     
     if (original) {
-      const duplicateData: ModelInsert = {
+      currentModel = {
         code: `${original.code}-copy`,
         name: `${original.name} (Copy)`,
         model: original.model,
@@ -185,23 +221,40 @@
         outputPrice: original.outputPrice,
         endpoint: original.endpoint,
         params: original.params,
-        messageLocation: original.messageLocation,
-        streamMessageLocation: original.streamMessageLocation,
-        inputTokenCountLocation: original.inputTokenCountLocation,
-        outputTokenCountLocation: original.outputTokenCountLocation,
         providerId: original.providerId
       };
+      modalMode = 'create';
+      modalOpen = true;
+    }
+  }
 
-      try {
-        const created = await createModel(duplicateData);
+  async function handleModalSubmit(event: CustomEvent<{ data: Partial<Model>; mode: FormMode }>) {
+    const { data, mode } = event.detail;
+    
+    try {
+      if (mode === 'create') {
+        const created = await createModel(data as ModelInsert);
         if (created) {
           models.update(current => [...current, created]);
-          setEditingRow('models', created.id, true);
+          modalOpen = false;
         }
-      } catch (error) {
-        console.error('Failed to duplicate model:', error);
+      } else if (mode === 'edit') {
+        const updated = await updateModel({ id: currentModel.id!, ...data } as ModelUpdate);
+        if (updated) {
+          models.update(current => 
+            current.map(model => model.id === currentModel.id ? updated : model)
+          );
+          modalOpen = false;
+        }
       }
+    } catch (error) {
+      console.error(`Failed to ${mode} model:`, error);
     }
+  }
+
+  function handleModalClose() {
+    modalOpen = false;
+    currentModel = {};
   }
 </script>
 
@@ -211,13 +264,24 @@
   data={$models}
   {config}
   filters={$modelFilters}
-  editingRowIds={$editingRows.models}
   loading={$loadingState.models}
   createButtonLabel={$t('pages.admin.model.add')}
   on:filterChange={handleFilterChange}
-  on:editCell={handleEditCell}
-  on:toggleEdit={handleToggleEdit}
+  on:editRow={handleEditRow}
+  on:viewRow={handleViewRow}
   on:deleteRow={handleDeleteRow}
   on:createNew={handleCreateNew}
   on:duplicate={handleDuplicate}
+/>
+
+<AdminFormModal
+  open={modalOpen}
+  mode={modalMode}
+  {fields}
+  entityName="Models"
+  singularName="Model"
+  data={currentModel}
+  loading={$loadingState.models}
+  on:submit={handleModalSubmit}
+  on:close={handleModalClose}
 />

@@ -127,32 +127,32 @@
         <svelte:fragment slot="actions" let:row>
           <div class="admin-crud__row-actions">
             <button 
-              class="btn btn--sm btn--secondary"
+              class="btn btn--sm btn--secondary admin-crud__action-btn"
               on:click={() => handleViewRow(row.id)}
               title="View this {config.singularName.toLowerCase()}"
             >
-              View
+              👁️
             </button>
             <button 
-              class="btn btn--sm btn--primary"
+              class="btn btn--sm btn--primary admin-crud__action-btn"
               on:click={() => handleEditRow(row.id)}
               title="Edit this {config.singularName.toLowerCase()}"
             >
-              Edit
+              ✏️
             </button>
             <button 
-              class="btn btn--sm btn--secondary"
+              class="btn btn--sm btn--secondary admin-crud__action-btn"
               on:click={() => handleDuplicate(row.id)}
               title="Duplicate this {config.singularName.toLowerCase()}"
             >
-              Duplicate
+              📋
             </button>
             <button 
-              class="btn btn--sm btn--danger"
+              class="btn btn--sm btn--danger admin-crud__action-btn"
               on:click={() => handleDeleteRow({ detail: { rowId: row.id } })}
               title="Delete this {config.singularName.toLowerCase()}"
             >
-              Delete
+              🗑️
             </button>
           </div>
         </svelte:fragment>
@@ -244,6 +244,16 @@
         flex-direction: column;
         gap: 0.25rem;
       }
+    }
+
+    &__action-btn {
+      min-width: 2rem;
+      padding: 0.25rem 0.5rem;
+      font-size: 1rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 </style>
