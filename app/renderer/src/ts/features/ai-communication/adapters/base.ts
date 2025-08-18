@@ -60,6 +60,7 @@ export abstract class BaseProviderAdapter implements ProviderAdapter {
   protected buildRequestBody(messages: AIMessage[], options: CommunicationOptions): any {
     const body: any = {
       ...this.model.params,
+      model: this.model.model,
       messages: this.formatMessages(messages),
       stream: options.stream || false
     };

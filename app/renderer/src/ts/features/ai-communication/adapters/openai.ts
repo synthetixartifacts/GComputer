@@ -109,7 +109,7 @@ export class OpenAIAdapter extends BaseProviderAdapter {
     const baseBody = this.buildRequestBody(messages, options);
     
     return {
-      model: baseBody.model || 'gpt-3.5-turbo',
+      model: baseBody.model,
       messages: this.formatOpenAIMessages(messages),
       stream: options.stream || false,
       temperature: options.temperature ?? baseBody.temperature,

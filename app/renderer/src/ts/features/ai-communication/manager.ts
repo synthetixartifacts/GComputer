@@ -72,6 +72,7 @@ export class AICommunicationManager {
     };
 
     const modelConfig: ModelConfiguration = {
+      model: model.model,
       endpoint: model.endpoint || '/v1/chat/completions',
       params: model.params ? JSON.parse(model.params) : {},
       messageLocation: model.messageLocation || 'choices[0].message.content',

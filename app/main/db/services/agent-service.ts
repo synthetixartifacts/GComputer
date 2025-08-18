@@ -89,8 +89,8 @@ export class AgentService extends BaseService<any, AgentFilters, AgentInsert, Ag
         },
       })
       .from(aiAgents)
-      .leftJoin(aiModels, eq(aiAgents.modelId, aiModels.id))
-      .leftJoin(aiProviders, eq(aiModels.providerId, aiProviders.id))
+      .innerJoin(aiModels, eq(aiAgents.modelId, aiModels.id))
+      .innerJoin(aiProviders, eq(aiModels.providerId, aiProviders.id))
       .where(whereClauses.length ? this.buildAndClause(...whereClauses) : undefined)
       .orderBy(aiAgents.name);
     

@@ -119,7 +119,7 @@ export class AnthropicAdapter extends BaseProviderAdapter {
     const formattedMessages = this.formatAnthropicMessages(messages);
     
     return {
-      model: baseBody.model || 'claude-3-sonnet-20240229',
+      model: baseBody.model,
       max_tokens: options.maxTokens ?? baseBody.max_tokens ?? 1024,
       messages: formattedMessages.messages,
       system: formattedMessages.system,

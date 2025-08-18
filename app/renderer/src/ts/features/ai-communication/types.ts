@@ -62,6 +62,7 @@ export interface ProviderConfiguration {
 }
 
 export interface ModelConfiguration {
+  model: string;
   endpoint: string;
   params: Record<string, any>;
   messageLocation: string;
