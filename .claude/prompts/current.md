@@ -1,11 +1,20 @@
 
 
 
+The app is evolving fast and we want to make things clean and properly structure.
+We are starting to have a lot of view under app\renderer\src\views. I want you to restructure this so that views are segmented per section.
+You will follow the architecture of our menu. Make sure to think about what the implcation of moving a view means and how it affect our app so you can then make sure we update our codebase all the affected files.
+It's a big task and I want you to do it step by step with a clear plan from where we are to where we want to go and what we want to accomplish here.
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+
+
+
 
 We right now have our url for the developement under /test (ex: test/styleguide/base) which is not representing of our realt menu and code structure. We also have the admin section under /test like /test/admin/entity/provider
 
 I want to change this so that the Development section fall under the /development and admin under /admin.
-
+I want you to make the changes, and validate the route and everything this change can impact so there is no regression issue.
 
 
 

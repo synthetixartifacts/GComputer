@@ -9,8 +9,8 @@
 <section class="container-page stack-lg">
   <h2 class="text-2xl font-bold">{t('pages.features.title')}</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <a class="btn btn--secondary" href="#/test/features/local-files">{t('app.menu.features.localFiles')}</a>
-    <a class="btn btn--secondary" href="#/test/features/saved-local-folder">{t('app.menu.features.savedLocalFolder')}</a>
+    <a class="btn btn--secondary" href="#/development/features/local-files">{t('app.menu.features.localFiles')}</a>
+    <a class="btn btn--secondary" href="#/development/features/saved-local-folder">{t('app.menu.features.savedLocalFolder')}</a>
   </div>
 </section>
 

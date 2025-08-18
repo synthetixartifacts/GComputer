@@ -109,7 +109,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
           <span>{t('pages.styleguide.base.iconInButton')}</span>
         </button>
-        <a class="btn btn--link inline-flex items-center gap-2" href="#/test/styleguide/base">
+        <a class="btn btn--link inline-flex items-center gap-2" href="#/development/styleguide/base">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16"/></svg>
           <span>{t('pages.styleguide.base.iconInLink')}</span>
         </a>

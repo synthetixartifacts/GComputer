@@ -91,44 +91,44 @@
     <SettingsConfigView />
   {:else if route === 'settings.about'}
     <AboutView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide'}
     <StyleguideOverviewView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.base'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.base'}
     <StyleguideBaseView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.inputs'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.inputs'}
     <StyleguideInputsView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.buttons'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.buttons'}
     <StyleguideButtonsView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.table'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.table'}
     <StyleguideTableView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.components'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.components'}
     <StyleguideComponentsView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.search'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.search'}
     <StyleguideSearchView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.media'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.media'}
     <StyleguideMediaView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.files'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.files'}
     <StyleguideFilesView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.chatbot'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.chatbot'}
     <StyleguideChatbotView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.record'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.record'}
     <StyleguideRecordView />
-  {:else if import.meta.env.DEV && route === 'test.features'}
+  {:else if import.meta.env.DEV && route === 'development.features'}
     <FeaturesOverviewView />
-  {:else if import.meta.env.DEV && route === 'test.features.local-files'}
+  {:else if import.meta.env.DEV && route === 'development.features.local-files'}
     <FeatureLocalFilesView />
-  {:else if import.meta.env.DEV && route === 'test.features.saved-local-folder'}
+  {:else if import.meta.env.DEV && route === 'development.features.saved-local-folder'}
     <FeatureSavedLocalFolderView />
   
-  {:else if route === 'test.db.test-table'}
+  {:else if route === 'development.db.test-table'}
     <TestDbTableView />
-  {:else if import.meta.env.DEV && route === 'test.admin.entity.provider'}
+  {:else if import.meta.env.DEV && route === 'admin.entity.provider'}
     <AdminProviderView />
-  {:else if import.meta.env.DEV && route === 'test.admin.entity.model'}
+  {:else if import.meta.env.DEV && route === 'admin.entity.model'}
     <AdminModelView />
-  {:else if import.meta.env.DEV && route === 'test.admin.entity.agent'}
+  {:else if import.meta.env.DEV && route === 'admin.entity.agent'}
     <AdminAgentView />
-  {:else if import.meta.env.DEV && route === 'test.ai.communication'}
+  {:else if import.meta.env.DEV && route === 'development.ai.communication'}
     <TestAICommunicationView />
   {/if}
 </main>
