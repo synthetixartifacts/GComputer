@@ -46,7 +46,7 @@
         }
       });
     } else {
-      // For edit/view mode, use generic form data preparation
+      // For edit/view/duplicate mode, use generic form data preparation
       formData = prepareFormData(data as T, fields);
     }
     
@@ -195,7 +195,9 @@
     ? `${$t('common.actions.create')} ${$t(getEntityTranslationPath(entityType, 'singular'))}` 
     : mode === 'edit' 
       ? `${$t('common.actions.edit')} ${$t(getEntityTranslationPath(entityType, 'singular'))}` 
-      : `${$t('common.actions.view')} ${$t(getEntityTranslationPath(entityType, 'singular'))}`;
+      : mode === 'duplicate'
+        ? `${$t('common.actions.duplicate')} ${$t(getEntityTranslationPath(entityType, 'singular'))}`
+        : `${$t('common.actions.view')} ${$t(getEntityTranslationPath(entityType, 'singular'))}`;
 </script>
 
 <Modal {open} onClose={handleClose} title={modalTitle}>
@@ -281,7 +283,7 @@
           {#if isSubmitting}
             <span class="loader loader--sm"></span>
           {/if}
-          {mode === 'create' ? $t('common.actions.create') : $t('common.actions.save')}
+          {mode === 'create' ? $t('common.actions.create') : mode === 'duplicate' ? $t('common.actions.duplicate') : $t('common.actions.save')}
         </button>
       {/if}
     </div>

@@ -164,7 +164,7 @@
       }
       
       currentEntity = duplicated;
-      modalMode = 'create';
+      modalMode = 'duplicate';
       modalOpen = true;
     }
   }
@@ -173,7 +173,7 @@
     const { data, mode } = event.detail;
     
     try {
-      if (mode === 'create') {
+      if (mode === 'create' || mode === 'duplicate') {
         const created = await service.create(data);
         if (created) {
           // Refresh entire list to ensure we get complete relationship data

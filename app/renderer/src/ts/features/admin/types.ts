@@ -213,7 +213,7 @@ export interface AdminTableConfig<T> {
 }
 
 // Form modes
-export type FormMode = 'create' | 'edit' | 'view';
+export type FormMode = 'create' | 'edit' | 'view' | 'duplicate';
 
 // Form configuration
 export interface AdminFormConfig<T> {
