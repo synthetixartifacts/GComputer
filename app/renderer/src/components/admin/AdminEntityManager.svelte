@@ -25,8 +25,7 @@
   export let title: string;
   export let description: string = '';
   export let createButtonLabel: string = 'Create';
-  export let entityName: string;
-  export let singularName: string;
+  export let entityType: string; // e.g., 'provider', 'model', 'agent'
   export let fields: AdminFieldConfig<T>[];
   
   // Store dependencies
@@ -52,8 +51,7 @@
   // Computed config
   $: config = {
     fields,
-    entityName,
-    singularName
+    entityType
   };
 
   onMount(async () => {
@@ -73,7 +71,7 @@
       const result = await service.list();
       dataStore.set(result);
     } catch (error) {
-      console.error(`Failed to load ${entityName.toLowerCase()}:`, error);
+      console.error(`Failed to load ${entityType}:`, error);
     } finally {
       setLoading(loadingKey as any, false);
     }
@@ -122,7 +120,7 @@
         dataStore.update(current => current.filter(entity => entity.id !== rowId));
       }
     } catch (error) {
-      console.error(`Failed to delete ${singularName.toLowerCase()}:`, error);
+      console.error(`Failed to delete ${entityType}:`, error);
     }
   }
 
@@ -131,7 +129,7 @@
     for (const dep of dependencies) {
       const depData = get(dep.store);
       if (depData.length === 0) {
-        alert(`Please create a ${dep.name.toLowerCase()} first before adding ${entityName.toLowerCase()}.`);
+        alert(`Please create a ${dep.name.toLowerCase()} first before adding ${entityType}.`);
         return;
       }
     }
@@ -192,7 +190,7 @@
         }
       }
     } catch (error) {
-      console.error(`Failed to ${mode} ${singularName.toLowerCase()}:`, error);
+      console.error(`Failed to ${mode} ${entityType}:`, error);
     }
   }
 
@@ -222,8 +220,7 @@
   open={modalOpen}
   mode={modalMode}
   {fields}
-  {entityName}
-  {singularName}
+  {entityType}
   data={currentEntity}
   loading={$loadingState[loadingKey as keyof typeof $loadingState]}
   on:submit={handleModalSubmit}

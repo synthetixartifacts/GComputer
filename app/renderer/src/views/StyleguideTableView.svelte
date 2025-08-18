@@ -92,8 +92,8 @@
     on:editCell={onEditCell}
     on:toggleEdit={onToggleEdit}
     on:deleteRow={onDeleteRow}
-    filterPlaceholder={t('components.table.filter')}
-    labels={{ edit: t('components.table.edit'), done: t('components.table.done'), delete: t('components.table.delete'), clearFilters: t('components.table.clearFilters'), clearFilter: t('components.table.clearFilter') }}
+    filterPlaceholder={t('common.actions.filter')}
+    labels={{ edit: t('common.actions.edit'), done: t('common.actions.done'), delete: t('common.actions.delete'), clearFilters: t('components.table.clearFilters'), clearFilter: t('common.actions.clear') }}
     density={dense ? 'compact' : 'regular'}
     emptyMessage={t('pages.styleguide.table.empty')}
     {columns}

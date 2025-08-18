@@ -3,9 +3,25 @@
    * Generic CRUD component for admin entities
    * Uses the existing Table component with admin-specific functionality
    */
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
   import Table from '@components/Table.svelte';
   import type { AdminTableConfig } from '@features/admin/types';
+  import { t as tStore } from '@ts/i18n/store';
+  
+  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  const unsubT = tStore.subscribe((fn) => (t = fn));
+  onDestroy(() => unsubT());
+
+  // Utility function to get translation path for entity type
+  function getEntityTranslationPath(entityType: string, key: string): string {
+    if (entityType.includes('.')) {
+      // Handle paths like 'db.test'
+      return `pages.${entityType}.${key}`;
+    } else {
+      // Handle admin entity types like 'provider', 'model', 'agent'
+      return `pages.admin.${entityType}.${key}`;
+    }
+  }
 
   interface Props<T extends { id: number }> {
     title: string;
@@ -51,7 +67,7 @@
   }
 
   function handleDeleteRow(event: CustomEvent<{ rowId: number }>) {
-    if (confirm(`Are you sure you want to delete this ${config.singularName.toLowerCase()}?`)) {
+    if (confirm(`${t('common.actions.delete')} ${t(getEntityTranslationPath(config.entityType, 'singular')).toLowerCase()}?`)) {
       dispatch('deleteRow', event.detail);
     }
   }
@@ -104,7 +120,7 @@
   {#if loading}
     <div class="admin-crud__loading">
       <div class="loader"></div>
-      <span>Loading {config.entityName.toLowerCase()}...</span>
+      <span>{t('common.states.loading')} {t(getEntityTranslationPath(config.entityType, 'title')).toLowerCase()}...</span>
     </div>
   {:else}
     <div class="admin-crud__table">
@@ -119,7 +135,7 @@
         <svelte:fragment slot="header-actions">
           <div class="admin-crud__table-actions">
             <span class="admin-crud__count">
-              {tableRows.length} {tableRows.length === 1 ? config.singularName : config.entityName}
+              {tableRows.length} {tableRows.length === 1 ? t(getEntityTranslationPath(config.entityType, 'singular')) : t(getEntityTranslationPath(config.entityType, 'title'))}
             </span>
           </div>
         </svelte:fragment>
@@ -129,28 +145,28 @@
             <button 
               class="btn btn--sm btn--secondary admin-crud__action-btn"
               on:click={() => handleViewRow(row.id)}
-              title="View this {config.singularName.toLowerCase()}"
+              title="{t('common.actions.view')} {t(getEntityTranslationPath(config.entityType, 'singular')).toLowerCase()}"
             >
               👁️
             </button>
             <button 
               class="btn btn--sm btn--primary admin-crud__action-btn"
               on:click={() => handleEditRow(row.id)}
-              title="Edit this {config.singularName.toLowerCase()}"
+              title="{t('common.actions.edit')} {t(getEntityTranslationPath(config.entityType, 'singular')).toLowerCase()}"
             >
               ✏️
             </button>
             <button 
               class="btn btn--sm btn--secondary admin-crud__action-btn"
               on:click={() => handleDuplicate(row.id)}
-              title="Duplicate this {config.singularName.toLowerCase()}"
+              title="{t('common.actions.duplicate')} {t(getEntityTranslationPath(config.entityType, 'singular')).toLowerCase()}"
             >
               📋
             </button>
             <button 
               class="btn btn--sm btn--danger admin-crud__action-btn"
               on:click={() => handleDeleteRow(new CustomEvent('delete', { detail: { rowId: row.id } }))}
-              title="Delete this {config.singularName.toLowerCase()}"
+              title="{t('common.actions.delete')} {t(getEntityTranslationPath(config.entityType, 'singular')).toLowerCase()}"
             >
               🗑️
             </button>

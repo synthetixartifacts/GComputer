@@ -1,4 +1,41 @@
 {
+  "common": {
+    "actions": {
+      "create": "Créer",
+      "edit": "Modifier",
+      "view": "Voir",
+      "save": "Enregistrer les modifications",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "delete": "Supprimer",
+      "add": "Ajouter",
+      "duplicate": "Dupliquer",
+      "browse": "Parcourir",
+      "reset": "Réinitialiser",
+      "clear": "Effacer",
+      "filter": "Filtrer",
+      "done": "Terminé"
+    },
+    "fields": {
+      "code": "Code",
+      "name": "Nom",
+      "created": "Créé",
+      "updated": "Modifié",
+      "description": "Description",
+      "configuration": "Configuration",
+      "parameters": "Paramètres",
+      "version": "Version",
+      "enabled": "Activé",
+      "system": "Système"
+    },
+    "states": {
+      "loading": "Chargement",
+      "saving": "Enregistrement",
+      "idle": "Inactif",
+      "recording": "Enregistrement...",
+      "disabled": "Désactivé"
+    }
+  },
   "app": {
     "title": "GComputer",
     "footer": "© {year} GComputer — Tous droits réservés",
@@ -311,54 +348,47 @@
         "add": "Ajouter une ligne",
         "truncate": "Vider la table",
         "save": "Enregistrer les modifications"
+      },
+      "test": {
+        "title": "Lignes de test",
+        "singular": "Ligne de test"
       }
     },
     "admin": {
       "provider": {
         "title": "Fournisseurs IA",
+        "singular": "Fournisseur",
         "desc": "Gérez les fournisseurs de services IA et leurs configurations.",
-        "code": "Code",
-        "name": "Nom",
-        "url": "URL",
-        "authentication": "Authentification",
-        "configuration": "Configuration",
         "add": "Ajouter un fournisseur",
-        "edit": "Modifier",
-        "delete": "Supprimer",
-        "duplicate": "Dupliquer"
+        "fields": {
+          "url": "URL",
+          "authentication": "Authentification"
+        }
       },
       "model": {
         "title": "Modèles IA",
+        "singular": "Modèle",
         "desc": "Gérez les modèles IA et leurs paramètres.",
-        "code": "Code",
-        "name": "Nom",
-        "model": "Modèle",
-        "inputPrice": "Prix d'entrée",
-        "outputPrice": "Prix de sortie",
-        "endpoint": "Point de terminaison",
-        "params": "Paramètres",
-        "provider": "Fournisseur",
         "add": "Ajouter un modèle",
-        "edit": "Modifier",
-        "delete": "Supprimer",
-        "duplicate": "Dupliquer"
+        "fields": {
+          "model": "Modèle",
+          "inputPrice": "Prix d'entrée",
+          "outputPrice": "Prix de sortie",
+          "endpoint": "Point de terminaison",
+          "provider": "Fournisseur"
+        }
       },
       "agent": {
         "title": "Agents IA",
+        "singular": "Agent",
         "desc": "Gérez les agents IA et leurs configurations.",
-        "code": "Code",
-        "name": "Nom",
-        "description": "Description",
-        "version": "Version",
-        "enable": "Activé",
-        "isSystem": "Système",
-        "systemPrompt": "Prompt système",
-        "model": "Modèle",
-        "provider": "Fournisseur",
         "add": "Ajouter un agent",
-        "edit": "Modifier",
-        "delete": "Supprimer",
-        "duplicate": "Dupliquer"
+        "fields": {
+          "isSystem": "Système",
+          "systemPrompt": "Prompt système",
+          "model": "Modèle",
+          "provider": "Fournisseur"
+        }
       }
     },
     "settings": {
@@ -375,19 +405,10 @@
     "audioRecorder": {
       "start": "Enregistrer",
       "stop": "Arrêter",
-      "save": "Enregistrer",
-      "cancel": "Annuler",
-      "rerecord": "Réenregistrer",
-      "recording": "Enregistrement...",
-      "idle": "Inactif"
+      "rerecord": "Réenregistrer"
     },
     "table": {
-      "edit": "Modifier",
-      "done": "Terminé",
-      "delete": "Supprimer",
-      "filter": "Filtrer",
-      "clearFilters": "Effacer les filtres",
-      "clearFilter": "Effacer"
+      "clearFilters": "Effacer les filtres"
     }
   }
 }

@@ -27,7 +27,7 @@
   $: fields = [
     { 
       id: 'code', 
-      title: $t('pages.admin.model.code'), 
+      title: $t('common.fields.code'), 
       type: 'text' as const,
       width: '120px',
       showInTable: true,
@@ -37,7 +37,7 @@
     },
     { 
       id: 'name', 
-      title: $t('pages.admin.model.name'), 
+      title: $t('common.fields.name'), 
       type: 'text' as const,
       width: '180px',
       showInTable: true,
@@ -47,7 +47,7 @@
     },
     { 
       id: 'model', 
-      title: $t('pages.admin.model.model'), 
+      title: $t('pages.admin.model.fields.model'), 
       type: 'text' as const,
       width: '160px',
       showInTable: true,
@@ -57,7 +57,7 @@
     },
     { 
       id: 'inputPrice', 
-      title: $t('pages.admin.model.inputPrice'), 
+      title: $t('pages.admin.model.fields.inputPrice'), 
       type: 'number' as const,
       width: '100px',
       showInTable: true,
@@ -67,7 +67,7 @@
     },
     { 
       id: 'outputPrice', 
-      title: $t('pages.admin.model.outputPrice'), 
+      title: $t('pages.admin.model.fields.outputPrice'), 
       type: 'number' as const,
       width: '100px',
       showInTable: true,
@@ -77,7 +77,7 @@
     },
     { 
       id: 'endpoint', 
-      title: $t('pages.admin.model.endpoint'), 
+      title: $t('pages.admin.model.fields.endpoint'), 
       type: 'text' as const,
       width: '200px',
       showInTable: true,
@@ -87,7 +87,7 @@
     },
     { 
       id: 'providerId', 
-      title: $t('pages.admin.model.provider'), 
+      title: $t('pages.admin.model.fields.provider'), 
       type: 'relationship' as const,
       width: '150px',
       showInTable: true,
@@ -103,7 +103,7 @@
     },
     { 
       id: 'params', 
-      title: 'Parameters', 
+      title: $t('common.fields.parameters'), 
       type: 'textarea' as const,
       showInTable: false,
       showInForm: true,
@@ -112,7 +112,7 @@
     },
     { 
       id: 'createdAt', 
-      title: 'Created', 
+      title: $t('common.fields.created'), 
       width: '140px',
       showInTable: true,
       showInForm: false,
@@ -143,8 +143,7 @@
   title={$t('pages.admin.model.title')}
   description={$t('pages.admin.model.desc')}
   createButtonLabel={$t('pages.admin.model.add')}
-  entityName="Models"
-  singularName="Model"
+  entityType="model"
   {fields}
   dataStore={models}
   filtersStore={modelFilters}

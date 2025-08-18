@@ -62,8 +62,7 @@
 
   $: config = {
     fields,
-    entityName: 'Test Rows',
-    singularName: 'Test Row'
+    entityType: 'db.test'
   };
 
   function handleFilterChange(event: CustomEvent<{ columnId: string; value: string }>) {

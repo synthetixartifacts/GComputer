@@ -27,7 +27,7 @@
   $: fields = [
     { 
       id: 'code', 
-      title: $t('pages.admin.agent.code'), 
+      title: $t('common.fields.code'), 
       type: 'text' as const,
       width: '120px',
       showInTable: true,
@@ -37,7 +37,7 @@
     },
     { 
       id: 'name', 
-      title: $t('pages.admin.agent.name'), 
+      title: $t('common.fields.name'), 
       type: 'text' as const,
       width: '180px',
       showInTable: true,
@@ -47,7 +47,7 @@
     },
     { 
       id: 'description', 
-      title: $t('pages.admin.agent.description'), 
+      title: $t('common.fields.description'), 
       type: 'textarea' as const,
       width: '250px',
       showInTable: true,
@@ -56,7 +56,7 @@
     },
     { 
       id: 'version', 
-      title: $t('pages.admin.agent.version'), 
+      title: $t('common.fields.version'), 
       type: 'text' as const,
       width: '80px',
       showInTable: true,
@@ -66,7 +66,7 @@
     },
     { 
       id: 'enable', 
-      title: $t('pages.admin.agent.enable'), 
+      title: $t('common.fields.enabled'), 
       type: 'boolean' as const,
       width: '80px',
       showInTable: true,
@@ -76,7 +76,7 @@
     },
     { 
       id: 'isSystem', 
-      title: $t('pages.admin.agent.isSystem'), 
+      title: $t('pages.admin.agent.fields.isSystem'), 
       type: 'boolean' as const,
       width: '80px',
       showInTable: true,
@@ -86,7 +86,7 @@
     },
     { 
       id: 'modelId', 
-      title: $t('pages.admin.agent.model'), 
+      title: $t('pages.admin.agent.fields.model'), 
       type: 'relationship' as const,
       width: '150px',
       showInTable: true,
@@ -119,7 +119,7 @@
     },
     { 
       id: 'provider', 
-      title: $t('pages.admin.agent.provider'), 
+      title: $t('pages.admin.agent.fields.provider'), 
       width: '120px',
       showInTable: true,
       showInForm: false,
@@ -128,7 +128,7 @@
     },
     { 
       id: 'createdAt', 
-      title: 'Created', 
+      title: $t('common.fields.created'), 
       width: '140px',
       showInTable: true,
       showInForm: false,
@@ -159,8 +159,7 @@
   title={$t('pages.admin.agent.title')}
   description={$t('pages.admin.agent.desc')}
   createButtonLabel={$t('pages.admin.agent.add')}
-  entityName="Agents"
-  singularName="Agent"
+  entityType="agent"
   {fields}
   dataStore={agents}
   filtersStore={agentFilters}

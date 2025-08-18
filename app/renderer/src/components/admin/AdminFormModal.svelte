@@ -16,8 +16,7 @@
   export let open: boolean = false;
   export let mode: FormMode = 'create';
   export let fields: AdminFieldConfig<T>[] = [];
-  export let entityName: string;
-  export let singularName: string;
+  export let entityType: string; // e.g., 'provider', 'model', 'agent'
   export let data: Partial<T> = {};
   export let loading: boolean = false;
 
@@ -180,15 +179,26 @@
   // Filter fields that should be shown in form
   $: formFields = fields.filter(field => field.showInForm !== false);
 
-  // Modal title
+  // Utility function to get translation path for entity type
+  function getEntityTranslationPath(entityType: string, key: string): string {
+    if (entityType.includes('.')) {
+      // Handle paths like 'db.test'
+      return `pages.${entityType}.${key}`;
+    } else {
+      // Handle admin entity types like 'provider', 'model', 'agent'
+      return `pages.admin.${entityType}.${key}`;
+    }
+  }
+
+  // Modal title using new translation structure
   $: modalTitle = mode === 'create' 
-    ? `Create ${singularName}` 
+    ? `${$t('common.actions.create')} ${$t(getEntityTranslationPath(entityType, 'singular'))}` 
     : mode === 'edit' 
-      ? `Edit ${singularName}` 
-      : `View ${singularName}`;
+      ? `${$t('common.actions.edit')} ${$t(getEntityTranslationPath(entityType, 'singular'))}` 
+      : `${$t('common.actions.view')} ${$t(getEntityTranslationPath(entityType, 'singular'))}`;
 </script>
 
-<Modal {open} onClose={handleClose} title="modal.{modalTitle.toLowerCase().replace(' ', '.')}">
+<Modal {open} onClose={handleClose} title={modalTitle}>
   <form class="admin-form" on:submit|preventDefault={handleSubmit} on:keydown={handleKeyDown}>
     <div class="admin-form__fields">
       {#each formFields as field (field.id)}
@@ -259,7 +269,7 @@
         disabled={isSubmitting}
         on:click={handleClose}
       >
-        {mode === 'view' ? 'Close' : 'Cancel'}
+        {mode === 'view' ? $t('common.actions.close') : $t('common.actions.cancel')}
       </button>
       
       {#if mode !== 'view'}
@@ -271,7 +281,7 @@
           {#if isSubmitting}
             <span class="loader loader--sm"></span>
           {/if}
-          {mode === 'create' ? 'Create' : 'Save Changes'}
+          {mode === 'create' ? $t('common.actions.create') : $t('common.actions.save')}
         </button>
       {/if}
     </div>

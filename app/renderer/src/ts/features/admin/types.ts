@@ -209,8 +209,7 @@ export interface AdminFieldConfig<T> {
 // Updated table configuration
 export interface AdminTableConfig<T> {
   fields: AdminFieldConfig<T>[];
-  entityName: string;
-  singularName: string;
+  entityType: string;
 }
 
 // Form modes

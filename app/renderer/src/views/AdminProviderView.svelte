@@ -24,7 +24,7 @@
   $: fields = [
     { 
       id: 'code', 
-      title: $t('pages.admin.provider.code'), 
+      title: $t('common.fields.code'), 
       type: 'text' as const,
       width: '120px',
       showInTable: true,
@@ -34,7 +34,7 @@
     },
     { 
       id: 'name', 
-      title: $t('pages.admin.provider.name'), 
+      title: $t('common.fields.name'), 
       type: 'text' as const,
       width: '200px',
       showInTable: true,
@@ -44,7 +44,7 @@
     },
     { 
       id: 'url', 
-      title: $t('pages.admin.provider.url'), 
+      title: $t('pages.admin.provider.fields.url'), 
       type: 'url' as const,
       width: '250px',
       showInTable: true,
@@ -54,7 +54,7 @@
     },
     { 
       id: 'authentication', 
-      title: $t('pages.admin.provider.authentication'), 
+      title: $t('pages.admin.provider.fields.authentication'), 
       type: 'select' as const,
       width: '150px',
       showInTable: true,
@@ -65,7 +65,7 @@
     },
     { 
       id: 'configuration', 
-      title: 'Configuration', 
+      title: $t('common.fields.configuration'), 
       type: 'textarea' as const,
       showInTable: false,
       showInForm: true,
@@ -75,7 +75,7 @@
     },
     { 
       id: 'createdAt', 
-      title: 'Created', 
+      title: $t('common.fields.created'), 
       width: '140px',
       showInTable: true,
       showInForm: false,
@@ -104,8 +104,7 @@
   title={$t('pages.admin.provider.title')}
   description={$t('pages.admin.provider.desc')}
   createButtonLabel={$t('pages.admin.provider.add')}
-  entityName="Providers"
-  singularName="Provider"
+  entityType="provider"
   {fields}
   dataStore={providers}
   filtersStore={providerFilters}
