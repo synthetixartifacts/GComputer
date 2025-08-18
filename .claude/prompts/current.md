@@ -1,6 +1,22 @@
 
 
 
+
+We right now have our url for the developement under /test (ex: test/styleguide/base) which is not representing of our realt menu and code structure. We also have the admin section under /test like /test/admin/entity/provider
+
+I want to change this so that the Development section fall under the /development and admin under /admin.
+
+
+
+
+
+
+
+
+
+
+
+
 Issue I want to be fixed:
 
 The new menu item as been added under Admin section instead of Development/AI.

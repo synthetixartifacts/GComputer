@@ -1,4 +1,3 @@
-I want to review everythh
 
 
 It's a big task and I want you to do it step by step with a clear plan from where we are to where we want to go and what we want to accomplish here.
@@ -11,16 +10,3 @@ It's a big project so in everything we do/create/update, the main focus is that 
 
 
 ------
-
-
-Revalidation system:
-
- 
-
- Ok, it is working, we properly are able to communicate with openAi but it use the model fallback which is gpt-3.5-turbo instead of the model that is linked to the agent.
- When I try to talk with an agent with the claude sonnet 4 model, the anthropic call failed and in the network I see that it try to use claude-3-sonnet-20240229 instead of the model associated to my agent.
- So we need to validate our logic to make sure we do things properly here. 
-
-When we are on the test communication page. 
-There is multiple issue.
-First I don't want the 
