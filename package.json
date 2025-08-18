@@ -1,7 +1,7 @@
 {
   "name": "gcomputer",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "GComputer - A local-first personal operating layer for file management and automation",
   "private": true,
   "main": "dist/main/index.cjs",
   "workspaces": [
@@ -9,12 +9,20 @@
   ],
   "scripts": {
     "dev": "concurrently -k -n \"renderer,main,preload,electron\" -c \"cyan,magenta,green,yellow\" \"vite\" \"npm:dev:main\" \"npm:dev:preload\" \"wait-on tcp:5173 dist/main/index.cjs && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron dist/main/index.cjs\"",
-    "dev:main": "esbuild app/main/main.ts --bundle --format=cjs --outfile=dist/main/index.cjs --platform=node --external:electron --external:better-sqlite3 --external:bindings --sourcemap --watch",
+    "dev:main": "esbuild app/main/main.ts --bundle --format=cjs --outfile=dist/main/index.cjs --platform=node --external:electron --sourcemap --watch",
     "dev:preload": "esbuild app/preload/index.ts --bundle --format=cjs --outfile=dist/preload/index.cjs --platform=node --external:electron --sourcemap --watch",
-    "build": "rm -rf dist && esbuild app/main/main.ts --bundle --format=cjs --outfile=dist/main/index.cjs --platform=node --external:electron --external:better-sqlite3 --external:bindings --sourcemap && esbuild app/preload/index.ts --bundle --format=cjs --outfile=dist/preload/index.cjs --platform=node --external:electron --sourcemap && vite build",
-    "rebuild:native": "electron-rebuild -f -w better-sqlite3",
+    "build": "rm -rf dist && esbuild app/main/main.ts --bundle --format=cjs --outfile=dist/main/index.cjs --platform=node --external:electron --sourcemap && esbuild app/preload/index.ts --bundle --format=cjs --outfile=dist/preload/index.cjs --platform=node --external:electron --sourcemap && vite build",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "electron-builder install-app-deps",
+    "build:all": "npm run build && npm run package:all",
+    "build:win": "npm run build && npm run package:win",
+    "build:mac": "npm run build && npm run package:mac",
+    "build:linux": "npm run build && npm run package:linux",
+    "package:all": "electron-builder --publish=never",
+    "package:win": "electron-builder --win --publish=never",
+    "package:mac": "electron-builder --mac --publish=never",
+    "package:linux": "electron-builder --linux --publish=never"
   },
   "keywords": [],
   "author": "",
@@ -22,13 +30,11 @@
   "devDependencies": {
     "@electron/rebuild": "^4.0.1",
     "@sveltejs/vite-plugin-svelte": "^6.1.0",
-    "@types/better-sqlite3": "^7.6.13",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.2.0",
     "cross-env": "^10.0.0",
     "electron": "^28.3.3",
     "electron-builder": "^26.0.12",
-    "electron-rebuild": "^3.2.9",
     "esbuild": "^0.23.0",
     "postcss": "^8.5.6",
     "sass": "^1.90.0",
@@ -40,11 +46,66 @@
     "wait-on": "^8.0.2"
   },
   "dependencies": {
-    "better-sqlite3": "^11.8.1",
     "drizzle-orm": "^0.44.4",
     "exifr": "^7.1.3",
     "mammoth": "^1.10.0",
     "pdf-parse": "^1.1.1",
     "sharp": "^0.34.3"
+  },
+  "build": {
+    "appId": "com.gcomputer.app",
+    "productName": "GComputer",
+    "npmRebuild": false,
+    "asar": false,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "packages/db/data",
+        "to": "db",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "forceCodeSigning": false,
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
   }
 }

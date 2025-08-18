@@ -149,13 +149,7 @@ cd GComputer
 npm install
 ```
 
-### 4. Rebuild Native Dependencies
-This is required for better-sqlite3 to work properly:
-```bash
-npm run rebuild:native
-```
-
-### 5. Verify Project Setup
+### 4. Verify Project Setup
 ```bash
 # Check TypeScript compilation
 npm run typecheck

@@ -1,9 +1,8 @@
 import path from 'node:path';
 import { ipcMain } from 'electron';
 import { and, like, eq } from 'drizzle-orm';
-import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
-// Import ORM and schema from workspace package (bundled by esbuild)
-import { orm } from '../../packages/db/src/db/client.js';
+// Import database functions from workspace package (bundled by esbuild)
+import { getOrm, saveDatabase, runMigrations } from '../../packages/db/src/db/client.js';
 import { test } from '../../packages/db/src/db/schema.js';
 
 export interface TestFilters {
@@ -23,13 +22,12 @@ export interface TestUpdate {
 }
 
 export async function runDbMigrations(): Promise<void> {
-  // Resolve to monorepo migrations folder during development
-  const migrationsFolder = path.resolve(process.cwd(), 'packages/db/drizzle');
-  migrate(orm, { migrationsFolder });
+  await runMigrations();
 }
 
 export function registerDbIpc(): void {
   ipcMain.handle('db:test:list', async (_evt, filters?: TestFilters) => {
+    const orm = await getOrm();
     const f = filters ?? {};
     const whereClauses = [] as any[];
     if (f.column1 && f.column1.trim() !== '') {
@@ -47,15 +45,18 @@ export function registerDbIpc(): void {
   });
 
   ipcMain.handle('db:test:insert', async (_evt, payload: TestInsert) => {
+    const orm = await getOrm();
     const values = {
       column1: payload.column1 ?? null,
       column2: payload.column2 ?? null,
     } as const;
     const res = await orm.insert(test).values(values).returning();
+    saveDatabase();
     return res[0] ?? null;
   });
 
   ipcMain.handle('db:test:update', async (_evt, payload: TestUpdate) => {
+    const orm = await getOrm();
     const { id, column1, column2 } = payload;
     const res = await orm
       .update(test)
@@ -65,16 +66,21 @@ export function registerDbIpc(): void {
       })
       .where(eq(test.id, id))
       .returning();
+    saveDatabase();
     return res[0] ?? null;
   });
 
   ipcMain.handle('db:test:delete', async (_evt, id: number) => {
+    const orm = await getOrm();
     await orm.delete(test).where(eq(test.id, id));
+    saveDatabase();
     return { ok: true } as const;
   });
 
   ipcMain.handle('db:test:truncate', async () => {
+    const orm = await getOrm();
     await orm.delete(test);
+    saveDatabase();
     return { ok: true } as const;
   });
 }
