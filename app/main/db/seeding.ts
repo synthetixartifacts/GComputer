@@ -45,8 +45,8 @@ export async function seedDefaultData(): Promise<void> {
     code: 'gpt-4.1',
     name: 'GPT-4.1',
     model: 'gpt-4.1',
-    inputPrice: 3.00,
-    outputPrice: 1.00,
+    inputPrice: 2.00,
+    outputPrice: 8.00,
     endpoint: '/v1/chat/completions',
     params: '{"max_tokens": 4096, "temperature": 0.7}',
     messageLocation: 'choices.0.message.content',
@@ -57,11 +57,11 @@ export async function seedDefaultData(): Promise<void> {
   });
 
   const claudeModel = await modelService.insert({
-    code: 'claude-3-sonnet',
-    name: 'Claude 3 Sonnet',
-    model: 'claude-3-sonnet-20240229',
-    inputPrice: 0.003,
-    outputPrice: 0.015,
+    code: 'claude-sonnet-4',
+    name: 'Claude Sonnet 4',
+    model: 'claude-sonnet-4-20250514',
+    inputPrice: 3.00,
+    outputPrice: 15.00,
     endpoint: '/v1/messages',
     params: '{"max_tokens": 4096, "temperature": 0.7}',
     messageLocation: 'content.0.text',
