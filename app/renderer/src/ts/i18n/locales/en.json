@@ -1,4 +1,41 @@
 {
+  "common": {
+    "actions": {
+      "create": "Create",
+      "edit": "Edit",
+      "view": "View",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "close": "Close",
+      "delete": "Delete",
+      "add": "Add",
+      "duplicate": "Duplicate",
+      "browse": "Browse",
+      "reset": "Reset",
+      "clear": "Clear",
+      "filter": "Filter",
+      "done": "Done"
+    },
+    "fields": {
+      "code": "Code",
+      "name": "Name",
+      "created": "Created",
+      "updated": "Updated",
+      "description": "Description",
+      "configuration": "Configuration",
+      "parameters": "Parameters",
+      "version": "Version",
+      "enabled": "Enabled",
+      "system": "System"
+    },
+    "states": {
+      "loading": "Loading",
+      "saving": "Saving",
+      "idle": "Idle",
+      "recording": "Recording...",
+      "disabled": "Disabled"
+    }
+  },
   "app": {
     "title": "GComputer",
     "footer": "© {year} GComputer — All rights reserved",
@@ -33,6 +70,18 @@
       "db": {
         "label": "DB",
         "testTable": "Test table"
+      },
+      "admin": {
+        "label": "Admin",
+        "entity": {
+          "label": "Entity",
+          "llm": {
+            "label": "LLM",
+            "provider": "Provider",
+            "model": "Model", 
+            "agent": "Agent"
+          }
+        }
       },
       "menu": "Menu",
       "close": "Close"
@@ -281,6 +330,50 @@
         "add": "Add row",
         "truncate": "Truncate table",
         "save": "Save changes"
+      },
+      "test": {
+        "title": "Test Rows",
+        "singular": "Test Row"
+      }
+    },
+    "admin": {
+      "provider": {
+        "title": "AI Providers",
+        "singular": "Provider",
+        "desc": "Manage AI service providers and their configurations.",
+        "add": "Add Provider",
+        "fields": {
+          "url": "URL",
+          "authentication": "Authentication",
+          "secretKey": "Secret Key"
+        }
+      },
+      "model": {
+        "title": "AI Models",
+        "singular": "Model", 
+        "desc": "Manage AI models and their parameters.",
+        "add": "Add Model",
+        "fields": {
+          "model": "Model",
+          "inputPrice": "Input Price",
+          "outputPrice": "Output Price", 
+          "endpoint": "Endpoint",
+          "provider": "Provider",
+          "messageLocation": "Message Location",
+          "messageStreamLocation": "Stream Message Location"
+        }
+      },
+      "agent": {
+        "title": "AI Agents",
+        "singular": "Agent",
+        "desc": "Manage AI agents and their configurations.",
+        "add": "Add Agent",
+        "fields": {
+          "isSystem": "System",
+          "systemPrompt": "System Prompt",
+          "model": "Model",
+          "provider": "Provider"
+        }
       }
     },
     "settings": {
@@ -297,19 +390,10 @@
     "audioRecorder": {
       "start": "Record",
       "stop": "Stop",
-      "save": "Save",
-      "cancel": "Cancel",
-      "rerecord": "Re-record",
-      "recording": "Recording...",
-      "idle": "Idle"
+      "rerecord": "Re-record"
     },
     "table": {
-      "edit": "Edit",
-      "done": "Done",
-        "delete": "Delete",
-        "filter": "Filter",
-        "clearFilters": "Clear filters",
-        "clearFilter": "Clear"
+      "clearFilters": "Clear filters"
     }
   }
 }

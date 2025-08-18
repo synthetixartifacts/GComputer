@@ -5,7 +5,10 @@
       "Bash(mkdir:*)",
       "Bash(npm run package:all:*)",
       "Bash(npm install)",
-      "Bash(npm run package:win:*)"
+      "Bash(npm run package:win:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(grep:*)",
+      "Bash(npx eslint:*)"
     ],
     "defaultMode": "acceptEdits"
   }

@@ -7,6 +7,11 @@
    * - onClose: callback to request closing
    * - title: plain text heading displayed in the panel
    */
+  import { t as tStore } from '@ts/i18n/store';
+  import { onDestroy } from 'svelte';
+  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  const unsubT = tStore.subscribe((fn) => (t = fn));
+  onDestroy(() => unsubT());
   export let open: boolean = false;
   export let onClose: () => void = () => {};
   export let title: string = '';
@@ -50,7 +55,7 @@
     {#if title}
       <h2 id={headingId} class="text-base font-semibold">{title}</h2>
     {/if}
-    <button class="btn btn--secondary gc-icon-btn" on:click={onClose} aria-label="Close">✕</button>
+    <button class="btn btn--secondary gc-icon-btn" on:click={onClose} aria-label={t('common.actions.close')}>✕</button>
   </div>
   <div class="grid gap-2">
     <slot />

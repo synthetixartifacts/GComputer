@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GComputer Browser Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007acc;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        button {
+            background: #007acc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background: #005a9c;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .data-list {
+            margin-top: 20px;
+        }
+        
+        .data-item {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border-left: 4px solid #007acc;
+        }
+        
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 GComputer Browser Database Management</h1>
+        <div id="environment-status" class="status info">
+            Environment: <span id="env-type">Detecting...</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>🔧 Test Connection</h2>
+            <button onclick="testConnection()">Test API Connection</button>
+            <div id="connection-status"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>🏢 AI Providers</h2>
+            
+            <div class="form-group">
+                <button onclick="loadProviders()">Load Providers</button>
+                <button onclick="showCreateProviderForm()">Add New Provider</button>
+            </div>
+            
+            <div id="create-provider-form" style="display: none;">
+                <h3>Create New Provider</h3>
+                <div class="form-group">
+                    <label>Code:</label>
+                    <input type="text" id="provider-code" placeholder="e.g., openai">
+                </div>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="provider-name" placeholder="e.g., OpenAI">
+                </div>
+                <div class="form-group">
+                    <label>URL:</label>
+                    <input type="text" id="provider-url" placeholder="e.g., https://api.openai.com">
+                </div>
+                <div class="form-group">
+                    <label>Authentication:</label>
+                    <select id="provider-auth">
+                        <option value="bearer">Bearer Token</option>
+                        <option value="x-api-key">X-API-Key</option>
+                        <option value="credentials">Credentials</option>
+                        <option value="no">No Authentication</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Configuration (JSON):</label>
+                    <textarea id="provider-config" rows="3" placeholder="{}">{}</textarea>
+                </div>
+                <button onclick="createProvider()">Create Provider</button>
+                <button onclick="hideCreateProviderForm()">Cancel</button>
+            </div>
+            
+            <div id="providers-list" class="data-list"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>🧠 AI Models</h2>
+            
+            <div class="form-group">
+                <button onclick="loadModels()">Load Models</button>
+            </div>
+            
+            <div id="models-list" class="data-list"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>🤖 AI Agents</h2>
+            
+            <div class="form-group">
+                <button onclick="loadAgents()">Load Agents</button>
+            </div>
+            
+            <div id="agents-list" class="data-list"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Environment detection
+        function getEnvironmentType() {
+            if (typeof window !== 'undefined' && 
+                typeof window.gc !== 'undefined' &&
+                typeof window.gc.db !== 'undefined') {
+                return 'electron';
+            }
+            return 'browser';
+        }
+
+        // Display environment info
+        const envType = getEnvironmentType();
+        document.getElementById('env-type').textContent = envType;
+        
+        if (envType === 'electron') {
+            document.getElementById('environment-status').innerHTML = 
+                'Environment: <strong>Electron</strong> - Using IPC services';
+        } else {
+            document.getElementById('environment-status').innerHTML = 
+                'Environment: <strong>Browser</strong> - Using REST API services';
+        }
+
+        // Global functions for browser testing
+        window.testConnection = async function() {
+            const statusDiv = document.getElementById('connection-status');
+            try {
+                const response = await fetch('http://localhost:3001/api/health');
+                const data = await response.json();
+                statusDiv.innerHTML = `<div class="status success">✅ API Connected: ${data.status} at ${data.timestamp}</div>`;
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="status error">❌ API Connection Failed: ${error.message}</div>`;
+            }
+        };
+
+        // Provider management functions
+        window.loadProviders = async function() {
+            const listDiv = document.getElementById('providers-list');
+            try {
+                const response = await fetch('http://localhost:3001/api/admin/providers');
+                const providers = await response.json();
+                
+                listDiv.innerHTML = `<h3>Providers (${providers.length})</h3>`;
+                
+                if (providers.length === 0) {
+                    listDiv.innerHTML += '<div class="status info">No providers found. Create one to get started!</div>';
+                } else {
+                    providers.forEach(provider => {
+                        const div = document.createElement('div');
+                        div.className = 'data-item';
+                        div.innerHTML = `
+                            <strong>${provider.name}</strong> (${provider.code})
+                            <br>URL: ${provider.url}
+                            <br>Auth: ${provider.authentication}
+                            <br>Created: ${new Date(provider.createdAt).toLocaleString()}
+                        `;
+                        listDiv.appendChild(div);
+                    });
+                }
+            } catch (error) {
+                listDiv.innerHTML = `<div class="status error">❌ Failed to load providers: ${error.message}</div>`;
+            }
+        };
+
+        window.showCreateProviderForm = function() {
+            document.getElementById('create-provider-form').style.display = 'block';
+        };
+
+        window.hideCreateProviderForm = function() {
+            document.getElementById('create-provider-form').style.display = 'none';
+        };
+
+        window.createProvider = async function() {
+            const data = {
+                code: document.getElementById('provider-code').value,
+                name: document.getElementById('provider-name').value,
+                url: document.getElementById('provider-url').value,
+                authentication: document.getElementById('provider-auth').value,
+                configuration: document.getElementById('provider-config').value || '{}'
+            };
+
+            try {
+                const response = await fetch('http://localhost:3001/api/admin/providers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert('✅ Provider created successfully!');
+                    hideCreateProviderForm();
+                    loadProviders(); // Refresh list
+                    loadModels(); // Refresh models to show updated relationships
+                    
+                    // Clear form
+                    document.getElementById('provider-code').value = '';
+                    document.getElementById('provider-name').value = '';
+                    document.getElementById('provider-url').value = '';
+                    document.getElementById('provider-config').value = '{}';
+                } else {
+                    const error = await response.json();
+                    alert(`❌ Failed to create provider: ${error.message}`);
+                }
+            } catch (error) {
+                alert(`❌ Failed to create provider: ${error.message}`);
+            }
+        };
+
+        // Model management functions
+        window.loadModels = async function() {
+            const listDiv = document.getElementById('models-list');
+            try {
+                const response = await fetch('http://localhost:3001/api/admin/models');
+                const models = await response.json();
+                
+                listDiv.innerHTML = `<h3>Models (${models.length})</h3>`;
+                
+                if (models.length === 0) {
+                    listDiv.innerHTML += '<div class="status info">No models found.</div>';
+                } else {
+                    models.forEach(model => {
+                        const div = document.createElement('div');
+                        div.className = 'data-item';
+                        div.innerHTML = `
+                            <strong>${model.name}</strong> (${model.code})
+                            <br>Model: ${model.model}
+                            <br>Provider: ${model.provider?.name || 'Unknown'}
+                            <br>Input Price: $${model.inputPrice || 'N/A'} | Output Price: $${model.outputPrice || 'N/A'}
+                            <br>Created: ${new Date(model.createdAt).toLocaleString()}
+                        `;
+                        listDiv.appendChild(div);
+                    });
+                }
+            } catch (error) {
+                listDiv.innerHTML = `<div class="status error">❌ Failed to load models: ${error.message}</div>`;
+            }
+        };
+
+        // Agent management functions
+        window.loadAgents = async function() {
+            const listDiv = document.getElementById('agents-list');
+            try {
+                const response = await fetch('http://localhost:3001/api/admin/agents');
+                const agents = await response.json();
+                
+                listDiv.innerHTML = `<h3>Agents (${agents.length})</h3>`;
+                
+                if (agents.length === 0) {
+                    listDiv.innerHTML += '<div class="status info">No agents found.</div>';
+                } else {
+                    agents.forEach(agent => {
+                        const div = document.createElement('div');
+                        div.className = 'data-item';
+                        div.innerHTML = `
+                            <strong>${agent.name}</strong> (${agent.code}) v${agent.version}
+                            <br>Model: ${agent.model?.name || 'Unknown'}
+                            <br>Provider: ${agent.provider?.name || 'Unknown'}
+                            <br>Status: ${agent.enable ? '✅ Enabled' : '❌ Disabled'} ${agent.isSystem ? '| System Agent' : ''}
+                            <br>Description: ${agent.description}
+                            <br>Created: ${new Date(agent.createdAt).toLocaleString()}
+                        `;
+                        listDiv.appendChild(div);
+                    });
+                }
+            } catch (error) {
+                listDiv.innerHTML = `<div class="status error">❌ Failed to load agents: ${error.message}</div>`;
+            }
+        };
+
+        // Auto-test connection on load
+        setTimeout(testConnection, 1000);
+    </script>
+</body>
+</html>

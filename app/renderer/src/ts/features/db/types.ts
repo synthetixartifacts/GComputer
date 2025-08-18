@@ -20,3 +20,24 @@ export interface TestUpdate {
   column2?: string | null;
 }
 
+// Add admin field config types for test table
+export interface TestTableConfig {
+  fields: Array<{
+    id: keyof TestRow & string;
+    title: string;
+    type?: 'text' | 'number';
+    width?: string;
+    showInTable?: boolean;
+    showInForm?: boolean;
+    validation?: {
+      required?: boolean;
+      min?: number;
+      max?: number;
+    };
+    placeholder?: string;
+    readonly?: boolean;
+  }>;
+  entityName: string;
+  singularName: string;
+}
+

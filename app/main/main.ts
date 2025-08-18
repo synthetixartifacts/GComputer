@@ -2,8 +2,9 @@ import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
 import { registerSettingsIpc, getAllSettings } from './settings';
 import { registerFsIpc } from './fs';
-import { registerDbIpc, runDbMigrations } from './db';
+import { registerDbIpc, runDbMigrations, seedDefaultData } from './db';
 import { setApplicationMenuForLocale } from './menu';
+import { startApiServer } from './api-server';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -27,12 +28,26 @@ async function createMainWindow(): Promise<void> {
   }
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   registerSettingsIpc();
   registerFsIpc();
-    registerDbIpc();
-    // Ensure DB is migrated before use (dev path)
-    try { runDbMigrations(); } catch {}
+  registerDbIpc();
+  
+  // Ensure DB is migrated and seeded before use (dev path)
+  try { 
+    await runDbMigrations(); 
+    await seedDefaultData();
+  } catch (error) {
+    console.error('[main] Database initialization failed:', error);
+  }
+  
+  // Start API server for browser access
+  try {
+    await startApiServer();
+  } catch (error) {
+    console.error('[main] API server failed to start:', error);
+  }
+  
   // Initialize menu based on saved locale
   getAllSettings().then((s) => setApplicationMenuForLocale(s.locale)).catch(() => setApplicationMenuForLocale('en'));
   createMainWindow();

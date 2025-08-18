@@ -16,7 +16,10 @@ export type Route =
   | 'test.styleguide.chatbot'
   | 'test.features'
   | 'test.features.local-files'
-  | 'test.features.saved-local-folder';
+  | 'test.features.saved-local-folder'
+  | 'test.admin.entity.provider'
+  | 'test.admin.entity.model'
+  | 'test.admin.entity.agent';
 
 export const ROUTES: Route[] = [
   'home',
@@ -38,6 +41,9 @@ export const ROUTES: Route[] = [
     'test.features',
     'test.features.local-files',
     'test.features.saved-local-folder',
+    'test.admin.entity.provider',
+    'test.admin.entity.model',
+    'test.admin.entity.agent',
   ] as Route[]) : []),
 ];
 

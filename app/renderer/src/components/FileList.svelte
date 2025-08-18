@@ -138,11 +138,11 @@
 
   // Labels for inner Table
   $: tableLabels = {
-    edit: t('components.table.edit'),
-    done: t('components.table.done'),
-    delete: t('components.table.delete'),
+    edit: t('common.actions.edit'),
+    done: t('common.actions.done'),
+    delete: t('common.actions.delete'),
     clearFilters: t('components.table.clearFilters'),
-    clearFilter: t('components.table.clearFilter'),
+    clearFilter: t('common.actions.clear'),
   };
 
   $: resolvedEmptyMessage = emptyMessage ?? t('pages.styleguide.table.empty');
@@ -164,7 +164,7 @@
       rows={filteredRows}
       {filters}
       editingRowIds={new Set()}
-      filterPlaceholder={t('components.table.filter')}
+      filterPlaceholder={t('common.actions.filter')}
       labels={tableLabels}
       emptyMessage={resolvedEmptyMessage}
       {enableSorting}
