@@ -85,7 +85,39 @@ npm run rebuild:native
 # Database tools (from workspace)
 npm --workspace @gcomputer/db run drizzle:studio
 npm --workspace @gcomputer/db run drizzle:generate
+
+# Unit Testing
+npm test                # Run tests in watch mode
+npm run test:run        # Run tests once
+npm run test:coverage   # Run with coverage report
+npm run test:ui         # Open Vitest UI
 ```
+
+## Testing Guidelines
+
+### When to Run Tests
+- **MANDATORY for major changes**: Architecture changes, new features, database schema changes, IPC modifications
+- **OPTIONAL for minor changes**: Bug fixes, styling updates, documentation changes
+- **ALWAYS before**: Creating pull requests, major releases
+
+### Test Requirements
+- Minimum 70% overall coverage for new code
+- 90% coverage for critical business logic (database services, AI communication, settings)
+- All tests must pass before merging
+
+### Testing Commands
+```bash
+# Quick test run (use for minor changes)
+npm run test:run
+
+# Full test suite with coverage (use for major changes)
+npm run test:coverage
+
+# Interactive testing during development
+npm test
+
+# Visual test interface
+npm run test:ui
 
 ## Code Conventions
 

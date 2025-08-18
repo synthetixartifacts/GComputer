@@ -3,7 +3,6 @@
 
 TODO
 
-- Update doc
 - Add some unit testing for main feature
 
 

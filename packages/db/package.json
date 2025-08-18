@@ -6,6 +6,7 @@
   "description": "Drizzle + sql.js database workspace package",
   "scripts": {
     "dev:test": "tsx src/test.ts",
+    "test": "vitest",
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:studio": "drizzle-kit studio"
   },

@@ -25,6 +25,11 @@ const defaultSettings: AppSettings = {
 
 let cachedSettings: AppSettings | null = null;
 
+// For testing purposes only
+export function clearSettingsCache(): void {
+  cachedSettings = null;
+}
+
 function getSettingsPath(): string {
   const dir = app.getPath('userData');
   return path.join(dir, SETTINGS_FILE);
