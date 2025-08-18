@@ -7,6 +7,7 @@
   import ChatComposer from './ChatComposer.svelte';
 
   export let threadId: string;
+  export let customSendHandler: ((text: string) => Promise<void>) | null = null;
 
   let messages: ChatMessage[] = [];
 
@@ -17,7 +18,11 @@
   onDestroy(() => unsub());
 
   async function handleSend(text: string): Promise<void> {
-    await sendMessage({ threadId, content: text });
+    if (customSendHandler) {
+      await customSendHandler(text);
+    } else {
+      await sendMessage({ threadId, content: text });
+    }
   }
 </script>
 

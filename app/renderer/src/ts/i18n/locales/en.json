@@ -71,6 +71,10 @@
         "label": "DB",
         "testTable": "Test table"
       },
+      "ai": {
+        "label": "AI",
+        "communication": "Communication"
+      },
       "admin": {
         "label": "Admin",
         "entity": {

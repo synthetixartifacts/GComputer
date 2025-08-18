@@ -74,6 +74,13 @@ export abstract class BaseService<TEntity, TFilters, TInsert, TUpdate> {
   }
 
   /**
+   * Create a new entity (alias for insert for consistency)
+   */
+  async create(payload: TInsert): Promise<TEntity | null> {
+    return this.insert(payload);
+  }
+
+  /**
    * Update an existing entity
    */
   async update(payload: TUpdate): Promise<TEntity | null> {
@@ -112,19 +119,39 @@ export abstract class BaseService<TEntity, TFilters, TInsert, TUpdate> {
   }
 
   /**
-   * Helper to build LIKE clause for text filtering
+   * Helper to build equal clause for exact matching
    */
-  protected buildLikeClause(column: any, value?: string): any | null {
-    if (value && value.trim() !== '') {
-      return like(column, `%${value}%`);
+  protected buildEqualClause(column: any, value?: any): any | undefined {
+    if (value !== undefined && value !== null) {
+      return eq(column, value);
     }
-    return null;
+    return undefined;
   }
 
   /**
-   * Helper to filter out null clauses
+   * Helper to build LIKE clause for text filtering
    */
-  protected filterClauses(clauses: (any | null)[]): any[] {
-    return clauses.filter(clause => clause !== null);
+  protected buildLikeClause(column: any, value?: string): any | undefined {
+    if (value && value.trim() !== '') {
+      return like(column, `%${value}%`);
+    }
+    return undefined;
+  }
+
+  /**
+   * Helper to filter out null/undefined clauses
+   */
+  protected filterClauses(clauses: (any | null | undefined)[]): any[] {
+    return clauses.filter(clause => clause !== null && clause !== undefined);
+  }
+
+  /**
+   * Helper to combine multiple where clauses with AND
+   */
+  protected combineWhereClauses(clauses: any[]): any | undefined {
+    const filtered = this.filterClauses(clauses);
+    if (filtered.length === 0) return undefined;
+    if (filtered.length === 1) return filtered[0];
+    return and(...filtered);
   }
 }

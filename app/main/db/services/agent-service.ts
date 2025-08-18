@@ -81,11 +81,11 @@ export class AgentService extends BaseService<any, AgentFilters, AgentInsert, Ag
           id: aiModels.id,
           name: aiModels.name,
           code: aiModels.code,
-        },
-        provider: {
-          id: aiProviders.id,
-          name: aiProviders.name,
-          code: aiProviders.code,
+          provider: {
+            id: aiProviders.id,
+            name: aiProviders.name,
+            code: aiProviders.code,
+          },
         },
       })
       .from(aiAgents)

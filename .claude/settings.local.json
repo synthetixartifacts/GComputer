@@ -8,7 +8,15 @@
       "Bash(npm run package:win:*)",
       "Bash(npm run typecheck:*)",
       "Bash(grep:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(npm install:*)",
+      "Bash(mv:*)",
+      "Bash(npm run test:coverage:*)",
+      "Bash(timeout 5s npm run test:ui -- app/__tests__/basic.test.ts --reporter=verbose)",
+      "Bash(true)",
+      "Bash(npm run test:run:*)",
+      "Bash(npm run test:main:*)",
+      "Bash(npm run test:renderer:*)"
     ],
     "defaultMode": "acceptEdits"
   }

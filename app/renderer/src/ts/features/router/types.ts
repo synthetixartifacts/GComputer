@@ -2,48 +2,50 @@ export type Route =
   | 'home'
   | 'settings.config'
   | 'settings.about'
-  | 'test.styleguide'
-  | 'test.styleguide.base'
-  | 'test.styleguide.inputs'
-  | 'test.styleguide.buttons'
-  | 'test.styleguide.table'
-  | 'test.styleguide.components'
-  | 'test.styleguide.search'
-  | 'test.styleguide.record'
-  | 'test.db.test-table'
-  | 'test.styleguide.media'
-  | 'test.styleguide.files'
-  | 'test.styleguide.chatbot'
-  | 'test.features'
-  | 'test.features.local-files'
-  | 'test.features.saved-local-folder'
-  | 'test.admin.entity.provider'
-  | 'test.admin.entity.model'
-  | 'test.admin.entity.agent';
+  | 'development.styleguide'
+  | 'development.styleguide.base'
+  | 'development.styleguide.inputs'
+  | 'development.styleguide.buttons'
+  | 'development.styleguide.table'
+  | 'development.styleguide.components'
+  | 'development.styleguide.search'
+  | 'development.styleguide.record'
+  | 'development.db.test-table'
+  | 'development.styleguide.media'
+  | 'development.styleguide.files'
+  | 'development.styleguide.chatbot'
+  | 'development.features'
+  | 'development.features.local-files'
+  | 'development.features.saved-local-folder'
+  | 'admin.entity.provider'
+  | 'admin.entity.model'
+  | 'admin.entity.agent'
+  | 'development.ai.communication';
 
 export const ROUTES: Route[] = [
   'home',
   'settings.config',
   'settings.about',
   ...(import.meta.env.DEV ? ([
-    'test.styleguide',
-    'test.styleguide.base',
-    'test.styleguide.inputs',
-    'test.styleguide.buttons',
-    'test.styleguide.table',
-    'test.styleguide.components',
-    'test.styleguide.search',
-    'test.styleguide.record',
-    'test.db.test-table',
-    'test.styleguide.media',
-    'test.styleguide.files',
-    'test.styleguide.chatbot',
-    'test.features',
-    'test.features.local-files',
-    'test.features.saved-local-folder',
-    'test.admin.entity.provider',
-    'test.admin.entity.model',
-    'test.admin.entity.agent',
+    'development.styleguide',
+    'development.styleguide.base',
+    'development.styleguide.inputs',
+    'development.styleguide.buttons',
+    'development.styleguide.table',
+    'development.styleguide.components',
+    'development.styleguide.search',
+    'development.styleguide.record',
+    'development.db.test-table',
+    'development.styleguide.media',
+    'development.styleguide.files',
+    'development.styleguide.chatbot',
+    'development.features',
+    'development.features.local-files',
+    'development.features.saved-local-folder',
+    'admin.entity.provider',
+    'admin.entity.model',
+    'admin.entity.agent',
+    'development.ai.communication',
   ] as Route[]) : []),
 ];
 

@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-**Current Reality**: GComputer is an exceptionally well-architected Electron desktop application at the UX/UI foundation stage. The codebase demonstrates professional-grade patterns with a sophisticated component library, robust feature architecture, and scalable design patterns.
+**Current Reality**: GComputer is an exceptionally well-architected Electron desktop application with live AI integration capabilities. The codebase demonstrates professional-grade patterns with a sophisticated component library, robust feature architecture, production database with AI entities, and complete admin management system.
 
 **Ultimate Vision**: Transform into the "Everything App" - a local-first personal operating layer that serves as the only application needed on a computer. Future capabilities include:
 - Unified search across all files, applications, and content
@@ -13,7 +13,7 @@
 - Agentic computer usage with granular permissions
 - Abstraction layer over OS, filesystem, and internet
 
-**Current Stage**: Foundation stage with reusable component architecture ready for scaling
+**Current Stage**: AI-enabled foundation with live AI communication, complete admin system, and production database ready for scaling into the Everything App
 
 ---
 
@@ -35,8 +35,10 @@
 │ • Window mgmt   │ • IPC whitelist │ • Svelte 5 UI   │
 │ • Settings      │ • Security      │ • Feature logic │
 │ • DB operations │ • window.gc.*   │ • Components    │
-│ • FS access     │                 │ • Routing       │
-│ • Native menu   │                 │ • i18n system   │
+│ • API server    │                 │ • AI integration│
+│ • AI providers  │                 │ • Routing       │
+│ • FS access     │                 │ • i18n system   │
+│ • Native menu   │                 │ • Admin system  │
 └─────────────────┴─────────────────┴─────────────────┘
 ```
 
@@ -68,10 +70,12 @@ app/
 ```
 
 **📈 Significant Evolution**: 
-- Main process expanded from basic to full backend
-- Features grew from 5 to 9 comprehensive modules  
-- Component library matured to 16 production-ready components
-- Views expanded for comprehensive styleguide and features
+- Main process expanded to include Express REST API server
+- Features grew from 5 to 12 comprehensive modules including AI communication
+- Component library matured to 30+ production-ready components
+- Views expanded to 24+ with comprehensive admin interface
+- Database evolved to include complete AI management system
+- Live AI integration with OpenAI/Anthropic providers
 
 ---
 
@@ -91,7 +95,7 @@ app/
 11. **admin** - Complete admin system with AI provider/model/agent management
 
 ### Architectural Patterns
-**✅ Consistent Structure** (10/11 features):
+**✅ Consistent Structure** (10/12 features):
 ```typescript
 features/<name>/
   types.ts    // TypeScript interfaces
@@ -108,6 +112,22 @@ features/admin/
   browser-service.ts    // Browser fallback implementation
   store.ts              // Reactive stores for admin data
   relationship-utils.ts // Reusable relationship field utilities
+```
+
+**✅ AI Communication Feature Architecture**:
+```typescript
+features/ai-communication/
+  types.ts              // AI message and response types
+  manager.ts            // Central AI communication coordinator
+  service.ts            // AI interaction service layer
+  store.ts              // Conversation state management
+  adapters/             // Provider-specific adapters
+    base.ts             // Base adapter interface
+    openai.ts           // OpenAI API adapter
+    anthropic.ts        // Anthropic API adapter
+  utils/                // AI utility functions
+    message-formatter.ts // Message preparation
+    response-parser.ts  // Response processing
 ```
 
 **✅ Exceptional Quality**:

@@ -33,10 +33,12 @@ function normalizeHashToRoute(hash: string): Route {
   // Backward-compat aliases for legacy paths
   const withAlias =
     raw === 'styleguide'
-      ? 'test/styleguide'
+      ? 'development/styleguide'
       : raw === 'about'
         ? 'settings/about'
-        : raw;
+        : raw.startsWith('test/')
+          ? raw.replace(/^test\/admin\//, 'admin/').replace(/^test\//, 'development/')
+          : raw;
   // Convert "a/b/c" → "a.b.c", removing any accidental duplicate slashes
   const dotted = withAlias
     .split('/')

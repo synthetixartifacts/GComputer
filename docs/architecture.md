@@ -13,30 +13,50 @@
 app/
   main/                    # Electron main process → dist/main/index.cjs
     main.ts               # Entry point, window management
+    api-server.ts         # Express REST API server for browser access
     db.ts                 # Database integration and migrations
+    db/
+      handlers/           # IPC handlers for database operations
+        admin-handlers.ts # AI entity management handlers
+        test-handlers.ts  # Test table handlers
+        index.ts          # Handler exports
+      services/           # Shared service layer
+        base-service.ts   # Base CRUD service
+        provider-service.ts # AI provider operations
+        model-service.ts  # AI model operations
+        agent-service.ts  # AI agent operations
+        test-service.ts   # Test table operations
+      seeding.ts          # Default data seeding
+      types.ts            # Database type definitions
     fs.ts                 # File system operations (IPC handlers)
     menu.ts               # Native application menu
     settings.ts           # Settings persistence and IPC
     i18n/menu.ts          # Menu localization (main process)
   
   preload/                 # Secure IPC bridge → dist/preload/index.cjs
-    index.ts              # Whitelisted API exposure via contextBridge
+    index.ts              # Comprehensive API exposure via contextBridge
+    future-apis.ts        # Planned API surface for future features
   
   renderer/                # Svelte 5 UI → dist/renderer/
     index.html            # Entry HTML
     src/
-      views/              # 21 page-level Svelte components (thin composition)
+      views/              # 24+ page-level Svelte components (organized by feature)
         App.svelte        # Root component with routing
         HomeView.svelte   # Landing page
-        BrowseView.svelte # File browsing
-        SettingsConfigView.svelte
-        FeatureLocalFilesView.svelte
-        FeatureDefaultFolderView.svelte
-        TestDbTableView.svelte
-        Styleguide*.svelte # Component showcase (dev-only)
+        admin/entity/llm/ # AI management views
+          AdminAgentView.svelte
+          AdminModelView.svelte
+          AdminProviderView.svelte
+        development/      # Development & testing views
+          ai/TestAICommunicationView.svelte
+          db/TestDbTableView.svelte
+          features/       # Feature testing views
+          styleguide/     # Component showcase (dev-only)
+        browse/BrowseView.svelte
+        settings/        # Settings views
         ...
       
-      components/         # 16 reusable UI components
+      components/         # 30+ reusable UI components
         # Core Layout (6)
         Header.svelte     # App header with theme toggle
         Footer.svelte     # App footer
@@ -56,9 +76,21 @@ app/
         # Navigation (1)
         NavTree.svelte    # Recursive navigation tree
         
-        # Specialized Components
+        # Admin System (10 components)
+        admin/AdminCrud.svelte              # CRUD interface
+        admin/AdminEntityManager.svelte     # Entity management
+        admin/AdminFormModal.svelte         # Dynamic form modal
+        admin/TestFormModal.svelte          # Test form modal
+        admin/fields/AdminTextField.svelte  # Text input field
+        admin/fields/AdminNumberField.svelte # Number input field
+        admin/fields/AdminSelectField.svelte # Select dropdown field
+        admin/fields/AdminRelationshipField.svelte # Relationship field
+        admin/fields/AdminTextareaField.svelte # Textarea field
+        admin/fields/AdminBooleanField.svelte # Boolean toggle field
+        
+        # Specialized Components (7+)
         audio/AudioRecorder.svelte    # Audio recording widget
-        chat/ChatThread.svelte        # Complete chat interface
+        chat/ChatThread.svelte        # Complete chat interface with AI integration
         chat/ChatMessageList.svelte   # Message display
         chat/ChatMessageBubble.svelte # Individual message
         chat/ChatComposer.svelte      # Message input
@@ -70,7 +102,7 @@ app/
         app.d.ts          # Global type declarations
         vite-env.d.ts     # Vite environment types
         
-        features/         # 10 feature modules (business logic)
+        features/         # 12 feature modules (business logic)
           router/         # Hash-based routing with type safety
             types.ts      # Route union type (19 routes)
             service.ts    # Navigation functions
@@ -106,9 +138,32 @@ app/
             service.ts    # File processing, format conversion
             store.ts      # Picked files state management
           
+          admin/            # AI entity management system
+            types.ts        # Entity types (Provider, Model, Agent)
+            service.ts      # CRUD operations with browser/electron services
+            electron-service.ts # Electron-specific admin operations
+            browser-service.ts # Browser fallback implementation
+            store.ts        # Reactive stores for admin data
+            relationship-utils.ts # Reusable relationship field utilities
+          
+          ai-communication/ # Live AI integration system
+            types.ts        # AI message and response types
+            manager.ts      # Central AI communication coordinator
+            service.ts      # AI interaction service layer
+            store.ts        # Conversation state management
+            adapters/       # Provider-specific adapters
+              base.ts       # Base adapter interface
+              openai.ts     # OpenAI API adapter
+              anthropic.ts  # Anthropic API adapter
+            utils/          # AI utility functions
+              message-formatter.ts # Message preparation
+              response-parser.ts # Response processing
+          
           db/             # Database operations
             types.ts      # Database schema types
             service.ts    # CRUD operations via IPC
+            electron-service.ts # Electron-specific database operations
+            browser-service.ts # Browser REST API fallback
             store.ts      # Table state with staged editing
           
           search/         # Search infrastructure
@@ -191,7 +246,7 @@ features/<name>/
 - **Native Menu**: Localized application menu with dev/production gating
 
 ### Preload Security Bridge
-Exposes minimal, typed API surface via `contextBridge`:
+Exposes comprehensive, typed API surface via `contextBridge`:
 ```typescript
 window.gc = {
   settings: {
@@ -211,6 +266,24 @@ window.gc = {
       delete(id: number): Promise<void>
       truncate(): Promise<void>
     }
+    providers: {
+      list(filters?: ProviderFilters): Promise<Provider[]>
+      insert(data: ProviderInsert): Promise<Provider>
+      update(data: ProviderUpdate): Promise<Provider>
+      delete(id: number): Promise<void>
+    }
+    models: {
+      list(filters?: ModelFilters): Promise<Model[]>
+      insert(data: ModelInsert): Promise<Model>
+      update(data: ModelUpdate): Promise<Model>
+      delete(id: number): Promise<void>
+    }
+    agents: {
+      list(filters?: AgentFilters): Promise<Agent[]>
+      insert(data: AgentInsert): Promise<Agent>
+      update(data: AgentUpdate): Promise<Agent>
+      delete(id: number): Promise<void>
+    }
   }
 }
 ```
@@ -224,9 +297,11 @@ window.gc = {
 
 ### Database (SQLite + Drizzle)
 - **Location**: `packages/db/data/gcomputer.db`
-- **Schema**: Type-safe via Drizzle ORM
+- **Schema**: Type-safe via Drizzle ORM with AI management tables
+- **Production Tables**: ai_providers, ai_models, ai_agents with relationships
 - **Migrations**: Generated via `drizzle-kit generate`
-- **Access**: IPC bridge with validation in main process
+- **Dual Access**: IPC bridge (Electron) + REST API (browser) at localhost:3001
+- **Service Layer**: Shared business logic between IPC and REST endpoints
 
 ### Settings Persistence
 - **Storage**: `userData/settings.json` with schema validation
@@ -256,10 +331,11 @@ window.gc = {
 ## Routing & Navigation
 
 ### Hash Router
-- **Type Safety**: Route union type with 19 defined routes
+- **Type Safety**: Route union type with 20+ defined routes
 - **Dev Gating**: Styleguide/test routes hidden in production via `import.meta.env.DEV`
 - **Navigation**: Programmatic via `navigate(route)` function
 - **State**: Current route reactive store with cleanup
+- **Admin Routes**: Dedicated routes for AI provider/model/agent management
 
 ### Menu System
 - **Hierarchical**: Recursive `MenuItem` structure via `NavTree` component
@@ -314,7 +390,34 @@ The architecture is designed to scale toward the ultimate vision:
 - **Database Schema**: Prepared for file indexing, embeddings, permissions
 - **Type Safety**: Robust foundation for complex feature interactions
 
+## AI Communication System
+
+### Architecture
+The AI communication system provides live integration with external AI providers through a modular adapter architecture:
+
+- **AICommunicationManager**: Central coordinator for all AI interactions
+- **Provider Adapters**: Specialized adapters for different AI services (OpenAI, Anthropic)
+- **Message Management**: Standardized message formatting with system prompts
+- **Streaming Support**: Real-time response streaming for enhanced user experience
+
+### Provider Adapter Pattern
+```typescript
+interface ProviderAdapter {
+  sendMessage(messages: AIMessage[], options: CommunicationOptions): Promise<AIResponse>
+  streamMessage(messages: AIMessage[], options: CommunicationOptions): AsyncIterableIterator<StreamEvent>
+  validateConfiguration(): Promise<boolean>
+}
+```
+
+### Features
+- **Multi-Provider Support**: Extensible architecture supports OpenAI, Anthropic, and custom providers
+- **Configuration Management**: Dynamic provider/model configuration via admin system
+- **Type Safety**: Complete TypeScript interfaces for all AI interactions
+- **Error Handling**: Robust error handling with validation and fallbacks
+- **Conversation Management**: Stateful conversation handling with message history
+
 ### Planned Capabilities
+- Enhanced multi-turn conversations with persistence
 - File system indexing and semantic search
 - Screen understanding and automation
 - Voice interactions and AI integration

@@ -77,12 +77,44 @@ function createStore() {
     });
   }
 
+  function addMessageDirectly(threadId: string, message: ChatMessage): void {
+    update((state) => {
+      ensureThread(threadId);
+      state.threads[threadId].messages.push(message);
+      return state;
+    });
+  }
+
+  function updateMessage(threadId: string, messageId: string, newContent: string): void {
+    update((state) => {
+      ensureThread(threadId);
+      const thread = state.threads[threadId];
+      const messageIndex = thread.messages.findIndex(msg => msg.id === messageId);
+      if (messageIndex !== -1) {
+        thread.messages[messageIndex].content = newContent;
+      }
+      return state;
+    });
+  }
+
+  function removeMessage(threadId: string, messageId: string): void {
+    update((state) => {
+      ensureThread(threadId);
+      const thread = state.threads[threadId];
+      thread.messages = thread.messages.filter(msg => msg.id !== messageId);
+      return state;
+    });
+  }
+
   return {
     subscribe,
     addUserMessage,
     addAssistantMessage,
     setActiveThread,
     replaceThreadMessages,
+    addMessageDirectly,
+    updateMessage,
+    removeMessage,
   };
 }
 

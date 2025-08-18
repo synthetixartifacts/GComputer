@@ -16,6 +16,10 @@
       "~/*": ["app/*"],
       "@renderer/*": ["app/renderer/src/*"],
       "@views/*": ["app/renderer/src/views/*"],
+      "@views-settings/*": ["app/renderer/src/views/settings/*"],
+      "@views-development/*": ["app/renderer/src/views/development/*"],
+      "@views-admin/*": ["app/renderer/src/views/admin/*"],
+      "@views-browse/*": ["app/renderer/src/views/browse/*"],
       "@ts/*": ["app/renderer/src/ts/*"],
       "@features/*": ["app/renderer/src/ts/features/*"],
       "@components/*": ["app/renderer/src/components/*"]

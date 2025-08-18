@@ -3,30 +3,31 @@
   import FooterComponent from '@components/Footer.svelte';
   import SidebarComponent from '@components/Sidebar.svelte';
   import ModalComponent from '@components/Modal.svelte';
-  import StyleguideOverviewView from '@views/StyleguideOverviewView.svelte';
-  import StyleguideBaseView from '@views/StyleguideBaseView.svelte';
-  import StyleguideTableView from '@views/StyleguideTableView.svelte';
-  import StyleguideInputsView from '@views/StyleguideInputsView.svelte';
-  import StyleguideButtonsView from '@views/StyleguideButtonsView.svelte';
+  import StyleguideOverviewView from '@views-development/styleguide/StyleguideOverviewView.svelte';
+  import StyleguideBaseView from '@views-development/styleguide/StyleguideBaseView.svelte';
+  import StyleguideTableView from '@views-development/styleguide/StyleguideTableView.svelte';
+  import StyleguideInputsView from '@views-development/styleguide/StyleguideInputsView.svelte';
+  import StyleguideButtonsView from '@views-development/styleguide/StyleguideButtonsView.svelte';
   import HomeView from '@views/HomeView.svelte';
-  import AboutView from '@views/AboutView.svelte';
+  import AboutView from '@views-settings/AboutView.svelte';
   
-  import SettingsConfigView from '@views/SettingsConfigView.svelte';
+  import SettingsConfigView from '@views-settings/SettingsConfigView.svelte';
   
-  import TestDbTableView from '@views/TestDbTableView.svelte';
+  import TestDbTableView from '@views-development/db/TestDbTableView.svelte';
   import { onMount, onDestroy } from 'svelte';
-  import StyleguideComponentsView from '@views/StyleguideComponentsView.svelte';
-  import StyleguideSearchView from '@views/StyleguideSearchView.svelte';
-  import StyleguideMediaView from '@views/StyleguideMediaView.svelte';
-  import StyleguideFilesView from '@views/StyleguideFilesView.svelte';
-  import StyleguideChatbotView from '@views/StyleguideChatbotView.svelte';
-  import StyleguideRecordView from '@views/StyleguideRecordView.svelte';
-  import FeaturesOverviewView from '@views/FeaturesOverviewView.svelte';
-  import FeatureLocalFilesView from '@views/FeatureLocalFilesView.svelte';
-  import FeatureSavedLocalFolderView from '@views/FeatureDefaultFolderView.svelte';
-  import AdminProviderView from '@views/AdminProviderView.svelte';
-  import AdminModelView from '@views/AdminModelView.svelte';
-  import AdminAgentView from '@views/AdminAgentView.svelte';
+  import StyleguideComponentsView from '@views-development/styleguide/StyleguideComponentsView.svelte';
+  import StyleguideSearchView from '@views-development/styleguide/StyleguideSearchView.svelte';
+  import StyleguideMediaView from '@views-development/styleguide/StyleguideMediaView.svelte';
+  import StyleguideFilesView from '@views-development/styleguide/StyleguideFilesView.svelte';
+  import StyleguideChatbotView from '@views-development/styleguide/StyleguideChatbotView.svelte';
+  import StyleguideRecordView from '@views-development/styleguide/StyleguideRecordView.svelte';
+  import FeaturesOverviewView from '@views-development/features/FeaturesOverviewView.svelte';
+  import FeatureLocalFilesView from '@views-development/features/FeatureLocalFilesView.svelte';
+  import FeatureSavedLocalFolderView from '@views-development/features/FeatureDefaultFolderView.svelte';
+  import AdminProviderView from '@views-admin/entity/llm/AdminProviderView.svelte';
+  import AdminModelView from '@views-admin/entity/llm/AdminModelView.svelte';
+  import AdminAgentView from '@views-admin/entity/llm/AdminAgentView.svelte';
+  import TestAICommunicationView from '@views-development/ai/TestAICommunicationView.svelte';
   import { sidebarOpen, modalOpen } from '@features/ui/store';
   import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
@@ -90,43 +91,45 @@
     <SettingsConfigView />
   {:else if route === 'settings.about'}
     <AboutView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide'}
     <StyleguideOverviewView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.base'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.base'}
     <StyleguideBaseView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.inputs'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.inputs'}
     <StyleguideInputsView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.buttons'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.buttons'}
     <StyleguideButtonsView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.table'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.table'}
     <StyleguideTableView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.components'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.components'}
     <StyleguideComponentsView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.search'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.search'}
     <StyleguideSearchView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.media'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.media'}
     <StyleguideMediaView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.files'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.files'}
     <StyleguideFilesView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.chatbot'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.chatbot'}
     <StyleguideChatbotView />
-  {:else if import.meta.env.DEV && route === 'test.styleguide.record'}
+  {:else if import.meta.env.DEV && route === 'development.styleguide.record'}
     <StyleguideRecordView />
-  {:else if import.meta.env.DEV && route === 'test.features'}
+  {:else if import.meta.env.DEV && route === 'development.features'}
     <FeaturesOverviewView />
-  {:else if import.meta.env.DEV && route === 'test.features.local-files'}
+  {:else if import.meta.env.DEV && route === 'development.features.local-files'}
     <FeatureLocalFilesView />
-  {:else if import.meta.env.DEV && route === 'test.features.saved-local-folder'}
+  {:else if import.meta.env.DEV && route === 'development.features.saved-local-folder'}
     <FeatureSavedLocalFolderView />
   
-  {:else if route === 'test.db.test-table'}
+  {:else if route === 'development.db.test-table'}
     <TestDbTableView />
-  {:else if import.meta.env.DEV && route === 'test.admin.entity.provider'}
+  {:else if import.meta.env.DEV && route === 'admin.entity.provider'}
     <AdminProviderView />
-  {:else if import.meta.env.DEV && route === 'test.admin.entity.model'}
+  {:else if import.meta.env.DEV && route === 'admin.entity.model'}
     <AdminModelView />
-  {:else if import.meta.env.DEV && route === 'test.admin.entity.agent'}
+  {:else if import.meta.env.DEV && route === 'admin.entity.agent'}
     <AdminAgentView />
+  {:else if import.meta.env.DEV && route === 'development.ai.communication'}
+    <TestAICommunicationView />
   {/if}
 </main>
 
