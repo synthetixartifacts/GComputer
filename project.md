@@ -6,7 +6,7 @@
 
 ## 0) Quick Summary
 
-**What it is now.** A secure, typed **Electron + Svelte 5** desktop app with routing, settings (persisted in Main), i18n (en/fr), and a composable UI shell.
+**What it is now.** A secure, typed **Electron + Svelte 5** desktop app with routing, settings, i18n (en/fr), complete admin system for AI management, live AI communication with OpenAI/Anthropic, production database, and composable UI architecture with 30+ components.
 **What it becomes.** The **Everything App** for your computer: unified search, chat, and **automation**. It can **see your screen** (with consent), **control apps** (with explicit approval), and **do tasks for you**—or explain how.
 **How we get there.** Expand today’s local-indexing foundation into **agents + tools**, **screen understanding**, and **OS automation adapters**, all under a **local-first, permissioned** model.
 
@@ -37,17 +37,24 @@
 * **Main (`app/main/`)**
 
   * Window lifecycle; loads dev server or built HTML
+  * **Express API Server** at localhost:3001 for browser-based database access
+  * **Database Operations** via SQLite + Drizzle with service layer architecture
+  * **AI Provider Management** with complete CRUD operations
   * **Settings** persisted at `userData/settings.json` (validated, versioned)
-  * IPC: `settings:all`, `settings:get`, `settings:set` (+ broadcast `settings:changed`)
+  * IPC: settings, database, file system operations
   * Native menu with localized labels (separate from renderer i18n)
   * Security: `contextIsolation: true`, `nodeIntegration: false`
 * **Preload (`app/preload/`)**
 
-  * Minimal API via `contextBridge`
-  * `window.gc.settings = { all,get,set,subscribe }`
+  * Comprehensive API via `contextBridge`
+  * `window.gc.{settings, db, fs}` with full type safety
 * **Renderer (`app/renderer/`)**
 
-  * Svelte 5 UI; hash router; i18n (en/fr); theme cycling (`light` → `dark` → `fun`)
+  * **Svelte 5 UI** with 30+ production-ready components
+  * **12 Feature Modules** including AI communication system
+  * **Admin System** for AI provider/model/agent management
+  * **Live AI Integration** with streaming support
+  * Hash router; i18n (en/fr); theme cycling (`light` → `dark` → `fun`)
   * UI shell (header/footer/sidebar/modal)
 
 **Directory layout**
@@ -65,11 +72,18 @@ app/
       ts/
         main.ts
         features/
-          router/   # hash router (types, service, store)
-          settings/ # settings types/service/store
-          i18n/     # i18n types/service/store + locales/en.json, fr.json
-          ui/       # shell state (sidebar, modal, theme)
-          browse/   # placeholder
+          router/           # hash router with 20+ routes
+          settings/         # settings with IPC integration
+          i18n/             # complete English/French localization
+          ui/               # shell state (sidebar, modal, theme)
+          admin/            # AI entity management system
+          ai-communication/ # live AI integration with providers
+          db/               # database operations with staged editing
+          chatbot/          # chat interface with thread management
+          search/           # search infrastructure
+          navigation/       # hierarchical menu system
+          browse/           # file browsing
+          files-access/     # file picker integration
 ```
 
 **Path aliases (renderer):** `@renderer/*`, `@views/*`, `@ts/*`, `@features/*`, `@components/*`.
@@ -83,7 +97,7 @@ app/
 **Artifacts:**
 Main → `dist/main/index.cjs` · Preload → `dist/preload/index.cjs` · Renderer → `dist/renderer/`
 
-**Libraries present (to be wired):** `sql.js`, `drizzle-orm`, `exifr`, `mammoth`, `pdf-parse`, `sharp`.
+**Libraries implemented:** `sql.js`, `drizzle-orm` (production database), `express`, `cors` (REST API). **Libraries present (to be wired):** `exifr`, `mammoth`, `pdf-parse`, `sharp`.
 
 **Conventions**
 
@@ -116,7 +130,7 @@ Main → `dist/main/index.cjs` · Preload → `dist/preload/index.cjs` · Render
 | Domain       | MVP (V1.0)                                           | Near-term (V1.1–V1.2)                                            | Long-term (V2)                                                     |
 | ------------ | ---------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------ |
 | Files/Search | Local index (TXT/MD/PDF/DOCX, EXIF). Keyword search. | Vector search (text). Facets & advanced filters.                 | Multi-modal search (image/audio). Cross-app linking & collections. |
-| Chat         | Q/A with citations to local files.                   | Tool-use (summarize, tag, rename). Memory of recent context.     | Project/goal agents spanning files, apps, and web (opt-in).        |
+| Chat         | ✅ **IMPLEMENTED**: Live AI chat with OpenAI/Anthropic, streaming responses, agent system prompts | Tool-use (summarize, tag, rename). Memory of recent context.     | Project/goal agents spanning files, apps, and web (opt-in).        |
 | Screen Sense | —                                                    | Screen capture (consent), OCR, basic element detection.          | UI model of current app; intent detection; overlay suggestions.    |
 | Automation   | —                                                    | App actions: open, type, click, run CLI; file ops with approval. | Rich workflows: conditional steps, loops, schedulers, web RPA.     |
 | OS Control   | —                                                    | macOS: AppleScript/Shortcuts; Win: PowerShell/WinRT adapters.    | Native service w/ accessibility APIs; per-app sandboxes.           |
