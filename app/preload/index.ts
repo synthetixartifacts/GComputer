@@ -56,10 +56,10 @@ contextBridge.exposeInMainWorld('gc', {
         list(filters?: { code?: string; name?: string; url?: string }) {
           return ipcRenderer.invoke('db:admin:providers:list', filters);
         },
-        insert(payload: { code: string; name: string; url: string; authentication: string; configuration?: string }) {
+        insert(payload: { code: string; name: string; url: string; authentication: string; secretKey?: string; configuration?: string }) {
           return ipcRenderer.invoke('db:admin:providers:insert', payload);
         },
-        update(payload: { id: number; code?: string; name?: string; url?: string; authentication?: string; configuration?: string }) {
+        update(payload: { id: number; code?: string; name?: string; url?: string; authentication?: string; secretKey?: string; configuration?: string }) {
           return ipcRenderer.invoke('db:admin:providers:update', payload);
         },
         delete(id: number) {
@@ -70,10 +70,10 @@ contextBridge.exposeInMainWorld('gc', {
         list(filters?: { code?: string; name?: string; model?: string }) {
           return ipcRenderer.invoke('db:admin:models:list', filters);
         },
-        insert(payload: { code: string; name: string; model: string; inputPrice?: number; outputPrice?: number; endpoint: string; params?: string; messageLocation?: string; streamMessageLocation?: string; inputTokenCountLocation?: string; outputTokenCountLocation?: string; providerId: number }) {
+        insert(payload: { code: string; name: string; model: string; inputPrice?: number; outputPrice?: number; endpoint: string; params?: string; messageLocation?: string; messageStreamLocation?: string; inputTokenCountLocation?: string; outputTokenCountLocation?: string; providerId: number }) {
           return ipcRenderer.invoke('db:admin:models:insert', payload);
         },
-        update(payload: { id: number; code?: string; name?: string; model?: string; inputPrice?: number; outputPrice?: number; endpoint?: string; params?: string; messageLocation?: string; streamMessageLocation?: string; inputTokenCountLocation?: string; outputTokenCountLocation?: string; providerId?: number }) {
+        update(payload: { id: number; code?: string; name?: string; model?: string; inputPrice?: number; outputPrice?: number; endpoint?: string; params?: string; messageLocation?: string; messageStreamLocation?: string; inputTokenCountLocation?: string; outputTokenCountLocation?: string; providerId?: number }) {
           return ipcRenderer.invoke('db:admin:models:update', payload);
         },
         delete(id: number) {

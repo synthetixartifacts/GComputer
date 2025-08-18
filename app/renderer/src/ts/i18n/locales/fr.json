@@ -362,7 +362,8 @@
         "add": "Ajouter un fournisseur",
         "fields": {
           "url": "URL",
-          "authentication": "Authentification"
+          "authentication": "Authentification",
+          "secretKey": "Clé secrète"
         }
       },
       "model": {
@@ -375,7 +376,9 @@
           "inputPrice": "Prix d'entrée",
           "outputPrice": "Prix de sortie",
           "endpoint": "Point de terminaison",
-          "provider": "Fournisseur"
+          "provider": "Fournisseur",
+          "messageLocation": "Emplacement du message",
+          "messageStreamLocation": "Emplacement du flux de message"
         }
       },
       "agent": {

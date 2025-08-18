@@ -5,6 +5,7 @@ export interface Provider {
   name: string;
   url: string;
   authentication: string;
+  secretKey?: string;
   configuration: string;
   createdAt: Date;
   updatedAt: Date;
@@ -20,7 +21,7 @@ export interface Model {
   endpoint: string;
   params: string;
   messageLocation?: string;
-  streamMessageLocation?: string;
+  messageStreamLocation?: string;
   inputTokenCountLocation?: string;
   outputTokenCountLocation?: string;
   providerId: number;
@@ -83,6 +84,7 @@ export interface ProviderInsert {
   name: string;
   url: string;
   authentication: string;
+  secretKey?: string;
   configuration?: string;
 }
 
@@ -95,7 +97,7 @@ export interface ModelInsert {
   endpoint: string;
   params?: string;
   messageLocation?: string;
-  streamMessageLocation?: string;
+  messageStreamLocation?: string;
   inputTokenCountLocation?: string;
   outputTokenCountLocation?: string;
   providerId: number;
@@ -120,6 +122,7 @@ export interface ProviderUpdate {
   name?: string;
   url?: string;
   authentication?: string;
+  secretKey?: string;
   configuration?: string;
 }
 
@@ -133,7 +136,7 @@ export interface ModelUpdate {
   endpoint?: string;
   params?: string;
   messageLocation?: string;
-  streamMessageLocation?: string;
+  messageStreamLocation?: string;
   inputTokenCountLocation?: string;
   outputTokenCountLocation?: string;
   providerId?: number;

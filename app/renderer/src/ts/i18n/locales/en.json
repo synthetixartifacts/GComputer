@@ -344,7 +344,8 @@
         "add": "Add Provider",
         "fields": {
           "url": "URL",
-          "authentication": "Authentication"
+          "authentication": "Authentication",
+          "secretKey": "Secret Key"
         }
       },
       "model": {
@@ -357,7 +358,9 @@
           "inputPrice": "Input Price",
           "outputPrice": "Output Price", 
           "endpoint": "Endpoint",
-          "provider": "Provider"
+          "provider": "Provider",
+          "messageLocation": "Message Location",
+          "messageStreamLocation": "Stream Message Location"
         }
       },
       "agent": {

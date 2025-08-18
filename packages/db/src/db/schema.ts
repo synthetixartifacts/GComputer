@@ -13,6 +13,7 @@ export const aiProviders = sqliteTable('ai_providers', {
   name: text('name').notNull(),
   url: text('url').notNull(),
   authentication: text('authentication').notNull(), // 'bearer', 'x-api-key', 'credentials', 'no'
+  secretKey: text('secret_key'), // API key/secret for authentication
   configuration: text('configuration').notNull().default('{}'), // JSON configuration
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
@@ -28,7 +29,7 @@ export const aiModels = sqliteTable('ai_models', {
   endpoint: text('endpoint').notNull(),
   params: text('params').notNull().default('{}'), // JSON parameters for API calls
   messageLocation: text('message_location'), // Path to message content in response
-  streamMessageLocation: text('stream_message_location'), // Path for streaming responses
+  messageStreamLocation: text('message_stream_location'), // Path for streaming responses
   inputTokenCountLocation: text('input_token_count_location'), // Path to input token count
   outputTokenCountLocation: text('output_token_count_location'), // Path to output token count
   providerId: integer('provider_id').notNull().references(() => aiProviders.id),

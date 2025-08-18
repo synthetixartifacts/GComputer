@@ -33,6 +33,7 @@ export class ProviderService extends BaseService<any, ProviderFilters, ProviderI
       name: payload.name,
       url: payload.url,
       authentication: payload.authentication,
+      secretKey: payload.secretKey ?? null,
       configuration: payload.configuration ?? '{}',
       createdAt: now,
       updatedAt: now,

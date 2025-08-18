@@ -111,6 +111,24 @@
       defaultValue: '{}'
     },
     { 
+      id: 'messageLocation', 
+      title: $t('pages.admin.model.fields.messageLocation'), 
+      type: 'text' as const,
+      showInTable: false,
+      showInForm: true,
+      placeholder: 'choices.0.message.content',
+      helpText: 'Path to message content in API response'
+    },
+    { 
+      id: 'messageStreamLocation', 
+      title: $t('pages.admin.model.fields.messageStreamLocation'), 
+      type: 'text' as const,
+      showInTable: false,
+      showInForm: true,
+      placeholder: 'choices.0.delta.content',
+      helpText: 'Path to streaming message content in API response'
+    },
+    { 
       id: 'createdAt', 
       title: $t('common.fields.created'), 
       width: '140px',

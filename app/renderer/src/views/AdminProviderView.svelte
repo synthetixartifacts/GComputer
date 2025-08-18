@@ -64,6 +64,15 @@
       access: (row: Provider) => AUTHENTICATION_OPTIONS.find(opt => opt.value === row.authentication)?.label || row.authentication
     },
     { 
+      id: 'secretKey', 
+      title: $t('pages.admin.provider.fields.secretKey'), 
+      type: 'text' as const,
+      showInTable: false,
+      showInForm: true,
+      placeholder: 'Enter your API key or secret',
+      helpText: 'Secret key/API key for authentication (stored as plain text)'
+    },
+    { 
       id: 'configuration', 
       title: $t('common.fields.configuration'), 
       type: 'textarea' as const,

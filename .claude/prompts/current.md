@@ -1,6 +1,30 @@
 
 
 
+We now are updating our entities.
+I want new fields.
+
+For the AI Providers I want
+- Secret key (that will contains our key to hit theses APIs). Save plain as is for now, we will think later on on a best way to save this in our app but more secure.
+
+For the AI Models I want:
+- messageLocation (where the real answer is on the model response. ex: choices[0].message.content)
+- messageStreamLocation (where the real streamed answer is on the model response. ex: choices[0].delta.content)
+
+I want you to do it step by step with a clear plan from where we are to where we want to go and what we want to accomplish here.
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+
+
+
+
+
+
+
 Still not working.
 We we open the modal for provider, the dropdown for "Authentication" is working.
 But the dropdown in the model modal that is supposed to show which provider is linked to the model is not working. I see the available providers but it does not select the one already linked to my model when we open the modal.

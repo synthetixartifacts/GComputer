@@ -25,7 +25,7 @@ CREATE TABLE `ai_models` (
 	`endpoint` text NOT NULL,
 	`params` text DEFAULT '{}' NOT NULL,
 	`message_location` text,
-	`stream_message_location` text,
+	`message_stream_location` text,
 	`input_token_count_location` text,
 	`output_token_count_location` text,
 	`provider_id` integer NOT NULL,
@@ -41,9 +41,15 @@ CREATE TABLE `ai_providers` (
 	`name` text NOT NULL,
 	`url` text NOT NULL,
 	`authentication` text NOT NULL,
+	`secret_key` text,
 	`configuration` text DEFAULT '{}' NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `ai_providers_code_unique` ON `ai_providers` (`code`);
+CREATE UNIQUE INDEX `ai_providers_code_unique` ON `ai_providers` (`code`);--> statement-breakpoint
+CREATE TABLE `test` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`column1` text,
+	`column2` text
+);
