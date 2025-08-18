@@ -1,6 +1,13 @@
 
 
 
+TODO
+
+- Update doc
+- Add some unit testing for main feature
+
+
+
 The app is evolving fast and we want to make things clean and properly structure.
 We are starting to have a lot of view under app\renderer\src\views. I want you to restructure this so that views are segmented per section.
 You will follow the architecture of our menu. Make sure to think about what the implcation of moving a view means and how it affect our app so you can then make sure we update our codebase all the affected files.

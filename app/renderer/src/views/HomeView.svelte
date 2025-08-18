@@ -1,5 +1,5 @@
 <script lang="ts">
-  import BrowseView from '@views/BrowseView.svelte';
+  import BrowseView from '@views-browse/BrowseView.svelte';
   import { openModal } from '@features/ui/service';
   import { t as tStore } from '@ts/i18n/store';
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
