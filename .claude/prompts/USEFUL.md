@@ -15,7 +15,7 @@ It's a big project so in everything we do/create/update, the main focus is that 
 Update documentation.
 
 We did a lot of changes in our last iteration and now it is time to update our documentation.
-Our documentation lives in the /docs folder and also in ./DOC.md as well as ./project.md. We also have our CLAUDE.md file that is used to give you context of the project.
+Our documentation lives in the /docs folder and also in ./docs/DOC.md as well as ./docs/project.md. We also have our CLAUDE.md file that is used to give you context of the project.
 
 You job this time will be to go on and revalidate everything in our app to make sure the documentation corespond and is really up to date.
 You have to verify everything under ./app

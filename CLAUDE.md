@@ -329,10 +329,10 @@ fetch('http://localhost:3001/api/admin/agents')    // Get AI agents
 - `app/preload/future-apis.ts` - Planned IPC API surface for upcoming features
 
 ### Project Understanding
-- `project.md` - Complete vision and strategic roadmap for the "Everything App"
-- `DOC.md` - Comprehensive codebase analysis and quality assessment
-- `TODO.md` - Current recommendations and improvement opportunities
+- `docs/project.md` - Complete vision and strategic roadmap for the "Everything App"
+- `docs/DOC.md` - Comprehensive codebase analysis and quality assessment
 - `docs/README.md` - Documentation index and overview
+- `TODO.md` - Current recommendations and improvement opportunities
 
 ### Database & AI Integration
 - `packages/db/src/db/schema.ts` - Current production database schema with AI tables
