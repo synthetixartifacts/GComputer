@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 GComputer is an Electron desktop application built with TypeScript, Svelte 5, and Tailwind CSS. The ultimate vision is a "local-first personal operating layer" that indexes, searches, and automates interactions with files and applications on the user's computer.
 
-**Current state**: Production-ready Electron app with exceptional architecture - 11 features, 22 sophisticated components, complete SCSS design system, robust type safety, and production database with AI management system.
+**Current state**: Production-ready Electron app with exceptional architecture - 11 features, 30 sophisticated components, complete SCSS design system, robust type safety, and production database with AI management system.
 
 **Long-term vision**: Everything-app for unified search, chat, screen understanding, and OS automation with granular permissions.
 
@@ -33,7 +33,7 @@ app/
   renderer/
     src/
       views/      # 21 page-level Svelte components (thin composition)
-      components/ # 22 production-ready UI components
+      components/ # 30 production-ready UI components
       ts/
         features/ # 11 feature modules (types, service, store)
         i18n/     # Complete internationalization system
@@ -125,12 +125,12 @@ npm --workspace @gcomputer/db run drizzle:generate
 10. **navigation** - Hierarchical menu system with NavTree
 11. **admin** - Complete AI management system (providers, models, agents) with relationship fields
 
-### 22 Production-Ready Components
+### 30 Production-Ready Components
 **Core Layout (6)**: Header, Footer, Sidebar, Drawer, Modal, ProgressBar
 **Data Display (6)**: Table (advanced: filtering, sorting, editing), FileList, FileGrid, GalleryGrid, ImageCard, ViewToggle  
 **Navigation (1)**: NavTree (recursive, controlled/uncontrolled)
-**Admin System (6)**: AdminCrud, AdminEntityManager, AdminFormModal, AdminTextField, AdminNumberField, AdminSelectField, AdminRelationshipField, AdminTextareaField, AdminBooleanField
-**Specialized (3 categories)**: audio/AudioRecorder, chat/* (4 components), search/* (2 components)
+**Admin System (10)**: AdminCrud, AdminEntityManager, AdminFormModal, TestFormModal + 6 field components (AdminTextField, AdminNumberField, AdminSelectField, AdminRelationshipField, AdminTextareaField, AdminBooleanField)
+**Specialized (7)**: AudioRecorder, ChatThread, ChatComposer, ChatMessageList, ChatMessageBubble, SearchBox, SearchResults
 
 ### Database Integration
 - SQLite with sql.js (pure JavaScript) + Drizzle ORM in workspace package `@gcomputer/db`
@@ -195,7 +195,7 @@ window.gc.db.agents.list()    // Should return array of AI agents with model rel
 **✅ Implemented & Production-Ready**:
 - Complete Electron security model with comprehensive IPC bridge
 - 11 production features with consistent architecture patterns
-- 22 sophisticated UI components with rich APIs
+- 30 sophisticated UI components with rich APIs
 - **Complete Admin System** with AI provider/model/agent management
 - **Relationship Field Architecture** for complex data relationships
 - Full settings persistence with main/renderer sync
