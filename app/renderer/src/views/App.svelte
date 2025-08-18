@@ -27,6 +27,7 @@
   import AdminProviderView from '@views/AdminProviderView.svelte';
   import AdminModelView from '@views/AdminModelView.svelte';
   import AdminAgentView from '@views/AdminAgentView.svelte';
+  import TestAICommunicationView from '@views/TestAICommunicationView.svelte';
   import { sidebarOpen, modalOpen } from '@features/ui/store';
   import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
@@ -127,6 +128,8 @@
     <AdminModelView />
   {:else if import.meta.env.DEV && route === 'test.admin.entity.agent'}
     <AdminAgentView />
+  {:else if import.meta.env.DEV && route === 'test.ai.communication'}
+    <TestAICommunicationView />
   {/if}
 </main>
 

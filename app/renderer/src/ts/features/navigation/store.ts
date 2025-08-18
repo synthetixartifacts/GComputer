@@ -49,6 +49,13 @@ export const menuItems = writable<MenuItem[]>([
                 { label: 'app.menu.db.testTable', i18nKey: 'app.menu.db.testTable', route: 'test.db.test-table' as Route },
               ],
             },
+            {
+              label: 'app.menu.ai.label',
+              i18nKey: 'app.menu.ai.label',
+              children: [
+                { label: 'app.menu.ai.communication', i18nKey: 'app.menu.ai.communication', route: 'test.ai.communication' as Route },
+              ],
+            },
           ],
         },
         {

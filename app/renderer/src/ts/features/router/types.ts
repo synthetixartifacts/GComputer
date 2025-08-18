@@ -19,7 +19,8 @@ export type Route =
   | 'test.features.saved-local-folder'
   | 'test.admin.entity.provider'
   | 'test.admin.entity.model'
-  | 'test.admin.entity.agent';
+  | 'test.admin.entity.agent'
+  | 'test.ai.communication';
 
 export const ROUTES: Route[] = [
   'home',
@@ -44,6 +45,7 @@ export const ROUTES: Route[] = [
     'test.admin.entity.provider',
     'test.admin.entity.model',
     'test.admin.entity.agent',
+    'test.ai.communication',
   ] as Route[]) : []),
 ];
 
