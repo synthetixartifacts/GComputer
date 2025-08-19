@@ -16,7 +16,9 @@
       "Bash(true)",
       "Bash(npm run test:run:*)",
       "Bash(npm run test:main:*)",
-      "Bash(npm run test:renderer:*)"
+      "Bash(npm run test:renderer:*)",
+      "Bash(npm run test:*)",
+      "Bash(npm test:*)"
     ],
     "defaultMode": "acceptEdits"
   }
