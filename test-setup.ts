@@ -1,6 +1,69 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
+// Setup DOM environment for Svelte 5
+Object.defineProperty(global, 'CSS', { value: { supports: () => false } });
+Object.defineProperty(global, 'getComputedStyle', {
+  value: () => ({
+    getPropertyValue: () => '',
+  }),
+});
+
+// Force client-side mode for Svelte 5
+if (typeof global !== 'undefined') {
+  // Ensure window and document are available
+  global.window = global.window || {};
+  global.document = global.document || {};
+  
+  // Set browser environment detection
+  global.navigator = global.navigator || { userAgent: 'Mozilla/5.0 (Node.js)' };
+  
+  // Mock browser APIs
+  global.requestAnimationFrame = global.requestAnimationFrame || ((cb) => setTimeout(cb, 16));
+  global.cancelAnimationFrame = global.cancelAnimationFrame || clearTimeout;
+  
+  // Force browser mode - tell Svelte this is not a server environment
+  process.env.NODE_ENV = 'test';
+  delete process.env.SSR;
+  
+  // Mock performance API
+  global.performance = global.performance || {
+    now: () => Date.now(),
+    mark: () => {},
+    measure: () => {},
+  };
+}
+
+// Mock Svelte lifecycle functions
+vi.mock('svelte', async () => {
+  const actual = await vi.importActual('svelte') as any;
+  return {
+    ...actual,
+    onMount: vi.fn((fn) => {
+      if (typeof fn === 'function') {
+        setTimeout(fn, 0);
+      }
+    }),
+    onDestroy: vi.fn((fn) => {
+      if (typeof fn === 'function') {
+        // Store cleanup function for later cleanup if needed
+        return fn;
+      }
+    }),
+    beforeUpdate: vi.fn((fn) => {
+      if (typeof fn === 'function') {
+        setTimeout(fn, 0);
+      }
+    }),
+    afterUpdate: vi.fn((fn) => {
+      if (typeof fn === 'function') {
+        setTimeout(fn, 0);
+      }
+    }),
+    tick: vi.fn(() => Promise.resolve()),
+  };
+});
+
 // Setup test environment
 beforeAll(() => {
   // Mock console methods to reduce noise in tests

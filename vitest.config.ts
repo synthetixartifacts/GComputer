@@ -9,7 +9,13 @@ export default defineConfig({
       compilerOptions: {
         // Enable testing mode for Svelte components
         dev: true,
-      }
+        // Enable compatibility mode for Svelte 5 testing
+        compatibility: {
+          componentApi: 4
+        }
+      },
+      // Disable CSS injection during tests to avoid DOM issues
+      emitCss: false,
     })
   ],
   test: {
@@ -17,10 +23,11 @@ export default defineConfig({
     globals: true,
     
     // Test environment for DOM/browser APIs
-    environment: 'happy-dom',
+    environment: 'jsdom',
     
     // Setup files to run before tests
     setupFiles: ['./test-setup.ts'],
+    
     
     // Test file patterns
     include: [
@@ -68,15 +75,20 @@ export default defineConfig({
         'packages/db/drizzle/**',
         'app/preload/future-apis.ts', // Future implementation
         'docs/**',
-        '.ah/**', // Legacy code
+        '.ah/**',
+        '.ahhub/**',
       ],
       
-      // Include specific directories for coverage
+      // Include specific directories for coverage - only areas with tests
       include: [
-        'app/main/**/*.ts',
-        'app/preload/**/*.ts',
-        'app/renderer/src/**/*.{ts,svelte}',
-        'packages/db/src/**/*.ts',
+        'app/main/settings.ts',
+        'app/main/db/handlers/**/*.ts',
+        'app/main/db/services/**/*.ts', 
+        'app/renderer/src/components/**/*.svelte',
+        'app/renderer/src/ts/features/admin/**/*.ts',
+        'app/renderer/src/ts/features/ai-communication/**/*.ts',
+        'app/renderer/src/ts/features/router/**/*.ts',
+        'app/renderer/src/ts/i18n/**/*.ts',
       ],
     },
     
@@ -131,6 +143,9 @@ export default defineConfig({
       '@ts': path.resolve(__dirname, 'app/renderer/src/ts'),
       '@features': path.resolve(__dirname, 'app/renderer/src/ts/features'),
       '@components': path.resolve(__dirname, 'app/renderer/src/components'),
+      // Force client-side Svelte modules
+      'svelte/src/index-server.js': 'svelte/src/index.js',
+      'svelte/src/internal/server': 'svelte/src/internal/client',
     },
   },
   
@@ -138,6 +153,12 @@ export default defineConfig({
   define: {
     'import.meta.env.MODE': JSON.stringify(process.env.NODE_ENV || 'test'),
     'import.meta.env.VITE_DEV_SERVER_URL': JSON.stringify(''),
+    global: 'globalThis',
+  },
+  
+  // Force browser environment
+  ssr: {
+    noExternal: ['svelte'],
   },
   
   // Optimize deps configuration

@@ -4,14 +4,73 @@ import type { ComponentType } from 'svelte';
 import { writable, type Writable } from 'svelte/store';
 
 /**
- * Enhanced render function for Svelte components
+ * Enhanced render function for Svelte 5 components using direct instantiation
  */
 export function renderComponent<T extends Record<string, any>>(
   Component: ComponentType,
   props?: T,
   options?: any
-): RenderResult {
-  return render(Component, { props, ...options });
+) {
+  // Create a container manually
+  const container = document.createElement('div');
+  document.body.appendChild(container);
+  
+  let component: any;
+  
+  try {
+    // Use Svelte 4 compatible API (enabled by compatibility.componentApi: 4)
+    component = new Component({
+      target: container,
+      props: props || {},
+      ...options
+    });
+    
+    return {
+      container,
+      component,
+      unmount() {
+        if (component && component.$destroy) {
+          component.$destroy();
+        }
+        if (container.parentNode) {
+          container.parentNode.removeChild(container);
+        }
+      },
+      rerender(newProps: T) {
+        if (component && component.$set) {
+          component.$set(newProps);
+        }
+      },
+      // Add DOM query helpers for compatibility
+      querySelector: (selector: string) => container.querySelector(selector),
+      querySelectorAll: (selector: string) => container.querySelectorAll(selector),
+      getByText: (text: string) => {
+        const walker = document.createTreeWalker(
+          container,
+          NodeFilter.SHOW_TEXT,
+          null,
+          false
+        );
+        
+        let node;
+        while (node = walker.nextNode()) {
+          if (node.textContent?.includes(text)) {
+            return node.parentElement;
+          }
+        }
+        return null;
+      }
+    };
+  } catch (error) {
+    // Clean up on error
+    if (component && component.$destroy) {
+      try { component.$destroy(); } catch {}
+    }
+    if (container.parentNode) {
+      container.parentNode.removeChild(container);
+    }
+    throw error;
+  }
 }
 
 /**
