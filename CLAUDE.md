@@ -2,8 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## Behavior
+You are a precise and straight to the point assistant.
+We want to be efficient in our response to the user and keep our tokens for our thinking process.
+No need to say "You're right", be clear and consice.
 
+We are currently in 2025.
+
+## Project Overview
 GComputer is an Electron desktop application built with TypeScript, Svelte 5, and Tailwind CSS. The ultimate vision is a "local-first personal operating layer" that indexes, searches, and automates interactions with files and applications on the user's computer.
 
 **Current state**: Production-ready Electron app with exceptional architecture - 12 features, 30+ sophisticated components, complete SCSS design system, robust type safety, production database with AI management system, and live AI communication capabilities.

@@ -24,6 +24,7 @@
   import FeaturesOverviewView from '@views-development/features/FeaturesOverviewView.svelte';
   import FeatureLocalFilesView from '@views-development/features/FeatureLocalFilesView.svelte';
   import FeatureSavedLocalFolderView from '@views-development/features/FeatureDefaultFolderView.svelte';
+  import FeatureCaptureScreenView from '@views-development/features/FeatureCaptureScreenView.svelte';
   import AdminProviderView from '@views-admin/entity/llm/AdminProviderView.svelte';
   import AdminModelView from '@views-admin/entity/llm/AdminModelView.svelte';
   import AdminAgentView from '@views-admin/entity/llm/AdminAgentView.svelte';
@@ -39,13 +40,17 @@
   import { t as tStore } from '@ts/i18n/store';
   import { themeModeStore } from '@features/settings/store';
   import { setThemeMode } from '@features/settings/service';
+  import { isRouteAvailable } from '@features/config/store';
+  import { initConfig } from '@features/config/service';
 
   let route: Route = 'home';
   let currentTheme: 'light' | 'dark' | 'fun' = 'light';
   let isSidebarOpen: boolean = false;
   let isModalOpen: boolean = false;
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  let canShowRoute: (route: Route) => boolean = () => false;
   const unsubT = tStore.subscribe((fn) => (t = fn));
+  const unsubRouteAvailable = isRouteAvailable.subscribe((fn) => (canShowRoute = fn));
 
   const unsubTheme = themeModeStore.subscribe((v) => (currentTheme = v));
   // DOM updates handled in initTheme
@@ -55,8 +60,9 @@
     route = r;
     activeRoute.set(r);
   });
-  onMount(() => {
+  onMount(async () => {
     const cleanupTheme = initTheme();
+    await initConfig();
     initSettings().then((s) => initI18n(s.locale));
     initRouter();
     return () => {
@@ -70,6 +76,7 @@
     unsubSidebar();
     unsubModal();
     unsubRoute();
+    unsubRouteAvailable();
     disposeRouter();
   });
 
@@ -91,44 +98,46 @@
     <SettingsConfigView />
   {:else if route === 'settings.about'}
     <AboutView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide'}
+  {:else if canShowRoute(route) && route === 'development.styleguide'}
     <StyleguideOverviewView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide.base'}
+  {:else if canShowRoute(route) && route === 'development.styleguide.base'}
     <StyleguideBaseView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide.inputs'}
+  {:else if canShowRoute(route) && route === 'development.styleguide.inputs'}
     <StyleguideInputsView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide.buttons'}
+  {:else if canShowRoute(route) && route === 'development.styleguide.buttons'}
     <StyleguideButtonsView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide.table'}
+  {:else if canShowRoute(route) && route === 'development.styleguide.table'}
     <StyleguideTableView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide.components'}
+  {:else if canShowRoute(route) && route === 'development.styleguide.components'}
     <StyleguideComponentsView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide.search'}
+  {:else if canShowRoute(route) && route === 'development.styleguide.search'}
     <StyleguideSearchView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide.media'}
+  {:else if canShowRoute(route) && route === 'development.styleguide.media'}
     <StyleguideMediaView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide.files'}
+  {:else if canShowRoute(route) && route === 'development.styleguide.files'}
     <StyleguideFilesView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide.chatbot'}
+  {:else if canShowRoute(route) && route === 'development.styleguide.chatbot'}
     <StyleguideChatbotView />
-  {:else if import.meta.env.DEV && route === 'development.styleguide.record'}
+  {:else if canShowRoute(route) && route === 'development.styleguide.record'}
     <StyleguideRecordView />
-  {:else if import.meta.env.DEV && route === 'development.features'}
+  {:else if canShowRoute(route) && route === 'development.features'}
     <FeaturesOverviewView />
-  {:else if import.meta.env.DEV && route === 'development.features.local-files'}
+  {:else if canShowRoute(route) && route === 'development.features.local-files'}
     <FeatureLocalFilesView />
-  {:else if import.meta.env.DEV && route === 'development.features.saved-local-folder'}
+  {:else if canShowRoute(route) && route === 'development.features.saved-local-folder'}
     <FeatureSavedLocalFolderView />
+  {:else if canShowRoute(route) && route === 'development.features.capture-screen'}
+    <FeatureCaptureScreenView />
   
-  {:else if route === 'development.db.test-table'}
+  {:else if canShowRoute(route) && route === 'development.db.test-table'}
     <TestDbTableView />
-  {:else if import.meta.env.DEV && route === 'admin.entity.provider'}
+  {:else if canShowRoute(route) && route === 'admin.entity.provider'}
     <AdminProviderView />
-  {:else if import.meta.env.DEV && route === 'admin.entity.model'}
+  {:else if canShowRoute(route) && route === 'admin.entity.model'}
     <AdminModelView />
-  {:else if import.meta.env.DEV && route === 'admin.entity.agent'}
+  {:else if canShowRoute(route) && route === 'admin.entity.agent'}
     <AdminAgentView />
-  {:else if import.meta.env.DEV && route === 'development.ai.communication'}
+  {:else if canShowRoute(route) && route === 'development.ai.communication'}
     <TestAICommunicationView />
   {/if}
 </main>

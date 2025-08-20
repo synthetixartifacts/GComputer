@@ -17,36 +17,38 @@ export type Route =
   | 'development.features'
   | 'development.features.local-files'
   | 'development.features.saved-local-folder'
+  | 'development.features.capture-screen'
   | 'admin.entity.provider'
   | 'admin.entity.model'
   | 'admin.entity.agent'
   | 'development.ai.communication';
 
-export const ROUTES: Route[] = [
+export const ALL_ROUTES: Route[] = [
   'home',
   'settings.config',
   'settings.about',
-  ...(import.meta.env.DEV ? ([
-    'development.styleguide',
-    'development.styleguide.base',
-    'development.styleguide.inputs',
-    'development.styleguide.buttons',
-    'development.styleguide.table',
-    'development.styleguide.components',
-    'development.styleguide.search',
-    'development.styleguide.record',
-    'development.db.test-table',
-    'development.styleguide.media',
-    'development.styleguide.files',
-    'development.styleguide.chatbot',
-    'development.features',
-    'development.features.local-files',
-    'development.features.saved-local-folder',
-    'admin.entity.provider',
-    'admin.entity.model',
-    'admin.entity.agent',
-    'development.ai.communication',
-  ] as Route[]) : []),
+  'development.styleguide',
+  'development.styleguide.base',
+  'development.styleguide.inputs',
+  'development.styleguide.buttons',
+  'development.styleguide.table',
+  'development.styleguide.components',
+  'development.styleguide.search',
+  'development.styleguide.record',
+  'development.db.test-table',
+  'development.styleguide.media',
+  'development.styleguide.files',
+  'development.styleguide.chatbot',
+  'development.features',
+  'development.features.local-files',
+  'development.features.saved-local-folder',
+  'development.features.capture-screen',
+  'admin.entity.provider',
+  'admin.entity.model',
+  'admin.entity.agent',
+  'development.ai.communication',
 ];
+
+export const ROUTES = ALL_ROUTES;
 
 

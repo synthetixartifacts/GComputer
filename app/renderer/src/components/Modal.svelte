@@ -6,12 +6,14 @@
    * - open: whether the modal is visible
    * - onClose: callback invoked to close the modal
    * - title: i18n key used for heading and labelling
+   * - size: 'small' | 'medium' | 'large' | 'full' (optional, defaults to 'medium')
    *
    * Behavior: focus is trapped while open and returned to the opener on close.
    */
   export let open: boolean = false;
   export let onClose: () => void;
   export let title: string = 'pages.styleguide.modalTitle';
+  export let size: 'small' | 'medium' | 'large' | 'full' = 'medium';
   import { t as tStore } from '@ts/i18n/store';
   import { onDestroy, tick } from 'svelte';
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
@@ -75,7 +77,7 @@
 {#if open}
   <div class="gc-modal" role="dialog" aria-modal="true" aria-labelledby={headingId} on:keydown={onKeyDown} tabindex="-1">
     <button class="gc-modal-backdrop" on:click={onClose} aria-label={`${t('app.menu.close')} backdrop`}></button>
-    <div class="gc-modal__dialog" tabindex="-1" bind:this={dialogEl}>
+    <div class="gc-modal__dialog gc-modal__dialog--{size}" tabindex="-1" bind:this={dialogEl}>
       <div class="flex items-center justify-between mb-3">
         <h3 id={headingId} class="text-base font-semibold">{t(title)}</h3>
         <button class="btn btn--secondary gc-icon-btn" on:click={onClose} aria-label={t('app.menu.close')}>

@@ -131,6 +131,13 @@ export function registerSettingsIpc(): void {
     return await setSetting(key as any, value);
   });
 
+  // Expose environment mode from .env file
+  ipcMain.handle('settings:getEnvMode', async () => {
+    const mode = process.env.mode || 'production';
+    console.log('[settings] Returning env mode:', mode);
+    return mode;
+  });
+
   // Optional: file watcher if settings modified externally
   try {
     const p = getSettingsPath();

@@ -1,8 +1,12 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import path from 'node:path';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  // Load env file based on `mode` in the current working directory.
+  const env = loadEnv(mode, process.cwd(), '');
+  
+  return {
   root: path.resolve(__dirname, 'app/renderer'),
   base: './',
   plugins: [
@@ -37,6 +41,10 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
   },
+  define: {
+    'import.meta.env.MODE': JSON.stringify(env.mode || 'production'),
+  },
+  };
 });
 
 

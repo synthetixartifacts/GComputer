@@ -1,4 +1,212 @@
 
+So I just compiled my app using  npm run package:win and I still dont see the Development menu and admin menu even tho my .env mode is set to dev.
+
+npm run package:win
+
+> gcomputer@0.0.1 package:win
+> electron-builder --win --publish=never
+
+  • electron-builder  version=26.0.12 os=6.6.87.2-microsoft-standard-WSL2
+  • loaded configuration  file=package.json ("build" field)
+  • @electron/rebuild already used by electron-builder, please consider to remove excess dependency from devDependencies
+
+To ensure your native dependencies are always matched electron version, simply add script `"postinstall": "electron-builder install-app-deps" to your `package.json`
+  • writing effective config  file=release/builder-effective-config.yaml
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=win32 arch=x64 electron=28.3.3 appOutDir=release/win-unpacked
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • default Electron icon is used  reason=application icon is not set
+  • signing with signtool.exe  path=release/win-unpacked/GComputer.exe
+  • building        target=portable file=release/GComputer 0.0.1.exe archs=x64
+  • signing with signtool.exe  path=release/win-unpacked/resources/elevate.exe
+  • signing with signtool.exe  path=release/GComputer 0.0.1.exe
+
+
+
+
+Right now we have a menu and a routing.
+In each we manage the availability of pages based on "npm" mode from like run dev vs npm run package:win for exemple.
+In the release/packaged version right now I dont see no menu item others than Home / Settings.
+Its was ok before but I want to change how this is manage, how now want it based on a configuration file we have locally so that even in a packages I can test some beta feature when the app is "compiled"
+I had in mind to use the file ./.env and the value in it mode. When mode=dev we display the menu items and give route available
+Do the update and make sure to validate this concept in the app overall everywhere.
+
+While at it, make sure to verify that our code is optimal, properly setup and all to be able to scale and add more complex logic in our routing.
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+
+
+
+
+
+
+In the modal where we select the display to capture I want a full width live visual representation of my selection. Then underneath we will have the options in one line.
+
+
+
+
+We are working on the concept of the app being able to "see the screen".
+It is located right now under the page dev>feature>"
+For sure examine yourself the current real code situation but here is what is happening right now in the frontend:
+- I don't see the images in the listing. I see either empty image in the electron app like I see the images section the name, I can click on it but I don't see the image itself its like not found. If I click on the image tho I can see my images so the image itself is om its on the listing itself that its not displayed properly it can be we that do not manage it properly but it can also be the component itself, double check this.
+- The saving of the printscreen is not working anymore
+
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+
+
+
+
+
+
+NEW FEATURE/COMPONENT
+
+
+I want to create a new section inder development>features that will be capture screen.
+
+On this new page we will develop and test the concept of the app being able to "see the screen"
+The first concept of this complete feature I want to test is the capture of the screen.
+What I want is to for the page to have a button "View Screen" which will for now:
+- Trigger a printscreen of the computer screen
+- Save the file in our app. We need a new folder for computer assets we will generate/use in our app. Lets go for the new folder ./assets/printscreen. We will name the file ps_datetime.jpg or png depending on the library best practice you will choose to do that.
+- We will have a gallery of our already create printscreen using GalleryGrid component we have. 
+
+The capture of the screen needs to be managed as a component that we will place in component/computer/capture
+
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+# Note of the current situation:
+We already started this steps but it is not fully working.
+- First we see translation keys instead of values, so verify this, remeber that everywhere else it is working so you can always double check if needed.
+- Second, the capture flow is working as it saves a file but the file right now is simply all black instead of the computer current screen.
+- Third, when we capture a new files the listing of image is misbehaving as we don't see the images we see like missing file icon but if I refresh my app I see proper images
+- Where are my files in my app folder? I can't find the ./assets/computer folder right now
+
+---------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+So we are advancing.
+The modal is ok but right now the content goes over I think we should add box-sizing: content-box; to .gc-modal__dialog
+Next, I can tell you that the number of screen is ok and if I go to the right screen I can see my mouse but there is multiple issue.
+even if I see my mouse 
+I want to test this in a compile way so for now we will do this, I've create a file ./.env which contain this right now
+"
+mode=dev
+"
+
+Not sure if this is the classic way of doing this, in symfony it is, if needed adapt for our project context. 
+When the mode on my .env config file is dev we are showing the dev menu item else we do not.
+
+
+
+
+
+I still see empty image in my listing.
+Lets do this now:
+- Replace "View Screen" label by "Record Screen"
+- When we click the "Record Screen" button a modal opens and in that modal we see
+  - The current live view of the screen
+  - If we record that we have multiple screen we offers like a way of selecting which screen to capture/view.
+  - A Capture button that will take the screenshot
+- Right now in this section / page as it is under development menu item we will save the image in the app folder itself for this page but in the component of prinscreening it, really the component that management this process only and not the page the path is configurable.
+
+Revalidate every file right now to make sure you are up to date, do not make any assumptions.
+
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+
+
+NEW FEATURE/COMPONENT
+
+
+I want to create a new section inder development>features that will be capture screen.
+
+On this new page we will develop and test the concept of the app being able to "see the screen"
+The first concept of this complete feature I want to test is the capture of the screen.
+What I want is to for the page to have a button "View Screen" which will for now:
+- Trigger a printscreen of the computer screen
+- Save the file in our app. We need a new folder for computer assets we will generate/use in our app. Lets go for the new folder ./assets/printscreen. We will name the file ps_datetime.jpg or png depending on the library best practice you will choose to do that.
+- We will have a gallery of our already create printscreen using GalleryGrid component we have. 
+
+The capture of the screen needs to be managed as a component that we will place in component/computer/capture
+
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+# Note of the current situation:
+We already started this steps but it is not fully working.
+- First we see translation keys instead of values, so verify this, remeber that everywhere else it is working so you can always double check if needed.
+- Second, the capture flow is working as it saves a file but the file right now is simply all black instead of the computer current screen.
+- Third, when we capture a new files the listing of image is misbehaving as we don't see the images we see like missing file icon but if I refresh my app I see proper images
+- Where are my files in my app folder? I can't find the ./assets/computer folder right now
+
+---------------------
+
+
+
+
 
 
 TODO

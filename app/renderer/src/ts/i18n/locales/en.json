@@ -14,7 +14,9 @@
       "reset": "Reset",
       "clear": "Clear",
       "filter": "Filter",
-      "done": "Done"
+      "done": "Done",
+      "copy": "Copy",
+      "download": "Download"
     },
     "fields": {
       "code": "Code",
@@ -64,7 +66,8 @@
       "features": {
         "label": "Features",
         "localFiles": "Local files",
-        "savedLocalFolder": "Saved local folder"
+        "savedLocalFolder": "Saved local folder",
+        "captureScreen": "Capture Screen"
       },
       "test1": "",
       "db": {
@@ -305,6 +308,36 @@
       "savedLocalFolder": {
         "title": "Saved local folder",
         "desc": "Always shows the contents of the saved folder (recursive)."
+      },
+      "capture": {
+        "title": "Screen Capture",
+        "description": "Capture screenshots of your computer screen and manage your screenshot gallery.",
+        "viewScreen": "View Screen",
+        "recordScreen": "Record Screen",
+        "captureScreen": "Capture Screen",
+        "capturing": "Capturing...",
+        "success": "Screenshot captured successfully!",
+        "gallery": "Screenshot Gallery",
+        "noScreenshots": "No screenshots yet. Click 'Record Screen' to capture your first screenshot.",
+        "totalScreenshots": "{count} screenshots",
+        "dimensions": "Dimensions",
+        "size": "Size",
+        "captured": "Captured",
+        "confirmDelete": "Confirm Delete",
+        "deleteMessage": "Are you sure you want to delete {filename}? This action cannot be undone.",
+        "recordModalTitle": "Screen Capture",
+        "selectScreen": "Select Screen",
+        "preview": "Preview",
+        "saveTo": "Save to",
+        "captureNow": "Capture",
+        "selectDisplay": "Select Display to Capture",
+        "allDisplays": "All Displays",
+        "noDisplays": "No displays detected",
+        "deleteAll": "Delete All",
+        "confirmDeleteAll": "Delete All Screenshots",
+        "deleteAllWarning": "Are you sure you want to delete all {count} screenshots?",
+        "deleteAllWarningDetail": "This action cannot be undone. All screenshot files will be permanently removed.",
+        "deleteAllConfirm": "Yes, Delete All Screenshots"
       }
     },
     "browse": {

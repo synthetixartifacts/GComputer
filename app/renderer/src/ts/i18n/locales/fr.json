@@ -14,7 +14,9 @@
       "reset": "Réinitialiser",
       "clear": "Effacer",
       "filter": "Filtrer",
-      "done": "Terminé"
+      "done": "Terminé",
+      "copy": "Copier",
+      "download": "Télécharger"
     },
     "fields": {
       "code": "Code",
@@ -64,7 +66,8 @@
       "features": {
         "label": "Fonctionnalités",
         "localFiles": "Fichiers locaux",
-        "savedLocalFolder": "Dossier local enregistré"
+        "savedLocalFolder": "Dossier local enregistré",
+        "captureScreen": "Capture d'écran"
       },
       "test1": "",
       "db": {
@@ -323,6 +326,36 @@
       "savedLocalFolder": {
         "title": "Dossier local enregistré",
         "desc": "Affiche toujours le contenu du dossier enregistré (récursif)."
+      },
+      "capture": {
+        "title": "Capture d'écran",
+        "description": "Capturez des captures d'écran de votre ordinateur et gérez votre galerie de captures.",
+        "viewScreen": "Voir l'écran",
+        "recordScreen": "Enregistrer l'écran",
+        "captureScreen": "Capturer l'écran",
+        "capturing": "Capture en cours...",
+        "success": "Capture d'écran réussie!",
+        "gallery": "Galerie de captures",
+        "noScreenshots": "Aucune capture pour l'instant. Cliquez sur 'Enregistrer l'écran' pour capturer votre première image.",
+        "totalScreenshots": "{count} captures",
+        "dimensions": "Dimensions",
+        "size": "Taille",
+        "captured": "Capturée",
+        "confirmDelete": "Confirmer la suppression",
+        "deleteMessage": "Êtes-vous sûr de vouloir supprimer {filename}? Cette action est irréversible.",
+        "recordModalTitle": "Capture d'écran",
+        "selectScreen": "Sélectionner l'écran",
+        "preview": "Aperçu",
+        "saveTo": "Enregistrer dans",
+        "captureNow": "Capturer",
+        "selectDisplay": "Sélectionner l'écran à capturer",
+        "allDisplays": "Tous les écrans",
+        "noDisplays": "Aucun écran détecté",
+        "deleteAll": "Tout supprimer",
+        "confirmDeleteAll": "Supprimer toutes les captures",
+        "deleteAllWarning": "Êtes-vous sûr de vouloir supprimer les {count} captures d'écran?",
+        "deleteAllWarningDetail": "Cette action est irréversible. Tous les fichiers de capture seront définitivement supprimés.",
+        "deleteAllConfirm": "Oui, supprimer toutes les captures"
       }
     },
     "browse": {

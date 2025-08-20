@@ -1,7 +1,9 @@
+import { get } from 'svelte/store';
 import { currentRoute } from './store';
 import type { Route } from './types';
-import { ROUTES } from './types';
+import { ALL_ROUTES } from './types';
 import { activeRoute } from '@features/navigation/store';
+import { availableRoutes } from '@features/config/store';
 
 export function initRouter(): void {
   handleHashChange();
@@ -44,8 +46,15 @@ function normalizeHashToRoute(hash: string): Route {
     .split('/')
     .filter(Boolean)
     .join('.') as Route;
-  // Guard against unknown routes
-  return (ROUTES as readonly string[]).includes(dotted) ? dotted : 'home';
+  
+  // First check if it's a valid route at all
+  if (!(ALL_ROUTES as readonly string[]).includes(dotted)) {
+    return 'home';
+  }
+  
+  // Then check if it's available based on runtime configuration
+  const available = get(availableRoutes);
+  return available.includes(dotted) ? dotted : 'home';
 }
 
 function handleHashChange(): void {
