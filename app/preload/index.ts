@@ -43,6 +43,9 @@ contextBridge.exposeInMainWorld('gc', {
     getSources() {
       return ipcRenderer.invoke('screen:getSources');
     },
+    setPreviewDisplay(displayId: string | 'all') {
+      ipcRenderer.send('screen:setPreviewDisplay', displayId);
+    },
     capture(options?: { sourceId?: string; savePath?: string }) {
       return ipcRenderer.invoke('screen:capture', options);
     },

@@ -108,6 +108,11 @@
   opacity: 0.9;
 }
 
+// Hide the All Displays option for now
+.display-selector[data-display-id="all"] {
+  display: none !important;
+}
+
 // All Displays Preview
 .all-displays-preview {
   width: 100%;

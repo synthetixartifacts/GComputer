@@ -62,6 +62,11 @@
       return;
     }
     
+    // Notify main process about the display selection before requesting stream
+    if (window.gc?.screen?.setPreviewDisplay) {
+      window.gc.screen.setPreviewDisplay(selectedDisplay);
+    }
+    
     try {
       // Use the modern getDisplayMedia API which works with setDisplayMediaRequestHandler
       const stream = await navigator.mediaDevices.getDisplayMedia({
@@ -167,6 +172,12 @@
   function handleDisplaySelection(displayId: string | 'all') {
     selectedDisplay = displayId;
     notifySelectionChange();
+    
+    // Notify main process about the display selection for getDisplayMedia
+    if (window.gc?.screen?.setPreviewDisplay) {
+      window.gc.screen.setPreviewDisplay(displayId);
+    }
+    
     // Restart preview with new selection
     restartPreviews();
   }
@@ -216,7 +227,7 @@
         </div>
       {/if}
       
-      {#if !currentStream && !previewError && !isLoading}
+      {#if !currentStream && !previewError && !isLoading && !autoStart}
         <div class="live-screen-preview__placeholder">
           <p>{t('pages.features.capture.clickToStartPreview')}</p>
           <button 
@@ -236,6 +247,7 @@
             type="button"
             class="display-selector"
             class:selected={selectedDisplay === 'all'}
+            data-display-id="all"
             on:click={() => handleDisplaySelection('all')}
           >
             <svg class="display-selector__icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">

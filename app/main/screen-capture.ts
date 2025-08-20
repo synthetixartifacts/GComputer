@@ -94,24 +94,24 @@ async function captureWithPowerShell(savePath?: string): Promise<Screenshot> {
     .replace(/\//g, '\\')
     .replace('\\mnt\\c', 'C:');
   
-  // PowerShell script to capture screen
-  const psScript = `
-Add-Type -AssemblyName System.Windows.Forms,System.Drawing
-$screens = [Windows.Forms.Screen]::AllScreens
-$bounds = $screens[0].Bounds
-$bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height
-$graphics = [System.Drawing.Graphics]::FromImage($bmp)
-$graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size)
-$bmp.Save('${windowsPath}')
-$graphics.Dispose()
-$bmp.Dispose()
-Write-Output "SUCCESS"
-  `.trim();
+  // PowerShell script to capture screen - properly escaped
+  const psScript = [
+    'Add-Type -AssemblyName System.Windows.Forms,System.Drawing',
+    '$screens = [Windows.Forms.Screen]::AllScreens',
+    '$bounds = $screens[0].Bounds',
+    '$bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height',
+    '$graphics = [System.Drawing.Graphics]::FromImage($bmp)',
+    '$graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size)',
+    `$bmp.Save('${windowsPath}')`,
+    '$graphics.Dispose()',
+    '$bmp.Dispose()',
+    'Write-Output "SUCCESS"'
+  ].join('; ');
   
   try {
-    // Execute PowerShell command
+    // Execute PowerShell command with properly escaped script
     const { stdout, stderr } = await execAsync(
-      `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "${psScript.replace(/"/g, '\\"').replace(/\n/g, '; ')}"`
+      `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "${psScript.replace(/"/g, '\\"')}"`
     );
     
     if (stderr && !stderr.includes('SUCCESS')) {
