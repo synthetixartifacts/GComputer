@@ -12,6 +12,8 @@
 @use './components/admin-forms';
 @use './components/admin-crud';
 @use './components/admin-fields';
+@use './components/screen-capture';
+@use './views/capture-screen';
 
 @tailwind base;
 @tailwind components;

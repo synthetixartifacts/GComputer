@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import CaptureManager from '@components/computer/CaptureManager.svelte';
+  import ScreenSelectionModal from '@components/computer/ScreenSelectionModal.svelte';
   import GalleryGrid from '@components/GalleryGrid.svelte';
   import Modal from '@components/Modal.svelte';
   import { captureState } from '@features/computer-capture/store';
@@ -26,6 +26,7 @@
   let showDeleteConfirm = false;
   let screenshotToDelete: Screenshot | null = null;
   let showDeleteAllConfirm = false;
+  let showCaptureModal = false;
   
   let thumbnailsMap = new Map<string, string>();
   
@@ -173,19 +174,24 @@
   });
 </script>
 
-<section class="container-page stack-lg">
-  <div class="capture-header">
+<section class="container-page stack-lg capture-screen-view">
+  <div class="capture-screen-view__header">
     <h2 class="text-2xl font-bold">{t('pages.features.capture.title')}</h2>
     <p class="text-muted">{t('pages.features.capture.description')}</p>
   </div>
   
-  <div class="capture-section">
-    <!-- Screenshots are saved in the app's userData directory -->
-    <CaptureManager />
+  <div class="capture-screen-view__capture-section">
+    <button 
+      class="btn btn--primary capture-screen-view__capture-button"
+      on:click={() => showCaptureModal = true}
+    >
+      <span class="capture-screen-view__capture-icon">📸</span>
+      {t('pages.features.capture.recordScreen')}
+    </button>
   </div>
   
-  <div class="gallery-section">
-    <div class="gallery-header">
+  <div class="capture-screen-view__gallery-section">
+    <div class="capture-screen-view__gallery-header">
       <h3 class="text-xl font-semibold">{t('pages.features.capture.gallery')}</h3>
       {#if screenshots.length > 0}
         <button 
@@ -203,7 +209,7 @@
     {:else if screenshots.length === 0}
       <p class="text-muted">{t('pages.features.capture.noScreenshots')}</p>
     {:else}
-      <div class="gallery-container">
+      <div class="capture-screen-view__gallery-container">
         <GalleryGrid 
           items={galleryItems}
           columns={{ base: 2, md: 3, lg: 4 }}
@@ -212,7 +218,7 @@
         />
       </div>
       
-      <div class="gallery-info">
+      <div class="capture-screen-view__gallery-info">
         <p class="text-sm text-muted">
           {t('pages.features.capture.totalScreenshots', { count: screenshots.length })}
         </p>
@@ -221,6 +227,16 @@
   </div>
 </section>
 
+<!-- Screen Capture Modal -->
+<ScreenSelectionModal 
+  open={showCaptureModal}
+  onClose={() => {
+    showCaptureModal = false;
+    // Reload screenshots after capture
+    loadScreenshots();
+  }}
+/>
+
 <!-- Screenshot Preview Modal -->
 {#if selectedScreenshot && selectedImage}
   <Modal 
@@ -228,18 +244,18 @@
     onClose={closePreview}
     title={selectedScreenshot.filename}
   >
-    <div class="preview-modal">
+    <div class="capture-screen-view__preview-modal">
       <img 
         src={selectedImage} 
         alt={`Screenshot ${selectedScreenshot.filename}`}
-        class="preview-image"
+        class="capture-screen-view__preview-image"
       />
-      <div class="preview-info">
+      <div class="capture-screen-view__preview-info">
         <p><strong>{t('pages.features.capture.dimensions')}:</strong> {selectedScreenshot.width} × {selectedScreenshot.height}</p>
         <p><strong>{t('pages.features.capture.size')}:</strong> {formatFileSize(selectedScreenshot.size)}</p>
         <p><strong>{t('pages.features.capture.captured')}:</strong> {new Date(selectedScreenshot.createdAt).toLocaleString()}</p>
       </div>
-      <div class="preview-actions">
+      <div class="capture-screen-view__preview-actions">
         <button 
           class="btn btn--secondary"
           on:click={handleCopyToClipboard}
@@ -272,9 +288,9 @@
     onClose={cancelDelete}
     title={t('pages.features.capture.confirmDelete')}
   >
-    <div class="delete-confirm">
+    <div class="capture-screen-view__delete-confirm">
       <p>{t('pages.features.capture.deleteMessage', { filename: screenshotToDelete.filename })}</p>
-      <div class="modal-actions">
+      <div class="capture-screen-view__modal-actions">
         <button class="btn btn--secondary" on:click={cancelDelete}>
           {t('common.actions.cancel')}
         </button>
@@ -293,15 +309,15 @@
     onClose={cancelDeleteAll}
     title={t('pages.features.capture.confirmDeleteAll')}
   >
-    <div class="delete-confirm">
-      <div class="warning-icon">⚠️</div>
-      <p class="warning-text">
+    <div class="capture-screen-view__delete-confirm">
+      <div class="capture-screen-view__warning-icon">⚠️</div>
+      <p class="capture-screen-view__warning-text">
         {t('pages.features.capture.deleteAllWarning', { count: screenshots.length })}
       </p>
-      <p class="warning-subtext">
+      <p class="capture-screen-view__warning-subtext">
         {t('pages.features.capture.deleteAllWarningDetail')}
       </p>
-      <div class="modal-actions">
+      <div class="capture-screen-view__modal-actions">
         <button class="btn btn--secondary" on:click={cancelDeleteAll}>
           {t('common.actions.cancel')}
         </button>
@@ -313,122 +329,3 @@
   </Modal>
 {/if}
 
-<style>
-  .capture-header {
-    margin-bottom: 2rem;
-  }
-  
-  .capture-section {
-    margin-bottom: 3rem;
-    padding: 2rem;
-    background: var(--color-bg-secondary, #f8f9fa);
-    border-radius: 8px;
-  }
-  
-  .gallery-section {
-    margin-bottom: 2rem;
-  }
-  
-  .gallery-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  
-  .btn--small {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-  }
-  
-  .gallery-container {
-    margin-bottom: 1rem;
-  }
-  
-  .gallery-info {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--color-border, #dee2e6);
-  }
-  
-  .text-muted {
-    color: var(--color-text-muted, #6c757d);
-  }
-  
-  .preview-modal {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .preview-image {
-    width: 100%;
-    height: auto;
-    max-height: 60vh;
-    object-fit: contain;
-    border: 1px solid var(--color-border, #dee2e6);
-    border-radius: 4px;
-  }
-  
-  .preview-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem;
-    background: var(--color-bg-secondary, #f8f9fa);
-    border-radius: 4px;
-    font-size: 0.875rem;
-  }
-  
-  .preview-info p {
-    margin: 0;
-  }
-  
-  .preview-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--color-border, #dee2e6);
-  }
-  
-  .delete-confirm {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-  }
-  
-  .warning-icon {
-    font-size: 3rem;
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  
-  .warning-text {
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    text-align: center;
-  }
-  
-  .warning-subtext {
-    color: var(--color-text-muted, #6c757d);
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .btn--danger {
-    background: var(--color-danger, #dc3545);
-    color: white;
-  }
-  
-  .btn--danger:hover {
-    background: var(--color-danger-hover, #c82333);
-  }
-</style>

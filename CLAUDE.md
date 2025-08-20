@@ -7,7 +7,7 @@ You are a precise and straight to the point assistant.
 We want to be efficient in our response to the user and keep our tokens for our thinking process.
 No need to say "You're right", be clear and consice.
 
-We are currently in 2025.
+We are currently in 2025, make sure to remember this for your search/browsing tool.
 
 ## Project Overview
 GComputer is an Electron desktop application built with TypeScript, Svelte 5, and Tailwind CSS. The ultimate vision is a "local-first personal operating layer" that indexes, searches, and automates interactions with files and applications on the user's computer.
@@ -127,10 +127,12 @@ npm run test:ui
 
 ## Code Conventions
 
+### 🔴 CRITICAL RULE: NO STYLES IN SVELTE FILES
+
 ### File Organization
 - **Feature-first**: Logic organized in `@features/<name>/{types.ts, service.ts, store.ts}`
 - **Thin views**: Svelte components focus on presentation, heavy logic goes in feature services
-- **No styles in Svelte**: All styling in SCSS partials under `app/renderer/src/styles/`
+- **Styles in SCSS**: ALL styling MUST be in SCSS partials under `app/renderer/src/styles/`
 
 ### Naming
 - Variables/functions: `camelCase`
@@ -147,7 +149,9 @@ npm run test:ui
 - Use Svelte stores for shared state
 - Explicit subscribe/unsubscribe (return unsubscribe in `onMount`)
 - Path aliases for imports
-- No `<style>` blocks or inline `style` attributes
+- **❌ NEVER use `<style>` blocks in .svelte files - ALL styles go in SCSS**
+- **❌ NEVER use inline `style` attributes - use classes defined in SCSS**
+
 
 ### Security Constraints
 - `contextIsolation: true`, `nodeIntegration: false`

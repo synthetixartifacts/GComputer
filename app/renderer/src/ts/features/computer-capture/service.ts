@@ -28,7 +28,7 @@ interface ScreenAPI {
 
 function getScreenAPI(): ScreenAPI | null {
   if (typeof window !== 'undefined' && window.gc?.screen) {
-    return window.gc.screen as ScreenAPI;
+    return window.gc.screen as any as ScreenAPI;
   }
   return null;
 }

@@ -1,0 +1,143 @@
+// Capture Screen View Styles
+// ==========================================
+
+.capture-screen-view {
+  // Header section
+  &__header {
+    margin-bottom: 2rem;
+  }
+  
+  // Capture section with button
+  &__capture-section {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: var(--color-bg-secondary, #f8f9fa);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  &__capture-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  &__capture-icon {
+    font-size: 1.25rem;
+  }
+  
+  // Gallery section
+  &__gallery-section {
+    margin-bottom: 2rem;
+  }
+  
+  &__gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  &__gallery-container {
+    margin-bottom: 1rem;
+  }
+  
+  &__gallery-info {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border, #dee2e6);
+  }
+  
+  // Preview modal
+  &__preview-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  &__preview-image {
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    object-fit: contain;
+    border: 1px solid var(--color-border, #dee2e6);
+    border-radius: 4px;
+  }
+  
+  &__preview-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--color-bg-secondary, #f8f9fa);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    
+    p {
+      margin: 0;
+    }
+  }
+  
+  &__preview-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border, #dee2e6);
+  }
+  
+  // Delete confirmation modal
+  &__delete-confirm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  &__modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+  
+  &__warning-icon {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  &__warning-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  
+  &__warning-subtext {
+    color: var(--color-text-muted, #6c757d);
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Utility classes that may be used across views
+.btn--small {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.btn--danger {
+  background: var(--color-danger, #dc3545);
+  color: white;
+  
+  &:hover {
+    background: var(--color-danger-hover, #c82333);
+  }
+}
+
+.text-muted {
+  color: var(--color-text-muted, #6c757d);
+}

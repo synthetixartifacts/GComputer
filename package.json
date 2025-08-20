@@ -29,7 +29,11 @@
     "package:all": "electron-builder --publish=never",
     "package:win": "electron-builder --win --publish=never",
     "package:mac": "electron-builder --mac --publish=never",
-    "package:linux": "electron-builder --linux --publish=never"
+    "package:linux": "electron-builder --linux --publish=never",
+    "clean": "rm -rf dist/ release/ node_modules/.cache",
+    "clean:build": "npm run clean && npm run build",
+    "clean:build:win": "npm run clean && npm run build && npm run package:win",
+    "clean:build:all": "npm run clean && npm run build && npm run package:all"
   },
   "keywords": [],
   "author": "",

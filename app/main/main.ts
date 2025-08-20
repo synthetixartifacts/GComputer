@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, session, desktopCapturer } from 'electron';
 import path from 'node:path';
 import { config } from 'dotenv';
 import { registerSettingsIpc, getAllSettings } from './settings';
@@ -67,6 +67,33 @@ async function createMainWindow(): Promise<void> {
 }
 
 app.whenReady().then(async () => {
+  // Set up display media request handler for screen capture
+  session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
+    console.log('[main] Display media request received');
+    
+    desktopCapturer.getSources({ 
+      types: ['screen'], 
+      thumbnailSize: { width: 1920, height: 1080 } 
+    }).then((sources) => {
+      console.log('[main] Available sources:', sources.length);
+      
+      // Try to find the primary display or use the first one
+      const primarySource = sources.find(source => source.name.includes('Entire screen') || source.name.includes('Screen 1'));
+      const sourceToUse = primarySource || sources[0];
+      
+      if (sourceToUse) {
+        console.log('[main] Using source:', sourceToUse.name);
+        callback({ video: sourceToUse, audio: false });
+      } else {
+        console.warn('[main] No sources available');
+        callback({ video: null, audio: false });
+      }
+    }).catch(error => {
+      console.error('[main] Error getting desktop sources:', error);
+      callback({ video: null, audio: false });
+    });
+  });
+  
   registerSettingsIpc();
   registerFsIpc();
   registerDbIpc();

@@ -1,5 +1,11 @@
 
 
+## Complex task
+
+This seems to be a complex task as we are iterating a lot right now and you have not yet solve it so try to explore more, try to get new idea based on best practice and documentation you can find online, really do not assume and do not continue on your own path, try to find other way while still keeping it clean, lean and DRY. 
+
+
+
 
 ## Big Task Alert
 
