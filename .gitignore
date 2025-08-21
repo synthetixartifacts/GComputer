@@ -9,4 +9,3 @@ node_modules
 release/
 .ahhub/
 .env_secret
-.env
