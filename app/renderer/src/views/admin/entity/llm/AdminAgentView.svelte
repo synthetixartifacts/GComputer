@@ -118,15 +118,6 @@
       defaultValue: '{}'
     },
     { 
-      id: 'provider', 
-      title: $t('pages.admin.agent.fields.provider'), 
-      width: '120px',
-      showInTable: true,
-      showInForm: false,
-      readonly: true,
-      access: (row: Agent) => row.provider?.name || 'Unknown'
-    },
-    { 
       id: 'createdAt', 
       title: $t('common.fields.created'), 
       width: '140px',
