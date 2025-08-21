@@ -9,6 +9,12 @@ declare global {
         get: <K extends keyof import('@features/settings/types').AppSettings>(key: K) => Promise<import('@features/settings/types').AppSettings[K]>;
         set: <K extends keyof import('@features/settings/types').AppSettings>(key: K, value: import('@features/settings/types').AppSettings[K]) => Promise<import('@features/settings/types').AppSettings>;
         subscribe: (callback: (settings: import('@features/settings/types').AppSettings) => void) => () => void;
+        getEnvMode: () => Promise<string>;
+      };
+      config: {
+        getPublic: () => Promise<Record<string, any>>;
+        getEnv: (key: string, defaultValue?: string) => Promise<string | undefined>;
+        hasProviderSecret: (providerCode: string) => Promise<boolean>;
       };
       fs: {
         listDirectory: (path: string) => Promise<Array<{ name: string; absolutePath: string; relativePath: string; sizeBytes: number; lastModified: number }>>;

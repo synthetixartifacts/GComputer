@@ -21,7 +21,8 @@
       "Bash(npm test:*)",
       "Bash(npm run dev:*)",
       "WebSearch",
-      "Bash(npx vitest run:*)"
+      "Bash(npx vitest run:*)",
+      "WebFetch(domain:docs.anthropic.com)"
     ],
     "defaultMode": "acceptEdits"
   }
