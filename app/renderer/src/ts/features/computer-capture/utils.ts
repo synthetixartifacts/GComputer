@@ -9,11 +9,16 @@ import type { Screenshot } from './types';
  * Format file size for human-readable display
  */
 export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Bytes';
+  if (bytes <= 0) return '0 B';
   const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const sizes = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+  const value = bytes / Math.pow(k, i);
+  // Always show .0 for whole numbers in KB, MB, GB
+  if (i > 0 && value % 1 === 0) {
+    return value.toFixed(1) + ' ' + sizes[i];
+  }
+  return parseFloat(value.toFixed(1)) + ' ' + sizes[i];
 }
 
 /**
@@ -48,9 +53,20 @@ export function generateScreenshotFilename(prefix: string = 'screenshot'): strin
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
-  const ms = String(now.getMilliseconds()).padStart(3, '0');
   
-  return `${prefix}_${year}${month}${day}_${hours}${minutes}${seconds}_${ms}.png`;
+  return `${prefix}_${year}${month}${day}_${hours}${minutes}${seconds}.png`;
+}
+
+/**
+ * Validate display ID
+ */
+export function isValidDisplayId(id: string | null | undefined): boolean {
+  if (!id) return false;
+  if (id === 'all') return true;
+  
+  // Check if it's a valid numeric ID
+  const numId = Number(id);
+  return !isNaN(numId) && numId >= 0 && Number.isInteger(numId);
 }
 
 /**

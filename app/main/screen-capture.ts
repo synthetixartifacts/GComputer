@@ -28,13 +28,34 @@ function isDevMode(): boolean {
   return process.env.mode === 'development' || process.env.VITE_DEV_SERVER_URL !== undefined;
 }
 
+// Sanitize path to prevent directory traversal
+function sanitizePath(customPath: string, baseDir: string): string {
+  const resolved = path.resolve(baseDir, customPath);
+  const normalizedBase = path.resolve(baseDir);
+  
+  // Ensure the resolved path is within the base directory
+  if (!resolved.startsWith(normalizedBase)) {
+    throw new Error('Invalid path: attempted directory traversal');
+  }
+  
+  return resolved;
+}
+
 // Get screenshots directory path
 function getScreenshotsDir(customPath?: string): string {
   if (customPath) {
-    if (!path.isAbsolute(customPath)) {
-      return path.resolve(app.getAppPath(), customPath);
+    // Get the allowed base directory
+    const baseDir = isDevMode() 
+      ? path.join(__dirname, '..', '..')
+      : app.getPath('userData');
+    
+    // Sanitize the custom path
+    try {
+      return sanitizePath(customPath, baseDir);
+    } catch (error) {
+      console.error('[Screen Capture] Invalid custom path:', error);
+      // Fall back to default on invalid path
     }
-    return customPath;
   }
   
   // In dev mode, save to local project folder
@@ -215,25 +236,31 @@ async function captureDisplayById(displayId: string, savePath?: string): Promise
   }
 }
 
-// Capture all connected displays
+// Capture all connected displays in parallel for better performance
 async function captureAllDisplays(savePath?: string): Promise<Screenshot[]> {
   const displays = screen.getAllDisplays();
-  const screenshots: Screenshot[] = [];
   
-  console.log(`[Screen Capture] Capturing ${displays.length} displays`);
+  console.log(`[Screen Capture] Capturing ${displays.length} displays in parallel`);
   
-  for (const display of displays) {
-    try {
-      const screenshot = await captureDisplayById(display.id.toString(), savePath);
-      screenshots.push(screenshot);
-    } catch (error) {
-      console.error(`Failed to capture display ${display.id}:`, error);
-    }
-  }
+  // Capture all displays in parallel
+  const capturePromises = displays.map(display => 
+    captureDisplayById(display.id.toString(), savePath)
+      .catch(error => {
+        console.error(`Failed to capture display ${display.id}:`, error);
+        return null; // Return null for failed captures
+      })
+  );
+  
+  const results = await Promise.all(capturePromises);
+  
+  // Filter out failed captures (null values)
+  const screenshots = results.filter((screenshot): screenshot is Screenshot => screenshot !== null);
   
   if (screenshots.length === 0) {
     throw new Error('Failed to capture any displays');
   }
+  
+  console.log(`[Screen Capture] Successfully captured ${screenshots.length} of ${displays.length} displays`);
   
   return screenshots;
 }

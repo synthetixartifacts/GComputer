@@ -103,11 +103,14 @@
       await videoElement.play();
       console.log('[LiveScreenPreview] Video playing');
       
-      // Add stream end handler
-      stream.getVideoTracks()[0].onended = () => {
-        console.log('[LiveScreenPreview] Stream ended');
-        stopPreviews();
-      };
+      // Add stream end handler with cleanup
+      const videoTrack = stream.getVideoTracks()[0];
+      if (videoTrack) {
+        videoTrack.onended = () => {
+          console.log('[LiveScreenPreview] Stream ended');
+          stopPreviews();
+        };
+      }
       
     } catch (error) {
       console.error('[LiveScreenPreview] Failed to start preview:', error);
@@ -152,14 +155,20 @@
     console.log('[LiveScreenPreview] Stopping previews');
     
     if (currentStream) {
+      // Properly stop all tracks to prevent memory leaks
       currentStream.getTracks().forEach(track => {
         track.stop();
+        // Remove event listeners
+        track.onended = null;
       });
       currentStream = null;
     }
     
-    if (videoElement && videoElement.srcObject) {
+    if (videoElement) {
+      // Clean up video element to prevent memory leaks
+      videoElement.pause();
       videoElement.srcObject = null;
+      videoElement.load(); // Reset the video element
     }
   }
   
@@ -191,7 +200,15 @@
   });
   
   onDestroy(() => {
+    // Ensure complete cleanup on component destroy
     stopPreviews();
+    
+    // Clean up any pending timeouts
+    if (videoElement) {
+      videoElement.onloadedmetadata = null;
+      videoElement.onerror = null;
+    }
+    
     unsubT();
   });
 </script>

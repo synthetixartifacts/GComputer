@@ -20,7 +20,8 @@
       "Bash(npm run test:*)",
       "Bash(npm test:*)",
       "Bash(npm run dev:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(npx vitest run:*)"
     ],
     "defaultMode": "acceptEdits"
   }

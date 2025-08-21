@@ -11,7 +11,8 @@ import {
   sortScreenshotsByDate,
   isValidScreenshot,
   downloadScreenshot,
-  copyImageToClipboard 
+  copyImageToClipboard,
+  isValidDisplayId 
 } from './utils';
 
 // Type-safe access to window.gc.screen API
@@ -79,6 +80,11 @@ export async function loadScreenshots(): Promise<void> {
 }
 
 export async function deleteScreenshot(filename: string, id: string): Promise<boolean> {
+  // Validate filename to prevent path traversal
+  if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+    throw new Error('Invalid filename');
+  }
+  
   const api = getScreenAPI();
   if (!api) {
     setError('Screen capture API not available');
@@ -148,7 +154,12 @@ export async function getAvailableDisplays(): Promise<import('./types').DisplayI
 }
 
 // Capture specific display
-export async function captureDisplay(displayId: string, savePath?: string): Promise<void> {
+export async function captureDisplay(displayId: string, savePath?: string): Promise<Screenshot> {
+  // Validate display ID
+  if (!isValidDisplayId(displayId)) {
+    throw new Error('Invalid display ID');
+  }
+  
   const api = getScreenAPI();
   if (!api) {
     const errorMsg = 'Screen capture API not available';
@@ -162,6 +173,7 @@ export async function captureDisplay(displayId: string, savePath?: string): Prom
   try {
     const screenshot = await api.captureDisplay(displayId, savePath);
     addScreenshot(screenshot);
+    return screenshot;
   } catch (error) {
     console.error('Failed to capture display:', error);
     const errorMsg = error instanceof Error ? error.message : 'Failed to capture display';
@@ -173,7 +185,7 @@ export async function captureDisplay(displayId: string, savePath?: string): Prom
 }
 
 // Capture all displays
-export async function captureAllDisplays(savePath?: string): Promise<void> {
+export async function captureAllDisplays(savePath?: string): Promise<Screenshot[]> {
   const api = getScreenAPI();
   if (!api) {
     const errorMsg = 'Screen capture API not available';
@@ -187,6 +199,7 @@ export async function captureAllDisplays(savePath?: string): Promise<void> {
   try {
     const screenshots = await api.captureAll(savePath);
     screenshots.forEach(screenshot => addScreenshot(screenshot));
+    return screenshots;
   } catch (error) {
     console.error('Failed to capture all displays:', error);
     const errorMsg = error instanceof Error ? error.message : 'Failed to capture displays';
