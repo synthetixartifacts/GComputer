@@ -10,18 +10,19 @@ vi.mock('node:path', () => ({
   },
 }));
 
-vi.mock('../../../../packages/db/src/db/client.js', () => ({
+vi.mock('../../../../../packages/db/src/db/client.js', () => ({
   getOrm: vi.fn(),
   saveDatabase: vi.fn(),
 }));
 
-vi.mock('../../../../packages/db/src/db/schema.js', () => ({
+vi.mock('../../../../../packages/db/src/db/schema.js', () => ({
   messages: {},
   discussions: {},
 }));
 
 // Import after mocks are set up
 import { messageService } from '../message-service';
+import { getOrm } from '../../../../../packages/db/src/db/client.js';
 
 describe('MessageService', () => {
   let mockOrm: any;
@@ -43,8 +44,7 @@ describe('MessageService', () => {
       limit: vi.fn().mockReturnThis(),
     };
 
-    const { getOrm } = await import('../../../../packages/db/src/db/client.js');
-    getOrm.mockResolvedValue(mockOrm);
+    (getOrm as any).mockResolvedValue(mockOrm);
   });
 
   describe('list', () => {

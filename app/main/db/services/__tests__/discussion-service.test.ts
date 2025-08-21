@@ -10,12 +10,12 @@ vi.mock('node:path', () => ({
   },
 }));
 
-vi.mock('../../../../packages/db/src/db/client.js', () => ({
+vi.mock('../../../../../packages/db/src/db/client.js', () => ({
   getOrm: vi.fn(),
   saveDatabase: vi.fn(),
 }));
 
-vi.mock('../../../../packages/db/src/db/schema.js', () => ({
+vi.mock('../../../../../packages/db/src/db/schema.js', () => ({
   discussions: {},
   aiAgents: {},
   messages: {},
@@ -23,6 +23,7 @@ vi.mock('../../../../packages/db/src/db/schema.js', () => ({
 
 // Import after mocks are set up
 import { discussionService } from '../discussion-service';
+import { getOrm } from '../../../../../packages/db/src/db/client.js';
 
 describe('DiscussionService', () => {
   let mockOrm: any;
@@ -44,8 +45,7 @@ describe('DiscussionService', () => {
       delete: vi.fn().mockReturnThis(),
     };
 
-    const { getOrm } = await import('../../../../packages/db/src/db/client.js');
-    getOrm.mockResolvedValue(mockOrm);
+    (getOrm as any).mockResolvedValue(mockOrm);
   });
 
   describe('list', () => {
