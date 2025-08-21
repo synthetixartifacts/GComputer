@@ -99,6 +99,30 @@ Add these scripts to the `scripts` section in `package.json`:
 
 ## Building Releases
 
+### Clean Build Commands (Recommended)
+
+To ensure fresh builds without cached artifacts, use the clean build commands:
+
+```bash
+# Clean build for Windows
+npm run clean:build:win
+
+# Clean build for all platforms  
+npm run clean:build:all
+
+# Just clean artifacts (no build)
+npm run clean
+```
+
+These commands automatically:
+1. Remove all build artifacts (`dist/`, `release/`, `node_modules/.cache`)
+2. Rebuild everything from scratch
+3. Package the executables
+
+### Standard Build Commands
+
+If you're confident there are no cache issues:
+
 ### Windows Executable (.exe)
 
 ```bash
@@ -132,6 +156,15 @@ Output: `release/GComputer-1.0.0.AppImage` (portable executable)
 # Build for all supported platforms
 npm run build:all
 ```
+
+### When to Use Clean Builds
+
+Always use clean builds when:
+- Creating production releases
+- After updating translation files or assets
+- When encountering stale code in packaged executables
+- Before distributing to users
+- After significant code changes
 
 ## Release Folder Structure
 

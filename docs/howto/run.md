@@ -87,6 +87,45 @@ To run Electron against the built assets (no dev server):
 cross-env VITE_DEV_SERVER_URL= electron dist/main/index.cjs
 ```
 
-Note: Packaging into installers is covered in `package.md`.
+---
+
+### Clean Builds
+
+To ensure fresh builds without cached artifacts:
+
+**Available clean build commands:**
+```bash
+# Clean all build artifacts and caches
+npm run clean
+
+# Clean and rebuild (without packaging)
+npm run clean:build
+
+# Clean, rebuild, and package for Windows
+npm run clean:build:win
+
+# Clean, rebuild, and package for all platforms
+npm run clean:build:all
+```
+
+**Manual clean build process:**
+```bash
+# Step 1: Remove all build artifacts
+rm -rf dist/ release/ node_modules/.cache
+
+# Step 2: Rebuild from scratch
+npm run build
+
+# Step 3: Package (optional)
+npm run package:win  # or package:all for all platforms
+```
+
+**When to use clean builds:**
+- After updating translation files
+- When encountering stale code in packaged executables
+- Before creating production releases
+- When build artifacts seem corrupted
+
+Note: Packaging into installers is covered in `release.md`.
 
 

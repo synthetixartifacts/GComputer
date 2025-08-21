@@ -19,6 +19,9 @@ const settingsApi = {
   set<K extends keyof AppSettings>(key: K, value: AppSettings[K]): Promise<AppSettings> {
     return ipcRenderer.invoke('settings:set', key, value);
   },
+  getEnvMode(): Promise<string> {
+    return ipcRenderer.invoke('settings:getEnvMode');
+  },
   subscribe(callback: (settings: AppSettings) => void): () => void {
     const listener = (_event: unknown, payload: AppSettings) => callback(payload);
     ipcRenderer.on('settings:changed', listener);
@@ -31,6 +34,35 @@ contextBridge.exposeInMainWorld('gc', {
   fs: {
     listDirectory(path: string) {
       return ipcRenderer.invoke('fs:list-directory', { path });
+    },
+  },
+  screen: {
+    getDisplays() {
+      return ipcRenderer.invoke('screen:getDisplays');
+    },
+    getSources() {
+      return ipcRenderer.invoke('screen:getSources');
+    },
+    setPreviewDisplay(displayId: string | 'all') {
+      ipcRenderer.send('screen:setPreviewDisplay', displayId);
+    },
+    capture(options?: { sourceId?: string; savePath?: string }) {
+      return ipcRenderer.invoke('screen:capture', options);
+    },
+    captureDisplay(displayId: string, savePath?: string) {
+      return ipcRenderer.invoke('screen:captureDisplay', displayId, savePath);
+    },
+    captureAll(savePath?: string) {
+      return ipcRenderer.invoke('screen:captureAll', savePath);
+    },
+    list(customPath?: string) {
+      return ipcRenderer.invoke('screen:list', customPath);
+    },
+    delete(filename: string, customPath?: string) {
+      return ipcRenderer.invoke('screen:delete', filename, customPath);
+    },
+    get(filename: string, customPath?: string) {
+      return ipcRenderer.invoke('screen:get', filename, customPath);
     },
   },
   db: {

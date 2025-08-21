@@ -13,6 +13,16 @@ declare global {
       fs: {
         listDirectory: (path: string) => Promise<Array<{ name: string; absolutePath: string; relativePath: string; sizeBytes: number; lastModified: number }>>;
       };
+      screen: {
+        getDisplays: () => Promise<import('@features/computer-capture/types').DisplayInfo[]>;
+        getSources: () => Promise<any[]>;
+        capture: (options?: { sourceId?: string; savePath?: string }) => Promise<import('@features/computer-capture/types').Screenshot>;
+        captureDisplay: (displayId: string, savePath?: string) => Promise<import('@features/computer-capture/types').Screenshot>;
+        captureAll: (savePath?: string) => Promise<import('@features/computer-capture/types').Screenshot[]>;
+        list: (customPath?: string) => Promise<import('@features/computer-capture/types').Screenshot[]>;
+        delete: (filename: string, customPath?: string) => Promise<boolean>;
+        get: (filename: string, customPath?: string) => Promise<string | null>;
+      };
       db: {
         test: {
           list: (filters?: { column1?: string; column2?: string }) => Promise<Array<{ id: number; column1: string | null; column2: string | null }>>;

@@ -58,14 +58,45 @@
     display: grid;
     place-items: center;
     z-index: var(--z-modal);
+    padding: 1rem;
   }
   .gc-modal__dialog {
     @include m.surface;
-    width: min(600px, calc(100% - 2rem));
+    /* Default: fit content with responsive constraints */
+    width: max-content;
+    min-width: min(300px, calc(100vw - 2rem));
+    max-width: min(90vw, 600px); /* default medium */
     padding: 1rem;
     box-shadow: var(--shadow-md);
     position: relative;
+    box-sizing: border-box;
+    max-height: 90vh;
+    overflow-y: auto;
     z-index: 1;
+    
+    /* Prevent content from making dialog too wide */
+    & > * {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    
+    /* Size variants */
+    &--small {
+      max-width: min(90vw, 400px);
+    }
+    
+    &--medium {
+      max-width: min(90vw, 600px);
+    }
+    
+    &--large {
+      max-width: min(90vw, 900px);
+    }
+    
+    &--full {
+      max-width: 90vw;
+      width: 90vw;
+    }
   }
 
   /* Demo helpers for styleguide (kept scoped and non-intrusive) */

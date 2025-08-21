@@ -11,6 +11,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <a class="btn btn--secondary" href="#/development/features/local-files">{t('app.menu.features.localFiles')}</a>
     <a class="btn btn--secondary" href="#/development/features/saved-local-folder">{t('app.menu.features.savedLocalFolder')}</a>
+    <a class="btn btn--secondary" href="#/development/features/capture-screen">{t('app.menu.features.captureScreen')}</a>
   </div>
 </section>
 

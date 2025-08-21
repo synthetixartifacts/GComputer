@@ -19,6 +19,18 @@ vi.mock('@features/navigation/store', () => ({
   },
 }));
 
+// Import ALL_ROUTES from types to mock availableRoutes
+import { ALL_ROUTES } from '../types';
+
+vi.mock('@features/config/store', () => ({
+  availableRoutes: {
+    subscribe: vi.fn((fn: any) => {
+      fn(ALL_ROUTES);
+      return () => {};
+    }),
+  },
+}));
+
 // Helper to get the current location hash
 const getCurrentHash = () => window.location.hash;
 

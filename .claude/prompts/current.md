@@ -1,6 +1,1157 @@
 
 
 
+As our capture feature is its own component you will do the testing yourself be calling it through its own testing api service. And debug until you are confident there is no error anymore and the file is properly capture and saved. I am not sure but at some point we use a local file like the folder screenshots to save our printscreen and being able to view it within our local wsl app and not appdata which is outside of our folder its in the windows env not our linux. 
+So we could maybe test/have a rule that when our .env is in mode=dev we do this the same as for the menu. I'm really not sure about this but it could do the trick. 
+We generated a lot of code for like the linux wsl env and if we go that route I dont think we will need it anymore. we should really try to keep our code clean and lean.
+
+Think about this and create your proper plan with testing an iteration until it works.
+
+
+
+
+Current log are:
+
+
+[electron] [Screen Capture] All thumbnails are black, providing display info only
+[electron] [main] Preview display set to: 33
+[electron] [main] Preview display set to: 33
+[electron] [main] Display media request received for display: 33
+[electron] [main] Available sources: 3
+[electron] [main] Found requested source: Screen 1
+[electron] [main] Using source: Screen 1 ID: screen:419:0
+[electron] [main] Preview display set to: 1
+[electron] [main] Preview display set to: 1
+[electron] [main] Display media request received for display: 1
+[electron] [main] Available sources: 3
+[electron] [main] Found requested source: Screen 2
+[electron] [main] Using source: Screen 2 ID: screen:462:0
+[electron] [main] Preview display set to: 2
+[electron] [main] Preview display set to: 2
+[electron] [main] Display media request received for display: 2
+[electron] [main] Available sources: 3
+[electron] [main] Found requested source: Screen 3
+[electron] [main] Using source: Screen 3 ID: screen:463:0
+[electron] [main] Preview display set to: 33
+[electron] [main] Preview display set to: 33
+[electron] [main] Display media request received for display: 33
+[electron] [main] Available sources: 3
+[electron] [main] Found requested source: Screen 1
+[electron] [main] Using source: Screen 1 ID: screen:419:0
+[electron] [main] Preview display set to: 1
+[electron] [main] Preview display set to: 1
+[electron] [main] Display media request received for display: 1
+[electron] [main] Available sources: 3
+[electron] [main] Found requested source: Screen 2
+[electron] [main] Using source: Screen 2 ID: screen:462:0
+[electron] [Screen Capture] WSL2 environment detected
+[electron] [Screen Capture] WSL2 detected, using PowerShell for display 1
+[electron] [Screen Capture] Using PowerShell capture for WSL2
+[electron] [Screen Capture] PowerShell capture failed: Error: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_174345.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_174345.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_174345.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at ChildProcess.exithandler (node:child_process:422:12)
+[electron]     at ChildProcess.emit (node:events:517:28)
+[electron]     at maybeClose (node:internal/child_process:1098:16)
+[electron]     at Socket.<anonymous> (node:internal/child_process:450:11)
+[electron]     at Socket.emit (node:events:517:28)
+[electron]     at Pipe.<anonymous> (node:net:350:12) {
+[electron]   code: 1,
+[electron]   killed: false,
+[electron]   signal: null,
+[electron]   cmd: `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\\Users\\tommy\\AppData\\Roaming\\GComputer\\assets\\screenshots\\ps_20250820_174345.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \\"SUCCESS\\""`,
+[electron]   stdout: '',
+[electron]   stderr: 'At line:1 char:208\r\n' +
+[electron]     '+ ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...\r\n' +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:236\r\n' +
+[electron]     '+ ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...\r\n' +
+[electron]     '+                                                                 ~\r\n' +
+[electron]     'Missing argument in parameter list.\r\n' +
+[electron]     'At line:1 char:379\r\n' +
+[electron]     "+ ... mputer\\assets\\screenshots\\ps_20250820_174345.png'); .Dispose(); .Disp ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:391\r\n' +
+[electron]     "+ ... s\\screenshots\\ps_20250820_174345.png'); .Dispose(); .Dispose(); Write ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     '    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException\r\n' +
+[electron]     '    + FullyQualifiedErrorId : ExpectedExpression\r\n' +
+[electron]     ' \r\n'
+[electron] }
+[electron] [Screen Capture] PowerShell capture failed: Error: PowerShell capture failed: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_174345.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_174345.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_174345.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at captureWithPowerShell (/home/tommy/Project/GComputer/dist/main/index.cjs:61300:11)
+[electron]     at async captureDisplayById (/home/tommy/Project/GComputer/dist/main/index.cjs:61595:22)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:61722:14
+[electron]     at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:77963)
+[electron] [Screen Capture] Capturing display 1: {
+[electron]   bounds: { x: 1095, y: 1080, width: 1920, height: 1080 },
+[electron]   scaleFactor: 1,
+[electron]   captureSize: { width: 1920, height: 1080 }
+[electron] }
+[electron] [Screen Capture] Black screenshot detected for display 1
+[electron] [Screen Capture] WSL2 environment detected
+[electron] [Screen Capture] Using PowerShell capture for WSL2
+[electron] [Screen Capture] PowerShell capture failed: Error: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_174346.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_174346.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_174346.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at ChildProcess.exithandler (node:child_process:422:12)
+[electron]     at ChildProcess.emit (node:events:517:28)
+[electron]     at maybeClose (node:internal/child_process:1098:16)
+[electron]     at Socket.<anonymous> (node:internal/child_process:450:11)
+[electron]     at Socket.emit (node:events:517:28)
+[electron]     at Pipe.<anonymous> (node:net:350:12) {
+[electron]   code: 1,
+[electron]   killed: false,
+[electron]   signal: null,
+[electron]   cmd: `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\\Users\\tommy\\AppData\\Roaming\\GComputer\\assets\\screenshots\\ps_20250820_174346.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \\"SUCCESS\\""`,
+[electron]   stdout: '',
+[electron]   stderr: 'At line:1 char:208\r\n' +
+[electron]     '+ ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...\r\n' +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:236\r\n' +
+[electron]     '+ ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...\r\n' +
+[electron]     '+                                                                 ~\r\n' +
+[electron]     'Missing argument in parameter list.\r\n' +
+[electron]     'At line:1 char:379\r\n' +
+[electron]     "+ ... mputer\\assets\\screenshots\\ps_20250820_174346.png'); .Dispose(); .Disp ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:391\r\n' +
+[electron]     "+ ... s\\screenshots\\ps_20250820_174346.png'); .Dispose(); .Dispose(); Write ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     '    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException\r\n' +
+[electron]     '    + FullyQualifiedErrorId : ExpectedExpression\r\n' +
+[electron]     ' \r\n'
+[electron] }
+[electron] [Screen Capture] Failed to capture display 1: Error: PowerShell capture failed: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_174346.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_174346.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_174346.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at captureWithPowerShell (/home/tommy/Project/GComputer/dist/main/index.cjs:61300:11)
+[electron]     at async captureDisplayById (/home/tommy/Project/GComputer/dist/main/index.cjs:61642:24)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:61722:14
+[electron]     at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:77963)
+[electron] [Screen Capture] WSL2 environment detected
+[electron] [Screen Capture] Using PowerShell capture for WSL2
+[electron] [Screen Capture] PowerShell capture failed: Error: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_174346.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_174346.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_174346.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at ChildProcess.exithandler (node:child_process:422:12)
+[electron]     at ChildProcess.emit (node:events:517:28)
+[electron]     at maybeClose (node:internal/child_process:1098:16)
+[electron]     at Socket.<anonymous> (node:internal/child_process:450:11)
+[electron]     at Socket.emit (node:events:517:28)
+[electron]     at Pipe.<anonymous> (node:net:350:12) {
+[electron]   code: 1,
+[electron]   killed: false,
+[electron]   signal: null,
+[electron]   cmd: `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\\Users\\tommy\\AppData\\Roaming\\GComputer\\assets\\screenshots\\ps_20250820_174346.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \\"SUCCESS\\""`,
+[electron]   stdout: '',
+[electron]   stderr: 'At line:1 char:208\r\n' +
+[electron]     '+ ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...\r\n' +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:236\r\n' +
+[electron]     '+ ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...\r\n' +
+[electron]     '+                                                                 ~\r\n' +
+[electron]     'Missing argument in parameter list.\r\n' +
+[electron]     'At line:1 char:379\r\n' +
+[electron]     "+ ... mputer\\assets\\screenshots\\ps_20250820_174346.png'); .Dispose(); .Disp ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:391\r\n' +
+[electron]     "+ ... s\\screenshots\\ps_20250820_174346.png'); .Dispose(); .Dispose(); Write ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     '    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException\r\n' +
+[electron]     '    + FullyQualifiedErrorId : ExpectedExpression\r\n' +
+[electron]     ' \r\n'
+[electron] }
+[electron] [Screen Capture] PowerShell fallback failed: Error: PowerShell capture failed: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_174346.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_174346.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_174346.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at captureWithPowerShell (/home/tommy/Project/GComputer/dist/main/index.cjs:61300:11)
+[electron]     at async captureDisplayById (/home/tommy/Project/GComputer/dist/main/index.cjs:61669:24)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:61722:14
+[electron]     at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:77963)
+[electron] Display capture error: Error: PowerShell capture failed: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_174346.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_174346.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_174346.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at captureWithPowerShell (/home/tommy/Project/GComputer/dist/main/index.cjs:61300:11)
+[electron]     at async captureDisplayById (/home/tommy/Project/GComputer/dist/main/index.cjs:61642:24)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:61722:14
+[electron]     at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:77963)
+[electron] Error occurred in handler for 'screen:captureDisplay': Error: PowerShell capture failed: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_174346.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_174346.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_174346.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at captureWithPowerShell (/home/tommy/Project/GComputer/dist/main/index.cjs:61300:11)
+[electron]     at async captureDisplayById (/home/tommy/Project/GComputer/dist/main/index.cjs:61642:24)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:61722:14
+[electron]     at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:77963)
+[electron] [main] Preview display set to: 1
+[electron] [main] Display media request received for display: 1
+[electron] [main] Available sources: 3
+[electron] [main] Found requested source: Screen 2
+[electron] [main] Using source: Screen 2 ID: screen:462:0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+So we have some issue in our local npm run dev setup. But it's working in compiled app. 
+
+-------------------
+
+
+[electron] [main] Loaded .env from: /home/tommy/Project/GComputer/.env
+[electron] [main] Mode: dev
+[electron] failed to asynchronously prepare wasm: Error: ENOENT: no such file or directory, open '/home/tommy/Project/GComputer/dist/main/sql-wasm.wasm'
+[electron] Aborted(Error: ENOENT: no such file or directory, open '/home/tommy/Project/GComputer/dist/main/sql-wasm.wasm')
+[electron] [main] Database initialization failed: Error: Error: ENOENT: no such file or directory, open '/home/tommy/Project/GComputer/dist/main/sql-wasm.wasm'
+[electron]     at Module.onAbort (/home/tommy/Project/GComputer/dist/main/index.cjs:402:18)
+[electron]     at Ta (/home/tommy/Project/GComputer/dist/main/index.cjs:945:22)
+[electron]     at Wa (/home/tommy/Project/GComputer/dist/main/index.cjs:968:64)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:2366:21
+[electron] [API Server] Running on http://localhost:3001
+[electron] [API Server] Health check: http://localhost:3001/api/health
+[electron] (node:476651) UnhandledPromiseRejectionWarning: RuntimeError: Aborted(Error: ENOENT: no such file or directory, open '/home/tommy/Project/GComputer/dist/main/sql-wasm.wasm'). Build with -sASSERTIONS for more info.
+[electron]     at Ta (/home/tommy/Project/GComputer/dist/main/index.cjs:949:17)
+[electron]     at Wa (/home/tommy/Project/GComputer/dist/main/index.cjs:968:64)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:2366:21
+[electron] (Use `electron --trace-warnings ...` to show where the warning was created)
+[electron] (node:476651) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 2)
+[electron] [476685:0820/170711.230142:ERROR:viz_main_impl.cc(196)] Exiting GPU process due to errors during initialization
+[electron] [476702:0820/170711.277189:ERROR:command_buffer_proxy_impl.cc(127)] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer.
+[renderer] 5:07:11 PM [vite-plugin-svelte] app/renderer/src/components/admin/TestFormModal.svelte:88:2 Non-interactive element `<form>` should not be assigned mouse or keyboard event listeners
+[renderer] https://svelte.dev/e/a11y_no_noninteractive_element_interactions
+[renderer] 5:07:11 PM [vite-plugin-svelte] app/renderer/src/components/admin/AdminFormModal.svelte:172:2 Non-interactive element `<form>` should not be assigned mouse or keyboard event listeners
+[renderer] https://svelte.dev/e/a11y_no_noninteractive_element_interactions
+[electron] [settings] Returning env mode: dev
+[electron] [settings] Returning env mode: dev
+[electron] [Screen Capture] All thumbnails are black, providing display info only
+[electron] [main] Display media request received
+[electron] [main] Available sources: 3
+[electron] [main] Using source: Screen 1
+[electron] [main] Display media request received
+[electron] [main] Available sources: 3
+[electron] [main] Using source: Screen 1
+[electron] [main] Display media request received
+[electron] [main] Available sources: 3
+[electron] [main] Using source: Screen 1
+[electron] [main] Display media request received
+[electron] [main] Available sources: 3
+[electron] [main] Using source: Screen 1
+[electron] [main] Display media request received
+[electron] [main] Available sources: 3
+[electron] [main] Using source: Screen 1
+[electron] [Screen Capture] Capturing 3 displays
+[electron] [Screen Capture] WSL2 environment detected
+[electron] [Screen Capture] WSL2 detected, using PowerShell for display 33
+[electron] [Screen Capture] Using PowerShell capture for WSL2
+[electron] [Screen Capture] PowerShell capture failed: Error: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_170739.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_170739.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_170739.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at ChildProcess.exithandler (node:child_process:422:12)
+[electron]     at ChildProcess.emit (node:events:517:28)
+[electron]     at maybeClose (node:internal/child_process:1098:16)
+[electron]     at Socket.<anonymous> (node:internal/child_process:450:11)
+[electron]     at Socket.emit (node:events:517:28)
+[electron]     at Pipe.<anonymous> (node:net:350:12) {
+[electron]   code: 1,
+[electron]   killed: false,
+[electron]   signal: null,
+[electron]   cmd: `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\\Users\\tommy\\AppData\\Roaming\\GComputer\\assets\\screenshots\\ps_20250820_170739.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \\"SUCCESS\\""`,
+[electron]   stdout: '',
+[electron]   stderr: 'At line:1 char:208\r\n' +
+[electron]     '+ ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...\r\n' +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:236\r\n' +
+[electron]     '+ ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...\r\n' +
+[electron]     '+                                                                 ~\r\n' +
+[electron]     'Missing argument in parameter list.\r\n' +
+[electron]     'At line:1 char:379\r\n' +
+[electron]     "+ ... mputer\\assets\\screenshots\\ps_20250820_170739.png'); .Dispose(); .Disp ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:391\r\n' +
+[electron]     "+ ... s\\screenshots\\ps_20250820_170739.png'); .Dispose(); .Dispose(); Write ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     '    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException\r\n' +
+[electron]     '    + FullyQualifiedErrorId : ExpectedExpression\r\n' +
+[electron]     ' \r\n'
+[electron] }
+[electron] [Screen Capture] PowerShell capture failed: Error: PowerShell capture failed: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_170739.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_170739.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_170739.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at captureWithPowerShell (/home/tommy/Project/GComputer/dist/main/index.cjs:61300:11)
+[electron]     at async captureDisplayById (/home/tommy/Project/GComputer/dist/main/index.cjs:61595:22)
+[electron]     at async captureAllDisplays (/home/tommy/Project/GComputer/dist/main/index.cjs:61684:26)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:61730:14
+[electron]     at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:77963)
+[electron] [Screen Capture] Capturing display 33: {
+[electron]   bounds: { x: 1080, y: 0, width: 1920, height: 1080 },
+[electron]   scaleFactor: 1,
+[electron]   captureSize: { width: 1920, height: 1080 }
+[electron] }
+[electron] [Screen Capture] Black screenshot detected for display 33
+[electron] [Screen Capture] WSL2 environment detected
+[electron] [Screen Capture] Using PowerShell capture for WSL2
+[electron] [Screen Capture] PowerShell capture failed: Error: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_170740.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_170740.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_170740.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at ChildProcess.exithandler (node:child_process:422:12)
+[electron]     at ChildProcess.emit (node:events:517:28)
+[electron]     at maybeClose (node:internal/child_process:1098:16)
+[electron]     at Socket.<anonymous> (node:internal/child_process:450:11)
+[electron]     at Socket.emit (node:events:517:28)
+[electron]     at Pipe.<anonymous> (node:net:350:12) {
+[electron]   code: 1,
+[electron]   killed: false,
+[electron]   signal: null,
+[electron]   cmd: `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\\Users\\tommy\\AppData\\Roaming\\GComputer\\assets\\screenshots\\ps_20250820_170740.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \\"SUCCESS\\""`,
+[electron]   stdout: '',
+[electron]   stderr: 'At line:1 char:208\r\n' +
+[electron]     '+ ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...\r\n' +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:236\r\n' +
+[electron]     '+ ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...\r\n' +
+[electron]     '+                                                                 ~\r\n' +
+[electron]     'Missing argument in parameter list.\r\n' +
+[electron]     'At line:1 char:379\r\n' +
+[electron]     "+ ... mputer\\assets\\screenshots\\ps_20250820_170740.png'); .Dispose(); .Disp ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:391\r\n' +
+[electron]     "+ ... s\\screenshots\\ps_20250820_170740.png'); .Dispose(); .Dispose(); Write ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     '    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException\r\n' +
+[electron]     '    + FullyQualifiedErrorId : ExpectedExpression\r\n' +
+[electron]     ' \r\n'
+[electron] }
+[electron] [Screen Capture] Failed to capture display 33: Error: PowerShell capture failed: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_170740.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_170740.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_170740.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at captureWithPowerShell (/home/tommy/Project/GComputer/dist/main/index.cjs:61300:11)
+[electron]     at async captureDisplayById (/home/tommy/Project/GComputer/dist/main/index.cjs:61642:24)
+[electron]     at async captureAllDisplays (/home/tommy/Project/GComputer/dist/main/index.cjs:61684:26)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:61730:14
+[electron]     at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:77963)
+[electron] [Screen Capture] WSL2 environment detected
+[electron] [Screen Capture] Using PowerShell capture for WSL2
+[electron] [Screen Capture] PowerShell capture failed: Error: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_170740.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_170740.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_170740.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at ChildProcess.exithandler (node:child_process:422:12)
+[electron]     at ChildProcess.emit (node:events:517:28)
+[electron]     at maybeClose (node:internal/child_process:1098:16)
+[electron]     at Socket.<anonymous> (node:internal/child_process:450:11)
+[electron]     at Socket.emit (node:events:517:28)
+[electron]     at Pipe.<anonymous> (node:net:350:12) {
+[electron]   code: 1,
+[electron]   killed: false,
+[electron]   signal: null,
+[electron]   cmd: `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\\Users\\tommy\\AppData\\Roaming\\GComputer\\assets\\screenshots\\ps_20250820_170740.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \\"SUCCESS\\""`,
+[electron]   stdout: '',
+[electron]   stderr: 'At line:1 char:208\r\n' +
+[electron]     '+ ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...\r\n' +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:236\r\n' +
+[electron]     '+ ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...\r\n' +
+[electron]     '+                                                                 ~\r\n' +
+[electron]     'Missing argument in parameter list.\r\n' +
+[electron]     'At line:1 char:379\r\n' +
+[electron]     "+ ... mputer\\assets\\screenshots\\ps_20250820_170740.png'); .Dispose(); .Disp ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:391\r\n' +
+[electron]     "+ ... s\\screenshots\\ps_20250820_170740.png'); .Dispose(); .Dispose(); Write ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     '    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException\r\n' +
+[electron]     '    + FullyQualifiedErrorId : ExpectedExpression\r\n' +
+[electron]     ' \r\n'
+[electron] }
+[electron] [Screen Capture] PowerShell fallback failed: Error: PowerShell capture failed: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_170740.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_170740.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_170740.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at captureWithPowerShell (/home/tommy/Project/GComputer/dist/main/index.cjs:61300:11)
+[electron]     at async captureDisplayById (/home/tommy/Project/GComputer/dist/main/index.cjs:61669:24)
+[electron]     at async captureAllDisplays (/home/tommy/Project/GComputer/dist/main/index.cjs:61684:26)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:61730:14
+[electron]     at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:77963)
+[electron] Failed to capture display 33: Error: PowerShell capture failed: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_170740.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_170740.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_170740.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at captureWithPowerShell (/home/tommy/Project/GComputer/dist/main/index.cjs:61300:11)
+[electron]     at async captureDisplayById (/home/tommy/Project/GComputer/dist/main/index.cjs:61642:24)
+[electron]     at async captureAllDisplays (/home/tommy/Project/GComputer/dist/main/index.cjs:61684:26)
+[electron]     at async /home/tommy/Project/GComputer/dist/main/index.cjs:61730:14
+[electron]     at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:77963)
+[electron] [Screen Capture] WSL2 environment detected
+[electron] [Screen Capture] WSL2 detected, using PowerShell for display 1
+[electron] [Screen Capture] Using PowerShell capture for WSL2
+[electron] [Screen Capture] PowerShell capture failed: Error: Command failed: powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\Users\tommy\AppData\Roaming\GComputer\assets\screenshots\ps_20250820_170740.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \"SUCCESS\""
+[electron] At line:1 char:208
+[electron] + ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:236
+[electron] + ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...
+[electron] +                                                                 ~
+[electron] Missing argument in parameter list.
+[electron] At line:1 char:379
+[electron] + ... mputer\assets\screenshots\ps_20250820_170740.png'); .Dispose(); .Disp ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron] At line:1 char:391
+[electron] + ... s\screenshots\ps_20250820_170740.png'); .Dispose(); .Dispose(); Write ...
+[electron] +                                                                  ~
+[electron] An expression was expected after '('.
+[electron]     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+[electron]     + FullyQualifiedErrorId : ExpectedExpression
+[electron]
+[electron]
+[electron]     at ChildProcess.exithandler (node:child_process:422:12)
+[electron]     at ChildProcess.emit (node:events:517:28)
+[electron]     at maybeClose (node:internal/child_process:1098:16)
+[electron]     at Socket.<anonymous> (node:internal/child_process:450:11)
+[electron]     at Socket.emit (node:events:517:28)
+[electron]     at Pipe.<anonymous> (node:net:350:12) {
+[electron]   code: 1,
+[electron]   killed: false,
+[electron]   signal: null,
+[electron]   cmd: `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms,System.Drawing; $screens = [Windows.Forms.Screen]::AllScreens; $bounds = $screens[0].Bounds; $bmp = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height; $graphics = [System.Drawing.Graphics]::FromImage($bmp); $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size); $bmp.Save('C:\\Users\\tommy\\AppData\\Roaming\\GComputer\\assets\\screenshots\\ps_20250820_170740.png'); $graphics.Dispose(); $bmp.Dispose(); Write-Output \\"SUCCESS\\""`,
+[electron]   stdout: '',
+[electron]   stderr: 'At line:1 char:208\r\n' +
+[electron]     '+ ... map .Width, .Height;  = [System.Drawing.Graphics]::FromImage(); .Copy ...\r\n' +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:236\r\n' +
+[electron]     '+ ... em.Drawing.Graphics]::FromImage(); .CopyFromScreen(.Location, [System ...\r\n' +
+[electron]     '+                                                                 ~\r\n' +
+[electron]     'Missing argument in parameter list.\r\n' +
+[electron]     'At line:1 char:379\r\n' +
+[electron]     "+ ... mputer\\assets\\screenshots\\ps_20250820_170740.png'); .Dispose(); .Disp ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     'At line:1 char:391\r\n' +
+[electron]     "+ ... s\\screenshots\\ps_20250820_170740.png'); .Dispose(); .Dispose(); Write ...\r\n" +
+[electron]     '+                                                                  ~\r\n' +
+[electron]     "An expression was expected after '('.\r\n" +
+[electron]     '    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException\r\n' +
+[electron]     '    + FullyQualifiedErrorId : ExpectedExpression\r\n' +
+[electron]     ' \r\n'
+[electron] }
+
+--------------------
+
+But GOOD NEWS HERE:
+
+In my compiled version I indeed see my preview, good job. We have issue tho, first I don't want to confirm with start preview, it should go on always directly. Then If I have multiple screen every options shows the preview of my main primary screen. The capture tho is working perfectly for each selected screen except the ALL Display, but for now let just hide this options in css.
+
+
+In my local we also have good news, its that I see now my mouse moving when I open the preview modal. I guess its a limitation of wsl2 or something like this that the preview is black, if it can be fixed go for it, if not leave it like this.
+
+As its working in compiled only make the changes to fix the capture for local env. But still fix the preview for my actual selected screen
+
+--------------------
+
+
+
+
+
+Here is the latest documentation if it helps
+
+------------
+
+desktopCapturer
+Access information about media sources that can be used to capture audio and video from the desktop using the navigator.mediaDevices.getUserMedia API.
+
+Process: Main
+
+The following example shows how to capture video from a desktop window whose title is Electron:
+
+// main.js
+const { app, BrowserWindow, desktopCapturer, session } = require('electron')
+
+app.whenReady().then(() => {
+  const mainWindow = new BrowserWindow()
+
+  session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
+    desktopCapturer.getSources({ types: ['screen'] }).then((sources) => {
+      // Grant access to the first screen found.
+      callback({ video: sources[0], audio: 'loopback' })
+    })
+    // If true, use the system picker if available.
+    // Note: this is currently experimental. If the system picker
+    // is available, it will be used and the media request handler
+    // will not be invoked.
+  }, { useSystemPicker: true })
+
+  mainWindow.loadFile('index.html')
+})
+
+// renderer.js
+const startButton = document.getElementById('startButton')
+const stopButton = document.getElementById('stopButton')
+const video = document.querySelector('video')
+
+startButton.addEventListener('click', () => {
+  navigator.mediaDevices.getDisplayMedia({
+    audio: true,
+    video: {
+      width: 320,
+      height: 240,
+      frameRate: 30
+    }
+  }).then(stream => {
+    video.srcObject = stream
+    video.onloadedmetadata = (e) => video.play()
+  }).catch(e => console.log(e))
+})
+
+stopButton.addEventListener('click', () => {
+  video.pause()
+})
+
+<!-- index.html -->
+<html>
+<meta http-equiv="content-security-policy" content="script-src 'self' 'unsafe-inline'" />
+  <body>
+    <button id="startButton" class="button">Start</button>
+    <button id="stopButton" class="button">Stop</button>
+    <video width="320" height="240" autoplay></video>
+    <script src="renderer.js"></script>
+  </body>
+</html>
+
+See navigator.mediaDevices.getDisplayMedia for more information.
+
+note
+navigator.mediaDevices.getDisplayMedia does not permit the use of deviceId for selection of a source - see specification.
+
+Methods
+The desktopCapturer module has the following methods:
+
+desktopCapturer.getSources(options)
+options Object
+types string[] - An array of strings that lists the types of desktop sources to be captured, available types can be screen and window.
+thumbnailSize Size (optional) - The size that the media source thumbnail should be scaled to. Default is 150 x 150. Set width or height to 0 when you do not need the thumbnails. This will save the processing time required for capturing the content of each window and screen.
+fetchWindowIcons boolean (optional) - Set to true to enable fetching window icons. The default value is false. When false the appIcon property of the sources return null. Same if a source has the type screen.
+Returns Promise<DesktopCapturerSource[]> - Resolves with an array of DesktopCapturerSource objects, each DesktopCapturerSource represents a screen or an individual window that can be captured.
+
+note
+Capturing the screen contents requires user consent on macOS 10.15 Catalina or higher, which can detected by systemPreferences.getMediaAccessStatus.
+
+Caveats
+navigator.mediaDevices.getUserMedia does not work on macOS for audio capture due to a fundamental limitation whereby apps that want to access the system's audio require a signed kernel extension. Chromium, and by extension Electron, does not provide this.
+
+It is possible to circumvent this limitation by capturing system audio with another macOS app like Soundflower and passing it through a virtual audio input device. This virtual device can then be queried with navigator.mediaDevices.getUserMedia.
+
+-----------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+I see multiple issue now.
+When we click the capute button in the modal, the modal claose and the button are not reseting which mean I cannot do multiple capture I need to reload the window which is not ok.
+In my live preview feed, I still only see a black screen. In my compiled app the capture image is ok so for now lets really focus on fixing the live screen preview feature/componant. Really look in depth the web to find based on our setup what is happening.
+Its the same wheter we are in our dev env in "npm run dev" in a wsl or in our .exe compiled app. Black screen. 
+We really need to have the preview mode properly correct, look at documentation, compare with our code, adjust and FIX IT.
+
+
+
+
+ok, we did make some change for the component to be better designed, do we still need all the current file we have like    
+app\renderer\src\views\development\features\FeatureProgrammaticCaptureView.svelte
+app\renderer\src\views\development\features\FeatureCaptureScreenView.svelte
+
+all file under app\renderer\src\components\computer
+
+I dont think we need all of them.
+Our goal is to have simple reusable DRY component.
+To have a view in renderer accessible from our menu item Development > Feature > Capture Screen where we see a listing and a record button.
+
+Our componant should be segmented in two 
+- Live screen preview where we see the current selected display and in it we also have the display selection. This is "just" the ui/ux to be able to select and configure params that will be pass to CaptureScreen with the live preview
+- CaptureScreen componant that handles the real capture of the screen in its own component and can be trigger wherever, whenever with params so that it can yes be trigger by the user in frontend but also by some screen at some point.
+
+We should have only one view for now in developement.
+I really want simple componant.
+
+
+
+
+So, in the compile app, when I launched the .exe the modal is still scrollable left right for the capture screen modal
+
+
+We just did a lot of changes for our capture screen process.
+I want to review all the changes and also make the code more component focus.
+The screen recording and capture component should not be linked to the modal. It needs to happen in a modal in the renderer view but the componants itself should all not be attached to modal at all... We need to review that.
+So we will have these componants:
+- Live screen preview where we see the current selected display and in it we also have the display selection. This is "just" the ui/ux to be able to select and configure params that will be pass to CaptureScreen with the live preview
+- CaptureScreen componant that handles the real capture of the screen in its own component and can be trigger wherever, whenever with params so that it can yes be trigger by the user in frontend but also by some screen at some point.
+
+There is a lot of code that was created for this feature 
+
+
+We are well underway in the setup ou our new component / feature which let the app cature the current display/screen of the user.
+We have some on-going issue I want to fix.
+First is that on the modal where we record the screen there is a live visual feed thats supposed to be printed, right now it is not working, it shows a black screen and not the user computer screen. It could be an issue with our dev environment but when I compile the app and test it, it does the same issue, black screen. For your information if I capture a screenshot, in the compile mode I indeed see the screen capture in the image, its the whole screen as its suppose to be, but in a dev mode, in the electron app the image capture is black.
+Also if I try in my browser the feature is completly disable (which is ok right now). 
+Validate the current code, the current used librarie, the current way we save our image, the current way we display the "live feed of the screen". Think about our needed adjustment to make this works properly, validate with a browsing action to make sure we are using latest available libraries and all for our context. Make a search. Once you have everything, re-adjust your plan and then fix it live display, fix the capture image all black on npm run dev.
+
+Take time to analyse the current cobase, do not make assumption, really dig deep
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+
+
+
+
+
+
+
+So I just compiled my app using  npm run package:win and I still dont see the Development menu and admin menu even tho my .env mode is set to dev.
+
+npm run package:win
+
+> gcomputer@0.0.1 package:win
+> electron-builder --win --publish=never
+
+  • electron-builder  version=26.0.12 os=6.6.87.2-microsoft-standard-WSL2
+  • loaded configuration  file=package.json ("build" field)
+  • @electron/rebuild already used by electron-builder, please consider to remove excess dependency from devDependencies
+
+To ensure your native dependencies are always matched electron version, simply add script `"postinstall": "electron-builder install-app-deps" to your `package.json`
+  • writing effective config  file=release/builder-effective-config.yaml
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=win32 arch=x64 electron=28.3.3 appOutDir=release/win-unpacked
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • default Electron icon is used  reason=application icon is not set
+  • signing with signtool.exe  path=release/win-unpacked/GComputer.exe
+  • building        target=portable file=release/GComputer 0.0.1.exe archs=x64
+  • signing with signtool.exe  path=release/win-unpacked/resources/elevate.exe
+  • signing with signtool.exe  path=release/GComputer 0.0.1.exe
+
+
+
+
+Right now we have a menu and a routing.
+In each we manage the availability of pages based on "npm" mode from like run dev vs npm run package:win for exemple.
+In the release/packaged version right now I dont see no menu item others than Home / Settings.
+Its was ok before but I want to change how this is manage, how now want it based on a configuration file we have locally so that even in a packages I can test some beta feature when the app is "compiled"
+I had in mind to use the file ./.env and the value in it mode. When mode=dev we display the menu items and give route available
+Do the update and make sure to validate this concept in the app overall everywhere.
+
+While at it, make sure to verify that our code is optimal, properly setup and all to be able to scale and add more complex logic in our routing.
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+
+
+
+
+
+
+In the modal where we select the display to capture I want a full width live visual representation of my selection. Then underneath we will have the options in one line.
+
+
+
+
+We are working on the concept of the app being able to "see the screen".
+It is located right now under the page dev>feature>"
+For sure examine yourself the current real code situation but here is what is happening right now in the frontend:
+- I don't see the images in the listing. I see either empty image in the electron app like I see the images section the name, I can click on it but I don't see the image itself its like not found. If I click on the image tho I can see my images so the image itself is om its on the listing itself that its not displayed properly it can be we that do not manage it properly but it can also be the component itself, double check this.
+- The saving of the printscreen is not working anymore
+
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+
+
+
+
+
+
+NEW FEATURE/COMPONENT
+
+
+I want to create a new section inder development>features that will be capture screen.
+
+On this new page we will develop and test the concept of the app being able to "see the screen"
+The first concept of this complete feature I want to test is the capture of the screen.
+What I want is to for the page to have a button "View Screen" which will for now:
+- Trigger a printscreen of the computer screen
+- Save the file in our app. We need a new folder for computer assets we will generate/use in our app. Lets go for the new folder ./assets/printscreen. We will name the file ps_datetime.jpg or png depending on the library best practice you will choose to do that.
+- We will have a gallery of our already create printscreen using GalleryGrid component we have. 
+
+The capture of the screen needs to be managed as a component that we will place in component/computer/capture
+
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+# Note of the current situation:
+We already started this steps but it is not fully working.
+- First we see translation keys instead of values, so verify this, remeber that everywhere else it is working so you can always double check if needed.
+- Second, the capture flow is working as it saves a file but the file right now is simply all black instead of the computer current screen.
+- Third, when we capture a new files the listing of image is misbehaving as we don't see the images we see like missing file icon but if I refresh my app I see proper images
+- Where are my files in my app folder? I can't find the ./assets/computer folder right now
+
+---------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+So we are advancing.
+The modal is ok but right now the content goes over I think we should add box-sizing: content-box; to .gc-modal__dialog
+Next, I can tell you that the number of screen is ok and if I go to the right screen I can see my mouse but there is multiple issue.
+even if I see my mouse 
+I want to test this in a compile way so for now we will do this, I've create a file ./.env which contain this right now
+"
+mode=dev
+"
+
+Not sure if this is the classic way of doing this, in symfony it is, if needed adapt for our project context. 
+When the mode on my .env config file is dev we are showing the dev menu item else we do not.
+
+
+
+
+
+I still see empty image in my listing.
+Lets do this now:
+- Replace "View Screen" label by "Record Screen"
+- When we click the "Record Screen" button a modal opens and in that modal we see
+  - The current live view of the screen
+  - If we record that we have multiple screen we offers like a way of selecting which screen to capture/view.
+  - A Capture button that will take the screenshot
+- Right now in this section / page as it is under development menu item we will save the image in the app folder itself for this page but in the component of prinscreening it, really the component that management this process only and not the page the path is configurable.
+
+Revalidate every file right now to make sure you are up to date, do not make any assumptions.
+
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+
+
+NEW FEATURE/COMPONENT
+
+
+I want to create a new section inder development>features that will be capture screen.
+
+On this new page we will develop and test the concept of the app being able to "see the screen"
+The first concept of this complete feature I want to test is the capture of the screen.
+What I want is to for the page to have a button "View Screen" which will for now:
+- Trigger a printscreen of the computer screen
+- Save the file in our app. We need a new folder for computer assets we will generate/use in our app. Lets go for the new folder ./assets/printscreen. We will name the file ps_datetime.jpg or png depending on the library best practice you will choose to do that.
+- We will have a gallery of our already create printscreen using GalleryGrid component we have. 
+
+The capture of the screen needs to be managed as a component that we will place in component/computer/capture
+
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+# Note of the current situation:
+We already started this steps but it is not fully working.
+- First we see translation keys instead of values, so verify this, remeber that everywhere else it is working so you can always double check if needed.
+- Second, the capture flow is working as it saves a file but the file right now is simply all black instead of the computer current screen.
+- Third, when we capture a new files the listing of image is misbehaving as we don't see the images we see like missing file icon but if I refresh my app I see proper images
+- Where are my files in my app folder? I can't find the ./assets/computer folder right now
+
+---------------------
+
+
+
+
+
+
 TODO
 
 

@@ -82,11 +82,13 @@ export default defineConfig({
       // Include specific directories for coverage - only areas with tests
       include: [
         'app/main/settings.ts',
+        'app/main/screen-capture.ts',
         'app/main/db/handlers/**/*.ts',
         'app/main/db/services/**/*.ts', 
         'app/renderer/src/components/**/*.svelte',
         'app/renderer/src/ts/features/admin/**/*.ts',
         'app/renderer/src/ts/features/ai-communication/**/*.ts',
+        'app/renderer/src/ts/features/computer-capture/**/*.ts',
         'app/renderer/src/ts/features/router/**/*.ts',
         'app/renderer/src/ts/i18n/**/*.ts',
       ],

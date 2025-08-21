@@ -1,68 +1,33 @@
-import { app, BrowserWindow } from 'electron';
-import path from 'node:path';
-import { registerSettingsIpc, getAllSettings } from './settings';
-import { registerFsIpc } from './fs';
-import { registerDbIpc, runDbMigrations, seedDefaultData } from './db';
-import { setApplicationMenuForLocale } from './menu';
-import { startApiServer } from './api-server';
+/**
+ * Main Process Entry Point
+ * Orchestrates application initialization and lifecycle
+ */
 
-let mainWindow: BrowserWindow | null = null;
+import { app } from 'electron';
+import { loadEnvironment } from './environment';
+import { createMainWindow, setupWindowHandlers } from './window';
+import { registerAllIpcHandlers } from './ipc';
+import { initializeApplication } from './initialization';
 
-async function createMainWindow(): Promise<void> {
-  mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    webPreferences: {
-      preload: path.join(__dirname, '../preload/index.cjs'),
-      contextIsolation: true,
-      nodeIntegration: false,
-    },
-  });
+// Load environment configuration
+loadEnvironment();
 
-  const devUrl = process.env.VITE_DEV_SERVER_URL;
+// Set app name for proper userData directory
+app.setName('GComputer');
 
-  if (devUrl) {
-    await mainWindow.loadURL(devUrl);
-  } else {
-    await mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
-  }
-}
-
+/**
+ * Application ready handler
+ */
 app.whenReady().then(async () => {
-  registerSettingsIpc();
-  registerFsIpc();
-  registerDbIpc();
+  // Register all IPC handlers
+  registerAllIpcHandlers();
   
-  // Ensure DB is migrated and seeded before use (dev path)
-  try { 
-    await runDbMigrations(); 
-    await seedDefaultData();
-  } catch (error) {
-    console.error('[main] Database initialization failed:', error);
-  }
+  // Initialize application features
+  await initializeApplication();
   
-  // Start API server for browser access
-  try {
-    await startApiServer();
-  } catch (error) {
-    console.error('[main] API server failed to start:', error);
-  }
-  
-  // Initialize menu based on saved locale
-  getAllSettings().then((s) => setApplicationMenuForLocale(s.locale)).catch(() => setApplicationMenuForLocale('en'));
-  createMainWindow();
+  // Create main window
+  await createMainWindow();
 });
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', async () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    await createMainWindow();
-  }
-});
-
-
+// Setup window lifecycle handlers
+setupWindowHandlers();
