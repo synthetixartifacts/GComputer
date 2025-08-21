@@ -127,6 +127,46 @@ contextBridge.exposeInMainWorld('gc', {
         },
       },
     },
+    discussions: {
+      list(filters?: { isFavorite?: boolean; agentId?: number; search?: string }) {
+        return ipcRenderer.invoke('db:discussions:list', filters);
+      },
+      create(payload: { title?: string; isFavorite?: boolean; agentId: number }) {
+        return ipcRenderer.invoke('db:discussions:create', payload);
+      },
+      update(payload: { id: number; title?: string; isFavorite?: boolean; agentId?: number }) {
+        return ipcRenderer.invoke('db:discussions:update', payload);
+      },
+      delete(id: number) {
+        return ipcRenderer.invoke('db:discussions:delete', id);
+      },
+      getWithMessages(discussionId: number) {
+        return ipcRenderer.invoke('db:discussions:getWithMessages', discussionId);
+      },
+      toggleFavorite(discussionId: number) {
+        return ipcRenderer.invoke('db:discussions:toggleFavorite', discussionId);
+      },
+    },
+    messages: {
+      list(filters?: { discussionId?: number; who?: 'user' | 'agent' }) {
+        return ipcRenderer.invoke('db:messages:list', filters);
+      },
+      create(payload: { who: 'user' | 'agent'; content: string; discussionId: number }) {
+        return ipcRenderer.invoke('db:messages:create', payload);
+      },
+      getByDiscussion(discussionId: number) {
+        return ipcRenderer.invoke('db:messages:getByDiscussion', discussionId);
+      },
+      getLastMessages(discussionId: number, limit?: number) {
+        return ipcRenderer.invoke('db:messages:getLastMessages', discussionId, limit);
+      },
+      countByDiscussion(discussionId: number) {
+        return ipcRenderer.invoke('db:messages:countByDiscussion', discussionId);
+      },
+      deleteByDiscussion(discussionId: number) {
+        return ipcRenderer.invoke('db:messages:deleteByDiscussion', discussionId);
+      },
+    },
   },
 });
 

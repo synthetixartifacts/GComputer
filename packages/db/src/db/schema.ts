@@ -51,3 +51,21 @@ export const aiAgents = sqliteTable('ai_agents', {
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
 });
+
+// Discussion Management Tables
+export const discussions = sqliteTable('discussions', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  title: text('title').notNull().default('New Discussion'),
+  isFavorite: integer('is_favorite', { mode: 'boolean' }).notNull().default(false),
+  agentId: integer('agent_id').notNull().references(() => aiAgents.id),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
+});
+
+export const messages = sqliteTable('messages', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  who: text('who').notNull(), // 'user' or 'agent'
+  content: text('content').notNull(),
+  discussionId: integer('discussion_id').notNull().references(() => discussions.id, { onDelete: 'cascade' }),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+});

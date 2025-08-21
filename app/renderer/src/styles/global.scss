@@ -13,6 +13,10 @@
 @use './components/admin-crud';
 @use './components/admin-fields';
 @use './components/screen-capture';
+@use './components/discussion-list';
+@use './components/agent-card';
+@use './components/discussion-header';
+@use './components/discussion-chat';
 @use './views/capture-screen';
 
 @tailwind base;

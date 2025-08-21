@@ -29,6 +29,9 @@
   import AdminModelView from '@views-admin/entity/llm/AdminModelView.svelte';
   import AdminAgentView from '@views-admin/entity/llm/AdminAgentView.svelte';
   import TestAICommunicationView from '@views-development/ai/TestAICommunicationView.svelte';
+  import DiscussionListView from '@views-discussion/DiscussionListView.svelte';
+  import AgentSelectionView from '@views-discussion/AgentSelectionView.svelte';
+  import DiscussionChatView from '@views-discussion/DiscussionChatView.svelte';
   import { sidebarOpen, modalOpen } from '@features/ui/store';
   import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
@@ -128,7 +131,6 @@
     <FeatureSavedLocalFolderView />
   {:else if canShowRoute(route) && route === 'development.features.capture-screen'}
     <FeatureCaptureScreenView />
-  
   {:else if canShowRoute(route) && route === 'development.db.test-table'}
     <TestDbTableView />
   {:else if canShowRoute(route) && route === 'admin.entity.provider'}
@@ -139,6 +141,12 @@
     <AdminAgentView />
   {:else if canShowRoute(route) && route === 'development.ai.communication'}
     <TestAICommunicationView />
+  {:else if route === 'discussion.list'}
+    <DiscussionListView />
+  {:else if route === 'discussion.new'}
+    <AgentSelectionView />
+  {:else if route === 'discussion.chat'}
+    <DiscussionChatView />
   {/if}
 </main>
 

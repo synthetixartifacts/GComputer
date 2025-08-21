@@ -1,0 +1,143 @@
+// Agent Card Component Styles
+.agent-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  background: var(--color-bg-secondary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: left;
+
+  &:hover:not(.disabled) {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--color-shadow);
+  }
+
+  &.selected {
+    border-color: var(--color-primary);
+    background: var(--color-primary-alpha);
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+
+  .agent-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+
+    .agent-name {
+      margin: 0;
+      font-size: 1.125rem;
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+
+    .system-badge,
+    .disabled-badge {
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .system-badge {
+      background: var(--color-info-alpha);
+      color: var(--color-info);
+    }
+
+    .disabled-badge {
+      background: var(--color-danger-alpha);
+      color: var(--color-danger);
+    }
+  }
+
+  .agent-card-body {
+    .agent-description {
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-sm);
+      line-height: 1.5;
+      font-size: 0.875rem;
+    }
+
+    .agent-meta {
+      display: flex;
+      gap: var(--spacing-md);
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+
+      .agent-version {
+        &::before {
+          content: "Version ";
+        }
+      }
+
+      .agent-code {
+        font-family: var(--font-mono);
+        background: var(--color-bg-tertiary);
+        padding: 2px 6px;
+        border-radius: var(--radius-xs);
+      }
+    }
+  }
+}
+
+// Agent Selection View Styles
+.agent-selection-view {
+  .view-header {
+    margin-bottom: var(--spacing-lg);
+
+    h1 {
+      color: var(--color-text-primary);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .view-description {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  .view-content {
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--spacing-md);
+    }
+
+    .loading-container,
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-xl);
+      text-align: center;
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--color-border);
+        border-top-color: var(--color-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      p {
+        margin: var(--spacing-md) 0;
+        color: var(--color-text-secondary);
+      }
+    }
+  }
+}

@@ -1,5 +1,144 @@
 
 
+In our provider entity we have a Secret Key field.
+I dont want to place it in my seed, as these are private information and dont want it in git for security reason.
+To be able to have a fallback on local we will use the .env file and look for secretKey concat to "_key" ex: openai_key
+
+We already have a logic to look at value from .env for the mode. Have a look at what we did and if it is not already a componant make it one, create a config manager / function component where we will group all of system config get/set from .env but also other possible files. 
+I think we 
+
+
+
+------------------
+
+
+# NEW FEATURE/COMPONENT
+
+## Way to plan and execute
+This job is a really really heavy one so your plan must be in consequence. 
+We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something like an MVP.
+
+We need to have a lot of new component and code develop but remind yourself that we want thing to be componant driven and DRY at all time. No scss in files, no overlap of logic in component, each part of our logic will either reuse an existing component or create new independant ones.
+
+We already have a lot of existing component so make sure to list them before you start coding so that you are not recreating something that exist. 
+
+Don't forget about translations.
+
+When you're confident that what you did is at a production ready state, you will verify the key point through unit testing. Once you are at this steps you will need to rething about everything you did and create a new clear and detailed plan just for that. Make it clear in your initial plan that you will have to rethink and replan at this steps because a lot of things will probably differ from your initial plan as you go on and discover things.
+
+We have a lot of up to date documentation you can check at any time to verify things. 
+If you need specific libraries or third-party libraries or you are hitting a wall, do not forget that you can browse and search the web for up to date answer.
+Always ground yourself in the current project and do not overreach.
+
+
+## New task goal/context
+
+
+What I want is to create to now focus on the concept of discussion that the user will have with agents/ai.
+Discussion will be saved and acessible at all time by the user to view and continue the thread.
+A discussion will be a new entity that needs to be save in our dbs.
+A disucssion will have
+- id
+- title (Default = "New Discussion")
+- isFavorite
+- agent (a discussion is linked to an agent with whom the user started the discussion with)
+- messages (one to many message relation - maybe not needed in this table)
+- created_at
+- updated_at
+
+A discussion will be composed of messages, we need to create this entity too.
+A message will have
+- id
+- who ("user" or "agent" to be able to know who said this message)
+- content (content of the message, can be really big obviously)
+- discussion_id (many to one)
+- create_at
+
+So we need to create the table but also the entity manage/service/whatever is needed to manage and access these at any point, anywhere we want.
+
+Once we have these created we these entity we need a way for the user to go on a have discussions with different agent.
+We will create multiple new view/menu
+
+We will add a new menu item which will be :
+- Discussions
+  - Create New
+  - See All 
+
+### Create new - Page
+In this page we will first see all our available agent. The user decide which agent he want to talk to and this open the chat bot to which he can talk and iterate.
+
+### See All
+In this page we see a listing / table of all our discussion we had. We see the favorite icon/toggle, title, the agent name, the updated_at date.
+If the user click on it we then go on to the chat page.
+
+So we need to have three main pages which is "List of discussion", "Agent Selection", "Chat" page where the user can chat with the agent.
+Create and coming back to a new discussion should be the same page for dry reason and better management.
+
+### Favorite
+We will then manage the feature of being able to favorite a discussion. We can only favorite a discussion with at leat one message.
+
+### Note
+- We save a message once it's DONE. For the user is on submit, but for the agent we need to wait for the stream (if stream) to finish completly.
+- If the configuration of the agent (a json you can look at app\main\db\seeding.ts) contains the value useMemory = true, we are sending back all the messages in order from the user and the agent itself back and then the new user message so that the llm can have a memory of the conversation
+Like:
+
+<conversation_history>
+## User message
+Hello there
+
+## AI Agent / YOU
+Hi, how are you doing?
+</conversation_history>
+
+<new_user_message>
+I'm good, I would like to know about the sky, why is it blue?
+</new_user_message>
+
+## Big Task Alert
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+Do not hesitate in the middle of the execution based on your finding to challenge and revisit the inital plan and redo a planning phase, it is important that your plan go along you coding execution and your discovery.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 As our capture feature is its own component you will do the testing yourself be calling it through its own testing api service. And debug until you are confident there is no error anymore and the file is properly capture and saved. I am not sure but at some point we use a local file like the folder screenshots to save our printscreen and being able to view it within our local wsl app and not appdata which is outside of our folder its in the windows env not our linux. 
 So we could maybe test/have a rule that when our .env is in mode=dev we do this the same as for the menu. I'm really not sure about this but it could do the trick. 

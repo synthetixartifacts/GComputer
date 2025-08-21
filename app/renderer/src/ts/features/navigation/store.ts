@@ -12,6 +12,14 @@ export const menuItems = derived(configMode, ($configMode) => {
   const baseItems: MenuItem[] = [
     { label: 'app.menu.home', i18nKey: 'app.menu.home', route: 'home' },
     {
+      label: 'app.menu.discussions.label',
+      i18nKey: 'app.menu.discussions.label',
+      children: [
+        { label: 'app.menu.discussions.new', i18nKey: 'app.menu.discussions.new', route: 'discussion.new' },
+        { label: 'app.menu.discussions.list', i18nKey: 'app.menu.discussions.list', route: 'discussion.list' },
+      ],
+    },
+    {
       label: 'app.menu.settings',
       i18nKey: 'app.menu.settings',
       children: [

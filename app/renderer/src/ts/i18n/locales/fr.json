@@ -1,5 +1,10 @@
 {
   "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "retry": "Réessayer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
     "actions": {
       "create": "Créer",
       "edit": "Modifier",
@@ -49,6 +54,11 @@
       "settings": "Paramètres",
       "config": "Configuration",
       "about": "À propos",
+      "discussions": {
+        "label": "Discussions",
+        "new": "Créer Nouveau",
+        "list": "Voir Tout"
+      },
       "test": "Développement",
       "styleguide": {
         "label": "Guide de style",
@@ -439,8 +449,62 @@
         "language": "Langue"
       }
     }
-  }
-  ,
+  },
+  "discussion": {
+    "newWith": "Discussion avec",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer la discussion '{title}'?",
+    "deleteError": "Échec de la suppression de la discussion",
+    "favoriteError": "Échec du basculement des favoris",
+    "favoriteRequiresMessages": "Impossible de mettre en favori une discussion sans messages",
+    "creatingDiscussion": "Création de la discussion...",
+    "table": {
+      "title": "Titre",
+      "agent": "Agent",
+      "updated": "Mis à jour",
+      "actions": "Actions"
+    },
+    "actions": {
+      "continue": "Continuer",
+      "delete": "Supprimer"
+    },
+    "list": {
+      "title": "Vos Discussions",
+      "search": "Rechercher des discussions...",
+      "newDiscussion": "Nouvelle Discussion",
+      "empty": "Aucune discussion pour le moment. Commencez une nouvelle conversation!"
+    },
+    "listView": {
+      "title": "Toutes les Discussions",
+      "description": "Voir et gérer vos conversations IA"
+    },
+    "agent": {
+      "system": "Système",
+      "disabled": "Désactivé",
+      "noDescription": "Aucune description disponible"
+    },
+    "agentSelection": {
+      "title": "Sélectionner un Agent",
+      "description": "Choisissez un agent IA pour commencer une nouvelle discussion",
+      "noAgents": "Aucun agent disponible. Veuillez d'abord configurer les agents.",
+      "configureAgents": "Configurer les Agents"
+    },
+    "header": {
+      "favorite": "Ajouter aux favoris",
+      "unfavorite": "Retirer des favoris",
+      "agent": "Agent",
+      "messages": "Messages",
+      "updated": "Mis à jour"
+    },
+    "chat": {
+      "loading": "Chargement de la discussion...",
+      "noDiscussionId": "Aucun ID de discussion fourni",
+      "notFound": "Discussion non trouvée",
+      "backToList": "Retour à la Liste",
+      "noDiscussion": "Aucune discussion sélectionnée",
+      "error": "Erreur",
+      "aiThinking": "L'IA réfléchit..."
+    }
+  },
   "components": {
     "audioRecorder": {
       "start": "Enregistrer",

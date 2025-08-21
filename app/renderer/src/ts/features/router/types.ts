@@ -21,7 +21,10 @@ export type Route =
   | 'admin.entity.provider'
   | 'admin.entity.model'
   | 'admin.entity.agent'
-  | 'development.ai.communication';
+  | 'development.ai.communication'
+  | 'discussion.list'
+  | 'discussion.new'
+  | 'discussion.chat';
 
 export const ALL_ROUTES: Route[] = [
   'home',
@@ -47,6 +50,9 @@ export const ALL_ROUTES: Route[] = [
   'admin.entity.model',
   'admin.entity.agent',
   'development.ai.communication',
+  'discussion.list',
+  'discussion.new',
+  'discussion.chat',
 ];
 
 export const ROUTES = ALL_ROUTES;
