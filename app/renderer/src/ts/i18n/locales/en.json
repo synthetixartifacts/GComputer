@@ -295,6 +295,10 @@
           "user": "User",
           "assistant": "Assistant"
         },
+        "messages": {
+          "Copy": "Copy",
+          "Copied": "Copied!"
+        },
         "composer": {
           "inputLabel": "Message input",
           "placeholder": "Type a message...",

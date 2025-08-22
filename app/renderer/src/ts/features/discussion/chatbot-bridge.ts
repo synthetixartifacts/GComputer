@@ -171,9 +171,10 @@ export class DiscussionChatbotBridge {
           // Add to local discussion messages
           this.discussion.messages.push(agentMessage);
 
-          // Update the message ID to match the saved message
-          // This ensures consistency between UI and database
-          chatbotStore.updateMessage(threadId, streamingMessageId, fullContent);
+          // Simply update the existing streaming message's ID to the final database ID
+          // This keeps the same message object and prevents duplicates
+          const finalMessageId = `msg-${agentMessage.id}`;
+          chatbotStore.updateMessageId(threadId, streamingMessageId, finalMessageId);
 
           // Notify callback if provided
           if (this.options.onMessageSaved) {

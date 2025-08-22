@@ -1,5 +1,53 @@
 
 
+
+# Situation / current situation
+
+Still the two time printed ai message like this
+
+<div class="w-full flex justify-start"><div class="flex items-end gap-2 flex-row" aria-label="Assistant"><div class="w-8 h-8 rounded-full shrink-0 flex items-center justify-center bg-gray-300 text-xs text-gray-700 dark:bg-gray-600 dark:text-gray-100" aria-hidden="true">A<!----></div><!----> <div class="max-w-[75%] md:max-w-[66%] lg:max-w-[60%]"><div class="px-3 py-2 bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl rounded-br-2xl"><p class="whitespace-pre-wrap leading-relaxed">I'm Claude! I'm an AI assistant created by Anthropic. Nice to meet you! 
+
+Is there anything specific you'd like to know about me, or anything I can help you with today?</p></div> <div class="mt-1 text-[11px] opacity-60 text-left">11:48 PM</div></div></div></div>
+
+
+and
+
+
+<div class="w-full flex justify-start"><div class="flex items-end gap-2 flex-row" aria-label="Assistant"><!----> <div class="max-w-[75%] md:max-w-[66%] lg:max-w-[60%]"><div class="px-3 py-2 bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100 rounded-tl-md rounded-bl-2xl rounded-tr-2xl rounded-br-2xl"><p class="whitespace-pre-wrap leading-relaxed">I'm Claude! I'm an AI assistant created by Anthropic. Nice to meet you! 
+
+Is there anything specific you'd like to know about me, or anything I can help you with today?</p></div> <div class="mt-1 text-[11px] opacity-60 text-left">11:48 PM</div></div></div></div>
+
+
+Also -
+
+We need to enable the scroll logic on message / response as well as the copy logic in our discussion. We talk about at some point that discussion compoenent / chatbot ux/ui will evolve and its one of this time.
+
+I want to implement in our context, so adapt things for our style/structrue the feature scroll and copy message concept per bubble from 
+- .ahhub\assets\js\ai\chatbot\scrollButtons.js scroll to message on answer and button 
+- .ahhub\assets\js\ai\chatbot\chatZone.js copy button per bubble
+
+Implement these in our project inside our component chatbox discussion. Revisit our current logic if needed to be able to scale with more and more feature like this.
+
+Keep it clean and component focused.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Ok now the call are perfect but when I click submit we have multiple issue:
 - My own message is not printed
 - I see "AI is thinking" 

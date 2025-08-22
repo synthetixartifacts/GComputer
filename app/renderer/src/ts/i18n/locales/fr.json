@@ -313,6 +313,10 @@
           "user": "Utilisateur",
           "assistant": "Assistant"
         },
+        "messages": {
+          "Copy": "Copier",
+          "Copied": "Copié!"
+        },
         "composer": {
           "inputLabel": "Zone de saisie",
           "placeholder": "Écrire un message...",
