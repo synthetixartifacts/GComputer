@@ -1,4 +1,5 @@
-# Ignore local DB created by package-level test scripts
-data/
+# Ignore database files created by package-level test scripts
+data/*.db
+data/*.sqlite
 
 
