@@ -11,6 +11,7 @@
   import { chatbotStore } from '@features/chatbot/store';
   import { generateId, nowIso } from '@features/chatbot/service';
   import type { ChatMessage } from '@features/chatbot/types';
+  import { prepareAIMessages, DiscussionError } from '@features/discussion/utils';
   import { t } from '@ts/i18n';
   
   export let discussion: DiscussionWithMessages | null = null;
@@ -120,7 +121,7 @@
       });
       
       // Prepare AI messages BEFORE adding to state (to avoid including current message in history)
-      const aiMessages = prepareAIMessages(message, state.useMemory);
+      const aiMessages = prepareAIMessages(message, messages, state.useMemory);
       
       // Add to state immediately for UI feedback
       await discussionStateManager.addMessage(userMessage);
@@ -174,49 +175,11 @@
       }
     } catch (err) {
       console.error('Failed to send message:', err);
-      error = err instanceof Error ? err.message : 'Failed to send message';
+      const discussionError = DiscussionError.from(err);
+      error = discussionError.message;
     } finally {
       discussionStateManager.setStreaming(false);
     }
-  }
-  
-  function prepareAIMessages(currentMessage: string, useMemory: boolean): AIMessage[] {
-    const aiMessages: AIMessage[] = [];
-    
-    // Only include conversation history if memory is enabled AND we have previous messages
-    // Filter to only user/agent messages (no system messages)
-    const previousMessages = messages.filter(msg => msg.who === 'user' || msg.who === 'agent');
-    
-    if (useMemory && previousMessages.length > 0) {
-      // Build conversation history
-      const historyLines: string[] = [];
-      historyLines.push('<conversation_history>');
-      
-      previousMessages.forEach(msg => {
-        const role = msg.who === 'user' ? '## User' : '## AI Agent';
-        historyLines.push(role);
-        historyLines.push(msg.content);
-        historyLines.push('');
-      });
-      
-      historyLines.push('</conversation_history>');
-      historyLines.push('');
-      historyLines.push('# New User message to answer to');
-      historyLines.push(currentMessage);
-      
-      aiMessages.push({
-        role: 'user',
-        content: historyLines.join('\n')
-      });
-    } else {
-      // No history or memory disabled - just send the current message
-      aiMessages.push({
-        role: 'user',
-        content: currentMessage
-      });
-    }
-    
-    return aiMessages;
   }
   
   function handleStop() {

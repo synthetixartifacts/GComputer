@@ -2,6 +2,7 @@ import { aiCommunicationService } from '@features/ai-communication/service';
 import { chatbotStore } from '@features/chatbot/store';
 import { generateId, nowIso } from '@features/chatbot/service';
 import { discussionService } from './service';
+import { prepareAIMessages, DiscussionError } from './utils';
 import type { ChatMessage } from '@features/chatbot/types';
 import type { AIMessage, StreamEvent } from '@features/ai-communication/types';
 import type { DiscussionWithMessages, Message } from './types';
@@ -112,62 +113,16 @@ export class DiscussionChatbotBridge {
       }
 
       // Prepare AI messages with memory if needed
-      const aiMessages = this.prepareAIMessages(content, useMemory);
+      const aiMessages = prepareAIMessages(content, this.discussion?.messages || [], useMemory);
 
       // Handle streaming response
       await this.handleStreamingResponse(threadId, aiMessages);
       
     } catch (error) {
-      this.handleError(error instanceof Error ? error : new Error('Unknown error'));
+      this.handleError(DiscussionError.from(error));
     } finally {
       this.isStreaming = false;
     }
-  }
-
-  /**
-   * Prepare AI messages with conversation history if memory is enabled
-   */
-  private prepareAIMessages(currentMessage: string, useMemory: boolean): AIMessage[] {
-    const messages: AIMessage[] = [];
-
-    if (useMemory && this.discussion && this.discussion.messages.length > 1) {
-      // Build conversation history (excluding the just-added user message)
-      const historyMessages = this.discussion.messages.slice(0, -1);
-      
-      if (historyMessages.length > 0) {
-        const historyLines: string[] = [];
-        historyLines.push('<conversation_history>');
-        
-        historyMessages.forEach(msg => {
-          const role = msg.who === 'user' ? '## User' : '## AI Agent';
-          historyLines.push(role);
-          historyLines.push(msg.content);
-          historyLines.push('');
-        });
-        
-        historyLines.push('</conversation_history>');
-        historyLines.push('');
-        historyLines.push('# New User message to answer to');
-        historyLines.push(currentMessage);
-        
-        messages.push({
-          role: 'user',
-          content: historyLines.join('\n')
-        });
-      } else {
-        messages.push({
-          role: 'user',
-          content: currentMessage
-        });
-      }
-    } else {
-      messages.push({
-        role: 'user',
-        content: currentMessage
-      });
-    }
-
-    return messages;
   }
 
   /**
