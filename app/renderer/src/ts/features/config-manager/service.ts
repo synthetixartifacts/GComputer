@@ -3,7 +3,7 @@
  * Service layer for configuration management in renderer
  */
 
-import { configManagerStore } from './store';
+import { configManagerStore, get } from './store';
 import type { PublicConfig } from './types';
 import { isElectronEnvironment } from '@features/environment';
 
@@ -70,13 +70,8 @@ class ConfigManagerService {
    * Get environment variable
    */
   async getEnv(key: string, defaultValue?: string): Promise<string | undefined> {
-    // Check cache first
-    const state = await new Promise<ReturnType<typeof configManagerStore.subscribe>>(resolve => {
-      const unsubscribe = configManagerStore.subscribe(state => {
-        unsubscribe();
-        resolve(state);
-      });
-    });
+    // Check cache first using synchronous get
+    const state = get(configManagerStore);
 
     if (state.envCache.has(key)) {
       return state.envCache.get(key);
@@ -104,16 +99,17 @@ class ConfigManagerService {
    * Check if a provider has a secret key configured
    */
   async hasProviderSecret(providerCode: string): Promise<boolean> {
-    // Check cache first
-    const state = await new Promise<ReturnType<typeof configManagerStore.subscribe>>(resolve => {
-      const unsubscribe = configManagerStore.subscribe(state => {
-        unsubscribe();
-        resolve(state);
-      });
-    });
+    // Check cache first using synchronous get
+    const state = get(configManagerStore);
 
     if (state.providerSecrets.has(providerCode)) {
       return state.providerSecrets.get(providerCode) || false;
+    }
+
+    // Validate provider code to prevent injection
+    const validProviderPattern = /^[a-zA-Z0-9_-]+$/;
+    if (!providerCode || !validProviderPattern.test(providerCode)) {
+      return false;
     }
 
     // Fetch from main process

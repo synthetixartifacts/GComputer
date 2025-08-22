@@ -6,6 +6,7 @@
 import { config } from 'dotenv';
 import path from 'node:path';
 import fs from 'node:fs';
+import { app } from 'electron';
 
 interface ConfigOptions {
   envPath?: string;
@@ -17,6 +18,14 @@ interface ConfigValues {
   secrets: Record<string, string>;
 }
 
+/**
+ * Public configuration interface for non-sensitive values
+ */
+export interface PublicConfig {
+  mode: string;
+  [key: string]: string | number | boolean;
+}
+
 class ConfigManager {
   private static instance: ConfigManager;
   private values: ConfigValues = {
@@ -24,6 +33,7 @@ class ConfigManager {
     secrets: {}
   };
   private loaded = false;
+  private configPathCache: Map<string, string | null> = new Map();
 
   private constructor() {}
 
@@ -77,14 +87,19 @@ class ConfigManager {
   }
 
   /**
-   * Find configuration file in multiple paths
+   * Find configuration file in multiple paths with caching
    */
   private findConfigFile(filename: string, isDev: boolean): string | null {
+    // Check cache first
+    const cacheKey = `${filename}_${isDev ? 'dev' : 'prod'}`;
+    if (this.configPathCache.has(cacheKey)) {
+      return this.configPathCache.get(cacheKey) || null;
+    }
+
     // Try to use app.getAppPath() if electron is available
     let appPath: string | null = null;
     try {
-      const { app } = require('electron');
-      appPath = app.getAppPath();
+      appPath = app?.getAppPath?.() || null;
     } catch {
       // Electron not available (e.g., in tests)
     }
@@ -101,9 +116,14 @@ class ConfigManager {
 
     for (const filePath of paths) {
       if (fs.existsSync(filePath)) {
+        // Cache the successful path
+        this.configPathCache.set(cacheKey, filePath);
         return filePath;
       }
     }
+    
+    // Cache the failure to avoid repeated searches
+    this.configPathCache.set(cacheKey, null);
     return null;
   }
 
@@ -138,9 +158,9 @@ class ConfigManager {
   /**
    * Get all non-sensitive configuration (safe to expose to renderer)
    */
-  getPublicConfig(): Record<string, any> {
+  getPublicConfig(): PublicConfig {
     return {
-      mode: this.getEnv('mode', 'production'),
+      mode: this.getEnv('mode', 'production') || 'production',
       // Add other non-sensitive config here as needed
     };
   }
@@ -170,6 +190,6 @@ export function hasEnv(key: string): boolean {
   return configManager.hasEnv(key);
 }
 
-export function getPublicConfig(): Record<string, any> {
+export function getPublicConfig(): PublicConfig {
   return configManager.getPublicConfig();
 }

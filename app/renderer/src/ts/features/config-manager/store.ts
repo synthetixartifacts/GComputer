@@ -3,7 +3,7 @@
  * Svelte store for configuration management state
  */
 
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import type { ConfigManagerState } from './types';
 
 const initialState: ConfigManagerState = {
@@ -15,3 +15,6 @@ const initialState: ConfigManagerState = {
 };
 
 export const configManagerStore = writable<ConfigManagerState>(initialState);
+
+// Export get function for synchronous access
+export { get };
