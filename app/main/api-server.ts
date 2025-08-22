@@ -147,6 +147,81 @@ app.delete('/api/admin/agents/:id', asyncHandler(async (req: any, res: any) => {
   res.json(result);
 }));
 
+// Discussion endpoints
+app.get('/api/discussions', asyncHandler(async (req: any, res: any) => {
+  const { discussionService } = await import('./db/services/discussion-service');
+  const result = await discussionService.list(req.query);
+  res.json(result);
+}));
+
+app.post('/api/discussions', asyncHandler(async (req: any, res: any) => {
+  const { discussionService } = await import('./db/services/discussion-service');
+  const result = await discussionService.create(req.body);
+  res.status(201).json(result);
+}));
+
+app.put('/api/discussions/:id', asyncHandler(async (req: any, res: any) => {
+  const { discussionService } = await import('./db/services/discussion-service');
+  const result = await discussionService.update({ ...req.body, id: parseInt(req.params.id) });
+  res.json(result);
+}));
+
+app.delete('/api/discussions/:id', asyncHandler(async (req: any, res: any) => {
+  const { discussionService } = await import('./db/services/discussion-service');
+  const result = await discussionService.delete(parseInt(req.params.id));
+  res.json(result);
+}));
+
+app.get('/api/discussions/:id/with-messages', asyncHandler(async (req: any, res: any) => {
+  const { discussionService } = await import('./db/services/discussion-service');
+  const result = await discussionService.getWithMessages(parseInt(req.params.id));
+  res.json(result);
+}));
+
+app.post('/api/discussions/:id/favorite', asyncHandler(async (req: any, res: any) => {
+  const { discussionService } = await import('./db/services/discussion-service');
+  const result = await discussionService.toggleFavorite(parseInt(req.params.id));
+  res.json(result);
+}));
+
+// Message endpoints
+app.get('/api/messages', asyncHandler(async (req: any, res: any) => {
+  const { messageService } = await import('./db/services/message-service');
+  const result = await messageService.list(req.query);
+  res.json(result);
+}));
+
+app.post('/api/messages', asyncHandler(async (req: any, res: any) => {
+  const { messageService } = await import('./db/services/message-service');
+  const result = await messageService.createForDiscussion(req.body);
+  res.status(201).json(result);
+}));
+
+app.get('/api/messages/discussion/:discussionId', asyncHandler(async (req: any, res: any) => {
+  const { messageService } = await import('./db/services/message-service');
+  const result = await messageService.getByDiscussion(parseInt(req.params.discussionId));
+  res.json(result);
+}));
+
+app.get('/api/messages/discussion/:discussionId/last', asyncHandler(async (req: any, res: any) => {
+  const { messageService } = await import('./db/services/message-service');
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
+  const result = await messageService.getLastMessages(parseInt(req.params.discussionId), limit);
+  res.json(result);
+}));
+
+app.get('/api/messages/discussion/:discussionId/count', asyncHandler(async (req: any, res: any) => {
+  const { messageService } = await import('./db/services/message-service');
+  const result = await messageService.countByDiscussion(parseInt(req.params.discussionId));
+  res.json({ count: result });
+}));
+
+app.delete('/api/messages/discussion/:discussionId', asyncHandler(async (req: any, res: any) => {
+  const { messageService } = await import('./db/services/message-service');
+  const result = await messageService.deleteByDiscussion(parseInt(req.params.discussionId));
+  res.json(result);
+}));
+
 // Error handling middleware
 app.use((err: any, req: any, res: any, next: any) => {
   console.error('[API Server Error]:', err);

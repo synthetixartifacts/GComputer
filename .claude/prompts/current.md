@@ -5,6 +5,7 @@ I dont want to place it in my seed, as these are private information and dont wa
 To be able to have a fallback on local we will use the .env file and look for secretKey concat to "_key" ex: openai_key
 
 We already have a logic to look at value from .env for the mode. Have a look at what we did and if it is not already a componant make it one, create a config manager / function component where we will group all of system config get/set from .env but also other possible files. 
+
 I think we should also probably do another file where we should place ourkey. I have create .env_secret for that.
 
 
@@ -22,6 +23,7 @@ Decide in the best way to do this task for our project, specifications and requi
 It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
 
 Do not hesitate in the middle of the execution based on your finding to challenge and revisit the inital plan and redo a planning phase, it is important that your plan go along you coding execution and your discovery.
+
 
 
 

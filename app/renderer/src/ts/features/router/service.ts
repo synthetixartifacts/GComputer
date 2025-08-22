@@ -14,13 +14,45 @@ export function disposeRouter(): void {
   window.removeEventListener('hashchange', handleHashChange);
 }
 
-export function navigate(route: Route): void {
-  const path = route === 'home' ? '#/' : `#/${(route as string).split('.').join('/')}`;
+export function navigate(route: Route, params?: Record<string, any>): void {
+  let path = route === 'home' ? '#/' : `#/${(route as string).split('.').join('/')}`;
+  
+  // Add query params if provided
+  if (params && Object.keys(params).length > 0) {
+    const queryString = new URLSearchParams(params).toString();
+    path += `?${queryString}`;
+  }
+  
   if (location.hash !== path) {
     location.hash = path;
   } else {
     handleHashChange();
   }
+}
+
+// Alias for navigate with better naming
+export function goto(route: Route, params?: Record<string, any>): void {
+  navigate(route, params);
+}
+
+// Get route parameters from current URL
+export function getRouteParams(): Record<string, string> {
+  const hash = location.hash || '';
+  const queryIndex = hash.indexOf('?');
+  
+  if (queryIndex === -1) {
+    return {};
+  }
+  
+  const queryString = hash.slice(queryIndex + 1);
+  const params = new URLSearchParams(queryString);
+  const result: Record<string, string> = {};
+  
+  params.forEach((value, key) => {
+    result[key] = value;
+  });
+  
+  return result;
 }
 
 function normalizeHashToRoute(hash: string): Route {

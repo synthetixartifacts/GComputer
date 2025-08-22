@@ -57,6 +57,22 @@ declare global {
             delete: (id: number) => Promise<{ ok: true }>;
           };
         };
+        discussions: {
+          list: (filters?: import('@features/discussion/types').DiscussionFilters) => Promise<import('@features/discussion/types').Discussion[]>;
+          create: (payload: import('@features/discussion/types').CreateDiscussionPayload) => Promise<import('@features/discussion/types').Discussion | null>;
+          update: (payload: import('@features/discussion/types').UpdateDiscussionPayload) => Promise<import('@features/discussion/types').Discussion | null>;
+          delete: (id: number) => Promise<{ ok: true }>;
+          getWithMessages: (discussionId: number) => Promise<import('@features/discussion/types').DiscussionWithMessages | null>;
+          toggleFavorite: (discussionId: number) => Promise<import('@features/discussion/types').Discussion | null>;
+        };
+        messages: {
+          list: (filters?: import('@features/discussion/types').MessageFilters) => Promise<import('@features/discussion/types').Message[]>;
+          create: (payload: import('@features/discussion/types').CreateMessagePayload) => Promise<import('@features/discussion/types').Message | null>;
+          getByDiscussion: (discussionId: number) => Promise<import('@features/discussion/types').Message[]>;
+          getLastMessages: (discussionId: number, limit?: number) => Promise<import('@features/discussion/types').Message[]>;
+          countByDiscussion: (discussionId: number) => Promise<number>;
+          deleteByDiscussion: (discussionId: number) => Promise<{ ok: true }>;
+        };
       };
     };
   }

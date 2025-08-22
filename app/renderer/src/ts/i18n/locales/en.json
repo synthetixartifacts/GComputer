@@ -1,5 +1,10 @@
 {
   "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
     "actions": {
       "create": "Create",
       "edit": "Edit",
@@ -49,6 +54,11 @@
       "settings": "Settings",
       "config": "Config",
       "about": "About",
+      "discussions": {
+        "label": "Discussions",
+        "new": "Create New",
+        "list": "See All"
+      },
       "test": "Development",
       "styleguide": {
         "label": "Styleguide",
@@ -421,8 +431,62 @@
         "language": "Language"
       }
     }
-  }
-  ,
+  },
+  "discussion": {
+    "newWith": "Discussion with",
+    "confirmDelete": "Are you sure you want to delete the discussion '{title}'?",
+    "deleteError": "Failed to delete discussion",
+    "favoriteError": "Failed to toggle favorite",
+    "favoriteRequiresMessages": "Cannot favorite a discussion without messages",
+    "creatingDiscussion": "Creating discussion...",
+    "table": {
+      "title": "Title",
+      "agent": "Agent",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "actions": {
+      "continue": "Continue",
+      "delete": "Delete"
+    },
+    "list": {
+      "title": "Your Discussions",
+      "search": "Search discussions...",
+      "newDiscussion": "New Discussion",
+      "empty": "No discussions yet. Start a new conversation!"
+    },
+    "listView": {
+      "title": "All Discussions",
+      "description": "View and manage your AI conversations"
+    },
+    "agent": {
+      "system": "System",
+      "disabled": "Disabled",
+      "noDescription": "No description available"
+    },
+    "agentSelection": {
+      "title": "Select an Agent",
+      "description": "Choose an AI agent to start a new discussion",
+      "noAgents": "No agents available. Please configure agents first.",
+      "configureAgents": "Configure Agents"
+    },
+    "header": {
+      "favorite": "Add to favorites",
+      "unfavorite": "Remove from favorites",
+      "agent": "Agent",
+      "messages": "Messages",
+      "updated": "Updated"
+    },
+    "chat": {
+      "loading": "Loading discussion...",
+      "noDiscussionId": "No discussion ID provided",
+      "notFound": "Discussion not found",
+      "backToList": "Back to List",
+      "noDiscussion": "No discussion selected",
+      "error": "Error",
+      "aiThinking": "AI is thinking..."
+    }
+  },
   "components": {
     "audioRecorder": {
       "start": "Record",

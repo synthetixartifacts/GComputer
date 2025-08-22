@@ -20,7 +20,7 @@ Once you know what you need to know to accomplish your task you will create your
 Decide in the best way to do this task for our project, specifications and requirements. 
 It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
 
-
+Do not hesitate in the middle of the execution based on your finding to challenge and revisit the inital plan and redo a planning phase, it is important that your plan go along you coding execution and your discovery.
 
 ------
 

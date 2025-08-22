@@ -39,4 +39,7 @@ export const BASE_ROUTES = [
   'home',
   'settings.config',
   'settings.about',
+  'discussion.list',
+  'discussion.new',
+  'discussion.chat',
 ] as const;

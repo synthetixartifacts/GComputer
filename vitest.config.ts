@@ -142,6 +142,7 @@ export default defineConfig({
       '@views-development': path.resolve(__dirname, 'app/renderer/src/views/development'),
       '@views-admin': path.resolve(__dirname, 'app/renderer/src/views/admin'),
       '@views-browse': path.resolve(__dirname, 'app/renderer/src/views/browse'),
+      '@views-discussion': path.resolve(__dirname, 'app/renderer/src/views/discussion'),
       '@ts': path.resolve(__dirname, 'app/renderer/src/ts'),
       '@features': path.resolve(__dirname, 'app/renderer/src/ts/features'),
       '@components': path.resolve(__dirname, 'app/renderer/src/components'),
