@@ -29,8 +29,21 @@ const settingsApi = {
   },
 };
 
+const configApi = {
+  getPublic(): Promise<Record<string, any>> {
+    return ipcRenderer.invoke('config:getPublic');
+  },
+  getEnv(key: string, defaultValue?: string): Promise<string | undefined> {
+    return ipcRenderer.invoke('config:getEnv', key, defaultValue);
+  },
+  hasProviderSecret(providerCode: string): Promise<boolean> {
+    return ipcRenderer.invoke('config:hasSecret', providerCode);
+  },
+};
+
 contextBridge.exposeInMainWorld('gc', {
   settings: settingsApi,
+  config: configApi,
   fs: {
     listDirectory(path: string) {
       return ipcRenderer.invoke('fs:list-directory', { path });

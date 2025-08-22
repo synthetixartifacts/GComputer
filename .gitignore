@@ -8,3 +8,5 @@ coverage/
 node_modules
 release/
 .ahhub/
+.env_secret
+test_results/

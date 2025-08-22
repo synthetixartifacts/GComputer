@@ -133,9 +133,35 @@ export function registerSettingsIpc(): void {
 
   // Expose environment mode from .env file
   ipcMain.handle('settings:getEnvMode', async () => {
-    const mode = process.env.mode || 'production';
+    const { getEnv } = await import('./config-manager');
+    const mode = getEnv('mode', 'production');
     console.log('[settings] Returning env mode:', mode);
     return mode;
+  });
+
+  // Config Manager IPC handlers
+  ipcMain.handle('config:getPublic', async () => {
+    const { getPublicConfig } = await import('./config-manager');
+    return getPublicConfig();
+  });
+
+  ipcMain.handle('config:getEnv', async (_evt, key: string, defaultValue?: string) => {
+    const { getEnv } = await import('./config-manager');
+    return getEnv(key, defaultValue);
+  });
+
+  ipcMain.handle('config:hasSecret', async (_evt, providerCode: string) => {
+    // Validate providerCode to prevent injection attacks
+    const validProviderPattern = /^[a-zA-Z0-9_-]+$/;
+    if (!providerCode || !validProviderPattern.test(providerCode)) {
+      console.error(`Invalid provider code: ${providerCode}`);
+      return false;
+    }
+    
+    const { hasSecret } = await import('./config-manager');
+    // Check for provider-specific key format (e.g., openai_key for openai provider)
+    const key = `${providerCode}_key`;
+    return hasSecret(key);
   });
 
   // Optional: file watcher if settings modified externally
