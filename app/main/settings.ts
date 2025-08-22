@@ -164,6 +164,20 @@ export function registerSettingsIpc(): void {
     return hasSecret(key);
   });
 
+  ipcMain.handle('config:getSecret', async (_evt, providerCode: string) => {
+    // Validate providerCode to prevent injection attacks
+    const validProviderPattern = /^[a-zA-Z0-9_-]+$/;
+    if (!providerCode || !validProviderPattern.test(providerCode)) {
+      console.error(`Invalid provider code: ${providerCode}`);
+      return undefined;
+    }
+    
+    const { getSecret } = await import('./config-manager');
+    // Check for provider-specific key format (e.g., openai_key for openai provider)
+    const key = `${providerCode}_key`;
+    return getSecret(key);
+  });
+
   // Optional: file watcher if settings modified externally
   try {
     const p = getSettingsPath();

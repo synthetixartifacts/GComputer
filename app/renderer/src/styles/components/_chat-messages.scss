@@ -1,0 +1,24 @@
+// Chat Message Components Global Styles
+
+// Message bubble outer container
+.message-bubble-outer {
+  width: 100%;
+}
+
+// Message bubble container
+.message-bubble-container {
+  width: 100%;
+}
+
+// The actual message bubble
+.message-bubble {
+  // Let content determine width naturally, but cap at 90%
+  width: fit-content;
+  
+  // Ensure text wraps properly in bubbles
+  > div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+}

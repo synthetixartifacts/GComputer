@@ -5,6 +5,7 @@
   import { t } from '@ts/i18n';
 
   export let discussion: DiscussionWithMessages | null = null;
+  export let messageCount: number = 0;
   export let onTitleChange: ((title: string) => void) | null = null;
   export let onFavoriteToggle: (() => void) | null = null;
 
@@ -15,12 +16,12 @@
     editedTitle = discussion.title;
   }
 
-  function startEditingTitle() {
+  function startEditingTitle(): void {
     isEditingTitle = true;
     editedTitle = discussion?.title || '';
   }
 
-  async function saveTitle() {
+  async function saveTitle(): Promise<void> {
     if (!discussion || editedTitle === discussion.title) {
       isEditingTitle = false;
       return;
@@ -44,12 +45,12 @@
     }
   }
 
-  function cancelEditingTitle() {
+  function cancelEditingTitle(): void {
     editedTitle = discussion?.title || '';
     isEditingTitle = false;
   }
 
-  async function toggleFavorite() {
+  async function toggleFavorite(): Promise<void> {
     if (!discussion) return;
 
     if (onFavoriteToggle) {
@@ -110,7 +111,7 @@
         </div>
         <div class="message-count">
           <span class="count-label">{$t('discussion.header.messages')}:</span>
-          <span class="count-value">{discussion.messages.length}</span>
+          <span class="count-value">{messageCount}</span>
         </div>
         <div class="updated-time">
           <span class="time-label">{$t('discussion.header.updated')}:</span>

@@ -5,6 +5,11 @@
   export let value: string = '';
   export let disabled: boolean = false;
   export let onSend: (text: string) => void;
+  
+  // Translation key overrides for different contexts
+  export let placeholderKey: string = 'pages.styleguide.chatbot.composer.placeholder';
+  export let inputLabelKey: string = 'pages.styleguide.chatbot.composer.inputLabel';
+  export let sendKey: string = 'pages.styleguide.chatbot.composer.send';
 
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
   const unsubT = tStore.subscribe((fn) => (t = fn));
@@ -30,25 +35,25 @@
   }
 </script>
 
-<div class="border-t pt-3">
+<div>
   <div class="flex items-end gap-2">
     <textarea
       class="flex-1 resize-none rounded-md border px-3 py-2 leading-relaxed bg-white dark:bg-gray-800"
       rows="1"
-      placeholder={t('pages.styleguide.chatbot.composer.placeholder')}
+      placeholder={t(placeholderKey)}
       bind:value
       on:keydown={handleKeydown}
       disabled={disabled}
-      aria-label={t('pages.styleguide.chatbot.composer.inputLabel')}
+      aria-label={t(inputLabelKey)}
       bind:this={textareaRef}
     ></textarea>
     <button
       type="button"
       class="btn btn--primary"
-      aria-label={t('pages.styleguide.chatbot.composer.send')}
+      aria-label={t(sendKey)}
       on:click={trySend}
       disabled={disabled}
-    >{t('pages.styleguide.chatbot.composer.send')}</button>
+    >{t(sendKey)}</button>
   </div>
 </div>
 

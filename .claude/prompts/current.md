@@ -1,5 +1,208 @@
 
 
+
+
+
+Right now we are feed ou db seed with the keys from openAi and anthorpic from the .env_secret but doing so this means that it is still visible in the packages\db\data\gcomputer.db
+I want to change the way we manage this.
+
+We should not place it in seed, instead we should in the load of the provider when we call the this.provider.secretKey, if empty, we will look at our .env_secret to get the key if it exist.
+
+Look at how we manage secret config because we have a manager for that. We will have to remove code for seeding first too.
+Make sure its clean and safe here.
+
+I think the right place to do this is app\renderer\src\ts\features\ai-communication\adapters\base.ts because we will only have to place this at this file. Verify and identify the best place for this process to happen so that its dry.
+
+
+
+
+
+
+
+
+
+
+Lets focus on on vibe and style now.
+
+Here is some issue I have withing the discussion / chatbot / ux-ui of the chatbot secton used in /discussion/ route and /development/ai/communication route too.
+First things first is to verify that we are using configurable resusable component and that only the view/ux-ui differ.
+But the deep logic remain.
+Especially for the disucssion pannel.
+We need to have ai message and user message be by default 90% of the space. 
+global style are need for this. No specific at this point.
+
+
+
+
+
+We are working on our discussion logic and here are the issue I see right now 
+- this key styleguide.chatbot.messages.Copy instead of the translation and the copied too. All other text are tranlated
+- I want to remove for now the "U" "A" bubble in css and remove this
+- I want the input / textarea section for the user input to be always be sticky bottom 0 exept when to bottom is coming then it takes it place naturally
+
+
+
+
+
+
+
+# Situation / current situation
+
+Still the two time printed ai message like this
+
+<div class="w-full flex justify-start"><div class="flex items-end gap-2 flex-row" aria-label="Assistant"><div class="w-8 h-8 rounded-full shrink-0 flex items-center justify-center bg-gray-300 text-xs text-gray-700 dark:bg-gray-600 dark:text-gray-100" aria-hidden="true">A<!----></div><!----> <div class="max-w-[75%] md:max-w-[66%] lg:max-w-[60%]"><div class="px-3 py-2 bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl rounded-br-2xl"><p class="whitespace-pre-wrap leading-relaxed">I'm Claude! I'm an AI assistant created by Anthropic. Nice to meet you! 
+
+Is there anything specific you'd like to know about me, or anything I can help you with today?</p></div> <div class="mt-1 text-[11px] opacity-60 text-left">11:48 PM</div></div></div></div>
+
+
+and
+
+
+<div class="w-full flex justify-start"><div class="flex items-end gap-2 flex-row" aria-label="Assistant"><!----> <div class="max-w-[75%] md:max-w-[66%] lg:max-w-[60%]"><div class="px-3 py-2 bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100 rounded-tl-md rounded-bl-2xl rounded-tr-2xl rounded-br-2xl"><p class="whitespace-pre-wrap leading-relaxed">I'm Claude! I'm an AI assistant created by Anthropic. Nice to meet you! 
+
+Is there anything specific you'd like to know about me, or anything I can help you with today?</p></div> <div class="mt-1 text-[11px] opacity-60 text-left">11:48 PM</div></div></div></div>
+
+
+Also -
+
+We need to enable the scroll logic on message / response as well as the copy logic in our discussion. We talk about at some point that discussion compoenent / chatbot ux/ui will evolve and its one of this time.
+
+I want to implement in our context, so adapt things for our style/structrue the feature scroll and copy message concept per bubble from 
+- .ahhub\assets\js\ai\chatbot\scrollButtons.js scroll to message on answer and button 
+- .ahhub\assets\js\ai\chatbot\chatZone.js copy button per bubble
+
+Implement these in our project inside our component chatbox discussion. Revisit our current logic if needed to be able to scale with more and more feature like this.
+
+Keep it clean and component focused.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ok now the call are perfect but when I click submit we have multiple issue:
+- My own message is not printed
+- I see "AI is thinking" 
+- I dont get the message stream back by the chat view
+
+Its is working perfectly in /development/ai/communication so use this logic for the chatbot view and also make sure to reuse available componants or update the existing one while making them more dry and parameters based. Both section should be doing the same and using the same logic pretty much but the ux/ui is different
+
+## Big Task Alert
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+Do not hesitate in the middle of the execution based on your finding to challenge and revisit the inital plan and redo a planning phase, it is important that your plan go along you coding execution and your discovery.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+When I talk to the ai in the development section its working and the call is this
+
+{
+    "model": "gpt-4.1",
+    "messages": [
+        {
+            "role": "system",
+            "content": "You are a helpful AI assistant. Be concise and accurate."
+        },
+        {
+            "role": "user",
+            "content": "hello"
+        }
+    ],
+    "stream": true,
+    "temperature": 0.7,
+    "max_tokens": 4096
+}
+
+
+But when we talk to ai in the discussion setup it is not working.
+It should be the same logic but with memory, right now the call input is
+
+{
+    "model": "gpt-4.1",
+    "messages": [
+        {
+            "role": "system",
+            "content": "You are a helpful AI assistant. Be concise and accurate."
+        },
+        {
+            "role": "system",
+            "content": "You are a helpful AI assistant. Be concise and accurate."
+        },
+        {
+            "role": "system",
+            "content": "<conversation_history>\n## User\nhello there\n</conversation_history>"
+        },
+        {
+            "role": "user",
+            "content": "hello there"
+        }
+    ],
+    "stream": true,
+    "temperature": 0.7,
+    "max_tokens": 4096
+}
+
+Which is not ok, like system is there 3 times and the conversation history should, first not be there if its the first message and if its not the same message it should all be in the user type message like this
+
+------
+<conversation_history>
+## User message
+Hello there
+
+## AI Agent / YOU
+Hi, how are you doing?
+</conversation_history>
+
+# New User message to answer to
+I'm good, I would like to know about the sky, why is it blue?
+-----
+
+All of this in the same user message.
+
+
+
+
+
+
+
+
+
+
 In our provider entity we have a Secret Key field.
 I dont want to place it in my seed, as these are private information and dont want it in git for security reason.
 To be able to have a fallback on local we will use the .env file and look for secretKey concat to "_key" ex: openai_key

@@ -10,23 +10,37 @@ import type {
 } from '../types';
 
 export class AnthropicAdapter extends BaseProviderAdapter {
-  private client: Anthropic;
+  private client?: Anthropic;
 
   constructor(provider: ProviderConfiguration, model: ModelConfiguration) {
-    super(provider, model);
-    
+    super(provider, model, 'anthropic');
+  }
+
+  private async getClient(): Promise<Anthropic> {
+    if (this.client) {
+      return this.client;
+    }
+
+    const secretKey = await this.getSecretKey();
+    if (!secretKey) {
+      throw new Error('Anthropic API key not found in database or environment');
+    }
+
     this.client = new Anthropic({
-      apiKey: this.provider.secretKey,
+      apiKey: secretKey,
       baseURL: this.provider.url !== 'https://api.anthropic.com' ? this.provider.url : undefined,
       dangerouslyAllowBrowser: true
     });
+
+    return this.client;
   }
 
   async sendMessage(messages: AIMessage[], options: CommunicationOptions): Promise<AIResponse> {
     try {
       const requestBody = this.buildAnthropicRequestBody(messages, options);
+      const client = await this.getClient();
       
-      const response = await this.client.messages.create(requestBody) as Anthropic.Messages.Message;
+      const response = await client.messages.create(requestBody) as Anthropic.Messages.Message;
       
       const content = this.extractContent(response);
       const usage = this.extractUsage(response);
@@ -51,8 +65,9 @@ export class AnthropicAdapter extends BaseProviderAdapter {
   async *streamMessage(messages: AIMessage[], options: CommunicationOptions): AsyncIterableIterator<StreamEvent> {
     try {
       const requestBody = this.buildAnthropicRequestBody(messages, { ...options, stream: true });
+      const client = await this.getClient();
       
-      const stream = await this.client.messages.create(requestBody) as any;
+      const stream = await client.messages.create(requestBody) as any;
       
       let fullContent = '';
       
@@ -101,7 +116,8 @@ export class AnthropicAdapter extends BaseProviderAdapter {
         return false;
       }
 
-      await this.client.messages.create({
+      const client = await this.getClient();
+      await client.messages.create({
         model: 'claude-3-haiku-20240307',
         max_tokens: 1,
         messages: [{ role: 'user', content: 'test' }]

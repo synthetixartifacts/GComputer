@@ -1,17 +1,20 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import DiscussionHeader from '@components/discussion/DiscussionHeader.svelte';
-  import DiscussionChat from '@components/discussion/DiscussionChat.svelte';
+  import DiscussionContainer from '@components/discussion/DiscussionContainer.svelte';
   import type { DiscussionWithMessages } from '@features/discussion/types';
+  import type { Agent } from '@features/admin/types';
   import { discussionService } from '@features/discussion/service';
-  import { discussionStore, activeDiscussion } from '@features/discussion/store';
-  import { getRouteParams } from '@features/router/service';
-  import { goto } from '@features/router/service';
+  import { listAgents } from '@features/admin/service';
+  import { discussionStore, activeDiscussion, discussions } from '@features/discussion/store';
+  import { getRouteParams, goto } from '@features/router/service';
   import { t } from '@ts/i18n';
 
   let loading = true;
   let error: string | null = null;
   let discussionId: number | null = null;
+  let isNewDiscussion = false;
+  let selectedAgent: Agent | null = null;
+  let selectedAgentId: number | null = null;
 
   const unsubscribe = activeDiscussion.subscribe((discussion) => {
     // Update when active discussion changes
@@ -23,20 +26,45 @@
   onMount(async () => {
     const params = getRouteParams();
     discussionId = params.discussionId ? parseInt(params.discussionId) : null;
-
-    if (!discussionId) {
-      error = $t('discussion.chat.noDiscussionId');
+    const agentIdParam = params.agentId ? parseInt(params.agentId) : null;
+    
+    if (!discussionId && agentIdParam) {
+      // New discussion mode with pre-selected agent
+      isNewDiscussion = true;
+      selectedAgentId = agentIdParam;
+      await loadSelectedAgent(agentIdParam);
       loading = false;
-      return;
+    } else if (discussionId) {
+      // Existing discussion mode
+      await loadDiscussion();
+    } else {
+      // No discussion ID and no agent ID - redirect to agent selection
+      goto('discussion.new');
     }
-
-    await loadDiscussion();
   });
 
   onDestroy(() => {
     unsubscribe();
     discussionStore.clearActiveDiscussion();
   });
+
+  async function loadSelectedAgent(agentId: number) {
+    try {
+      // Load the full agent with its relationships (model, provider)
+      const agents = await listAgents();
+      selectedAgent = agents.find(a => a.id === agentId) || null;
+      
+      if (!selectedAgent) {
+        console.error('Selected agent not found:', agentId);
+        error = 'Selected agent not found';
+        // Redirect to agent selection
+        goto('discussion.new');
+      }
+    } catch (err) {
+      console.error('Failed to load agent:', err);
+      error = 'Failed to load agent';
+    }
+  }
 
   async function loadDiscussion() {
     if (!discussionId) return;
@@ -60,6 +88,20 @@
     } finally {
       loading = false;
     }
+  }
+
+  function handleDiscussionCreated(discussion: DiscussionWithMessages) {
+    // Update URL to reflect the new discussion ID
+    discussionId = discussion.id;
+    isNewDiscussion = false;
+    discussionStore.setActiveDiscussion(discussion);
+    
+    // Add to discussions list
+    const currentDiscussions = $discussions || [];
+    discussionStore.setDiscussions([...currentDiscussions, discussion]);
+    
+    // Update the URL by navigating to the discussion
+    history.replaceState(null, '', `#discussion/chat?discussionId=${discussion.id}`);
   }
 
   async function handleTitleChange(newTitle: string) {
@@ -89,25 +131,6 @@
     }
   }
 
-  function handleMessageSent() {
-    // Update discussion timestamp
-    if ($activeDiscussion) {
-      discussionStore.setActiveDiscussion({
-        ...$activeDiscussion,
-        updatedAt: new Date(),
-      });
-    }
-  }
-
-  function handleMessageReceived() {
-    // Update discussion timestamp
-    if ($activeDiscussion) {
-      discussionStore.setActiveDiscussion({
-        ...$activeDiscussion,
-        updatedAt: new Date(),
-      });
-    }
-  }
 </script>
 
 <div class="view-container discussion-chat-view">
@@ -129,22 +152,14 @@
         </button>
       </div>
     </div>
-  {:else if $activeDiscussion}
-    <div class="chat-container">
-      <DiscussionHeader
-        discussion={$activeDiscussion}
-        onTitleChange={handleTitleChange}
-        onFavoriteToggle={handleFavoriteToggle}
-      />
-      
-      <div class="chat-content">
-        <DiscussionChat
-          discussion={$activeDiscussion}
-          onMessageSent={handleMessageSent}
-          onMessageReceived={handleMessageReceived}
-        />
-      </div>
-    </div>
+  {:else if $activeDiscussion || (isNewDiscussion && selectedAgent)}
+    <DiscussionContainer
+      discussion={$activeDiscussion}
+      agent={selectedAgent}
+      onDiscussionCreated={handleDiscussionCreated}
+      onTitleChange={handleTitleChange}
+      onFavoriteToggle={handleFavoriteToggle}
+    />
   {:else}
     <div class="empty-state">
       <p>{$t('discussion.chat.noDiscussion')}</p>

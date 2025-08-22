@@ -313,6 +313,10 @@
           "user": "Utilisateur",
           "assistant": "Assistant"
         },
+        "messages": {
+          "Copy": "Copier",
+          "Copied": "Copié!"
+        },
         "composer": {
           "inputLabel": "Zone de saisie",
           "placeholder": "Écrire un message...",
@@ -502,7 +506,31 @@
       "backToList": "Retour à la Liste",
       "noDiscussion": "Aucune discussion sélectionnée",
       "error": "Erreur",
-      "aiThinking": "L'IA réfléchit..."
+      "aiThinking": "L'IA réfléchit...",
+      "messages": {
+        "copy": "Copier",
+        "copied": "Copié!"
+      },
+      "composer": {
+        "inputLabel": "Zone de saisie",
+        "placeholder": "Écrire un message...",
+        "send": "Envoyer"
+      }
+    },
+    "newChat": "Nouvelle Conversation",
+    "chattingWith": "Discussion avec {agent}",
+    "noAgentSelected": "Aucun agent sélectionné. Veuillez sélectionner un agent pour commencer.",
+    "newDiscussion": "Nouvelle Discussion",
+    "thread": {
+      "empty": "Aucun message pour le moment",
+      "startHint": "Tapez un message ci-dessous pour commencer la conversation",
+      "you": "Vous",
+      "ai": "IA",
+      "typing": "L'IA tape",
+      "newMessages": "Nouveaux messages"
+    },
+    "input": {
+      "placeholder": "Tapez votre message..."
     }
   },
   "components": {

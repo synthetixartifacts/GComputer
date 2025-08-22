@@ -63,8 +63,15 @@
 
 <div class="view-container discussion-list-view">
   <div class="view-header">
-    <h1>{$t('discussion.listView.title')}</h1>
-    <p class="view-description">{$t('discussion.listView.description')}</p>
+    <div class="header-with-action">
+      <div>
+        <h1>{$t('discussion.listView.title')}</h1>
+        <p class="view-description">{$t('discussion.listView.description')}</p>
+      </div>
+      <button class="btn btn-primary" on:click={() => goto('discussion.new')}>
+        {$t('discussion.newDiscussion')}
+      </button>
+    </div>
   </div>
 
   <div class="view-content">
@@ -82,7 +89,7 @@
       </div>
     {:else}
       <DiscussionList
-        discussions={$discussions}
+        discussions={$discussions || []}
         onSelect={handleSelect}
         onDelete={handleDelete}
         onToggleFavorite={handleToggleFavorite}

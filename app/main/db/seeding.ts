@@ -1,6 +1,5 @@
 import { runMigrations } from '../../../packages/db/src/db/client.js';
 import { providerService, modelService, agentService } from './services/index.js';
-import { getSecret } from '../config-manager.js';
 
 /**
  * Run database migrations
@@ -9,71 +8,40 @@ export async function runDbMigrations(): Promise<void> {
   await runMigrations();
 }
 
-/**
- * Get provider secret key from configuration
- * Looks for {provider}_key in secrets (e.g., openai_key, anthropic_key)
- */
-function getProviderSecret(providerCode: string): string | undefined {
-  const key = `${providerCode}_key`;
-  return getSecret(key);
-}
 
 /**
  * Seed default data for AI management
  * Creates default providers, models, and agents if they don't exist
- * Automatically populates secret keys from environment configuration
+ * Secret keys are now loaded dynamically from environment at runtime
  */
 export async function seedDefaultData(): Promise<void> {
   // Check if default data already exists
   const existingProviders = await providerService.list();
   if (existingProviders.length > 0) {
-    console.log('[seeding] Providers already exist, checking for secret key updates...');
-    
-    // Update existing providers with secrets from environment if they don't have them
-    for (const provider of existingProviders) {
-      if (!provider.secretKey) {
-        const secretKey = getProviderSecret(provider.code);
-        if (secretKey) {
-          await providerService.update({ id: provider.id, secretKey });
-          console.log(`[seeding] Updated ${provider.code} provider with secret key from environment`);
-        }
-      }
-    }
+    console.log('[seeding] Providers already exist, skipping seeding.');
     return;
   }
 
-  // Default Providers with automatic secret key loading
-  const openaiSecretKey = getProviderSecret('openai');
+  // Default Providers (secret keys loaded dynamically at runtime)
   const openaiProvider = await providerService.insert({
     code: 'openai',
     name: 'OpenAI',
     url: 'https://api.openai.com',
     authentication: 'bearer',
-    configuration: '{}',
-    ...(openaiSecretKey && { secretKey: openaiSecretKey })
+    configuration: '{}'
   });
 
-  if (openaiSecretKey) {
-    console.log('[seeding] OpenAI provider created with secret key from environment');
-  } else {
-    console.log('[seeding] OpenAI provider created without secret key (not found in environment)');
-  }
+  console.log('[seeding] OpenAI provider created (secret key loaded dynamically from environment)');
 
-  const anthropicSecretKey = getProviderSecret('anthropic');
   const anthropicProvider = await providerService.insert({
     code: 'anthropic',
     name: 'Anthropic',
     url: 'https://api.anthropic.com',
     authentication: 'x-api-key',
-    configuration: '{}',
-    ...(anthropicSecretKey && { secretKey: anthropicSecretKey })
+    configuration: '{}'
   });
 
-  if (anthropicSecretKey) {
-    console.log('[seeding] Anthropic provider created with secret key from environment');
-  } else {
-    console.log('[seeding] Anthropic provider created without secret key (not found in environment)');
-  }
+  console.log('[seeding] Anthropic provider created (secret key loaded dynamically from environment)');
 
   if (!openaiProvider || !anthropicProvider) {
     throw new Error('Failed to create default providers');

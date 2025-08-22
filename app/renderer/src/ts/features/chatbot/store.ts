@@ -80,7 +80,16 @@ function createStore() {
   function addMessageDirectly(threadId: string, message: ChatMessage): void {
     update((state) => {
       ensureThread(threadId);
-      state.threads[threadId].messages.push(message);
+      const thread = state.threads[threadId];
+      // Check if message with this ID already exists
+      const existingIndex = thread.messages.findIndex(msg => msg.id === message.id);
+      if (existingIndex === -1) {
+        // Message doesn't exist, add it
+        thread.messages.push(message);
+      } else {
+        // Message exists, replace it with the new one
+        thread.messages[existingIndex] = message;
+      }
       return state;
     });
   }
@@ -97,6 +106,18 @@ function createStore() {
     });
   }
 
+  function updateMessageId(threadId: string, oldId: string, newId: string): void {
+    update((state) => {
+      ensureThread(threadId);
+      const thread = state.threads[threadId];
+      const messageIndex = thread.messages.findIndex(msg => msg.id === oldId);
+      if (messageIndex !== -1) {
+        thread.messages[messageIndex].id = newId;
+      }
+      return state;
+    });
+  }
+
   function removeMessage(threadId: string, messageId: string): void {
     update((state) => {
       ensureThread(threadId);
@@ -104,6 +125,14 @@ function createStore() {
       thread.messages = thread.messages.filter(msg => msg.id !== messageId);
       return state;
     });
+  }
+
+  function getThreadMessages(threadId: string): ChatMessage[] | undefined {
+    let messages: ChatMessage[] | undefined;
+    subscribe((state) => {
+      messages = state.threads[threadId]?.messages;
+    })();
+    return messages;
   }
 
   return {
@@ -114,7 +143,9 @@ function createStore() {
     replaceThreadMessages,
     addMessageDirectly,
     updateMessage,
+    updateMessageId,
     removeMessage,
+    getThreadMessages,
   };
 }
 

@@ -3,10 +3,11 @@ dist/
 .DS_Store
 *.log
 *.sqlite
+*.db
 out/
 coverage/
 node_modules
 release/
 .ahhub/
 .env_secret
-test_results/
+test-results/
