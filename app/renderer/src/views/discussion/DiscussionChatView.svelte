@@ -39,7 +39,7 @@
       await loadDiscussion();
     } else {
       // No discussion ID and no agent ID - redirect to agent selection
-      goto('discussion.agentSelection');
+      goto('discussion.new');
     }
   });
 
@@ -58,7 +58,7 @@
         console.error('Selected agent not found:', agentId);
         error = 'Selected agent not found';
         // Redirect to agent selection
-        goto('discussion.agentSelection');
+        goto('discussion.new');
       }
     } catch (err) {
       console.error('Failed to load agent:', err);

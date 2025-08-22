@@ -68,7 +68,7 @@
         <h1>{$t('discussion.listView.title')}</h1>
         <p class="view-description">{$t('discussion.listView.description')}</p>
       </div>
-      <button class="btn btn-primary" on:click={() => goto('discussion.agentSelection')}>
+      <button class="btn btn-primary" on:click={() => goto('discussion.new')}>
         {$t('discussion.newDiscussion')}
       </button>
     </div>

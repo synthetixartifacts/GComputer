@@ -73,7 +73,7 @@
       <p>{$t('discussion.list.empty')}</p>
       <button
         class="btn btn-primary btn-lg"
-        on:click={() => goto('discussion.agentSelection')}
+        on:click={() => goto('discussion.new')}
       >
         {$t('discussion.list.newDiscussion')}
       </button>

@@ -138,8 +138,9 @@
         createdAtIso: nowIso()
       };
       
-      // Add empty assistant message to start streaming
-      const currentThreadId = state.threadId || `discussion-${currentDiscussion.id}`;
+      // Get updated state to ensure we have the correct threadId
+      const updatedState = discussionStateManager.getState();
+      const currentThreadId = updatedState.threadId || `discussion-${currentDiscussion.id}`;
       chatbotStore.addMessageDirectly(currentThreadId, streamingMessage);
       
       let fullContent = '';
