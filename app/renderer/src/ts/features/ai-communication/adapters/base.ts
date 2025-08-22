@@ -6,33 +6,43 @@ import type {
   StreamEvent,
   AgentContext,
   ProviderConfiguration,
-  ModelConfiguration
+  ModelConfiguration,
+  ProviderCode
 } from '../types';
 
 export abstract class BaseProviderAdapter implements ProviderAdapter {
   protected provider: ProviderConfiguration;
   protected model: ModelConfiguration;
+  protected providerCode?: ProviderCode;
+  private secretKeyCache?: string;
 
-  constructor(provider: ProviderConfiguration, model: ModelConfiguration) {
+  constructor(provider: ProviderConfiguration, model: ModelConfiguration, providerCode?: ProviderCode) {
     this.provider = provider;
     this.model = model;
+    this.providerCode = providerCode;
   }
 
   abstract sendMessage(messages: AIMessage[], options: CommunicationOptions): Promise<AIResponse>;
   abstract streamMessage(messages: AIMessage[], options: CommunicationOptions): AsyncIterableIterator<StreamEvent>;
   abstract validateConfiguration(): Promise<boolean>;
 
-  protected buildHeaders(): Record<string, string> {
+  protected async buildHeaders(): Promise<Record<string, string>> {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     };
 
+    const secretKey = await this.getSecretKey();
+
     switch (this.provider.authentication) {
       case 'bearer':
-        headers['Authorization'] = `Bearer ${this.provider.secretKey}`;
+        if (secretKey) {
+          headers['Authorization'] = `Bearer ${secretKey}`;
+        }
         break;
       case 'x-api-key':
-        headers['x-api-key'] = this.provider.secretKey;
+        if (secretKey) {
+          headers['x-api-key'] = secretKey;
+        }
         break;
       case 'custom':
         if (this.provider.configuration?.headers) {
@@ -153,10 +163,41 @@ export abstract class BaseProviderAdapter implements ProviderAdapter {
     return new Error('Unknown error occurred during AI communication');
   }
 
-  protected async validateApiKey(): Promise<boolean> {
-    if (!this.provider.secretKey || this.provider.secretKey.trim() === '') {
-      return false;
+  /**
+   * Get the secret key, trying database first, then environment
+   */
+  protected async getSecretKey(): Promise<string | undefined> {
+    // Return cached value if available
+    if (this.secretKeyCache !== undefined) {
+      return this.secretKeyCache || undefined;
     }
-    return true;
+
+    // Try database first
+    if (this.provider.secretKey && this.provider.secretKey.trim() !== '') {
+      this.secretKeyCache = this.provider.secretKey;
+      return this.provider.secretKey;
+    }
+
+    // Fall back to environment if provider code is available
+    if (this.providerCode && window.gc?.config?.getProviderSecret) {
+      try {
+        const envSecret = await window.gc.config.getProviderSecret(this.providerCode);
+        if (envSecret && envSecret.trim() !== '') {
+          this.secretKeyCache = envSecret;
+          return envSecret;
+        }
+      } catch (error) {
+        console.error(`Failed to get secret for provider ${this.providerCode} from environment:`, error);
+      }
+    }
+
+    // Cache the failure to avoid repeated lookups
+    this.secretKeyCache = '';
+    return undefined;
+  }
+
+  protected async validateApiKey(): Promise<boolean> {
+    const secretKey = await this.getSecretKey();
+    return !!(secretKey && secretKey.trim() !== '');
   }
 }

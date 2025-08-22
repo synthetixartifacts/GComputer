@@ -39,6 +39,9 @@ const configApi = {
   hasProviderSecret(providerCode: string): Promise<boolean> {
     return ipcRenderer.invoke('config:hasSecret', providerCode);
   },
+  getProviderSecret(providerCode: string): Promise<string | undefined> {
+    return ipcRenderer.invoke('config:getSecret', providerCode);
+  },
 };
 
 contextBridge.exposeInMainWorld('gc', {

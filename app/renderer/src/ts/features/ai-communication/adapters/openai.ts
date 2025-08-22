@@ -11,24 +11,38 @@ import type {
 } from '../types';
 
 export class OpenAIAdapter extends BaseProviderAdapter {
-  private client: OpenAI;
+  private client?: OpenAI;
 
   constructor(provider: ProviderConfiguration, model: ModelConfiguration) {
-    super(provider, model);
-    
+    super(provider, model, 'openai');
+  }
+
+  private async getClient(): Promise<OpenAI> {
+    if (this.client) {
+      return this.client;
+    }
+
+    const secretKey = await this.getSecretKey();
+    if (!secretKey) {
+      throw new Error('OpenAI API key not found in database or environment');
+    }
+
     this.client = new OpenAI({
-      apiKey: this.provider.secretKey,
+      apiKey: secretKey,
       baseURL: this.provider.url !== 'https://api.openai.com' ? this.provider.url : undefined,
       organization: this.provider.configuration?.organization,
       dangerouslyAllowBrowser: true
     });
+
+    return this.client;
   }
 
   async sendMessage(messages: AIMessage[], options: CommunicationOptions): Promise<AIResponse> {
     try {
       const requestBody = this.buildOpenAIRequestBody(messages, options);
+      const client = await this.getClient();
       
-      const response = await this.client.chat.completions.create(requestBody) as OpenAI.Chat.Completions.ChatCompletion;
+      const response = await client.chat.completions.create(requestBody) as OpenAI.Chat.Completions.ChatCompletion;
       
       const content = this.extractContent(response);
       const usage = this.extractUsage(response);
@@ -51,8 +65,9 @@ export class OpenAIAdapter extends BaseProviderAdapter {
   async *streamMessage(messages: AIMessage[], options: CommunicationOptions): AsyncIterableIterator<StreamEvent> {
     try {
       const requestBody = this.buildOpenAIRequestBody(messages, { ...options, stream: true });
+      const client = await this.getClient();
       
-      const stream = await this.client.chat.completions.create(requestBody) as Stream<OpenAI.Chat.Completions.ChatCompletionChunk>;
+      const stream = await client.chat.completions.create(requestBody) as Stream<OpenAI.Chat.Completions.ChatCompletionChunk>;
       
       let fullContent = '';
       
@@ -97,7 +112,8 @@ export class OpenAIAdapter extends BaseProviderAdapter {
         return false;
       }
 
-      await this.client.models.list();
+      const client = await this.getClient();
+      await client.models.list();
       return true;
     } catch (error) {
       console.error('OpenAI configuration validation failed:', error);

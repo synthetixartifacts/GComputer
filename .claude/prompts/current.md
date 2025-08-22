@@ -1,3 +1,27 @@
+
+
+
+
+
+Right now we are feed ou db seed with the keys from openAi and anthorpic from the .env_secret but doing so this means that it is still visible in the packages\db\data\gcomputer.db
+I want to change the way we manage this.
+
+We should not place it in seed, instead we should in the load of the provider when we call the this.provider.secretKey, if empty, we will look at our .env_secret to get the key if it exist.
+
+Look at how we manage secret config because we have a manager for that. We will have to remove code for seeding first too.
+Make sure its clean and safe here.
+
+I think the right place to do this is app\renderer\src\ts\features\ai-communication\adapters\base.ts because we will only have to place this at this file. Verify and identify the best place for this process to happen so that its dry.
+
+
+
+
+
+
+
+
+
+
 Lets focus on on vibe and style now.
 
 Here is some issue I have withing the discussion / chatbot / ux-ui of the chatbot secton used in /discussion/ route and /development/ai/communication route too.
