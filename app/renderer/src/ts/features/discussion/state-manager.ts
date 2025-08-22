@@ -122,7 +122,7 @@ class DiscussionStateManager {
   /**
    * Add a message to the current discussion
    */
-  async addMessage(message: Message) {
+  async addMessage(message: Message, skipChatbotStore: boolean = false) {
     this.state.update(state => ({
       ...state,
       messages: [...state.messages, message],
@@ -131,9 +131,10 @@ class DiscussionStateManager {
         : state.userMessageCount,
     }));
 
-    // Update chatbot store with the same message ID (skip system messages)
+    // Update chatbot store with the same message ID
+    // Skip if explicitly told to (e.g., when message is already in chatbot store from streaming)
     const threadId = get(this.state).threadId;
-    if (threadId && message.who !== 'system') {
+    if (threadId && !skipChatbotStore) {
       const chatMessage: ChatMessage = {
         id: `msg-${message.id}`,
         role: message.who === 'user' ? 'user' : 'assistant',
@@ -229,9 +230,8 @@ class DiscussionStateManager {
     // Ensure the thread exists first
     chatbotStore.setActiveThread(threadId);
     
-    // Filter out system messages and convert to chat messages
+    // Convert to chat messages
     const chatMessages = messages
-      .filter(msg => msg.who !== 'system') // Only show user and agent messages
       .map(msg => ({
         id: `msg-${msg.id}`,
         role: msg.who === 'user' ? 'user' as const : 'assistant' as const,

@@ -164,7 +164,13 @@
             discussionId: currentDiscussion.id,
           });
           
-          await discussionStateManager.addMessage(aiMessage);
+          // Update the message ID in the chatbot store to prevent duplication
+          // This keeps the same message object but updates its ID to match the database
+          const finalMessageId = `msg-${aiMessage.id}`;
+          chatbotStore.updateMessageId(currentThreadId, streamingMsgId, finalMessageId);
+          
+          // Add to state manager but skip chatbot store since message is already there
+          await discussionStateManager.addMessage(aiMessage, true);
           break;
         } else if (event.type === 'error') {
           error = event.error?.message || 'Stream error';
