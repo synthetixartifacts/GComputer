@@ -87,7 +87,6 @@
     {#each messages as msg, i (msg.id)}
       <ChatMessageBubble
         message={msg}
-        showAvatar={isFirstInGroup(i)}
         isFirstInGroup={isFirstInGroup(i)}
         isLastInGroup={isLastInGroup(i)}
         {copyKey}

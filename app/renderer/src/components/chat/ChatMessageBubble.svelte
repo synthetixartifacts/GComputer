@@ -3,7 +3,6 @@
   import { t } from '@ts/i18n';
 
   export let message: ChatMessage;
-  export let showAvatar: boolean = true;
   export let isFirstInGroup: boolean = true;
   export let isLastInGroup: boolean = true;
   
@@ -87,10 +86,10 @@
     : `${isFirstInGroup ? 'rounded-tl-2xl' : 'rounded-tl-md'} ${isLastInGroup ? 'rounded-bl-2xl' : 'rounded-bl-md'} rounded-tr-2xl rounded-br-2xl`;
 </script>
 
-<div class={`w-full flex ${outerJustify}`} role="article" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
-  <div class={`flex items-end ${isUser ? 'flex-row-reverse' : 'flex-row'}`} aria-label={isUser ? 'User' : 'Assistant'}>
+<div class={`message-bubble-outer w-full flex ${outerJustify}`} role="article" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
+  <div class={`message-bubble-container flex items-end ${isUser ? 'flex-row-reverse' : 'flex-row'}`} aria-label={isUser ? 'User' : 'Assistant'}>
 
-    <div class="w-full max-w-[90%] min-w-[300px] relative">
+    <div class="message-bubble max-w-[90%] relative">
       <div class={`px-3 py-2 ${bubbleBg} ${cornerClasses}`}>
         <p class="whitespace-pre-wrap leading-relaxed">{message.content}</p>
       </div>
