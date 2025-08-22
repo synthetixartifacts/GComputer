@@ -50,7 +50,7 @@
     discussionStateManager.clearDiscussion();
   });
   
-  async function initialize() {
+  async function initialize(): Promise<void> {
     if (!agent && !discussion?.agent) {
       error = 'No agent configured';
       return;
@@ -77,7 +77,7 @@
     isInitialized = true;
   }
   
-  async function handleSendMessage(message: string) {
+  async function handleSendMessage(message: string): Promise<void> {
     if (!message.trim() || isStreaming) return;
     
     const state = discussionStateManager.getState();
@@ -182,7 +182,7 @@
     }
   }
   
-  function handleStop() {
+  function handleStop(): void {
     // TODO: Implement stream cancellation
     discussionStateManager.setStreaming(false);
   }

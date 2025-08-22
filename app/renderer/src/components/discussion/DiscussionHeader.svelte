@@ -16,12 +16,12 @@
     editedTitle = discussion.title;
   }
 
-  function startEditingTitle() {
+  function startEditingTitle(): void {
     isEditingTitle = true;
     editedTitle = discussion?.title || '';
   }
 
-  async function saveTitle() {
+  async function saveTitle(): Promise<void> {
     if (!discussion || editedTitle === discussion.title) {
       isEditingTitle = false;
       return;
@@ -45,12 +45,12 @@
     }
   }
 
-  function cancelEditingTitle() {
+  function cancelEditingTitle(): void {
     editedTitle = discussion?.title || '';
     isEditingTitle = false;
   }
 
-  async function toggleFavorite() {
+  async function toggleFavorite(): Promise<void> {
     if (!discussion) return;
 
     if (onFavoriteToggle) {

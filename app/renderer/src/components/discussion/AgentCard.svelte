@@ -6,7 +6,7 @@
   export let onClick: ((agent: Agent) => void) | null = null;
   export let selected: boolean = false;
 
-  function handleClick() {
+  function handleClick(): void {
     if (onClick) {
       onClick(agent);
     }

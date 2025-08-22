@@ -32,7 +32,7 @@
     },
   ];
 
-  function handleTableAction(event: CustomEvent) {
+  function handleTableAction(event: CustomEvent): void {
     const { action, row } = event.detail;
     
     if (action === 'row-click') {
@@ -45,7 +45,7 @@
     }
   }
 
-  function handleSelect(discussion: Discussion) {
+  function handleSelect(discussion: Discussion): void {
     if (onSelect) {
       onSelect(discussion);
     } else {
@@ -53,13 +53,13 @@
     }
   }
   
-  function handleDelete(discussion: Discussion) {
+  function handleDelete(discussion: Discussion): void {
     if (onDelete) {
       onDelete(discussion);
     }
   }
   
-  function handleToggleFavorite(discussion: Discussion) {
+  function handleToggleFavorite(discussion: Discussion): void {
     if (onToggleFavorite) {
       onToggleFavorite(discussion);
     }
