@@ -160,7 +160,7 @@ class ConfigManager {
    */
   getPublicConfig(): PublicConfig {
     return {
-      mode: this.getEnv('mode', 'production'),
+      mode: this.getEnv('mode', 'production') || 'production',
       // Add other non-sensitive config here as needed
     };
   }
@@ -190,6 +190,6 @@ export function hasEnv(key: string): boolean {
   return configManager.hasEnv(key);
 }
 
-export function getPublicConfig(): Record<string, any> {
+export function getPublicConfig(): PublicConfig {
   return configManager.getPublicConfig();
 }
