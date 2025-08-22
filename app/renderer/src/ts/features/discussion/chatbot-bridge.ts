@@ -9,6 +9,7 @@ import type { Agent } from '@features/admin/types';
 
 export interface DiscussionChatbotBridgeOptions {
   onMessageSaved?: (message: Message) => void;
+  onDiscussionCreated?: (discussion: DiscussionWithMessages) => void;
   onError?: (error: Error) => void;
 }
 
@@ -16,6 +17,8 @@ export class DiscussionChatbotBridge {
   private discussion: DiscussionWithMessages | null = null;
   private isStreaming: boolean = false;
   private options: DiscussionChatbotBridgeOptions;
+  private agentId: number | null = null;
+  private agent: Agent | null = null;
 
   constructor(options: DiscussionChatbotBridgeOptions = {}) {
     this.options = options;
@@ -24,29 +27,61 @@ export class DiscussionChatbotBridge {
   /**
    * Initialize the bridge with a discussion and sync existing messages
    */
-  async initialize(discussion: DiscussionWithMessages, threadId: string): Promise<void> {
+  async initialize(discussion: DiscussionWithMessages | null, threadId: string, agent?: Agent): Promise<void> {
     this.discussion = discussion;
+    this.agent = agent || (discussion?.agent as Agent) || null;
+    this.agentId = this.agent?.id || null;
     
     // Set the thread as active
     chatbotStore.setActiveThread(threadId);
     
-    // Convert and sync existing discussion messages to chatbot store
-    const chatMessages: ChatMessage[] = discussion.messages.map(msg => ({
-      id: `msg-${msg.id}`,
-      role: msg.who === 'user' ? 'user' as const : 'assistant' as const,
-      content: msg.content,
-      createdAtIso: new Date(msg.createdAt).toISOString()
-    }));
-    
-    // Replace thread messages with discussion history
-    chatbotStore.replaceThreadMessages(threadId, chatMessages);
+    if (discussion && discussion.messages.length > 0) {
+      // Convert and sync existing discussion messages to chatbot store
+      const chatMessages: ChatMessage[] = discussion.messages.map(msg => ({
+        id: `msg-${msg.id}`,
+        role: msg.who === 'user' ? 'user' as const : 'assistant' as const,
+        content: msg.content,
+        createdAtIso: new Date(msg.createdAt).toISOString()
+      }));
+      
+      // Replace thread messages with discussion history
+      chatbotStore.replaceThreadMessages(threadId, chatMessages);
+    } else {
+      // Clear messages for new discussion
+      chatbotStore.replaceThreadMessages(threadId, []);
+    }
   }
 
   /**
    * Send a message with discussion persistence and memory support
    */
   async sendMessage(threadId: string, content: string, useMemory: boolean = false): Promise<void> {
-    if (!this.discussion || !this.discussion.agent) {
+    // Check if we need to create a discussion first
+    if (!this.discussion && this.agentId && this.agent) {
+      try {
+        // Create a new discussion with the first message
+        const newDiscussion = await discussionService.createNewDiscussionWithAgent(
+          this.agentId,
+          content.substring(0, 50) + (content.length > 50 ? '...' : '') // Use first message as title
+        );
+        
+        // Add the agent to the discussion object since it's not populated
+        newDiscussion.agent = this.agent;
+        this.discussion = newDiscussion;
+        
+        // Notify parent about the new discussion
+        if (this.options.onDiscussionCreated) {
+          this.options.onDiscussionCreated(newDiscussion);
+        }
+      } catch (error) {
+        this.handleError(new Error('Failed to create discussion'));
+        return;
+      }
+    }
+
+    // Check we have everything needed
+    const activeAgent = this.discussion?.agent || this.agent;
+    if (!this.discussion || !activeAgent) {
       this.handleError(new Error('No discussion or agent configured'));
       return;
     }
@@ -139,7 +174,8 @@ export class DiscussionChatbotBridge {
    * Handle streaming AI response with database persistence
    */
   private async handleStreamingResponse(threadId: string, messages: AIMessage[]): Promise<void> {
-    if (!this.discussion || !this.discussion.agent) return;
+    const activeAgent = this.discussion?.agent || this.agent;
+    if (!this.discussion || !activeAgent) return;
 
     // Create a placeholder message for streaming content
     const streamingMessageId = generateId('assistant');
@@ -157,7 +193,7 @@ export class DiscussionChatbotBridge {
 
     try {
       const stream = aiCommunicationService.streamConversationToAgent(
-        this.discussion.agent.id,
+        activeAgent.id,
         messages,
         { stream: true }
       );

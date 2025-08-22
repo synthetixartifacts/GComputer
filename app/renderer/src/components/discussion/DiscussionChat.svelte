@@ -2,14 +2,17 @@
   import { onMount, onDestroy } from 'svelte';
   import ChatThread from '@components/chat/ChatThread.svelte';
   import type { DiscussionWithMessages, Message } from '@features/discussion/types';
+  import type { Agent } from '@features/admin/types';
   import { discussionStore } from '@features/discussion/store';
   import { DiscussionChatbotBridge } from '@features/discussion/chatbot-bridge';
   import { aiCommunicationService } from '@features/ai-communication/service';
   import { t } from '@ts/i18n';
 
-  export let discussion: DiscussionWithMessages;
+  export let discussion: DiscussionWithMessages | null = null;
+  export let agent: Agent;  // Always required - either from discussion or standalone
   export let onMessageSent: ((message: Message) => void) | null = null;
   export let onMessageReceived: ((message: Message) => void) | null = null;
+  export let onDiscussionCreated: ((discussion: DiscussionWithMessages) => void) | null = null;
 
   let bridge: DiscussionChatbotBridge;
   let threadId: string;
@@ -17,13 +20,15 @@
   let isValidating: boolean = false;
   let validationResult: boolean | null = null;
 
-  // Create unique thread ID for this discussion
-  $: threadId = `discussion-${discussion.id}`;
+  // Create unique thread ID
+  $: threadId = discussion ? `discussion-${discussion.id}` : `new-discussion-${agent.id}`;
+
+  // The agent is always provided
 
   // Parse agent configuration to get memory setting
   $: {
     try {
-      const agentConfig = JSON.parse(discussion.agent?.configuration || '{}');
+      const agentConfig = JSON.parse(agent.configuration || '{}');
       useMemory = agentConfig.useMemory || false;
     } catch (e) {
       useMemory = false;
@@ -44,25 +49,29 @@
           onMessageReceived(message);
         }
       },
+      onDiscussionCreated: (newDiscussion) => {
+        discussion = newDiscussion;
+        if (onDiscussionCreated) {
+          onDiscussionCreated(newDiscussion);
+        }
+      },
       onError: (error) => {
         console.error('Discussion chat error:', error);
       }
     });
 
-    // Initialize bridge with existing discussion
-    await bridge.initialize(discussion, threadId);
+    // Initialize bridge
+    await bridge.initialize(discussion, threadId, agent);
 
-    // Validate agent if configured
-    if (discussion.agent) {
-      isValidating = true;
-      try {
-        validationResult = await aiCommunicationService.validateAgent(discussion.agent.id);
-      } catch (err) {
-        validationResult = false;
-        console.error('Agent validation failed:', err);
-      } finally {
-        isValidating = false;
-      }
+    // Validate agent
+    isValidating = true;
+    try {
+      validationResult = await aiCommunicationService.validateAgent(agent.id);
+    } catch (err) {
+      validationResult = false;
+      console.error('Agent validation failed:', err);
+    } finally {
+      isValidating = false;
     }
   });
 
@@ -76,7 +85,7 @@
   }
 
   async function handleSendMessage(text: string): Promise<void> {
-    if (!discussion.agent || !bridge) {
+    if (!agent || !bridge) {
       console.error('No agent or bridge configured');
       return;
     }

@@ -34,26 +34,9 @@
     if (!agent.enable) return;
     
     selectedAgent = agent;
-    await createNewDiscussion(agent);
-  }
-
-  async function createNewDiscussion(agent: Agent) {
-    try {
-      creatingDiscussion = true;
-      
-      // Create new discussion with this agent
-      const discussion = await discussionService.createNewDiscussionWithAgent(
-        agent.id,
-        `${$t('discussion.newWith')} ${agent.name}`
-      );
-
-      // Navigate to the chat view with the new discussion
-      goto('discussion.chat', { discussionId: discussion.id });
-    } catch (err) {
-      console.error('Failed to create discussion:', err);
-      error = err instanceof Error ? err.message : 'Failed to create discussion';
-      creatingDiscussion = false;
-    }
+    
+    // Navigate to chat view with agent ID (no discussion yet)
+    goto('discussion.chat', { agentId: agent.id });
   }
 </script>
 

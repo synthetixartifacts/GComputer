@@ -11,53 +11,24 @@
   export let onDelete: ((discussion: Discussion) => void) | null = null;
   export let onToggleFavorite: ((discussion: Discussion) => void) | null = null;
 
-
-  // Table columns configuration
-  const columns = [
+  // Make columns reactive to translation changes
+  $: columns = [
     {
-      key: 'isFavorite',
-      label: '',
-      sortable: true,
-      width: '50px',
-      render: (value: boolean, row: Discussion) => {
-        const star = value ? '⭐' : '☆';
-        return `<button class="favorite-toggle" data-id="${row.id}">${star}</button>`;
-      },
-    },
-    {
-      key: 'title',
-      label: $t('discussion.table.title'),
+      id: 'title',
+      title: $t('discussion.table.title'),
       sortable: true,
     },
     {
-      key: 'agent.name',
-      label: $t('discussion.table.agent'),
+      id: 'agent',
+      title: $t('discussion.table.agent'),
       sortable: true,
-      getValue: (row: Discussion) => row.agent?.name || 'Unknown',
+      access: (row: Discussion) => row.agent?.name || 'Unknown',
     },
     {
-      key: 'updatedAt',
-      label: $t('discussion.table.updated'),
+      id: 'updatedAt',
+      title: $t('discussion.table.updated'),
       sortable: true,
-      render: (value: Date) => {
-        return new Date(value).toLocaleDateString();
-      },
-    },
-    {
-      key: 'actions',
-      label: $t('discussion.table.actions'),
-      sortable: false,
-      width: '150px',
-      render: (_value: any, row: Discussion) => {
-        return `
-          <button class="action-continue btn btn-sm btn-primary" data-id="${row.id}">
-            ${$t('discussion.actions.continue')}
-          </button>
-          <button class="action-delete btn btn-sm btn-danger" data-id="${row.id}">
-            ${$t('discussion.actions.delete')}
-          </button>
-        `;
-      },
+      access: (row: Discussion) => new Date(row.updatedAt).toLocaleDateString(),
     },
   ];
 
@@ -74,31 +45,23 @@
     }
   }
 
-  function handleClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    
-    if (target.classList.contains('favorite-toggle')) {
-      const id = parseInt(target.dataset.id || '0');
-      const discussion = discussions.find(d => d.id === id);
-      if (discussion && onToggleFavorite) {
-        onToggleFavorite(discussion);
-      }
-    } else if (target.classList.contains('action-continue')) {
-      const id = parseInt(target.dataset.id || '0');
-      const discussion = discussions.find(d => d.id === id);
-      if (discussion) {
-        if (onSelect) {
-          onSelect(discussion);
-        } else {
-          goto('discussion.chat', { discussionId: id });
-        }
-      }
-    } else if (target.classList.contains('action-delete')) {
-      const id = parseInt(target.dataset.id || '0');
-      const discussion = discussions.find(d => d.id === id);
-      if (discussion && onDelete) {
-        onDelete(discussion);
-      }
+  function handleSelect(discussion: Discussion) {
+    if (onSelect) {
+      onSelect(discussion);
+    } else {
+      goto('discussion.chat', { discussionId: discussion.id });
+    }
+  }
+  
+  function handleDelete(discussion: Discussion) {
+    if (onDelete) {
+      onDelete(discussion);
+    }
+  }
+  
+  function handleToggleFavorite(discussion: Discussion) {
+    if (onToggleFavorite) {
+      onToggleFavorite(discussion);
     }
   }
 
@@ -110,31 +73,53 @@
       <p>{$t('discussion.list.empty')}</p>
       <button
         class="btn btn-primary btn-lg"
-        on:click={() => goto('discussion.new')}
+        on:click={() => goto('discussion.agentSelection')}
       >
         {$t('discussion.list.newDiscussion')}
       </button>
     </div>
   {:else}
-    <div class="list-header">
-      <div class="list-controls">
-        <button
-          class="btn btn-primary"
-          on:click={() => goto('discussion.new')}
-        >
-          {$t('discussion.list.newDiscussion')}
-        </button>
-      </div>
-    </div>
-
-    <div class="list-content" on:click={handleClick}>
+    <div class="list-content">
       <Table
-        data={discussions}
+        rows={discussions}
         {columns}
-        sortable={true}
-        filterable={true}
+        showDefaultActions={false}
         on:action={handleTableAction}
-      />
+      >
+        <svelte:fragment slot="actions" let:row>
+          <button 
+            class="btn btn-sm btn-primary" 
+            on:click={() => handleSelect(row)}
+            title={$t('discussion.actions.continue')}
+          >
+            💬
+          </button>
+          {#if row.isFavorite}
+            <button 
+              class="btn btn-sm btn-ghost" 
+              on:click={() => handleToggleFavorite(row)}
+              title={$t('discussion.header.unfavorite')}
+            >
+              ⭐
+            </button>
+          {:else}
+            <button 
+              class="btn btn-sm btn-ghost" 
+              on:click={() => handleToggleFavorite(row)}
+              title={$t('discussion.header.favorite')}
+            >
+              ☆
+            </button>
+          {/if}
+          <button 
+            class="btn btn-sm btn-danger" 
+            on:click={() => handleDelete(row)}
+            title={$t('discussion.actions.delete')}
+          >
+            🗑️
+          </button>
+        </svelte:fragment>
+      </Table>
     </div>
   {/if}
 </div>

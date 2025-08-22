@@ -503,6 +503,21 @@
       "noDiscussion": "Aucune discussion sélectionnée",
       "error": "Erreur",
       "aiThinking": "L'IA réfléchit..."
+    },
+    "newChat": "Nouvelle Conversation",
+    "chattingWith": "Discussion avec {agent}",
+    "noAgentSelected": "Aucun agent sélectionné. Veuillez sélectionner un agent pour commencer.",
+    "newDiscussion": "Nouvelle Discussion",
+    "thread": {
+      "empty": "Aucun message pour le moment",
+      "startHint": "Tapez un message ci-dessous pour commencer la conversation",
+      "you": "Vous",
+      "ai": "IA",
+      "typing": "L'IA tape",
+      "newMessages": "Nouveaux messages"
+    },
+    "input": {
+      "placeholder": "Tapez votre message..."
     }
   },
   "components": {

@@ -485,6 +485,21 @@
       "noDiscussion": "No discussion selected",
       "error": "Error",
       "aiThinking": "AI is thinking..."
+    },
+    "newChat": "New Chat",
+    "chattingWith": "Chatting with {agent}",
+    "noAgentSelected": "No agent selected. Please select an agent to start chatting.",
+    "newDiscussion": "New Discussion",
+    "thread": {
+      "empty": "No messages yet",
+      "startHint": "Type a message below to start the conversation",
+      "you": "You",
+      "ai": "AI",
+      "typing": "AI is typing",
+      "newMessages": "New messages"
+    },
+    "input": {
+      "placeholder": "Type your message..."
     }
   },
   "components": {
