@@ -1,5 +1,115 @@
 
 
+Ok now the call are perfect but when I click submit we have multiple issue:
+- My own message is not printed
+- I see "AI is thinking" 
+- I dont get the message stream back by the chat view
+
+Its is working perfectly in /development/ai/communication so use this logic for the chatbot view and also make sure to reuse available componants or update the existing one while making them more dry and parameters based. Both section should be doing the same and using the same logic pretty much but the ux/ui is different
+
+## Big Task Alert
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. 
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and asses if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+Do not hesitate in the middle of the execution based on your finding to challenge and revisit the inital plan and redo a planning phase, it is important that your plan go along you coding execution and your discovery.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+When I talk to the ai in the development section its working and the call is this
+
+{
+    "model": "gpt-4.1",
+    "messages": [
+        {
+            "role": "system",
+            "content": "You are a helpful AI assistant. Be concise and accurate."
+        },
+        {
+            "role": "user",
+            "content": "hello"
+        }
+    ],
+    "stream": true,
+    "temperature": 0.7,
+    "max_tokens": 4096
+}
+
+
+But when we talk to ai in the discussion setup it is not working.
+It should be the same logic but with memory, right now the call input is
+
+{
+    "model": "gpt-4.1",
+    "messages": [
+        {
+            "role": "system",
+            "content": "You are a helpful AI assistant. Be concise and accurate."
+        },
+        {
+            "role": "system",
+            "content": "You are a helpful AI assistant. Be concise and accurate."
+        },
+        {
+            "role": "system",
+            "content": "<conversation_history>\n## User\nhello there\n</conversation_history>"
+        },
+        {
+            "role": "user",
+            "content": "hello there"
+        }
+    ],
+    "stream": true,
+    "temperature": 0.7,
+    "max_tokens": 4096
+}
+
+Which is not ok, like system is there 3 times and the conversation history should, first not be there if its the first message and if its not the same message it should all be in the user type message like this
+
+------
+<conversation_history>
+## User message
+Hello there
+
+## AI Agent / YOU
+Hi, how are you doing?
+</conversation_history>
+
+# New User message to answer to
+I'm good, I would like to know about the sky, why is it blue?
+-----
+
+All of this in the same user message.
+
+
+
+
+
+
+
+
+
+
 In our provider entity we have a Secret Key field.
 I dont want to place it in my seed, as these are private information and dont want it in git for security reason.
 To be able to have a fallback on local we will use the .env file and look for secretKey concat to "_key" ex: openai_key

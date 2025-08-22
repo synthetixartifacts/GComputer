@@ -1,10 +1,14 @@
 
 
+
+------
+
+
 ## Complex task
 
 This seems to be a complex task as we are iterating a lot right now and you have not yet solve it so try to explore more, try to get new idea based on best practice and documentation you can find online, really do not assume and do not continue on your own path, try to find other way while still keeping it clean, lean and DRY. 
 
-
+------
 
 
 ## Big Task Alert
@@ -21,6 +25,31 @@ Decide in the best way to do this task for our project, specifications and requi
 It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
 
 Do not hesitate in the middle of the execution based on your finding to challenge and revisit the inital plan and redo a planning phase, it is important that your plan go along you coding execution and your discovery.
+
+-------
+
+
+# NEW FEATURE/COMPONENT
+
+## Way to plan and execute
+This job is a really really heavy one so your plan must be in consequence. 
+We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something like an MVP.
+
+We need to have a lot of new component and code develop but remind yourself that we want thing to be componant driven and DRY at all time. No scss in files, no overlap of logic in component, each part of our logic will either reuse an existing component or create new independant ones.
+
+We already have a lot of existing component so make sure to list them before you start coding so that you are not recreating something that exist. 
+
+Don't forget about translations.
+
+When you're confident that what you did is at a production ready state, you will verify the key point through unit testing. Once you are at this steps you will need to rething about everything you did and create a new clear and detailed plan just for that. Make it clear in your initial plan that you will have to rethink and replan at this steps because a lot of things will probably differ from your initial plan as you go on and discover things.
+
+We have a lot of up to date documentation you can check at any time to verify things. 
+If you need specific libraries or third-party libraries or you are hitting a wall, do not forget that you can browse and search the web for up to date answer.
+Always ground yourself in the current project and do not overreach.
+
+
+## New task goal/context
+
 
 ------
 

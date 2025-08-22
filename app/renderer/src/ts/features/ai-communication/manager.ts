@@ -95,13 +95,13 @@ export class AICommunicationManager {
     const { agent } = agentContext;
     const messages: AIMessage[] = [];
 
-    if (agent.systemPrompt && agent.systemPrompt.trim() !== '') {
-      messages.push({
-        role: 'system',
-        content: agent.systemPrompt,
-        metadata: { source: 'agent' }
-      });
-    }
+    // Always include a system message, even if empty
+    const systemPrompt = agent.systemPrompt?.trim() || '';
+    messages.push({
+      role: 'system',
+      content: systemPrompt || 'You are a helpful AI assistant. Be concise and accurate.',
+      metadata: { source: 'agent' }
+    });
 
     messages.push(...userMessages);
 
