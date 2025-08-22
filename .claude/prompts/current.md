@@ -1,3 +1,24 @@
+Lets focus on on vibe and style now.
+
+Here is some issue I have withing the discussion / chatbot / ux-ui of the chatbot secton used in /discussion/ route and /development/ai/communication route too.
+First things first is to verify that we are using configurable resusable component and that only the view/ux-ui differ.
+But the deep logic remain.
+Especially for the disucssion pannel.
+We need to have ai message and user message be by default 90% of the space. 
+global style are need for this. No specific at this point.
+
+
+
+
+
+We are working on our discussion logic and here are the issue I see right now 
+- this key styleguide.chatbot.messages.Copy instead of the translation and the copied too. All other text are tranlated
+- I want to remove for now the "U" "A" bubble in css and remove this
+- I want the input / textarea section for the user input to be always be sticky bottom 0 exept when to bottom is coming then it takes it place naturally
+
+
+
+
 
 
 

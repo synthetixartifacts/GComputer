@@ -1,5 +1,6 @@
 
-
+Have an intiating phase on first setup where the human have to answer the initial question / phase concept planning
+- link the human to the app / ai
 
 
 Being able to setup a hotkey that trigger something like an action in our app

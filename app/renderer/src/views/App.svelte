@@ -96,7 +96,12 @@
 <main class="container-page stack-lg py-6">
   {#if route === 'home'}
     <HomeView />
-  
+  {:else if route === 'discussion.list'}
+    <DiscussionListView />
+  {:else if route === 'discussion.new'}
+    <AgentSelectionView />
+  {:else if route === 'discussion.chat'}
+    <DiscussionChatView />
   {:else if route === 'settings.config'}
     <SettingsConfigView />
   {:else if route === 'settings.about'}
@@ -141,12 +146,6 @@
     <AdminAgentView />
   {:else if canShowRoute(route) && route === 'development.ai.communication'}
     <TestAICommunicationView />
-  {:else if route === 'discussion.list'}
-    <DiscussionListView />
-  {:else if route === 'discussion.new'}
-    <AgentSelectionView />
-  {:else if route === 'discussion.chat'}
-    <DiscussionChatView />
   {/if}
 </main>
 

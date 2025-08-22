@@ -6,6 +6,10 @@
   export let messages: ChatMessage[] = [];
   export let autoscroll: boolean = true;
   export let groupThresholdMs: number = 3 * 60 * 1000; // 3 min grouping window
+  
+  // Translation key props for different contexts
+  export let copyKey: string = 'pages.styleguide.chatbot.messages.Copy';
+  export let copiedKey: string = 'pages.styleguide.chatbot.messages.Copied';
 
   let scroller: HTMLDivElement | null = null;
   let userHasScrolled: boolean = false;
@@ -79,13 +83,15 @@
 </script>
 
 <div class="overflow-y-auto h-full pr-2" bind:this={scroller} on:scroll={handleScroll} aria-label={"Conversation"}>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 p-4 pb-6">
     {#each messages as msg, i (msg.id)}
       <ChatMessageBubble
         message={msg}
         showAvatar={isFirstInGroup(i)}
         isFirstInGroup={isFirstInGroup(i)}
         isLastInGroup={isLastInGroup(i)}
+        {copyKey}
+        {copiedKey}
       />
     {/each}
   </div>

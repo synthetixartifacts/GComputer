@@ -17,6 +17,7 @@
 @use './components/agent-card';
 @use './components/discussion-header';
 @use './components/discussion-chat';
+@use './components/chat-messages';
 @use './views/capture-screen';
 
 @tailwind base;

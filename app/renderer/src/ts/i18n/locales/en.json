@@ -488,7 +488,16 @@
       "backToList": "Back to List",
       "noDiscussion": "No discussion selected",
       "error": "Error",
-      "aiThinking": "AI is thinking..."
+      "aiThinking": "AI is thinking...",
+      "messages": {
+        "copy": "Copy",
+        "copied": "Copied!"
+      },
+      "composer": {
+        "inputLabel": "Message input",
+        "placeholder": "Type a message...",
+        "send": "Send"
+      }
     },
     "newChat": "New Chat",
     "chattingWith": "Chatting with {agent}",

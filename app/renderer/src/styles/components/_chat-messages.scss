@@ -1,0 +1,41 @@
+// Chat Message Components Global Styles
+
+// Ensure message containers can use maximum available width
+.chat-message-bubble {
+  // Override any inherited width constraints
+  width: 100%;
+  
+  // Message content should use 90% of available space with minimum width
+  .message-content {
+    max-width: 90%;
+    width: 90%;
+    min-width: 300px;
+  }
+}
+
+// Chat message list optimizations
+.chat-message-list {
+  // Reduce padding on smaller screens while maintaining readability
+  @media (max-width: 768px) {
+    .message-container {
+      padding-left: var(--spacing-sm);
+      padding-right: var(--spacing-sm);
+    }
+  }
+}
+
+// Ensure full width utilization for both user and AI messages
+.message-bubble-container {
+  width: 100%;
+  
+  .message-bubble {
+    // Both user and AI messages should be able to expand to 90% with minimum width
+    max-width: 90% !important;
+    min-width: 300px !important;
+    
+    // Remove any gaps that limit message width
+    .message-inner {
+      width: 100%;
+    }
+  }
+}

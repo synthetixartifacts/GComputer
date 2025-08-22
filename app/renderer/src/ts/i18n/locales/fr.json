@@ -506,7 +506,16 @@
       "backToList": "Retour à la Liste",
       "noDiscussion": "Aucune discussion sélectionnée",
       "error": "Erreur",
-      "aiThinking": "L'IA réfléchit..."
+      "aiThinking": "L'IA réfléchit...",
+      "messages": {
+        "copy": "Copier",
+        "copied": "Copié!"
+      },
+      "composer": {
+        "inputLabel": "Zone de saisie",
+        "placeholder": "Écrire un message...",
+        "send": "Envoyer"
+      }
     },
     "newChat": "Nouvelle Conversation",
     "chattingWith": "Discussion avec {agent}",

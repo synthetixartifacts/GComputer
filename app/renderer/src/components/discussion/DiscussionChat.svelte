@@ -108,5 +108,10 @@
   <ChatThread
     {threadId}
     customSendHandler={handleSendMessage}
+    copyKey="discussion.chat.messages.copy"
+    copiedKey="discussion.chat.messages.copied"
+    placeholderKey="discussion.chat.composer.placeholder"
+    inputLabelKey="discussion.chat.composer.inputLabel"
+    sendKey="discussion.chat.composer.send"
   />
 </div>
