@@ -179,12 +179,21 @@ export abstract class BaseProviderAdapter implements ProviderAdapter {
     }
 
     // Fall back to environment if provider code is available
-    if (this.providerCode && window.gc?.config?.getProviderSecret) {
+    if (this.providerCode && window.gc?.config?.getEnv) {
       try {
-        const envSecret = await window.gc.config.getProviderSecret(this.providerCode);
-        if (envSecret && envSecret.trim() !== '') {
-          this.secretKeyCache = envSecret;
-          return envSecret;
+        // Try common environment variable patterns for API keys
+        const envKeys = [
+          `${this.providerCode.toUpperCase()}_API_KEY`,
+          `${this.providerCode.toUpperCase()}_KEY`,
+          `${this.providerCode}_api_key`,
+        ];
+        
+        for (const envKey of envKeys) {
+          const envSecret = await window.gc.config.getEnv(envKey);
+          if (envSecret && envSecret.trim() !== '') {
+            this.secretKeyCache = envSecret;
+            return envSecret;
+          }
         }
       } catch (error) {
         console.error(`Failed to get secret for provider ${this.providerCode} from environment:`, error);

@@ -321,6 +321,12 @@
           "inputLabel": "Zone de saisie",
           "placeholder": "Écrire un message...",
           "send": "Envoyer"
+        },
+        "responses": {
+          "greeting": "Bonjour! Comment puis-je vous aider aujourd'hui?",
+          "hello": "Salut! 👋 Qu'aimeriez-vous explorer?",
+          "help": "Bien sûr — dites-moi ce dont vous avez besoin.",
+          "echo": "Vous avez dit: \"{message}\""
         }
       }
     },
@@ -456,6 +462,9 @@
   },
   "discussion": {
     "newWith": "Discussion avec",
+    "newDiscussion": "Nouvelle Discussion",
+    "user": "Utilisateur",
+    "aiAgent": "Agent IA",
     "confirmDelete": "Êtes-vous sûr de vouloir supprimer la discussion '{title}'?",
     "deleteError": "Échec de la suppression de la discussion",
     "favoriteError": "Échec du basculement des favoris",

@@ -19,9 +19,11 @@ export async function sendMessage(
 }
 
 function simulateAssistantReply(prompt: string): string {
-  if (!prompt || prompt.trim().length === 0) return 'Hello! How can I help you today?';
-  if (/\bhello|hi|hey\b/i.test(prompt)) return 'Hi there! 👋 What would you like to explore?';
-  if (/\bhelp|assist|support\b/i.test(prompt)) return 'Sure — tell me what you need help with.';
+  // Note: These are placeholder responses for simulation purposes
+  // Real implementation will use AI service responses
+  if (!prompt || prompt.trim().length === 0) return '__greeting__';
+  if (/\bhello|hi|hey\b/i.test(prompt)) return '__hello__';
+  if (/\bhelp|assist|support\b/i.test(prompt)) return '__help__';
   return `You said: "${prompt}"`;
 }
 

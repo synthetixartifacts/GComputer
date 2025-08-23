@@ -19,5 +19,7 @@ We want to create the most optimal and maintenable app so that we can scale as b
 
 
 # Directory to analyse
-You will go on and analyse the app\renderer\src\components directory and make sure everything in is perfectly following our standards.
+You will go on and analyse the app\renderer\src\ts directory and make sure everything in is perfectly following our standards.
 Once your are done with your comprehensive analysis, fix the most important ones that definitibly need to be handle to go forward (if they are some). 
+
+This is the most important folder of all. Make sure everything withing it is really perfect your need to do your process for each file and for each file verify if our DRY logic is applied perfectly.

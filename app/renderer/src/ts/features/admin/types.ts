@@ -60,22 +60,27 @@ export interface Agent {
 }
 
 // Filter types
-export interface ProviderFilters extends Record<string, string> {
+export interface ProviderFilters {
   code?: string;
   name?: string;
   url?: string;
+  [key: string]: string | undefined;
 }
 
-export interface ModelFilters extends Record<string, string> {
+export interface ModelFilters {
   code?: string;
   name?: string;
   model?: string;
+  providerId?: number;
+  [key: string]: string | number | undefined;
 }
 
-export interface AgentFilters extends Record<string, string> {
+export interface AgentFilters {
   code?: string;
   name?: string;
   version?: string;
+  modelId?: number;
+  [key: string]: string | number | undefined;
 }
 
 // Insert types
@@ -167,7 +172,7 @@ export interface FieldValidation {
   min?: number;
   max?: number;
   pattern?: RegExp;
-  custom?: (value: any) => string | null;
+  custom?: (value: unknown) => string | null;
 }
 
 // Select field option
