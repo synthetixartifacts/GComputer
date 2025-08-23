@@ -4,9 +4,10 @@
  */
 
 import { registerSettingsIpc } from './settings';
+import { registerConfigIpc } from './config-ipc';
 import { registerFsIpc } from './fs';
 import { registerDbIpc } from './db';
-import { registerScreenCaptureIpc } from './screen-capture';
+import { registerScreenCaptureIpc } from './screen-capture/index';
 import { initializeDisplayMedia, cleanupDisplayMedia } from './display-media';
 
 /**
@@ -17,6 +18,7 @@ export function registerAllIpcHandlers(): void {
   
   // Register feature-specific IPC handlers
   registerSettingsIpc();
+  registerConfigIpc();
   registerFsIpc();
   registerDbIpc();
   registerScreenCaptureIpc();

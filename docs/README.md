@@ -1,7 +1,9 @@
 ## Docs Index
 
+### Essential Documentation
+- **Coding Standards**: see `docs/coding_standards.md` - MUST READ comprehensive guide
 - Overview: see `docs/architecture.md`
-- Conventions: see `docs/conventions.md`
+- Conventions: see `docs/conventions.md` - Quick reference
 - How to install: see `docs/howto/install.md`
 - How to run: see `docs/howto/run.md`
 - Packaging: see `package.md`
