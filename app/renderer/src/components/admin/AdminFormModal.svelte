@@ -16,7 +16,7 @@
   export let open: boolean = false;
   export let mode: FormMode = 'create';
   export let fields: AdminFieldConfig<T>[] = [];
-  export let entityType: string; // e.g., 'provider', 'model', 'agent'
+  export let entityType: string;
   export let data: Partial<T> = {};
   export let loading: boolean = false;
 

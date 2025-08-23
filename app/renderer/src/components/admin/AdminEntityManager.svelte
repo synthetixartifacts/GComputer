@@ -25,13 +25,13 @@
   export let title: string;
   export let description: string = '';
   export let createButtonLabel: string = 'Create';
-  export let entityType: string; // e.g., 'provider', 'model', 'agent'
+  export let entityType: string;
   export let fields: AdminFieldConfig<T>[];
   
   // Store dependencies
   export let dataStore: Writable<T[]>;
   export let filtersStore: Writable<Record<string, string>>;
-  export let loadingKey: string; // Key for loading state (e.g., 'agents', 'models', 'providers')
+  export let loadingKey: string; 
   
   // Service functions
   export let service: EntityService<T, any, any>;
