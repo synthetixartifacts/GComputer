@@ -41,6 +41,19 @@
       "idle": "Inactif",
       "recording": "Enregistrement...",
       "disabled": "Désactivé"
+    },
+    "time": {
+      "justNow": "à l'instant",
+      "minutesAgo": "minutes",
+      "hoursAgo": "heures",
+      "daysAgo": "jours"
+    },
+    "fileSize": {
+      "bytes": "Octets",
+      "kb": "Ko",
+      "mb": "Mo",
+      "gb": "Go",
+      "tb": "To"
     }
   },
   "app": {

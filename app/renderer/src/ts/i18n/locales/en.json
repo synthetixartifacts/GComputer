@@ -41,6 +41,19 @@
       "idle": "Idle",
       "recording": "Recording...",
       "disabled": "Disabled"
+    },
+    "time": {
+      "justNow": "just now",
+      "minutesAgo": "minutes ago",
+      "hoursAgo": "hours ago",
+      "daysAgo": "days ago"
+    },
+    "fileSize": {
+      "bytes": "Bytes",
+      "kb": "KB",
+      "mb": "MB",
+      "gb": "GB",
+      "tb": "TB"
     }
   },
   "app": {

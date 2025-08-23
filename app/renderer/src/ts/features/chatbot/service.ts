@@ -1,5 +1,7 @@
 import type { AssistantReplyOptions, ChatMessage, SendMessageParams } from './types';
 import { chatbotStore } from './store';
+import { generateId } from '@ts/shared/utils/id-generation';
+import { nowIso } from '@ts/shared/utils/formatting';
 
 /**
  * IO boundary for chatbot interactions. For v1 this only simulates a reply.
@@ -27,14 +29,7 @@ function simulateAssistantReply(prompt: string): string {
   return `You said: "${prompt}"`;
 }
 
-export function generateId(prefix: string = 'msg'): string {
-  const random = Math.random().toString(36).slice(2, 8);
-  const now = Date.now().toString(36);
-  return `${prefix}_${now}_${random}`;
-}
-
-export function nowIso(): string {
-  return new Date().toISOString();
-}
+// Re-export shared utilities for backward compatibility
+export { generateId, nowIso };
 
 

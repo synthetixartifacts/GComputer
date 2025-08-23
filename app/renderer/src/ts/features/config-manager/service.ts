@@ -5,7 +5,7 @@
 
 import { configManagerStore, get } from './store';
 import type { PublicConfig } from './types';
-import { isElectronEnvironment } from '@features/environment';
+import { isElectronEnvironment } from '@features/environment/service';
 
 class ConfigManagerService {
   private static instance: ConfigManagerService;
