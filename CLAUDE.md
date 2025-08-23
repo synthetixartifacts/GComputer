@@ -22,16 +22,31 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 - Run `npm run typecheck` after major changes
 - Always verify existing patterns before implementing new features
 
+## Workflow Commands
+```bash
+# MUST RUN after major changes
+npm run typecheck        # TypeScript validation (critical)
+
+# Development workflow  
+npm run dev             # Start dev server (port 5173)
+npm run build           # Production build
+npm test                # Run tests in watch mode
+npm run test:run        # Single test run
+npm run test:coverage   # Coverage report
+
+# Database operations
+npm --workspace @gcomputer/db run drizzle:studio    # Visual DB editor
+npm --workspace @gcomputer/db run drizzle:generate  # Generate migrations
+```
+
 ## Project Overview
 **GComputer**: The "Everything App" for your computer - a local-first personal OS layer  
 **Core Mission**: Unified control center for search, chat, automation, and computer control  
 **Tech Stack**: Electron + TypeScript + Svelte 5 + Tailwind + SQLite + Drizzle ORM  
 **Current State**: 14 production features, 30+ components, live AI integration with OpenAI/Anthropic
 
-
 ## Current Features (Production-Ready)
-
-### Core Infrastructure (7)
+### Core Infrastructure
 1. **router** - Hash-based routing with 27 routes
 2. **settings** - Persistent config via IPC + localStorage fallback
 3. **ui** - Theme system (light/dark/fun) and global UI state
@@ -40,7 +55,7 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 6. **navigation** - Hierarchical menu system
 7. **environment** - Environment detection and configuration
 
-### User Features (7)
+### User Features
 8. **browse** - File system browsing with permissions
 9. **files-access** - File picker integration
 10. **search** - Search infrastructure with autocomplete
@@ -51,28 +66,8 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 15. **computer-capture** - Screen capture capabilities (in development)
 16. **config-manager** - Configuration management system
 
-## Current Goals
-
-### Immediate (This Week)
-- Complete discussion feature with full message persistence
-- Fix any existing bugs in AI communication flow
-- Ensure all tests pass for critical features
-
-### Short-term (This Month)  
-- Implement file indexing with parsers (PDF, DOCX, MD, TXT)
-- Add semantic search with embeddings
-- Create basic automation framework
-- Improve screen capture with OCR
-
-### Long-term Vision (3-6 Months)
-- Full "Everything App" - control any app from one place
-- Advanced automation with approval workflows  
-- Screen understanding and UI element detection
-- Voice interaction with push-to-talk
-- Cross-application orchestration with permissions
 
 ## Critical Rules
-
 ### ❌ NEVER Do This
 - Add `<style>` blocks in .svelte files - use SCSS only
 - Use inline `style` attributes - use Tailwind/SCSS classes
@@ -91,8 +86,14 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 - Use service layer for business logic, not components
 - Handle IPC errors gracefully with fallbacks
 
-## Architecture Patterns
+### Svelte 5 Patterns
+- Use `$props()` for component props with explicit types
+- Use `$state()` for reactive local state
+- Use `$derived()` for computed values
+- Use `$effect()` for side effects, return cleanup function
+- Always unsubscribe from stores in `onMount` cleanup
 
+## Architecture Patterns
 ### Process Model
 ```
 app/main/          → Electron main (Node.js access)
@@ -141,12 +142,25 @@ class FeatureService {
 ## Code Standards Summary
 **Full standards**: See `docs/coding_standards.md` for comprehensive guidelines
 
-### Quick Rules
+### Essential Rules (MEMORIZE)
 - **No `any` types** - Use strict TypeScript everywhere
 - **No inline styles** - All styles in `app/renderer/src/styles/`  
 - **No Node in renderer** - Only use `window.gc` APIs
 - **Feature pattern required** - types.ts → service.ts → store.ts
 - **Test critical paths** - 70% min coverage, 90% for DB/AI/IPC
+
+### Naming Conventions
+- Variables/functions: `camelCase` (clear, descriptive)
+- Types/interfaces/classes: `PascalCase`
+- Files: `PascalCase.svelte`, others `kebab-case`
+- Constants: `UPPER_SNAKE_CASE`
+- Avoid abbreviations; prefer full words
+
+### TypeScript Standards
+- Strict mode on, no `any` types (use `unknown` + type guards if needed)
+- Explicit return types for all exported functions
+- Proper null handling with optional chaining (`?.`) and nullish coalescing (`??`)
+- Type guards for runtime validation
 
 ## Database Schema
 
@@ -209,34 +223,40 @@ test (id, column1, column2)
 - `SearchBox.svelte` - Autocomplete search
 - `SearchResults.svelte` - Search results display
 
-## Essential Commands
+## Error Handling Patterns
+```typescript
+// ALWAYS handle async errors
+async function fetchData(): Promise<Result> {
+  try {
+    const response = await fetch('/api/data');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+    throw new Error('Data fetch failed');
+  }
+}
 
-```bash
-# Development
-npm run dev              # Start dev server (port 5173)
-npm run build            # Production build
-npm run typecheck        # TypeScript validation
-
-# Testing
-npm test                 # Watch mode
-npm run test:run         # Single run
-npm run test:coverage    # Coverage report
-npm run test:main        # Test main process
-npm run test:renderer    # Test renderer
-
-# Database
-npm --workspace @gcomputer/db run drizzle:studio    # Visual DB editor
-npm --workspace @gcomputer/db run drizzle:generate  # Generate migrations
-
-# Packaging
-npm run package:win      # Windows installer
-npm run package:mac      # macOS app
-npm run package:linux    # Linux AppImage
+// Service layer with fallback
+async function getSettings(): Promise<Settings> {
+  try {
+    if (window.gc?.settings) {
+      return await window.gc.settings.all();
+    }
+  } catch (error) {
+    console.warn('IPC failed, falling back to localStorage:', error);
+  }
+  // Fallback to localStorage
+  const stored = localStorage.getItem('settings');
+  return stored ? JSON.parse(stored) : DEFAULT_SETTINGS;
+}
 ```
 
 ## Quick Start Tasks
 
-### Before Coding
+### Before Coding important features/components
 1. Check `docs/coding_standards.md` for detailed patterns
 2. Search existing components in `app/renderer/src/components/`
 3. Review similar features in `app/renderer/src/ts/features/`
@@ -266,3 +286,22 @@ When stuck, check:
 3. `docs/coding_standards.md` for the correct pattern
 4. Console for errors (main and renderer)
 5. Database state: `npm --workspace @gcomputer/db run drizzle:studio`
+
+## Current Goals
+### Immediate (This Week)
+- Complete discussion feature with full message persistence
+- Fix any existing bugs in AI communication flow
+- Ensure all tests pass for critical features
+
+### Short-term (This Month)  
+- Implement file indexing with parsers (PDF, DOCX, MD, TXT)
+- Add semantic search with embeddings
+- Create basic automation framework
+- Improve screen capture with OCR
+
+### Long-term Vision (3-6 Months)
+- Full "Everything App" - control any app from one place
+- Advanced automation with approval workflows  
+- Screen understanding and UI element detection
+- Voice interaction with push-to-talk
+- Cross-application orchestration with permissions

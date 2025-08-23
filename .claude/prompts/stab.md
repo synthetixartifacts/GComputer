@@ -18,5 +18,5 @@ We want to create the most optimal and maintenable app so that we can scale as b
 
 
 # Directory to analyse
-You will go on and analyse the ./app/main directory and make sure everything in is perfectly following our standards.
-Once your are done with your comprehensive analysis, fix the most important one that need to be handle to go forward. 
+You will go on and analyse the ./app/preload directory and make sure everything in is perfectly following our standards.
+Once your are done with your comprehensive analysis, fix the most important ones that definitibly need to be handle to go forward (if they are some). 
