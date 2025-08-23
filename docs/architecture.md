@@ -1,5 +1,7 @@
 # Architecture
 
+> **Important**: Before implementing features, read [`coding_standards.md`](./coding_standards.md) for detailed patterns and requirements.
+
 ## Stack
 - **Electron** (main, preload, renderer processes)
 - **Svelte 5** + Tailwind CSS + SCSS (renderer UI)
@@ -12,12 +14,18 @@
 ```
 app/
   main/                    # Electron main process → dist/main/index.cjs
-    main.ts               # Entry point, window management
-    api-server.ts         # Express REST API server for browser access
+    main.ts               # Entry point, orchestrates initialization
+    window.ts             # Window management and lifecycle
+    initialization.ts     # Application setup and feature init
+    environment.ts        # Environment configuration loading
+    api-server.ts         # Express REST API server (port 3001)
     db.ts                 # Database integration and migrations
+    ipc/                  # IPC handler registration
+      index.ts            # Central IPC registration
     db/
       handlers/           # IPC handlers for database operations
         admin-handlers.ts # AI entity management handlers
+        discussion-handlers.ts # Discussion/message handlers
         test-handlers.ts  # Test table handlers
         index.ts          # Handler exports
       services/           # Shared service layer
@@ -25,6 +33,7 @@ app/
         provider-service.ts # AI provider operations
         model-service.ts  # AI model operations
         agent-service.ts  # AI agent operations
+        discussion-service.ts # Discussion/message operations
         test-service.ts   # Test table operations
       seeding.ts          # Default data seeding
       types.ts            # Database type definitions
@@ -102,7 +111,7 @@ app/
         app.d.ts          # Global type declarations
         vite-env.d.ts     # Vite environment types
         
-        features/         # 12 feature modules (business logic)
+        features/         # 16 feature modules (business logic)
           router/         # Hash-based routing with type safety
             types.ts      # Route union type (19 routes)
             service.ts    # Navigation functions
@@ -180,6 +189,36 @@ app/
             types.ts      # MenuItem interface
             service.ts    # Menu operations  
             store.ts      # Navigation state
+          
+          discussion/     # AI-powered discussion threads
+            types.ts      # Discussion and message types
+            service.ts    # Discussion operations
+            store.ts      # Discussion state management
+            chatbot-bridge.ts # AI integration bridge
+            state-manager.ts # State coordination
+            utils.ts      # Helper functions
+            electron-service.ts # Electron implementation
+            browser-service.ts # Browser fallback
+          
+          computer-capture/  # Screen capture capabilities
+            types.ts      # Capture types and interfaces
+            service.ts    # Capture operations
+            store.ts      # Capture state
+            utils.ts      # Capture utilities
+          
+          config-manager/  # Configuration management
+            types.ts      # Config types
+            service.ts    # Config operations
+            store.ts      # Config state
+            index.ts      # Public API
+          
+          config/         # Application configuration
+            types.ts      # Config schema
+            service.ts    # Config access
+            store.ts      # Config state
+            index.ts      # Public exports
+          
+          environment.ts  # Environment detection and utilities
       
       styles/             # SCSS design system
         global.scss       # Entry point
@@ -297,11 +336,15 @@ window.gc = {
 
 ### Database (SQLite + Drizzle)
 - **Location**: `packages/db/data/gcomputer.db`
-- **Schema**: Type-safe via Drizzle ORM with AI management tables
-- **Production Tables**: ai_providers, ai_models, ai_agents with relationships
+- **Schema**: Type-safe via Drizzle ORM with comprehensive data model
+- **Production Tables**: 
+  - AI Management: `ai_providers`, `ai_models`, `ai_agents` with relationships
+  - Discussion System: `discussions`, `messages` with cascade deletion
+  - Test Table: `test` for development
 - **Migrations**: Generated via `drizzle-kit generate`
 - **Dual Access**: IPC bridge (Electron) + REST API (browser) at localhost:3001
 - **Service Layer**: Shared business logic between IPC and REST endpoints
+- **Planned Tables**: `files`, `file_vectors`, `tags`, `actions`, `permissions`
 
 ### Settings Persistence
 - **Storage**: `userData/settings.json` with schema validation
@@ -331,11 +374,16 @@ window.gc = {
 ## Routing & Navigation
 
 ### Hash Router
-- **Type Safety**: Route union type with 20+ defined routes
-- **Dev Gating**: Styleguide/test routes hidden in production via `import.meta.env.DEV`
+- **Type Safety**: Route union type with 27 defined routes
+- **Dev Gating**: Development routes hidden in production via `import.meta.env.DEV`
 - **Navigation**: Programmatic via `navigate(route)` function
 - **State**: Current route reactive store with cleanup
-- **Admin Routes**: Dedicated routes for AI provider/model/agent management
+- **Route Categories**:
+  - Core: `home`, settings (config, about)
+  - Admin: AI entity management (provider, model, agent)
+  - Discussion: Thread list, new discussion, chat view
+  - Development: Styleguide, features, testing views
+  - AI: Communication testing and configuration
 
 ### Menu System
 - **Hierarchical**: Recursive `MenuItem` structure via `NavTree` component

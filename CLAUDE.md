@@ -1,159 +1,268 @@
 # CLAUDE.md
 
-## Behavior
+## Role & Responsibilities
+You are the **sole senior developer** of GComputer. You own the entire codebase and are responsible for:
+- Architecture decisions and implementation
+- Code quality, security, and best practices
+- Feature development from concept to production
+- Maintaining clean, DRY, testable code
+
+## Core Principles
+- **Security First**: All IPC through preload, no Node in renderer
+- **Type Safety**: Strict TypeScript, no `any` types
+- **DRY Code**: Always check for existing components/utilities before creating new ones
+- **Component Reuse**: Use existing 30+ components before creating new ones
+- **Test Critical Paths**: DB operations, AI communication, IPC handlers
+- **Clean Architecture**: Thin views, logic in services, state in stores
+
+## Behavior Guidelines
 - Be precise and direct - minimize preamble
 - Keep responses under 4 lines unless detail requested
 - Current year is 2025 for search/browse operations
+- Run `npm run typecheck` after major changes
+- Always verify existing patterns before implementing new features
 
-## Quick Start
+## Project Overview
+**GComputer**: The "Everything App" for your computer - a local-first personal OS layer  
+**Core Mission**: Unified control center for search, chat, automation, and computer control  
+**Tech Stack**: Electron + TypeScript + Svelte 5 + Tailwind + SQLite + Drizzle ORM  
+**Current State**: 14 production features, 30+ components, live AI integration with OpenAI/Anthropic
 
-### Essential Commands
-```bash
-npm run dev              # Start development
-npm run build            # Production build  
-npm run typecheck        # Check types
-npm test                 # Watch mode tests
-npm run test:run         # Single test run
-npm run test:coverage    # Coverage report
-```
 
-### Linting & Type Checking
-- Run `npm run lint` and `npm run typecheck` after completing any task
-- If commands not found, ask user and suggest adding to CLAUDE.md
+## Current Features (Production-Ready)
 
-## Project Context
-**GComputer**: Electron + TypeScript + Svelte 5 + Tailwind desktop app  
-**Vision**: Local-first personal OS layer for file/app indexing, search, and automation  
-**Status**: Production-ready with 12 features, 30+ components, AI integration
+### Core Infrastructure (7)
+1. **router** - Hash-based routing with 27 routes
+2. **settings** - Persistent config via IPC + localStorage fallback
+3. **ui** - Theme system (light/dark/fun) and global UI state
+4. **i18n** - English/French localization  
+5. **db** - Full CRUD with Drizzle ORM, staging, dual access (IPC/REST)
+6. **navigation** - Hierarchical menu system
+7. **environment** - Environment detection and configuration
+
+### User Features (7)
+8. **browse** - File system browsing with permissions
+9. **files-access** - File picker integration
+10. **search** - Search infrastructure with autocomplete
+11. **chatbot** - Chat interface with thread management
+12. **admin** - Complete AI entity management (providers/models/agents)
+13. **ai-communication** - Live AI with OpenAI/Anthropic adapters
+14. **discussion** - AI-powered discussion threads with agents
+15. **computer-capture** - Screen capture capabilities (in development)
+16. **config-manager** - Configuration management system
+
+## Current Goals
+
+### Immediate (This Week)
+- Complete discussion feature with full message persistence
+- Fix any existing bugs in AI communication flow
+- Ensure all tests pass for critical features
+
+### Short-term (This Month)  
+- Implement file indexing with parsers (PDF, DOCX, MD, TXT)
+- Add semantic search with embeddings
+- Create basic automation framework
+- Improve screen capture with OCR
+
+### Long-term Vision (3-6 Months)
+- Full "Everything App" - control any app from one place
+- Advanced automation with approval workflows  
+- Screen understanding and UI element detection
+- Voice interaction with push-to-talk
+- Cross-application orchestration with permissions
 
 ## Critical Rules
 
 ### ❌ NEVER Do This
 - Add `<style>` blocks in .svelte files - use SCSS only
-- Use inline `style` attributes - use SCSS classes
+- Use inline `style` attributes - use Tailwind/SCSS classes
 - Import Node/Electron in renderer - use `window.gc` APIs only  
-- Create files unless essential - prefer editing existing
-- Create docs/README unless explicitly requested
-- Commit without user asking explicitly
+- Create new files unless essential - always check existing first
+- Use `any` type in TypeScript - be explicit
+- Skip error handling - always handle edge cases
+- Commit without testing - run typecheck minimum
 
 ### ✅ ALWAYS Do This  
 - Place ALL styles in `app/renderer/src/styles/`
 - Use path aliases (`@renderer`, `@features`, `@components`)
 - Test files use `.test.ts` extension in `__tests__` directories
-- Run tests before PRs and major releases
-- Use existing patterns and components
+- Check for existing components/utilities before creating new
+- Follow feature module pattern (types → service → store)
+- Use service layer for business logic, not components
+- Handle IPC errors gracefully with fallbacks
 
-## Architecture
+## Architecture Patterns
 
-### Process Structure
-- `app/main/` → Electron main process (dist/main/index.cjs)
-- `app/preload/` → Secure IPC bridge via `window.gc`
-- `app/renderer/` → Svelte UI with feature modules
-
-### Feature Module Pattern
+### Process Model
 ```
-@features/<name>/
-  types.ts      # TypeScript interfaces
-  service.ts    # Business logic
-  store.ts      # Svelte stores
-```
+app/main/          → Electron main (Node.js access)
+  ├── db/          → Database handlers & services
+  ├── ipc/         → IPC handler registration
+  └── api-server/  → Express REST API (port 3001)
 
-### Database Access
-```js
-// Electron (via IPC)
-window.gc.db.providers.list()
+app/preload/       → Security bridge (contextBridge)
+  └── index.ts     → Exposes window.gc API
 
-// Browser (via REST API)  
-fetch('http://localhost:3001/api/admin/providers')
+app/renderer/      → UI (no Node.js access)
+  ├── views/       → Page components (thin logic)
+  ├── components/  → Reusable UI components
+  └── ts/features/ → Business logic & state
 ```
 
-## Code Standards
-
-### Naming Conventions
-- `camelCase` - variables, functions
-- `PascalCase` - types, interfaces, Svelte files
-- `kebab-case` - directories
-- `.test.ts` - test files in `__tests__` folders
-
-### TypeScript
-- Strict mode - no `any`
-- Explicit return types for exports
-- Early returns over deep nesting
-
-### Svelte 5
-- Svelte stores for shared state
-- Explicit subscribe/unsubscribe in `onMount`
-- Heavy logic in feature services, not components
-
-## Testing
-
-### Coverage Requirements
-- 70% minimum for new code
-- 90% for critical logic (DB, AI, settings)
-
-### When to Test
-- **Required**: Architecture changes, new features, DB/IPC changes
-- **Optional**: Bug fixes, styling, documentation
-- **Always**: Before PRs and releases
-
-## Key Features Available
-
-### Production Features (12)
-1. `router` - Type-safe hash routing
-2. `settings` - Persistent config with IPC
-3. `ui` - Theme system (light/dark/fun)
-4. `i18n` - English/French localization
-5. `browse` - File browsing
-6. `files-access` - File picker
-7. `db` - Full CRUD with staging
-8. `search` - Autocomplete search
-9. `chatbot` - Chat interface
-10. `navigation` - Menu system
-11. `admin` - AI entity management
-12. `ai-communication` - OpenAI/Anthropic integration
-
-### Components (30+)
-- **Layout**: Header, Footer, Sidebar, Drawer, Modal, ProgressBar
-- **Data**: Table (filtering/sorting/editing), FileList, FileGrid
-- **Admin**: Complete CRUD system with 6 field types
-- **Chat**: Full chat UI with AI integration
-- **Search**: SearchBox with autocomplete
-
-## AI Integration
-
-### Provider Adapter Pattern
+### Feature Module Pattern (REQUIRED)
+Every feature MUST follow this structure:
 ```typescript
-interface ProviderAdapter {
-  sendMessage(messages: AIMessage[], options): Promise<AIResponse>
-  streamMessage(messages: AIMessage[], options): AsyncIterableIterator<StreamEvent>
-  validateConfiguration(): Promise<boolean>
-}
+features/<name>/
+  types.ts         # TypeScript interfaces/types
+  service.ts       # Business logic, API calls
+  store.ts         # Svelte stores for state
+  index.ts         # Public API exports
+  
+  # Optional based on needs:
+  electron-service.ts  # Electron-specific implementation
+  browser-service.ts   # Browser fallback
+  utils.ts            # Helper functions
+  __tests__/          # Unit tests
 ```
 
-### Admin System Pattern
+### Service Layer Pattern
 ```typescript
-// Relationship field config
-{
-  id: 'providerId',
-  type: 'relationship',
-  options: providerOptions,
-  relationship: {
-    entityKey: 'provider',
-    valueField: 'id',
-    labelField: 'name'
+// Always create dual implementations for flexibility
+class FeatureService {
+  async operation(): Promise<Result> {
+    if (window.gc?.feature) {
+      return window.gc.feature.operation(); // Electron path
+    }
+    return fetch('/api/feature/operation'); // Browser fallback
   }
 }
 ```
 
-## Database
-- **Tech**: SQLite + sql.js + Drizzle ORM
-- **Location**: `packages/db/data/gcomputer.db`
-- **Schema**: `packages/db/src/db/schema.ts`
-- **Tables**: ai_providers, ai_models, ai_agents
+## Code Standards Summary
+**Full standards**: See `docs/coding_standards.md` for comprehensive guidelines
 
-## Reference Docs
-- `docs/architecture.md` - Technical overview
-- `docs/conventions.md` - Coding patterns
-- `docs/howto/*.md` - Feature guides
+### Quick Rules
+- **No `any` types** - Use strict TypeScript everywhere
+- **No inline styles** - All styles in `app/renderer/src/styles/`  
+- **No Node in renderer** - Only use `window.gc` APIs
+- **Feature pattern required** - types.ts → service.ts → store.ts
+- **Test critical paths** - 70% min coverage, 90% for DB/AI/IPC
+
+## Database Schema
+
+### Current Tables
+```sql
+-- AI Management
+ai_providers (id, code, name, url, authentication, secretKey, configuration)
+ai_models (id, code, name, model, providerId, endpoint, params)
+ai_agents (id, code, name, systemPrompt, modelId, configuration)
+
+-- Discussion System
+discussions (id, title, isFavorite, agentId)
+messages (id, who, content, discussionId)
+
+-- Test Table
+test (id, column1, column2)
+```
+
+### Planned Tables (see `packages/db/src/db/schema-future.ts`)
+- files (indexing)
+- file_vectors (embeddings)
+- tags (metadata)
+- actions (audit log)
+- permissions (consent management)
+
+## Available Components (30+)
+
+### Layout Components
+- `Header.svelte` - App header with navigation
+- `Footer.svelte` - App footer
+- `Sidebar.svelte` - Collapsible sidebar
+- `Drawer.svelte` - Slide-out panel
+- `Modal.svelte` - Accessible modal dialog
+- `ProgressBar.svelte` - Progress indicator
+
+### Data Components  
+- `Table.svelte` - Advanced data table (sort/filter/edit)
+- `FileList.svelte` - File browser list view
+- `FileGrid.svelte` - File browser grid view
+- `GalleryGrid.svelte` - Media gallery
+- `ImageCard.svelte` - Image display card
+
+### Form Components
+- `AdminTextField.svelte` - Text input
+- `AdminNumberField.svelte` - Number input
+- `AdminSelectField.svelte` - Dropdown select
+- `AdminTextareaField.svelte` - Multi-line text
+- `AdminBooleanField.svelte` - Toggle switch
+- `AdminRelationshipField.svelte` - Entity relationships
+
+### AI/Chat Components
+- `ChatThread.svelte` - Complete chat UI
+- `ChatMessageList.svelte` - Message display
+- `ChatMessageBubble.svelte` - Individual message
+- `ChatComposer.svelte` - Message input
+- `DiscussionChat.svelte` - AI discussion interface
+- `DiscussionList.svelte` - Discussion thread list
+
+### Search Components
+- `SearchBox.svelte` - Autocomplete search
+- `SearchResults.svelte` - Search results display
+
+## Essential Commands
+
+```bash
+# Development
+npm run dev              # Start dev server (port 5173)
+npm run build            # Production build
+npm run typecheck        # TypeScript validation
+
+# Testing
+npm test                 # Watch mode
+npm run test:run         # Single run
+npm run test:coverage    # Coverage report
+npm run test:main        # Test main process
+npm run test:renderer    # Test renderer
+
+# Database
+npm --workspace @gcomputer/db run drizzle:studio    # Visual DB editor
+npm --workspace @gcomputer/db run drizzle:generate  # Generate migrations
+
+# Packaging
+npm run package:win      # Windows installer
+npm run package:mac      # macOS app
+npm run package:linux    # Linux AppImage
+```
+
+## Quick Start Tasks
+
+### Before Coding
+1. Check `docs/coding_standards.md` for detailed patterns
+2. Search existing components in `app/renderer/src/components/`
+3. Review similar features in `app/renderer/src/ts/features/`
+
+### Adding a New Feature
+See `docs/coding_standards.md#project-structure` for detailed steps
+1. Follow feature module pattern in `features/<name>/`
+2. Register IPC handlers → Add to preload → Create view → Add route
+3. Write tests with 70% minimum coverage
+
+### Common Operations
+- **Database changes**: Schema → Migration → Service → Handler → Preload
+- **AI integration**: Use existing adapters in `ai-communication/adapters/`
+- **New component**: Check if Table/Modal/SearchBox can be configured instead
+
+## Key Documentation
+- **`docs/coding_standards.md`** - MUST READ: Comprehensive coding standards
+- `docs/PROJECT.md` - Vision, roadmap, and future plans
+- `docs/architecture.md` - System architecture and patterns
+- `docs/howto/*.md` - Specific feature guides
 - `packages/db/src/db/schema-future.ts` - Planned schema
-- `app/preload/future-apis.ts` - Planned APIs
+
+## Debugging Checklist
+When stuck, check:
+1. TypeScript errors: `npm run typecheck`
+2. Existing examples in similar features
+3. `docs/coding_standards.md` for the correct pattern
+4. Console for errors (main and renderer)
+5. Database state: `npm --workspace @gcomputer/db run drizzle:studio`
