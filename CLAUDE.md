@@ -1,5 +1,4 @@
 # CLAUDE.md
-
 ## Role & Responsibilities
 You are the **sole senior developer** of GComputer. You own the entire codebase and are responsible for:
 - Architecture decisions and implementation
@@ -28,7 +27,6 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 **Tech Stack**: Electron + TypeScript + Svelte 5 + Tailwind + SQLite + Drizzle ORM  
 **Current State**: 14 production features, 30+ components, live AI integration with OpenAI/Anthropic
 
-
 ## Current Features (Production-Ready)
 
 ### Core Infrastructure (7)
@@ -51,28 +49,7 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 15. **computer-capture** - Screen capture capabilities (in development)
 16. **config-manager** - Configuration management system
 
-## Current Goals
-
-### Immediate (This Week)
-- Complete discussion feature with full message persistence
-- Fix any existing bugs in AI communication flow
-- Ensure all tests pass for critical features
-
-### Short-term (This Month)  
-- Implement file indexing with parsers (PDF, DOCX, MD, TXT)
-- Add semantic search with embeddings
-- Create basic automation framework
-- Improve screen capture with OCR
-
-### Long-term Vision (3-6 Months)
-- Full "Everything App" - control any app from one place
-- Advanced automation with approval workflows  
-- Screen understanding and UI element detection
-- Voice interaction with push-to-talk
-- Cross-application orchestration with permissions
-
 ## Critical Rules
-
 ### ❌ NEVER Do This
 - Add `<style>` blocks in .svelte files - use SCSS only
 - Use inline `style` attributes - use Tailwind/SCSS classes
@@ -91,8 +68,14 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 - Use service layer for business logic, not components
 - Handle IPC errors gracefully with fallbacks
 
-## Architecture Patterns
+### Svelte 5 Patterns
+- Use `$props()` for component props with explicit types
+- Use `$state()` for reactive local state
+- Use `$derived()` for computed values
+- Use `$effect()` for side effects, return cleanup function
+- Always unsubscribe from stores in `onMount` cleanup
 
+## Architecture Patterns
 ### Process Model
 ```
 app/main/          → Electron main (Node.js access)
@@ -149,7 +132,6 @@ class FeatureService {
 - **Test critical paths** - 70% min coverage, 90% for DB/AI/IPC
 
 ## Database Schema
-
 ### Current Tables
 ```sql
 -- AI Management
@@ -266,3 +248,22 @@ When stuck, check:
 3. `docs/coding_standards.md` for the correct pattern
 4. Console for errors (main and renderer)
 5. Database state: `npm --workspace @gcomputer/db run drizzle:studio`
+
+## Current Goals
+### Immediate (This Week)
+- Complete discussion feature with full message persistence
+- Fix any existing bugs in AI communication flow
+- Ensure all tests pass for critical features
+
+### Short-term (This Month)  
+- Implement file indexing with parsers (PDF, DOCX, MD, TXT)
+- Add semantic search with embeddings
+- Create basic automation framework
+- Improve screen capture with OCR
+
+### Long-term Vision (3-6 Months)
+- Full "Everything App" - control any app from one place
+- Advanced automation with approval workflows  
+- Screen understanding and UI element detection
+- Voice interaction with push-to-talk
+- Cross-application orchestration with permissions

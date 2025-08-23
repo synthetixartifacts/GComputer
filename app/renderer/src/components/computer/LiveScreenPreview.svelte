@@ -14,7 +14,7 @@
   
   let displays: DisplayInfo[] = [];
   let isLoading = true;
-  let screenSources: any[] = [];
+  let screenSources: Array<{ id: string; name: string; thumbnail?: string }> = [];
   let currentStream: MediaStream | null = null;
   let videoElement: HTMLVideoElement;
   let previewError: string | null = null;
