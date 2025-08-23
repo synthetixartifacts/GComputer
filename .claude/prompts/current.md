@@ -3,6 +3,26 @@
 
 
 
+
+I want to add a right siderbar to our app when I'm on the discussion page.
+We already have the sidebar component in the app\renderer\src\components\sidebar\Sidebar.svelte so lets reuse this to keep things dry.
+
+
+
+
+What I want is some type of big refactor in our layout.
+First in our header.
+I want to remove our change theme button. I also want to remove the GComputer app from the header that is not useful and instead place on both a container that can easily be manipulated by each view to write the title of the current view.
+
+
+
+
+
+
+
+
+
+
 Right now we are feed ou db seed with the keys from openAi and anthorpic from the .env_secret but doing so this means that it is still visible in the packages\db\data\gcomputer.db
 I want to change the way we manage this.
 

@@ -5,7 +5,7 @@
 
 import { configManagerStore, get } from './store';
 import type { PublicConfig } from './types';
-import { isElectronEnvironment } from '@features/environment';
+import { isElectronEnvironment } from '@features/environment/service';
 
 class ConfigManagerService {
   private static instance: ConfigManagerService;
@@ -57,7 +57,11 @@ class ConfigManagerService {
    */
   async getPublicConfig(): Promise<PublicConfig> {
     if (isElectronEnvironment() && window.gc?.config) {
-      return await window.gc.config.getPublic();
+      const config = await window.gc.config.getPublic();
+      return {
+        mode: config.mode || import.meta.env.MODE || 'production',
+        ...config,
+      };
     }
     
     // Fallback for browser environment

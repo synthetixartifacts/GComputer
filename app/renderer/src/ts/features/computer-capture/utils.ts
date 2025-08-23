@@ -4,42 +4,17 @@
  */
 
 import type { Screenshot } from './types';
+import { formatFileSize as formatSize, getRelativeTime } from '@ts/shared/utils/formatting';
+import { generateTimestampId } from '@ts/shared/utils/id-generation';
 
-/**
- * Format file size for human-readable display
- */
-export function formatFileSize(bytes: number): string {
-  if (bytes <= 0) return '0 B';
-  const k = 1024;
-  const sizes = ['B', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  const value = bytes / Math.pow(k, i);
-  // Always show .0 for whole numbers in KB, MB, GB
-  if (i > 0 && value % 1 === 0) {
-    return value.toFixed(1) + ' ' + sizes[i];
-  }
-  return parseFloat(value.toFixed(1)) + ' ' + sizes[i];
-}
+// Re-export shared utilities with feature-specific names for backward compatibility
+export { formatSize as formatFileSize };
 
 /**
  * Format timestamp as relative time
  */
 export function formatTimestamp(timestamp: number): string {
-  const date = new Date(timestamp);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  
-  if (diffMins < 1) return 'Just now';
-  if (diffMins < 60) return `${diffMins} minute${diffMins === 1 ? '' : 's'} ago`;
-  
-  const diffHours = Math.floor(diffMins / 60);
-  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`;
-  
-  const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 7) return `${diffDays} day${diffDays === 1 ? '' : 's'} ago`;
-  
-  return date.toLocaleDateString();
+  return getRelativeTime(timestamp);
 }
 
 /**

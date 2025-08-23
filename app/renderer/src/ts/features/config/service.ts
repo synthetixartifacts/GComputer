@@ -1,6 +1,6 @@
 import { configMode } from './store';
 import type { ConfigMode } from './types';
-import { isElectronEnvironment } from '@features/environment';
+import { isElectronEnvironment } from '@features/environment/service';
 
 let initialized = false;
 

@@ -1,5 +1,5 @@
 import type { TestRow, TestFilters, TestInsert, TestUpdate } from './types';
-import { isElectronEnvironment } from '../environment';
+import { isElectronEnvironment } from '../environment/service';
 
 // Import services directly to avoid dynamic import issues
 import * as electronService from './electron-service';

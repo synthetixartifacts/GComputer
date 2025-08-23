@@ -41,6 +41,19 @@
       "idle": "Idle",
       "recording": "Recording...",
       "disabled": "Disabled"
+    },
+    "time": {
+      "justNow": "just now",
+      "minutesAgo": "minutes ago",
+      "hoursAgo": "hours ago",
+      "daysAgo": "days ago"
+    },
+    "fileSize": {
+      "bytes": "Bytes",
+      "kb": "KB",
+      "mb": "MB",
+      "gb": "GB",
+      "tb": "TB"
     }
   },
   "app": {
@@ -303,6 +316,12 @@
           "inputLabel": "Message input",
           "placeholder": "Type a message...",
           "send": "Send"
+        },
+        "responses": {
+          "greeting": "Hello! How can I help you today?",
+          "hello": "Hi there! 👋 What would you like to explore?",
+          "help": "Sure — tell me what you need help with.",
+          "echo": "You said: \"{message}\""
         }
       }
     },
@@ -438,6 +457,9 @@
   },
   "discussion": {
     "newWith": "Discussion with",
+    "newDiscussion": "New Discussion",
+    "user": "User",
+    "aiAgent": "AI Agent",
     "confirmDelete": "Are you sure you want to delete the discussion '{title}'?",
     "deleteError": "Failed to delete discussion",
     "favoriteError": "Failed to toggle favorite",

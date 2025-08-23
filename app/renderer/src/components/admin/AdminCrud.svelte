@@ -86,9 +86,9 @@
     .map(field => ({
       id: field.id,
       title: field.title,
-      editable: false, // Disable inline editing
+      editable: false, 
       width: field.width,
-      access: field.access as any, // Type assertion for compatibility
+      access: field.access, 
     }));
 
   // Transform data for table display

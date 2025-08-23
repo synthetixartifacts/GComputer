@@ -14,11 +14,23 @@
 .message-bubble {
   // Let content determine width naturally, but cap at 90%
   width: fit-content;
+  position: relative;
   
   // Ensure text wraps properly in bubbles
   > div {
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+  }
+  
+  // Copy button specific positioning
+  .message-copy-btn {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    transform: translateY(-2px);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    min-height: auto;
   }
 }
