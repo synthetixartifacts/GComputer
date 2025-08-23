@@ -8,7 +8,7 @@ import type {
   UpdateDiscussionPayload,
   CreateMessagePayload,
 } from './types';
-import { isElectronEnvironment } from '@features/environment';
+import { isElectronEnvironment } from '@features/environment/service';
 import * as electronService from './electron-service';
 import * as browserService from './browser-service';
 

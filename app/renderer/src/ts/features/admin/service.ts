@@ -12,7 +12,8 @@ import type {
   ModelUpdate,
   AgentUpdate,
 } from './types';
-import { isElectronEnvironment } from '../environment';
+import { isElectronEnvironment } from '../environment/service';
+import { parseConfiguration, stringifyConfiguration } from '@ts/shared/utils/json-config';
 
 // Import services directly to avoid dynamic import issues
 import * as electronService from './electron-service';
@@ -119,17 +120,7 @@ export async function deleteAgent(id: number): Promise<{ ok: true }> {
 
 // Utility functions (same for both environments)
 export function parseJsonConfiguration(configStr: string): Record<string, any> {
-  try {
-    return JSON.parse(configStr || '{}');
-  } catch {
-    return {};
-  }
+  return parseConfiguration(configStr);
 }
 
-export function stringifyConfiguration(config: Record<string, any>): string {
-  try {
-    return JSON.stringify(config, null, 2);
-  } catch {
-    return '{}';
-  }
-}
+export { stringifyConfiguration };
