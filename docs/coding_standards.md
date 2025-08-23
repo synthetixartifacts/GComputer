@@ -1,21 +1,131 @@
 # GComputer Coding Standards
+## Application Architecture
+### Process Model Overview
+GComputer follows Electron's multi-process architecture with strict separation of concerns:
 
-## Table of Contents
-1. [Core Principles](#core-principles)
-2. [Project Structure](#project-structure)
-3. [TypeScript Standards](#typescript-standards)
-4. [Svelte 5 Patterns](#svelte-5-patterns)
-5. [Styling Guidelines](#styling-guidelines)
-6. [Security Requirements](#security-requirements)
-7. [Database Patterns](#database-patterns)
-8. [Testing Standards](#testing-standards)
-9. [Error Handling](#error-handling)
-10. [Performance Guidelines](#performance-guidelines)
-11. [Git Workflow](#git-workflow)
-12. [Code Review Checklist](#code-review-checklist)
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     MAIN PROCESS (Node.js)                  │
+│  app/main/ - Full system access, controls everything        │
+├─────────────────────────────────────────────────────────────┤
+│                    PRELOAD (Bridge)                         │
+│  app/preload/ - Security layer, exposes safe APIs           │
+├─────────────────────────────────────────────────────────────┤
+│                   RENDERER (Browser)                        │
+│  app/renderer/ - UI only, no system access                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### app/main/ - Electron Main Process
+**Purpose**: System orchestrator with full Node.js and OS access  
+**Responsibilities**:
+- Window lifecycle management (create, show, close)
+- Native system operations (file system, OS integration)
+- Database operations and migrations
+- IPC handler registration and validation
+- REST API server for browser fallback
+- Application menu and system tray
+- Security enforcement and permission checking
+
+**What belongs here**:
+- IPC handlers that need system access
+- Database services and migrations
+- File system operations
+- Native API integrations
+- Window management logic
+- Application initialization
+
+**What DOESN'T belong here**:
+- UI components or rendering logic
+- Business logic that could run in renderer
+- Direct DOM manipulation
+- Style or presentation code
+
+### app/preload/ - Security Bridge
+**Purpose**: Controlled exposure of main process capabilities to renderer  
+**Responsibilities**:
+- Define the `window.gc` API surface
+- Validate and sanitize IPC communication
+- Provide type-safe interfaces for renderer
+- Block dangerous operations
+- Enforce security boundaries
+
+**What belongs here**:
+- `contextBridge.exposeInMainWorld()` calls
+- IPC renderer wrappers with validation
+- Type definitions for exposed APIs
+- Security checks and sanitization
+
+**What DOESN'T belong here**:
+- Business logic implementation
+- Direct Node.js module usage
+- Complex data transformations
+- UI-related code
+
+### app/renderer/ - UI Layer
+**Purpose**: User interface and interaction handling  
+**Responsibilities**:
+- Render UI components with Svelte
+- Handle user interactions
+- Manage application state
+- Call `window.gc` APIs for system operations
+- Provide fallback to REST API when needed
+
+**Structure**:
+app/renderer/
+├── src/
+│   ├── views/          # Page-level components (thin logic)
+│   ├── components/     # Reusable UI components
+│   ├── ts/features/    # Business logic and state management
+│   └── styles/         # SCSS design system (NO component styles)
+
+**What belongs here**:
+- Svelte components and views
+- Client-side state management
+- UI event handlers
+- Business logic that doesn't need system access
+- API client code (REST/IPC wrappers)
+
+**What DOESN'T belong here**:
+- Direct Node.js imports (fs, path, etc.)
+- Direct Electron imports
+- Database operations (use IPC)
+- File system access (use window.gc)
+- Inline styles or `<style>` blocks
+
+### Communication Flow
+```typescript
+// CORRECT: Renderer → Preload → Main → Preload → Renderer
+// Renderer (app/renderer/src/ts/features/settings/service.ts)
+const settings = await window.gc.settings.get('theme');
+
+// Preload (app/preload/index.ts)
+settings: {
+  get: (key) => ipcRenderer.invoke('settings:get', key)
+}
+
+// Main (app/main/settings.ts)
+ipcMain.handle('settings:get', async (event, key) => {
+  // Validate input
+  if (!isValidKey(key)) throw new Error('Invalid key');
+  // Perform operation with full Node.js access
+  return await readSettingsFile()[key];
+});
+```
+
+### Security Boundaries
+- **Main Process**: Trusted, full access to system
+- **Preload**: Security checkpoint, validates all communication
+- **Renderer**: Untrusted, sandboxed, no direct system access
+
+**Critical Rules**:
+1. NEVER expose Node.js modules to renderer
+2. ALWAYS validate IPC inputs in main process
+3. Use `contextIsolation: true` and `nodeIntegration: false`
+4. Sanitize all user inputs before database operations
+5. Never return sensitive data (passwords, keys) to renderer
 
 ## Core Principles
-
 ### DRY (Don't Repeat Yourself)
 - **ALWAYS** search for existing components before creating new ones
 - Use the 30+ existing components (Table, Modal, SearchBox, etc.)
@@ -42,7 +152,6 @@
 - Leverage TypeScript's strict mode fully
 
 ## Project Structure
-
 ### Feature Module Pattern (MANDATORY)
 Every feature MUST follow this exact structure:
 

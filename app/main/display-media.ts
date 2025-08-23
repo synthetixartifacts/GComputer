@@ -3,30 +3,44 @@
  * Manages screen capture media requests for the application
  */
 
-import { session, desktopCapturer, ipcMain } from 'electron';
+import { session, desktopCapturer, ipcMain, type IpcMainEvent } from 'electron';
 
-let lastRequestedDisplayId: string | null = null;
+type DisplayId = string | 'all' | null;
+type MediaCallback = (streams: { video?: any; audio?: any }) => void;
+
+let lastRequestedDisplayId: DisplayId = null;
 
 /**
  * Initialize display media request handling
  */
 export function initializeDisplayMedia(): void {
   // Listen for display selection changes from renderer
-  ipcMain.on('screen:setPreviewDisplay', (_, displayId: string | 'all') => {
+  ipcMain.on('screen:setPreviewDisplay', (_event: IpcMainEvent, displayId: DisplayId) => {
+    if (!displayId || (typeof displayId !== 'string' && displayId !== 'all')) {
+      console.error('[display-media] Invalid display ID received:', displayId);
+      return;
+    }
     lastRequestedDisplayId = displayId;
     console.log('[display-media] Preview display set to:', displayId);
   });
 
   // Set up display media request handler
-  session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
-    handleDisplayMediaRequest(callback);
-  });
+  try {
+    session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
+      handleDisplayMediaRequest(callback as MediaCallback).catch(error => {
+        console.error('[display-media] Failed to handle display media request:', error);
+        (callback as any)({ video: null, audio: false });
+      });
+    });
+  } catch (error) {
+    console.error('[display-media] Failed to set display media request handler:', error);
+  }
 }
 
 /**
- * Handle display media request
+ * Handle display media request with proper error handling
  */
-async function handleDisplayMediaRequest(callback: (streams: { video?: any; audio?: any }) => void): Promise<void> {
+async function handleDisplayMediaRequest(callback: MediaCallback): Promise<void> {
   console.log('[display-media] Display media request received for display:', lastRequestedDisplayId);
   
   try {
@@ -41,14 +55,15 @@ async function handleDisplayMediaRequest(callback: (streams: { video?: any; audi
     
     if (sourceToUse) {
       console.log('[display-media] Using source:', sourceToUse.name, 'ID:', sourceToUse.id);
-      callback({ video: sourceToUse, audio: 'loopback' as any });
+      callback({ video: sourceToUse, audio: 'loopback' });
     } else {
-      console.warn('[display-media] No sources available');
-      // Return empty result when no sources available
-      callback({ video: sources[0] || {} as any, audio: 'loopback' as any });
+      console.warn('[display-media] No suitable source found');
+      // Provide fallback to first available source or null
+      callback({ video: sources[0] || null, audio: sources.length > 0 ? 'loopback' : false });
     }
   } catch (error) {
-    console.error('[display-media] Error getting desktop sources:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[display-media] Error getting desktop sources:', errorMessage);
     callback({ video: null, audio: false });
   }
 }
@@ -100,6 +115,11 @@ function findPrimarySource(sources: Electron.DesktopCapturerSource[]): Electron.
  * Clean up display media handlers
  */
 export function cleanupDisplayMedia(): void {
-  ipcMain.removeAllListeners('screen:setPreviewDisplay');
-  lastRequestedDisplayId = null;
+  try {
+    ipcMain.removeAllListeners('screen:setPreviewDisplay');
+    lastRequestedDisplayId = null;
+    console.log('[display-media] Cleanup completed');
+  } catch (error) {
+    console.error('[display-media] Error during cleanup:', error);
+  }
 }

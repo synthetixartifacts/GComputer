@@ -15,6 +15,17 @@ import type {
   AgentInsert,
   AgentUpdate,
 } from './db/types.js';
+import { 
+  asyncHandler, 
+  parseIdParam, 
+  parseLimitQuery,
+  type IdParam,
+  type DiscussionIdParam,
+  type LimitQuery,
+  type HealthResponse,
+  type ErrorResponse,
+  type CountResponse
+} from './api-types.js';
 
 /**
  * REST API Server for browser-based database management
@@ -28,202 +39,206 @@ const PORT = process.env.API_PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Error handler
-const asyncHandler = (fn: Function) => (req: any, res: any, next: any) => {
-  Promise.resolve(fn(req, res, next)).catch(next);
-};
 
 // Health check
-app.get('/api/health', (req, res) => {
+app.get<{}, HealthResponse>('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 // Test table endpoints
-app.get('/api/test', asyncHandler(async (req: any, res: any) => {
+app.get('/api/test', asyncHandler<{}, TestFilters>(async (req, res) => {
   const filters: TestFilters = req.query;
   const rows = await testService.list(filters);
   res.json(rows);
 }));
 
-app.post('/api/test', asyncHandler(async (req: any, res: any) => {
+app.post('/api/test', asyncHandler<{}, {}, TestInsert>(async (req, res) => {
   const payload: TestInsert = req.body;
   const result = await testService.insert(payload);
   res.status(201).json(result);
 }));
 
-app.put('/api/test/:id', asyncHandler(async (req: any, res: any) => {
-  const id = parseInt(req.params.id);
+app.put('/api/test/:id', asyncHandler<IdParam, {}, Omit<TestUpdate, 'id'>>(async (req, res) => {
+  const id = parseIdParam(req.params.id);
   const payload: TestUpdate = { id, ...req.body };
   const result = await testService.update(payload);
   res.json(result);
 }));
 
-app.delete('/api/test/:id', asyncHandler(async (req: any, res: any) => {
-  const id = parseInt(req.params.id);
+app.delete('/api/test/:id', asyncHandler<IdParam>(async (req, res) => {
+  const id = parseIdParam(req.params.id);
   const result = await testService.delete(id);
   res.json(result);
 }));
 
-app.delete('/api/test', asyncHandler(async (req: any, res: any) => {
+app.delete('/api/test', asyncHandler(async (req, res) => {
   const result = await testService.truncate();
   res.json(result);
 }));
 
 // Provider endpoints
-app.get('/api/admin/providers', asyncHandler(async (req: any, res: any) => {
+app.get('/api/admin/providers', asyncHandler<{}, ProviderFilters>(async (req, res) => {
   const filters: ProviderFilters = req.query;
   const rows = await providerService.list(filters);
   res.json(rows);
 }));
 
-app.post('/api/admin/providers', asyncHandler(async (req: any, res: any) => {
+app.post('/api/admin/providers', asyncHandler<{}, {}, ProviderInsert>(async (req, res) => {
   const payload: ProviderInsert = req.body;
   const result = await providerService.insert(payload);
   res.status(201).json(result);
 }));
 
-app.put('/api/admin/providers/:id', asyncHandler(async (req: any, res: any) => {
-  const id = parseInt(req.params.id);
+app.put('/api/admin/providers/:id', asyncHandler<IdParam, {}, Omit<ProviderUpdate, 'id'>>(async (req, res) => {
+  const id = parseIdParam(req.params.id);
   const payload: ProviderUpdate = { id, ...req.body };
   const result = await providerService.update(payload);
   res.json(result);
 }));
 
-app.delete('/api/admin/providers/:id', asyncHandler(async (req: any, res: any) => {
-  const id = parseInt(req.params.id);
+app.delete('/api/admin/providers/:id', asyncHandler<IdParam>(async (req, res) => {
+  const id = parseIdParam(req.params.id);
   const result = await providerService.delete(id);
   res.json(result);
 }));
 
 // Model endpoints
-app.get('/api/admin/models', asyncHandler(async (req: any, res: any) => {
+app.get('/api/admin/models', asyncHandler<{}, ModelFilters>(async (req, res) => {
   const filters: ModelFilters = req.query;
   const rows = await modelService.list(filters);
   res.json(rows);
 }));
 
-app.post('/api/admin/models', asyncHandler(async (req: any, res: any) => {
+app.post('/api/admin/models', asyncHandler<{}, {}, ModelInsert>(async (req, res) => {
   const payload: ModelInsert = req.body;
   const result = await modelService.insert(payload);
   res.status(201).json(result);
 }));
 
-app.put('/api/admin/models/:id', asyncHandler(async (req: any, res: any) => {
-  const id = parseInt(req.params.id);
+app.put('/api/admin/models/:id', asyncHandler<IdParam, {}, Omit<ModelUpdate, 'id'>>(async (req, res) => {
+  const id = parseIdParam(req.params.id);
   const payload: ModelUpdate = { id, ...req.body };
   const result = await modelService.update(payload);
   res.json(result);
 }));
 
-app.delete('/api/admin/models/:id', asyncHandler(async (req: any, res: any) => {
-  const id = parseInt(req.params.id);
+app.delete('/api/admin/models/:id', asyncHandler<IdParam>(async (req, res) => {
+  const id = parseIdParam(req.params.id);
   const result = await modelService.delete(id);
   res.json(result);
 }));
 
 // Agent endpoints
-app.get('/api/admin/agents', asyncHandler(async (req: any, res: any) => {
+app.get('/api/admin/agents', asyncHandler<{}, AgentFilters>(async (req, res) => {
   const filters: AgentFilters = req.query;
   const rows = await agentService.list(filters);
   res.json(rows);
 }));
 
-app.post('/api/admin/agents', asyncHandler(async (req: any, res: any) => {
+app.post('/api/admin/agents', asyncHandler<{}, {}, AgentInsert>(async (req, res) => {
   const payload: AgentInsert = req.body;
   const result = await agentService.insert(payload);
   res.status(201).json(result);
 }));
 
-app.put('/api/admin/agents/:id', asyncHandler(async (req: any, res: any) => {
-  const id = parseInt(req.params.id);
+app.put('/api/admin/agents/:id', asyncHandler<IdParam, {}, Omit<AgentUpdate, 'id'>>(async (req, res) => {
+  const id = parseIdParam(req.params.id);
   const payload: AgentUpdate = { id, ...req.body };
   const result = await agentService.update(payload);
   res.json(result);
 }));
 
-app.delete('/api/admin/agents/:id', asyncHandler(async (req: any, res: any) => {
-  const id = parseInt(req.params.id);
+app.delete('/api/admin/agents/:id', asyncHandler<IdParam>(async (req, res) => {
+  const id = parseIdParam(req.params.id);
   const result = await agentService.delete(id);
   res.json(result);
 }));
 
 // Discussion endpoints
-app.get('/api/discussions', asyncHandler(async (req: any, res: any) => {
-  const { discussionService } = await import('./db/services/discussion-service');
-  const result = await discussionService.list(req.query);
+app.get('/api/discussions', asyncHandler(async (req, res) => {
+  const { discussionService } = await import('./db/services/discussion-service.js');
+  const result = await discussionService.list(req.query as any);
   res.json(result);
 }));
 
-app.post('/api/discussions', asyncHandler(async (req: any, res: any) => {
-  const { discussionService } = await import('./db/services/discussion-service');
-  const result = await discussionService.create(req.body);
+app.post('/api/discussions', asyncHandler(async (req, res) => {
+  const { discussionService } = await import('./db/services/discussion-service.js');
+  const result = await discussionService.create(req.body as any);
   res.status(201).json(result);
 }));
 
-app.put('/api/discussions/:id', asyncHandler(async (req: any, res: any) => {
-  const { discussionService } = await import('./db/services/discussion-service');
-  const result = await discussionService.update({ ...req.body, id: parseInt(req.params.id) });
+app.put('/api/discussions/:id', asyncHandler<IdParam>(async (req, res) => {
+  const { discussionService } = await import('./db/services/discussion-service.js');
+  const id = parseIdParam(req.params.id);
+  const result = await discussionService.update({ ...(req.body as any), id });
   res.json(result);
 }));
 
-app.delete('/api/discussions/:id', asyncHandler(async (req: any, res: any) => {
-  const { discussionService } = await import('./db/services/discussion-service');
-  const result = await discussionService.delete(parseInt(req.params.id));
+app.delete('/api/discussions/:id', asyncHandler<IdParam>(async (req, res) => {
+  const { discussionService } = await import('./db/services/discussion-service.js');
+  const id = parseIdParam(req.params.id);
+  const result = await discussionService.delete(id);
   res.json(result);
 }));
 
-app.get('/api/discussions/:id/with-messages', asyncHandler(async (req: any, res: any) => {
-  const { discussionService } = await import('./db/services/discussion-service');
-  const result = await discussionService.getWithMessages(parseInt(req.params.id));
+app.get('/api/discussions/:id/with-messages', asyncHandler<IdParam>(async (req, res) => {
+  const { discussionService } = await import('./db/services/discussion-service.js');
+  const id = parseIdParam(req.params.id);
+  const result = await discussionService.getWithMessages(id);
   res.json(result);
 }));
 
-app.post('/api/discussions/:id/favorite', asyncHandler(async (req: any, res: any) => {
-  const { discussionService } = await import('./db/services/discussion-service');
-  const result = await discussionService.toggleFavorite(parseInt(req.params.id));
+app.post('/api/discussions/:id/favorite', asyncHandler<IdParam>(async (req, res) => {
+  const { discussionService } = await import('./db/services/discussion-service.js');
+  const id = parseIdParam(req.params.id);
+  const result = await discussionService.toggleFavorite(id);
   res.json(result);
 }));
 
 // Message endpoints
-app.get('/api/messages', asyncHandler(async (req: any, res: any) => {
-  const { messageService } = await import('./db/services/message-service');
-  const result = await messageService.list(req.query);
+app.get('/api/messages', asyncHandler(async (req, res) => {
+  const { messageService } = await import('./db/services/message-service.js');
+  const result = await messageService.list(req.query as any);
   res.json(result);
 }));
 
-app.post('/api/messages', asyncHandler(async (req: any, res: any) => {
-  const { messageService } = await import('./db/services/message-service');
-  const result = await messageService.createForDiscussion(req.body);
+app.post('/api/messages', asyncHandler(async (req, res) => {
+  const { messageService } = await import('./db/services/message-service.js');
+  const result = await messageService.createForDiscussion(req.body as any);
   res.status(201).json(result);
 }));
 
-app.get('/api/messages/discussion/:discussionId', asyncHandler(async (req: any, res: any) => {
-  const { messageService } = await import('./db/services/message-service');
-  const result = await messageService.getByDiscussion(parseInt(req.params.discussionId));
+app.get('/api/messages/discussion/:discussionId', asyncHandler<DiscussionIdParam>(async (req, res) => {
+  const { messageService } = await import('./db/services/message-service.js');
+  const discussionId = parseIdParam(req.params.discussionId);
+  const result = await messageService.getByDiscussion(discussionId);
   res.json(result);
 }));
 
-app.get('/api/messages/discussion/:discussionId/last', asyncHandler(async (req: any, res: any) => {
-  const { messageService } = await import('./db/services/message-service');
-  const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
-  const result = await messageService.getLastMessages(parseInt(req.params.discussionId), limit);
+app.get('/api/messages/discussion/:discussionId/last', asyncHandler<DiscussionIdParam, LimitQuery>(async (req, res) => {
+  const { messageService } = await import('./db/services/message-service.js');
+  const discussionId = parseIdParam(req.params.discussionId);
+  const limit = parseLimitQuery(req.query.limit);
+  const result = await messageService.getLastMessages(discussionId, limit);
   res.json(result);
 }));
 
-app.get('/api/messages/discussion/:discussionId/count', asyncHandler(async (req: any, res: any) => {
-  const { messageService } = await import('./db/services/message-service');
-  const result = await messageService.countByDiscussion(parseInt(req.params.discussionId));
+app.get('/api/messages/discussion/:discussionId/count', asyncHandler<DiscussionIdParam, {}, {}, CountResponse>(async (req, res) => {
+  const { messageService } = await import('./db/services/message-service.js');
+  const discussionId = parseIdParam(req.params.discussionId);
+  const result = await messageService.countByDiscussion(discussionId);
   res.json({ count: result });
 }));
 
-app.delete('/api/messages/discussion/:discussionId', asyncHandler(async (req: any, res: any) => {
-  const { messageService } = await import('./db/services/message-service');
-  const result = await messageService.deleteByDiscussion(parseInt(req.params.discussionId));
+app.delete('/api/messages/discussion/:discussionId', asyncHandler<DiscussionIdParam>(async (req, res) => {
+  const { messageService } = await import('./db/services/message-service.js');
+  const discussionId = parseIdParam(req.params.discussionId);
+  const result = await messageService.deleteByDiscussion(discussionId);
   res.json(result);
 }));
 
 // Error handling middleware
-app.use((err: any, req: any, res: any, next: any) => {
+app.use((err: Error, req: express.Request, res: express.Response<ErrorResponse>, next: express.NextFunction) => {
   console.error('[API Server Error]:', err);
   res.status(500).json({ 
     error: 'Internal server error', 
@@ -233,7 +248,7 @@ app.use((err: any, req: any, res: any, next: any) => {
 });
 
 // 404 handler
-app.use((req: any, res: any) => {
+app.use((req: express.Request, res: express.Response<ErrorResponse>) => {
   res.status(404).json({ 
     error: 'Not found', 
     path: req.path,

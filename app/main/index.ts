@@ -13,7 +13,7 @@ export * from './ipc';
 export * from './settings';
 export * from './fs';
 export * from './db';
-export * from './screen-capture';
+export * from './screen-capture/index';
 export * from './display-media';
 export * from './menu';
 export * from './api-server';
