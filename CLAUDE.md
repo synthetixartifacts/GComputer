@@ -1,5 +1,4 @@
 # CLAUDE.md
-
 ## Role & Responsibilities
 You are the **sole senior developer** of GComputer. You own the entire codebase and are responsible for:
 - Architecture decisions and implementation
@@ -22,23 +21,6 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 - Run `npm run typecheck` after major changes
 - Always verify existing patterns before implementing new features
 
-## Workflow Commands
-```bash
-# MUST RUN after major changes
-npm run typecheck        # TypeScript validation (critical)
-
-# Development workflow  
-npm run dev             # Start dev server (port 5173)
-npm run build           # Production build
-npm test                # Run tests in watch mode
-npm run test:run        # Single test run
-npm run test:coverage   # Coverage report
-
-# Database operations
-npm --workspace @gcomputer/db run drizzle:studio    # Visual DB editor
-npm --workspace @gcomputer/db run drizzle:generate  # Generate migrations
-```
-
 ## Project Overview
 **GComputer**: The "Everything App" for your computer - a local-first personal OS layer  
 **Core Mission**: Unified control center for search, chat, automation, and computer control  
@@ -46,7 +28,8 @@ npm --workspace @gcomputer/db run drizzle:generate  # Generate migrations
 **Current State**: 14 production features, 30+ components, live AI integration with OpenAI/Anthropic
 
 ## Current Features (Production-Ready)
-### Core Infrastructure
+
+### Core Infrastructure (7)
 1. **router** - Hash-based routing with 27 routes
 2. **settings** - Persistent config via IPC + localStorage fallback
 3. **ui** - Theme system (light/dark/fun) and global UI state
@@ -55,7 +38,7 @@ npm --workspace @gcomputer/db run drizzle:generate  # Generate migrations
 6. **navigation** - Hierarchical menu system
 7. **environment** - Environment detection and configuration
 
-### User Features
+### User Features (7)
 8. **browse** - File system browsing with permissions
 9. **files-access** - File picker integration
 10. **search** - Search infrastructure with autocomplete
@@ -65,7 +48,6 @@ npm --workspace @gcomputer/db run drizzle:generate  # Generate migrations
 14. **discussion** - AI-powered discussion threads with agents
 15. **computer-capture** - Screen capture capabilities (in development)
 16. **config-manager** - Configuration management system
-
 
 ## Critical Rules
 ### ❌ NEVER Do This
@@ -142,28 +124,14 @@ class FeatureService {
 ## Code Standards Summary
 **Full standards**: See `docs/coding_standards.md` for comprehensive guidelines
 
-### Essential Rules (MEMORIZE)
+### Quick Rules
 - **No `any` types** - Use strict TypeScript everywhere
 - **No inline styles** - All styles in `app/renderer/src/styles/`  
 - **No Node in renderer** - Only use `window.gc` APIs
 - **Feature pattern required** - types.ts → service.ts → store.ts
 - **Test critical paths** - 70% min coverage, 90% for DB/AI/IPC
 
-### Naming Conventions
-- Variables/functions: `camelCase` (clear, descriptive)
-- Types/interfaces/classes: `PascalCase`
-- Files: `PascalCase.svelte`, others `kebab-case`
-- Constants: `UPPER_SNAKE_CASE`
-- Avoid abbreviations; prefer full words
-
-### TypeScript Standards
-- Strict mode on, no `any` types (use `unknown` + type guards if needed)
-- Explicit return types for all exported functions
-- Proper null handling with optional chaining (`?.`) and nullish coalescing (`??`)
-- Type guards for runtime validation
-
 ## Database Schema
-
 ### Current Tables
 ```sql
 -- AI Management
@@ -223,40 +191,34 @@ test (id, column1, column2)
 - `SearchBox.svelte` - Autocomplete search
 - `SearchResults.svelte` - Search results display
 
-## Error Handling Patterns
-```typescript
-// ALWAYS handle async errors
-async function fetchData(): Promise<Result> {
-  try {
-    const response = await fetch('/api/data');
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Failed to fetch data:', error);
-    throw new Error('Data fetch failed');
-  }
-}
+## Essential Commands
 
-// Service layer with fallback
-async function getSettings(): Promise<Settings> {
-  try {
-    if (window.gc?.settings) {
-      return await window.gc.settings.all();
-    }
-  } catch (error) {
-    console.warn('IPC failed, falling back to localStorage:', error);
-  }
-  // Fallback to localStorage
-  const stored = localStorage.getItem('settings');
-  return stored ? JSON.parse(stored) : DEFAULT_SETTINGS;
-}
+```bash
+# Development
+npm run dev              # Start dev server (port 5173)
+npm run build            # Production build
+npm run typecheck        # TypeScript validation
+
+# Testing
+npm test                 # Watch mode
+npm run test:run         # Single run
+npm run test:coverage    # Coverage report
+npm run test:main        # Test main process
+npm run test:renderer    # Test renderer
+
+# Database
+npm --workspace @gcomputer/db run drizzle:studio    # Visual DB editor
+npm --workspace @gcomputer/db run drizzle:generate  # Generate migrations
+
+# Packaging
+npm run package:win      # Windows installer
+npm run package:mac      # macOS app
+npm run package:linux    # Linux AppImage
 ```
 
 ## Quick Start Tasks
 
-### Before Coding important features/components
+### Before Coding
 1. Check `docs/coding_standards.md` for detailed patterns
 2. Search existing components in `app/renderer/src/components/`
 3. Review similar features in `app/renderer/src/ts/features/`
