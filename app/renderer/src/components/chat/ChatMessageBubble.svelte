@@ -13,7 +13,7 @@
   const isUser = message.role === 'user';
   let showCopyButton: boolean = false;
   let isCopied: boolean = false;
-  let copyTimeout: NodeJS.Timeout | null = null;
+  let copyTimeout: number | null = null;
   
   // Reactive translation using store subscription
   $: copyButtonText = isCopied ? $t(copiedKey) : $t(copyKey);
