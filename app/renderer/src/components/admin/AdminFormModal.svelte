@@ -55,7 +55,7 @@
   }
 
 
-  function validateField(field: AdminFieldConfig<T>, value: any): string {
+  function validateField(field: AdminFieldConfig<T>, value: unknown): string {
     if (!field.validation) return '';
 
     // Required validation
@@ -101,7 +101,7 @@
     return '';
   }
 
-  function handleFieldChange(event: CustomEvent<{ fieldId: string; value: any }>) {
+  function handleFieldChange(event: CustomEvent<{ fieldId: string; value: unknown }>) {
     const { fieldId, value } = event.detail;
     formData[fieldId] = value;
     
@@ -111,7 +111,7 @@
     }
   }
 
-  function handleFieldBlur(event: CustomEvent<{ fieldId: string; value: any }>) {
+  function handleFieldBlur(event: CustomEvent<{ fieldId: string; value: unknown }>) {
     const { fieldId, value } = event.detail;
     const field = fields.find(f => f.id === fieldId);
     if (field) {

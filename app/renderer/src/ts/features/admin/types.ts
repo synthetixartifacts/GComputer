@@ -206,7 +206,7 @@ export interface AdminFieldConfig<T> {
   
   // Special configurations
   readonly?: boolean;
-  defaultValue?: any;
+  defaultValue?: string | number | boolean | null;
 }
 
 // Updated table configuration

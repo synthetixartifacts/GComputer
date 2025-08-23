@@ -87,7 +87,7 @@
 </script>
 
 <div class={`message-bubble-outer w-full flex ${outerJustify}`} role="article" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
-  <div class={`message-bubble-container flex items-end ${isUser ? 'flex-row-reverse' : 'flex-row'}`} aria-label={isUser ? 'User' : 'Assistant'}>
+  <div class={`message-bubble-container flex items-end ${isUser ? 'flex-row-reverse' : 'flex-row'}`} aria-label={$t(isUser ? 'common.roles.user' : 'common.roles.assistant')}>
 
     <div class="message-bubble max-w-[90%] relative">
       <div class={`px-3 py-2 ${bubbleBg} ${cornerClasses}`}>
@@ -96,13 +96,9 @@
       
       {#if showCopyButton || isCopied}
         <button
-          class="absolute top-1 right-1 px-2 py-1 text-xs rounded 
-                 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700
-                 text-gray-600 dark:text-gray-400 transition-all duration-200
-                 shadow-sm hover:shadow opacity-90 hover:opacity-100"
-          style="transform: translateY(-2px);"
+          class="btn btn--secondary btn--sm message-copy-btn"
           on:click={(e) => copyToClipboard(e)}
-          aria-label="Copy message"
+          aria-label={$t(copyKey)}
         >
           {copyButtonText}
         </button>
