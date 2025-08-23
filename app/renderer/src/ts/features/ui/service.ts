@@ -22,4 +22,10 @@ export function toggleSidebar(): void { sidebarOpen.update((v) => !v); }
 export function openModal(): void { modalOpen.set(true); }
 export function closeModal(): void { modalOpen.set(false); }
 
+import { discussionSidebarOpen } from './store';
+
+export function openDiscussionSidebar(): void { discussionSidebarOpen.set(true); }
+export function closeDiscussionSidebar(): void { discussionSidebarOpen.set(false); }
+export function toggleDiscussionSidebar(): void { discussionSidebarOpen.update((v) => !v); }
+
 

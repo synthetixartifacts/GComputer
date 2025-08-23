@@ -1,13 +1,23 @@
 <script lang="ts">
-  export let onToggleTheme: () => void;
   export let onToggleSidebar: () => void;
-  export let title: string = 'app.title';
-  export let theme: 'light' | 'dark' | 'fun' = 'light';
   import { t as tStore } from '@ts/i18n/store';
+  import { pageTitle, pageActions } from '@features/ui/store';
+  import type { PageAction } from '@features/ui/types';
+  
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  let currentTitle: string = '';
+  let currentActions: PageAction[] = [];
+  
   const unsubT = tStore.subscribe((fn) => (t = fn));
+  const unsubTitle = pageTitle.subscribe((title) => (currentTitle = title));
+  const unsubActions = pageActions.subscribe((actions) => (currentActions = actions));
+  
   import { onDestroy } from 'svelte';
-  onDestroy(() => unsubT());
+  onDestroy(() => {
+    unsubT();
+    unsubTitle();
+    unsubActions();
+  });
 </script>
 
 <header class="gc-header">
@@ -17,17 +27,29 @@
         <path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z" />
       </svg>
     </button>
-    <h1 class="text-lg font-semibold">{t(title)}</h1>
+    <h1 class="text-lg font-semibold">
+      {#if currentTitle}
+        {t(currentTitle)}
+      {:else}
+        {t('app.title')}
+      {/if}
+    </h1>
   </div>
   <div class="flex items-center gap-2">
-    <button class="btn btn--secondary gc-icon-btn" on:click={onToggleTheme} aria-label={t('app.actions.toggleTheme')}>
-      {#if theme === 'fun'}
-        🎉
-      {:else if theme === 'dark'}
-        🌙
-      {:else}
-        ☀️
-      {/if}
-    </button>
+    {#each currentActions as action (action.id)}
+      <button 
+        class="btn btn--secondary gc-icon-btn {action.className || ''}"
+        on:click={action.onClick}
+        aria-label={action.ariaLabel}
+      >
+        {#if action.emoji}
+          {action.emoji}
+        {:else if action.icon}
+          {@html action.icon}
+        {:else if action.label}
+          <span class="px-2">{action.label}</span>
+        {/if}
+      </button>
+    {/each}
   </div>
 </header>

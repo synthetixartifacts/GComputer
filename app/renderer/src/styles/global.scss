@@ -18,6 +18,7 @@
 @use './components/discussion-header';
 @use './components/discussion-chat';
 @use './components/chat-messages';
+@use './components/discussion-sidebar';
 @use './views/capture-screen';
 
 @tailwind base;
