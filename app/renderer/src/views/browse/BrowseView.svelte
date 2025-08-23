@@ -6,22 +6,22 @@
 
   let pathValue: string = '';
   let items: BrowseItem[] = [];
+  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
 
   const unsubPath = pathStore.subscribe((v) => (pathValue = v));
   const unsubItems = itemsStore.subscribe((v) => (items = v));
+  const unsubT = tStore.subscribe((fn) => (t = fn));
+  
   onDestroy(() => {
     unsubPath();
     unsubItems();
+    unsubT();
   });
 
   function onPathInput(event: Event) {
     const input = event.target as HTMLInputElement;
     pathStore.set(input.value);
   }
-  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
-  const unsubT = tStore.subscribe((fn) => (t = fn));
-  import { onDestroy as onDestroyLocal } from 'svelte';
-  onDestroyLocal(() => unsubT());
 </script>
 
 <div class="space-y-4">
