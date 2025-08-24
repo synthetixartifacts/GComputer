@@ -125,6 +125,7 @@
   },
   "pages": {
     "home": {
+      "title": "Accueil",
       "hello": "Bonjour — GComputer",
       "configured": "Svelte + Tailwind + SCSS est configuré."
     },
@@ -483,6 +484,14 @@
     "favoriteError": "Échec du basculement des favoris",
     "favoriteRequiresMessages": "Impossible de mettre en favori une discussion sans messages",
     "creatingDiscussion": "Création de la discussion...",
+    "sidebar": {
+      "title": "Discussions et Agents",
+      "toggle": "Afficher/masquer la barre latérale des discussions",
+      "close": "Fermer la barre latérale",
+      "agents": "Agents",
+      "recentDiscussions": "Discussions récentes",
+      "seeAll": "Voir toutes les discussions"
+    },
     "table": {
       "title": "Titre",
       "agent": "Agent",
@@ -522,6 +531,8 @@
       "updated": "Mis à jour"
     },
     "chat": {
+      "title": "Discussion",
+      "refresh": "Démarrer une nouvelle discussion avec le même agent",
       "loading": "Chargement de la discussion...",
       "noDiscussionId": "Aucun ID de discussion fourni",
       "notFound": "Discussion non trouvée",

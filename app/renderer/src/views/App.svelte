@@ -3,6 +3,7 @@
   import FooterComponent from '@components/Footer.svelte';
   import SidebarComponent from '@components/Sidebar.svelte';
   import ModalComponent from '@components/Modal.svelte';
+  import DiscussionSidebarComponent from '@components/discussion/DiscussionSidebar.svelte';
   import StyleguideOverviewView from '@views-development/styleguide/StyleguideOverviewView.svelte';
   import StyleguideBaseView from '@views-development/styleguide/StyleguideBaseView.svelte';
   import StyleguideTableView from '@views-development/styleguide/StyleguideTableView.svelte';
@@ -32,8 +33,8 @@
   import DiscussionListView from '@views-discussion/DiscussionListView.svelte';
   import AgentSelectionView from '@views-discussion/AgentSelectionView.svelte';
   import DiscussionChatView from '@views-discussion/DiscussionChatView.svelte';
-  import { sidebarOpen, modalOpen } from '@features/ui/store';
-  import { initTheme, toggleSidebar, closeSidebar, closeModal } from '@features/ui/service';
+  import { sidebarOpen, modalOpen, discussionSidebarOpen } from '@features/ui/store';
+  import { initTheme, toggleSidebar, closeSidebar, closeModal, closeDiscussionSidebar } from '@features/ui/service';
   import { currentRoute } from '@features/router/store';
   import type { Route } from '@features/router/types';
   import { initRouter, disposeRouter } from '@features/router/service';
@@ -50,6 +51,7 @@
   let currentTheme: 'light' | 'dark' | 'fun' = 'light';
   let isSidebarOpen: boolean = false;
   let isModalOpen: boolean = false;
+  let isDiscussionSidebarOpen: boolean = false;
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
   let canShowRoute: (route: Route) => boolean = () => false;
   const unsubT = tStore.subscribe((fn) => (t = fn));
@@ -59,6 +61,7 @@
   // DOM updates handled in initTheme
   const unsubSidebar = sidebarOpen.subscribe((v) => (isSidebarOpen = v));
   const unsubModal = modalOpen.subscribe((v) => (isModalOpen = v));
+  const unsubDiscussionSidebar = discussionSidebarOpen.subscribe((v) => (isDiscussionSidebarOpen = v));
   const unsubRoute = currentRoute.subscribe((r) => {
     route = r;
     activeRoute.set(r);
@@ -78,6 +81,7 @@
     unsubTheme();
     unsubSidebar();
     unsubModal();
+    unsubDiscussionSidebar();
     unsubRoute();
     unsubRouteAvailable();
     disposeRouter();
@@ -89,7 +93,7 @@
   }
 </script>
 
-<HeaderComponent onToggleTheme={navigateTheme} onToggleSidebar={toggleSidebar} theme={currentTheme} />
+<HeaderComponent onToggleSidebar={toggleSidebar} />
 
 <SidebarComponent open={isSidebarOpen} onClose={closeSidebar} />
 
@@ -152,6 +156,8 @@
 <ModalComponent open={isModalOpen} onClose={closeModal} title="pages.styleguide.modalTitle">
   <p>{t('pages.styleguide.modalContent')}</p>
  </ModalComponent>
+
+<DiscussionSidebarComponent open={isDiscussionSidebarOpen} onClose={closeDiscussionSidebar} />
 
 <FooterComponent />
 

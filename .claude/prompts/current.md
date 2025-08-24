@@ -1,4 +1,48 @@
 
+Good, now others things:
+- 
+
+
+
+Good job. We still have some issue tho
+- The sidebar background is not set its like transparent but should be plain like the menu sidebar. Examine and validate and adjut. I think the z-index is not set properly because I see the discussion-sidebar-backdrop like black opacity fade or something like this
+- When I click on the refresh button I see "No discussion selected  / Back to List" on screen instead of the empty chat section where I can enter a new message.
+
+
+
+What I want is some type of big refactor in our layout.
+First in our header.
+I want to remove the GComputer app title from the header that is not useful and instead replace it by a container that can easily be manipulated by each view to write the title of the current view.
+Make sure to change all current view so that the display title is used and we remove the current h1 from the content because now the title is in the header.
+I want to make sure that update page title is a DRY function. We will probably have others utils function for our app like that so validate if there is a good file to place it and if not yet, create a dry utils. 
+Validate EACH view and do the changes.
+
+I want to remove our change theme button because I want to be able to place some secondary menu on specific view here so again make this dry for the app to be able to manage this easily on each view.
+
+I want on the discussion section (all pages under /discussion) to add a button up there top right of the header that will open a sidebar right where there will be display the list of agent first and then the top 20 list of discussions with a see all button that redirect to the discussion list page.
+Don't forget translation.
+
+Now when in the /discussion/chat page I want to add another button right next to the sidebar on the left of that icon which will be a refresh button which will simply create another discussion with the same agent and reset the view. Simply the same as going to /discussion/chat?agentId=1 for exemple and clean state so that I can easily reset and start over a discussion with the same agent because as we know llm have limited context lenght so everytime we change subjet I will hit that button.
+
+
+## Big Task Alert
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. Our ./docs/coding_standards.md are always good and you should follow it.
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and assess if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+Do not hesitate in the middle of the execution based on your finding to challenge and revisit the inital plan and redo a planning phase, it is important that your plan go along you coding execution and your discovery.
+
+
+
+
 
 
 

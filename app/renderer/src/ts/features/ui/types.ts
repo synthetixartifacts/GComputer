@@ -13,3 +13,13 @@ export interface UISettings {
   animations: boolean;
   compactMode: boolean;
 }
+
+export interface PageAction {
+  id: string;
+  label?: string;
+  ariaLabel: string;
+  icon?: string;
+  emoji?: string;
+  onClick: () => void;
+  className?: string;
+}

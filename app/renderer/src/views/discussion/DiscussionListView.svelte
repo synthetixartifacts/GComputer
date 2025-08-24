@@ -1,17 +1,33 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import DiscussionList from '@components/discussion/DiscussionList.svelte';
   import type { Discussion } from '@features/discussion/types';
   import { discussionService } from '@features/discussion/service';
   import { discussionStore, discussions } from '@features/discussion/store';
   import { goto } from '@features/router/service';
   import { t } from '@ts/i18n';
+  import { setPageTitle, setPageActions, clearPageTitle, clearPageActions } from '@ts/shared/utils/page-utils';
+  import { toggleDiscussionSidebar } from '@features/ui/service';
 
   let loading = true;
   let error: string | null = null;
 
   onMount(async () => {
+    setPageTitle('discussion.listView.title');
+    setPageActions([
+      {
+        id: 'toggle-discussion-sidebar',
+        ariaLabel: $t('discussion.sidebar.toggle'),
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm16 16V5H5v14h14zM7 7h5v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z"/></svg>',
+        onClick: toggleDiscussionSidebar
+      }
+    ]);
     await loadDiscussions();
+  });
+  
+  onDestroy(() => {
+    clearPageTitle();
+    clearPageActions();
   });
 
   async function loadDiscussions() {
@@ -64,10 +80,7 @@
 <div class="view-container discussion-list-view">
   <div class="view-header">
     <div class="header-with-action">
-      <div>
-        <h1>{$t('discussion.listView.title')}</h1>
-        <p class="view-description">{$t('discussion.listView.description')}</p>
-      </div>
+      <p class="view-description">{$t('discussion.listView.description')}</p>
       <button class="btn btn-primary" on:click={() => goto('discussion.new')}>
         {$t('discussion.newDiscussion')}
       </button>

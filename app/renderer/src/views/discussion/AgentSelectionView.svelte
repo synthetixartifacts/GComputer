@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import AgentCard from '@components/discussion/AgentCard.svelte';
   import type { Agent } from '@features/admin/types';
   import { listAgents } from '@features/admin/service';
   import { discussionService } from '@features/discussion/service';
   import { goto } from '@features/router/service';
   import { t } from '@ts/i18n';
+  import { setPageTitle, setPageActions, clearPageTitle, clearPageActions } from '@ts/shared/utils/page-utils';
+  import { toggleDiscussionSidebar } from '@features/ui/service';
 
   let agents: Agent[] = [];
   let loading = true;
@@ -14,7 +16,21 @@
   let creatingDiscussion = false;
 
   onMount(async () => {
+    setPageTitle('discussion.agentSelection.title');
+    setPageActions([
+      {
+        id: 'toggle-discussion-sidebar',
+        ariaLabel: $t('discussion.sidebar.toggle'),
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm16 16V5H5v14h14zM7 7h5v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z"/></svg>',
+        onClick: toggleDiscussionSidebar
+      }
+    ]);
     await loadAgents();
+  });
+  
+  onDestroy(() => {
+    clearPageTitle();
+    clearPageActions();
   });
 
   async function loadAgents() {
@@ -42,7 +58,6 @@
 
 <div class="view-container agent-selection-view">
   <div class="view-header">
-    <h1>{$t('discussion.agentSelection.title')}</h1>
     <p class="view-description">{$t('discussion.agentSelection.description')}</p>
   </div>
 

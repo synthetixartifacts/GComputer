@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount, onDestroy } from 'svelte';
+  import { setPageTitle, clearPageTitle } from '@ts/shared/utils/page-utils';
   import AdminEntityManager from '@components/admin/AdminEntityManager.svelte';
   import { 
     models, 
@@ -19,6 +21,14 @@
     AdminFieldConfig
   } from '@features/admin/types';
   import { t } from '@ts/i18n';
+  
+  onMount(() => {
+    setPageTitle('admin.model.title');
+  });
+  
+  onDestroy(() => {
+    clearPageTitle();
+  });
 
   // Field configuration for models
   $: providerOptions = $providers.map(p => ({ label: p.name, value: p.id }));

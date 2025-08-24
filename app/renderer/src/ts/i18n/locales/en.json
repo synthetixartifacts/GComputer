@@ -125,6 +125,7 @@
   },
   "pages": {
     "home": {
+      "title": "Home",
       "hello": "Hello World — GComputer",
       "configured": "Svelte + Tailwind + SCSS is configured."
     },
@@ -465,6 +466,14 @@
     "favoriteError": "Failed to toggle favorite",
     "favoriteRequiresMessages": "Cannot favorite a discussion without messages",
     "creatingDiscussion": "Creating discussion...",
+    "sidebar": {
+      "title": "Discussions & Agents",
+      "toggle": "Toggle discussions sidebar",
+      "close": "Close sidebar",
+      "agents": "Agents",
+      "recentDiscussions": "Recent Discussions",
+      "seeAll": "See All Discussions"
+    },
     "table": {
       "title": "Title",
       "agent": "Agent",
@@ -504,6 +513,8 @@
       "updated": "Updated"
     },
     "chat": {
+      "title": "Discussion",
+      "refresh": "Start new discussion with same agent",
       "loading": "Loading discussion...",
       "noDiscussionId": "No discussion ID provided",
       "notFound": "Discussion not found",
