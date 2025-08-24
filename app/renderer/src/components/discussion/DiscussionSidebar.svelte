@@ -11,7 +11,7 @@
   export let open = false;
   export let onClose: () => void;
   
-  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
+  let t: (key: string, params?: Record<string, string | number>) => string = (k: string) => k;
   let agents: Agent[] = [];
   let recentDiscussions: Discussion[] = [];
   let loading = true;
@@ -41,12 +41,14 @@
       agents = loadedAgents;
       
       // Load discussions if not already in store
-      if (!$discussions || $discussions.length === 0) {
+      // Use recentDiscussions which is already subscribed to discussions store
+      if (!recentDiscussions || recentDiscussions.length === 0) {
         const loadedDiscussions = await discussionService.listDiscussions();
         discussionStore.setDiscussions(loadedDiscussions);
       }
     } catch (err) {
       console.error('Failed to load sidebar data:', err);
+      // TODO: Add user-facing error notification
     } finally {
       loading = false;
     }
@@ -85,9 +87,8 @@
     class="discussion-sidebar-backdrop"
     on:click={handleBackdropClick}
     on:keydown={handleKeydown}
-    role="button"
-    tabindex="-1"
-    aria-label={t('discussion.sidebar.close')}
+    role="presentation"
+    aria-hidden="true"
   >
     <aside class="discussion-sidebar" role="complementary">
       <div class="discussion-sidebar__header">
