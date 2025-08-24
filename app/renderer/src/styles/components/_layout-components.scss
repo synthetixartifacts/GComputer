@@ -7,18 +7,58 @@
     top: 0;
     z-index: var(--z-header);
     @include m.surface;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0;
+    
+    &__inner {
+      width: 90vw;
+      max-width: 1500px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    &__left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+      margin-left: -0.5rem; /* Pull left section to align with content edge */
+    }
+    
+    &__center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0; /* Allow text truncation */
+    }
+    
+    &__right {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+      margin-right: -0.5rem; /* Pull right section to align with content edge */
+    }
   }
 
   /* Footer */
   .gc-footer {
     @include m.surface;
-    padding: 0.75rem 1rem;
-    text-align: center;
-    color: var(--color-muted);
+    padding: 0.75rem 0;
+    
+    &__inner {
+      width: 90vw;
+      max-width: 1500px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 1rem;
+      text-align: center;
+      color: var(--color-muted);
+    }
   }
 
   /* Backdrops (shared) */
