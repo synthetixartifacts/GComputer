@@ -1,0 +1,189 @@
+/**
+ * Context Menu Styles
+ * Styles for the context menu overlay and action items
+ */
+
+.context-menu-overlay {
+  @apply fixed;
+  @apply bg-white dark:bg-gray-900;
+  @apply rounded-lg shadow-2xl;
+  @apply border border-gray-200 dark:border-gray-700;
+  @apply p-2;
+  @apply min-w-[250px] max-w-[320px];
+  @apply max-h-[600px] overflow-y-auto;
+  @apply z-[9999];
+  
+  // Smooth animations
+  animation: fadeIn 0.15s ease-out;
+  
+  &:focus {
+    @apply outline-none;
+  }
+  
+  // Selected text preview
+  .selected-text {
+    @apply px-3 py-2 mb-2;
+    @apply bg-gray-50 dark:bg-gray-800;
+    @apply rounded-md;
+    @apply text-sm;
+    @apply border border-gray-200 dark:border-gray-700;
+    
+    .label {
+      @apply text-gray-500 dark:text-gray-400;
+      @apply text-xs uppercase tracking-wide;
+      @apply block mb-1;
+    }
+    
+    .text {
+      @apply text-gray-700 dark:text-gray-300;
+      @apply italic;
+      @apply line-clamp-2;
+    }
+  }
+  
+  // Actions container
+  .actions-container {
+    @apply space-y-1;
+  }
+  
+  // Action group
+  .action-group {
+    @apply space-y-1;
+    
+    &:not(:first-child) {
+      @apply pt-2 mt-2;
+      @apply border-t border-gray-200 dark:border-gray-700;
+    }
+    
+    .group-label {
+      @apply px-3 py-1;
+      @apply text-xs uppercase tracking-wide;
+      @apply text-gray-500 dark:text-gray-400;
+      @apply font-semibold;
+    }
+  }
+  
+  // Error message
+  .error-message {
+    @apply mt-2 px-3 py-2;
+    @apply bg-red-50 dark:bg-red-900/20;
+    @apply text-red-600 dark:text-red-400;
+    @apply text-sm rounded-md;
+    @apply border border-red-200 dark:border-red-800;
+  }
+  
+  // Shortcuts hint
+  .shortcuts-hint {
+    @apply mt-3 pt-2;
+    @apply border-t border-gray-200 dark:border-gray-700;
+    @apply text-xs text-gray-500 dark:text-gray-400;
+    @apply flex items-center justify-center gap-2;
+    
+    .separator {
+      @apply text-gray-400 dark:text-gray-600;
+    }
+  }
+}
+
+// Action item component
+.action-item {
+  @apply w-full;
+  @apply flex items-center gap-3;
+  @apply px-3 py-2;
+  @apply rounded-md;
+  @apply text-left;
+  @apply transition-all duration-150;
+  @apply text-gray-700 dark:text-gray-300;
+  
+  // Hover state
+  &:hover:not(.disabled) {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+  
+  // Selected state
+  &.selected:not(.disabled) {
+    @apply bg-blue-50 dark:bg-blue-900/20;
+    @apply text-blue-700 dark:text-blue-300;
+    @apply ring-1 ring-blue-400 dark:ring-blue-600;
+  }
+  
+  // Disabled state
+  &.disabled {
+    @apply opacity-40 cursor-not-allowed;
+  }
+  
+  // Loading state
+  &.loading {
+    @apply cursor-wait;
+    
+    .spinner {
+      animation: spin 1s linear infinite;
+    }
+  }
+  
+  // Icon
+  .icon {
+    @apply text-lg flex-shrink-0;
+    @apply w-6 h-6 flex items-center justify-center;
+  }
+  
+  // Label
+  .label {
+    @apply flex-1;
+    @apply text-sm font-medium;
+  }
+  
+  // Shortcut
+  .shortcut {
+    @apply ml-auto;
+    @apply px-2 py-0.5;
+    @apply bg-gray-200 dark:bg-gray-700;
+    @apply text-xs font-mono;
+    @apply rounded;
+    @apply text-gray-600 dark:text-gray-400;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Scrollbar styling for overlay
+.context-menu-overlay {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.gray.400') transparent;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 dark:bg-gray-600;
+    @apply rounded-full;
+    
+    &:hover {
+      @apply bg-gray-500 dark:bg-gray-500;
+    }
+  }
+}

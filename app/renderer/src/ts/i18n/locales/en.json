@@ -557,6 +557,29 @@
     "table": {
       "clearFilters": "Clear filters"
     }
+  },
+  "contextMenu": {
+    "selectedText": "Selected text",
+    "actions": {
+      "translate": "Translate",
+      "fixGrammar": "Fix Grammar",
+      "summarize": "Summarize",
+      "explain": "Explain",
+      "screenshot": "Screenshot",
+      "copy": "Copy",
+      "paste": "Paste"
+    },
+    "categories": {
+      "ai": "AI Actions",
+      "text": "Text",
+      "utility": "Utilities",
+      "custom": "Custom"
+    },
+    "shortcuts": {
+      "trigger": "Alt+Space to open",
+      "navigation": "↑↓ Navigate",
+      "close": "to close"
+    }
   }
 }
 

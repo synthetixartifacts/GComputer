@@ -15,6 +15,7 @@ import { configApi } from './api/config';
 import { fsApi } from './api/fs';
 import { screenApi } from './api/screen';
 import { testApi, adminApi, discussionsApi, messagesApi } from './api/db';
+import { contextApi } from './api/context';
 
 /**
  * Main API object exposed to renderer process
@@ -32,6 +33,9 @@ const gcApi = {
   
   // Screen capture functionality
   screen: screenApi,
+  
+  // Context menu functionality
+  context: contextApi,
   
   // Database operations
   db: {

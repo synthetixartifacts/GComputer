@@ -9,6 +9,7 @@ import { registerFsIpc } from './fs';
 import { registerDbIpc } from './db';
 import { registerScreenCaptureIpc } from './screen-capture/index';
 import { initializeDisplayMedia, cleanupDisplayMedia } from './display-media';
+import { initializeContextMenu, cleanupContextMenu } from './context-menu/index';
 
 /**
  * Register all IPC handlers
@@ -26,6 +27,9 @@ export function registerAllIpcHandlers(): void {
   // Initialize display media handling
   initializeDisplayMedia();
   
+  // Initialize context menu system
+  initializeContextMenu();
+  
   console.log('[ipc] IPC handlers registered successfully');
 }
 
@@ -37,6 +41,9 @@ export function cleanupAllIpcHandlers(): void {
   
   // Clean up display media handlers
   cleanupDisplayMedia();
+  
+  // Clean up context menu system
+  cleanupContextMenu();
   
   // Additional cleanup can be added here for other modules
   console.log('[ipc] IPC handlers cleaned up');

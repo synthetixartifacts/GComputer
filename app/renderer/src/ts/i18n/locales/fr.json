@@ -575,6 +575,29 @@
     "table": {
       "clearFilters": "Effacer les filtres"
     }
+  },
+  "contextMenu": {
+    "selectedText": "Texte sélectionné",
+    "actions": {
+      "translate": "Traduire",
+      "fixGrammar": "Corriger la grammaire",
+      "summarize": "Résumer",
+      "explain": "Expliquer",
+      "screenshot": "Capture d'écran",
+      "copy": "Copier",
+      "paste": "Coller"
+    },
+    "categories": {
+      "ai": "Actions IA",
+      "text": "Texte",
+      "utility": "Utilitaires",
+      "custom": "Personnalisé"
+    },
+    "shortcuts": {
+      "trigger": "Alt+Espace pour ouvrir",
+      "navigation": "↑↓ Naviguer",
+      "close": "pour fermer"
+    }
   }
 }
 
