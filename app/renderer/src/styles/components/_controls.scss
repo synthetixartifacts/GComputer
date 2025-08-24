@@ -33,8 +33,9 @@
     width: 2rem;
     height: 2rem;
     padding: 0;
-    display: inline-grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: transparent;
     border: 0;
   }
