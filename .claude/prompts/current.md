@@ -1,4 +1,60 @@
 
+
+
+## Big Task Alert
+
+It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
+Your initial planning concept is not directly linked to the execution so the plan need to be as clear as possible. 
+Really take time to think about the best options available to us to do this, consider our project structure and what's already implemented within codebase and how it's implemented. Make sure to double check things, do not make any assumptions, yes the documentation is good but could be outdated. Our ./docs/coding_standards.md are always good and you should follow it.
+
+Remember, you can browse the web if you need up to date information, documentation or look for specific libraries at any point.
+At anytime if you find something like an error or a new concept that is impacting the plan, make sure to revalidate and assess if the plan is still ok or if it needs adjustments based on the specific situation you are in.
+
+Once you know what you need to know to accomplish your task you will create your plan that will be really linked to our project.
+Decide in the best way to do this task for our project, specifications and requirements. 
+It's a big project so in everything we do/create/update, the main focus is that we want resusability, DRY and simple clean code.
+
+Do not hesitate in the middle of the execution based on your finding to challenge and revisit the inital plan and redo a planning phase, it is important that your plan go along you coding execution and your discovery.
+
+
+## New task
+
+I want you to enhance the ux/ui of the input inside the dicusssionn/chatbot page.
+I want to enhance its ux and make it available on each agewnt but also based on configuration, like some agent will only be able to drop file, not enter text in input or different combination like this.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Good, now others things:
 - 
 
