@@ -1,65 +1,93 @@
 <script lang="ts">
+  /**
+   * ChatMessageList Component
+   * 
+   * Purpose: Pure presentation component for displaying chat messages
+   * 
+   * Responsibilities:
+   * - Render list of chat messages
+   * - Handle scroll behavior (auto-scroll, user scroll detection)
+   * - Group messages by sender and time
+   * - NO business logic, NO API calls, NO state management
+   * 
+   * Use when: You need to display messages with scroll behavior
+   * Always used inside ChatThread, never standalone
+   */
   import type { ChatMessage } from '@features/chatbot/types';
   import ChatMessageBubble from './ChatMessageBubble.svelte';
-  import { afterUpdate, onMount, tick } from 'svelte';
+  import { createPageScroll } from './usePageScroll';
+  import { SCROLL_CONFIG } from './scroll-config';
+  import { onMount, onDestroy } from 'svelte';
+  import { tick } from 'svelte';
 
   export let messages: ChatMessage[] = [];
-  export let autoscroll: boolean = true;
   export let groupThresholdMs: number = 3 * 60 * 1000; // 3 min grouping window
+  export let isStreaming: boolean = false;
+  export let onUserMessage: boolean = false;
   
   // Translation key props for different contexts
   export let copyKey: string = 'pages.styleguide.chatbot.messages.Copy';
   export let copiedKey: string = 'pages.styleguide.chatbot.messages.Copied';
 
-  let scroller: HTMLDivElement | null = null;
-  let userHasScrolled: boolean = false;
-  let isNearBottom: boolean = true;
-  let lastMessageCount: number = 0;
+  let pageScroll = createPageScroll();
+  let previousMessageCount = 0;
+
+  // Handle messages change - scroll on new messages
+  $: if (messages.length > 0) {
+    handleMessagesChange();
+  }
+
+  // Handle user message - always scroll
+  $: if (onUserMessage) {
+    tick().then(() => {
+      pageScroll.forceScroll();
+    });
+  }
+
+  // Handle streaming - keep scrolling
+  $: if (isStreaming) {
+    pageScroll.handleContentAdded();
+  }
+
+  async function handleMessagesChange() {
+    const currentCount = messages.length;
+    
+    // Check if this is initial load or new messages
+    if (previousMessageCount === 0 && currentCount > 0) {
+      // Initial load - wait for render then scroll
+      await tick();
+      setTimeout(() => {
+        pageScroll.scrollToBottom();
+      }, SCROLL_CONFIG.INITIAL_LOAD_DELAY);
+    } else if (currentCount > previousMessageCount) {
+      // New message added
+      await tick();
+      pageScroll.handleContentAdded();
+    }
+    
+    previousMessageCount = currentCount;
+  }
+
+  function handleWindowScroll() {
+    pageScroll.checkUserScroll();
+  }
 
   onMount(() => {
-    if (autoscroll) scrollToBottom(true);
-  });
-
-  afterUpdate(async () => {
-    // Check if new messages were added
-    if (messages.length > lastMessageCount) {
-      lastMessageCount = messages.length;
-      
-      // Auto-scroll if user hasn't manually scrolled away or is near bottom
-      if (autoscroll && (!userHasScrolled || isNearBottom)) {
-        await tick(); // Wait for DOM update
-        scrollToBottom();
-      }
+    // Add window scroll listener
+    window.addEventListener('scroll', handleWindowScroll);
+    
+    // Give page time to render with content
+    if (messages.length > 0) {
+      setTimeout(() => {
+        pageScroll.scrollToBottom();
+      }, SCROLL_CONFIG.MOUNT_SCROLL_DELAY);
     }
   });
 
-  function handleScroll(): void {
-    if (!scroller) return;
-    
-    const threshold = 100; // pixels from bottom
-    const scrollTop = scroller.scrollTop;
-    const scrollHeight = scroller.scrollHeight;
-    const clientHeight = scroller.clientHeight;
-    
-    isNearBottom = scrollHeight - scrollTop - clientHeight < threshold;
-    
-    // If user scrolled up significantly, mark as manually scrolled
-    if (!isNearBottom && scrollHeight - scrollTop - clientHeight > threshold * 2) {
-      userHasScrolled = true;
-    }
-    
-    // Reset manual scroll flag if user scrolls back to bottom
-    if (isNearBottom) {
-      userHasScrolled = false;
-    }
-  }
-
-  function scrollToBottom(immediate: boolean = false): void {
-    if (!scroller) return;
-    const behavior: ScrollBehavior = immediate ? 'auto' : 'smooth';
-    scroller.scrollTo({ top: scroller.scrollHeight, behavior });
-    userHasScrolled = false;
-  }
+  onDestroy(() => {
+    window.removeEventListener('scroll', handleWindowScroll);
+    pageScroll.destroy();
+  });
 
   function isFirstInGroup(index: number): boolean {
     if (index === 0) return true;
@@ -82,8 +110,8 @@
   }
 </script>
 
-<div class="overflow-y-auto h-full pr-2" bind:this={scroller} on:scroll={handleScroll} aria-label={"Conversation"}>
-  <div class="flex flex-col gap-2 p-4 pb-6">
+<div class="message-list-container" aria-label="Conversation">
+  <div class="message-list-content">
     {#each messages as msg, i (msg.id)}
       <ChatMessageBubble
         message={msg}
@@ -95,5 +123,4 @@
     {/each}
   </div>
 </div>
-
 

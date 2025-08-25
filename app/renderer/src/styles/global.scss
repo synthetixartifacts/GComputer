@@ -20,6 +20,7 @@
 @use './components/chat-messages';
 @use './components/discussion-sidebar';
 @use './views/capture-screen';
+@use './views/discussion-view';
 
 @tailwind base;
 @tailwind components;

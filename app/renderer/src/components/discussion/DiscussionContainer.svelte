@@ -1,4 +1,23 @@
 <script lang="ts">
+  /**
+   * DiscussionContainer Component
+   * 
+   * Purpose: Smart container for AI discussions with database persistence
+   * 
+   * Responsibilities:
+   * - Manage discussion lifecycle (create, load, update)
+   * - Handle AI communication through agents
+   * - Persist messages to database
+   * - Coordinate between discussion state and chatbot UI
+   * - Agent validation and error handling
+   * - Stream AI responses with proper state management
+   * 
+   * Use when: You need AI-powered conversations that persist to database
+   * Wraps ChatThread for UI, adds business logic for discussions
+   * 
+   * This is the ONLY component that should handle discussion persistence.
+   * Do not duplicate this logic elsewhere.
+   */
   import { onMount, onDestroy } from 'svelte';
   import DiscussionHeader from './DiscussionHeader.svelte';
   import ChatThread from '@components/chat/ChatThread.svelte';
@@ -219,17 +238,16 @@
   
   <div class="discussion-content">
     {#if threadId}
-      {#key threadId}
-        <ChatThread
-          {threadId}
-          customSendHandler={handleSendMessage}
-          copyKey="discussion.chat.messages.copy"
-          copiedKey="discussion.chat.messages.copied"
-          placeholderKey="discussion.chat.composer.placeholder"
-          inputLabelKey="discussion.chat.composer.inputLabel"
-          sendKey="discussion.chat.composer.send"
-        />
-      {/key}
+      <ChatThread
+        {threadId}
+        {isStreaming}
+        customSendHandler={handleSendMessage}
+        copyKey="discussion.chat.messages.copy"
+        copiedKey="discussion.chat.messages.copied"
+        placeholderKey="discussion.chat.composer.placeholder"
+        inputLabelKey="discussion.chat.composer.inputLabel"
+        sendKey="discussion.chat.composer.send"
+      />
     {/if}
   </div>
 </div>

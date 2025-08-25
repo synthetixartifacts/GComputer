@@ -1,5 +1,38 @@
 // Chat Message Components Global Styles
 
+// Chat Thread Container
+.chat-thread-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.chat-messages-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+// Message List Container (ChatMessageList.svelte)
+.message-list-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  // No overflow - let content flow naturally
+}
+
+.message-list-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  padding-bottom: 1.5rem;
+  // Minimum height to push content down when few messages
+  min-height: calc(100vh - 20rem);
+  // Auto margin pushes content to bottom when few messages
+  justify-content: flex-end;
+}
+
 // Message bubble outer container
 .message-bubble-outer {
   width: 100%;
