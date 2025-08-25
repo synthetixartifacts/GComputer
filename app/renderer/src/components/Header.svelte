@@ -21,6 +21,7 @@
 
   let lastY = 0;
   let upDelta = 0;
+  let scrollRafId: number | null = null;
 
   function updateHeaderOffset() {
     if (!headerEl) return;
@@ -28,7 +29,7 @@
     document.documentElement.style.setProperty('--gc-header-offset', `${h}px`);
   }
 
-  function onScroll() {
+  function handleScroll() {
     const y = window.scrollY;
     const dy = y - lastY;
 
@@ -56,6 +57,16 @@
     }
 
     lastY = y;
+    scrollRafId = null;
+  }
+
+  function onScroll() {
+    // Cancel any pending animation frame
+    if (scrollRafId !== null) {
+      cancelAnimationFrame(scrollRafId);
+    }
+    // Schedule the scroll handling
+    scrollRafId = requestAnimationFrame(handleScroll);
   }
 
   let ro: ResizeObserver | null = null;
@@ -64,7 +75,7 @@
     lastY = window.scrollY;
     updateHeaderOffset();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', updateHeaderOffset, { passive: true } as any);
+    window.addEventListener('resize', updateHeaderOffset, { passive: true });
     if (headerEl && 'ResizeObserver' in window) {
       ro = new ResizeObserver(() => updateHeaderOffset());
       ro.observe(headerEl);
@@ -75,6 +86,9 @@
     window.removeEventListener('scroll', onScroll as EventListener);
     window.removeEventListener('resize', updateHeaderOffset as any);
     ro?.disconnect();
+    if (scrollRafId !== null) {
+      cancelAnimationFrame(scrollRafId);
+    }
     unsubT();
     unsubTitle();
     unsubActions();

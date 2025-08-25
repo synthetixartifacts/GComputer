@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { goto } from '@features/router/service';
+  import { lockBodyScroll, unlockBodyScroll } from '@renderer/ts/shared/utils/scroll-lock';
   import { listAgents } from '@features/admin/service';
   import { discussionService } from '@features/discussion/service';
   import { discussions, discussionStore } from '@features/discussion/store';
@@ -81,25 +82,18 @@
     }
   }
 
-  // Scroll lock while this sidebar is open
-  function lockScroll(): void {
-    const root = document.documentElement;
-    const current = parseInt(root.dataset.gcScrollLocks || '0', 10) || 0;
-    root.dataset.gcScrollLocks = String(current + 1);
-    document.body.classList.add('gc-no-scroll');
+  // Handle scroll lock when sidebar opens/closes
+  $: if (open) {
+    lockBodyScroll();
+  } else {
+    unlockBodyScroll();
   }
-  function unlockScroll(): void {
-    const root = document.documentElement;
-    const current = parseInt(root.dataset.gcScrollLocks || '0', 10) || 0;
-    const next = Math.max(0, current - 1);
-    root.dataset.gcScrollLocks = String(next);
-    if (next === 0) document.body.classList.remove('gc-no-scroll');
-  }
-  $: open, (open ? lockScroll() : unlockScroll());
 
   onDestroy(() => {
     // Ensure we release the lock if unmounting while open
-    unlockScroll();
+    if (open) {
+      unlockBodyScroll();
+    }
   });
 </script>
 

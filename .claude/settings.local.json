@@ -24,7 +24,8 @@
       "Bash(npx vitest run:*)",
       "WebFetch(domain:docs.anthropic.com)",
       "WebFetch(domain:www.anthropic.com)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npx tsc:*)"
     ],
     "defaultMode": "acceptEdits"
   }

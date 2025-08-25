@@ -9,6 +9,7 @@
    */
   import { t as tStore } from '@ts/i18n/store';
   import { onDestroy } from 'svelte';
+  import { lockBodyScroll, unlockBodyScroll } from '@renderer/ts/shared/utils/scroll-lock';
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
   const unsubT = tStore.subscribe((fn) => (t = fn));
   onDestroy(() => unsubT());
@@ -19,25 +20,18 @@
   let headingId: string = 'gc-drawer-title-' + Math.random().toString(36).slice(2);
   let previouslyFocusedEl: HTMLElement | null = null;
 
-  // Scroll lock helpers (support multiple locks via ref-count on <html>)
-  function lockScroll(): void {
-    const root = document.documentElement;
-    const current = parseInt(root.dataset.gcScrollLocks || '0', 10) || 0;
-    root.dataset.gcScrollLocks = String(current + 1);
-    document.body.classList.add('gc-no-scroll');
+  // Handle scroll lock when drawer opens/closes
+  $: if (open) {
+    lockBodyScroll();
+  } else {
+    unlockBodyScroll();
   }
-  function unlockScroll(): void {
-    const root = document.documentElement;
-    const current = parseInt(root.dataset.gcScrollLocks || '0', 10) || 0;
-    const next = Math.max(0, current - 1);
-    root.dataset.gcScrollLocks = String(next);
-    if (next === 0) document.body.classList.remove('gc-no-scroll');
-  }
-  $: open, (open ? lockScroll() : unlockScroll());
 
   onDestroy(() => {
     // Ensure we release the lock if unmounting while open
-    unlockScroll();
+    if (open) {
+      unlockBodyScroll();
+    }
   });
 
   function getFocusable(container: HTMLElement): HTMLElement[] {
