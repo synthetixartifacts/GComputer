@@ -19,6 +19,27 @@
   let headingId: string = 'gc-drawer-title-' + Math.random().toString(36).slice(2);
   let previouslyFocusedEl: HTMLElement | null = null;
 
+  // Scroll lock helpers (support multiple locks via ref-count on <html>)
+  function lockScroll(): void {
+    const root = document.documentElement;
+    const current = parseInt(root.dataset.gcScrollLocks || '0', 10) || 0;
+    root.dataset.gcScrollLocks = String(current + 1);
+    document.body.classList.add('gc-no-scroll');
+  }
+  function unlockScroll(): void {
+    const root = document.documentElement;
+    const current = parseInt(root.dataset.gcScrollLocks || '0', 10) || 0;
+    const next = Math.max(0, current - 1);
+    root.dataset.gcScrollLocks = String(next);
+    if (next === 0) document.body.classList.remove('gc-no-scroll');
+  }
+  $: open, (open ? lockScroll() : unlockScroll());
+
+  onDestroy(() => {
+    // Ensure we release the lock if unmounting while open
+    unlockScroll();
+  });
+
   function getFocusable(container: HTMLElement): HTMLElement[] {
     const nodes = container.querySelectorAll<HTMLElement>(
       'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
@@ -65,5 +86,3 @@
   </div>
   
 </aside>
-
-

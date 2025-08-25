@@ -80,6 +80,27 @@
       onClose();
     }
   }
+
+  // Scroll lock while this sidebar is open
+  function lockScroll(): void {
+    const root = document.documentElement;
+    const current = parseInt(root.dataset.gcScrollLocks || '0', 10) || 0;
+    root.dataset.gcScrollLocks = String(current + 1);
+    document.body.classList.add('gc-no-scroll');
+  }
+  function unlockScroll(): void {
+    const root = document.documentElement;
+    const current = parseInt(root.dataset.gcScrollLocks || '0', 10) || 0;
+    const next = Math.max(0, current - 1);
+    root.dataset.gcScrollLocks = String(next);
+    if (next === 0) document.body.classList.remove('gc-no-scroll');
+  }
+  $: open, (open ? lockScroll() : unlockScroll());
+
+  onDestroy(() => {
+    // Ensure we release the lock if unmounting while open
+    unlockScroll();
+  });
 </script>
 
 {#if open}

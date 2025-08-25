@@ -1,6 +1,20 @@
 @layer base {
   /* Common layout helpers */
   
+  /* Offset page content for fixed header */
+  body {
+    padding-top: var(--gc-header-offset, 0px);
+  }
+
+  /* Disable background scroll (used when drawers/sidebars are open) */
+  body.gc-no-scroll {
+    overflow: hidden !important;
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+    height: 100vh; /* prevent page scroll */
+    overscroll-behavior: none !important;
+  }
+  
   /* Main content container - 90vw with max 1500px */
   .gc-content {
     width: 90vw;
