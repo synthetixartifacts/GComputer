@@ -115,6 +115,9 @@
       selectedAgentId = agentId;
       refreshKey++; // Increment key to force component remount
       
+      // Scroll to top when refreshing
+      window.scrollTo(0, 0);
+      
       // Load the agent if needed
       if (!selectedAgent || selectedAgent.id !== agentId) {
         await loadSelectedAgent(agentId);

@@ -3,11 +3,20 @@
 @layer components {
   /* Header */
   .gc-header {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     z-index: var(--z-header);
     @include m.surface;
     padding: 0.5rem 0;
+    @include m.transition(transform);
+    transform: translateY(0);
+
+    &.gc-header--hidden {
+      transform: translateY(-100%);
+    }
     
     &__inner {
       width: 90vw;

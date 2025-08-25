@@ -1,5 +1,16 @@
 
 
+When we open we open the sidebar we should remove the gobal page scrolling option and only let the sidebar scroll.
+
+On refresh of a discussion btn btn--secondary gc-icon-btn  we should scroll to the top
+
+
+
+
+In the header we hide it when scroll down we hide it after a certain point. And when we scroll up we show it back but its we are enough up but the scroll up should show the header if we scroll up more than 100px we should show it not depending on how far to the bottom we are it should not impact
+Right now our header is sticky I think we should place it as fixed and do our logic. 
+This logic should be placed on the .ts of the header itself and also update the scss.
+
 
 
 # New adjustment for the chatbot Ux/ui component 
@@ -13,7 +24,8 @@ We will create a lot of feature like these for our chatbot so verify that everyt
 Create a clean structure of file that will be scalable and easily manageable.
 
 
-
+I think it's important to review any references to "sticky" in the documentation. However, it seems like that's not necessary right now. I’m considering whether we should add a test for this, but it appears
+that's also not required. Next, I want to update our plan and make sure to mark all completed steps. This will help keep everything organized and ensure I track our progress accurately!
 
 
 
