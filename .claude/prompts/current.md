@@ -2,7 +2,6 @@
 
 
 
-
 # New adjustment for the chatbot Ux/ui component 
 Theseh adjustment should be on the component level so that everywhere we use a chatbot window we have this.
 
@@ -12,10 +11,6 @@ Theseh adjustment should be on the component level so that everywhere we use a c
 We will create a lot of feature like these for our chatbot so verify that everything is dry and if the file created / updated are too long and really segmented per functionallity.
 
 Create a clean structure of file that will be scalable and easily manageable.
-
-
-
-
 
 
 
