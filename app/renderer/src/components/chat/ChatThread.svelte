@@ -17,6 +17,7 @@
   import type { ChatMessage } from '@features/chatbot/types';
   import { chatbotStore } from '@features/chatbot/store';
   import { sendMessage } from '@features/chatbot/service';
+  import { SCROLL_CONFIG } from './scroll-config';
   import ChatMessageList from './ChatMessageList.svelte';
   import ChatComposer from './ChatComposer.svelte';
 
@@ -46,7 +47,7 @@
         // Trigger scroll for user message
         userMessageTrigger = true;
         messageVersion++;
-        setTimeout(() => userMessageTrigger = false, 200);
+        setTimeout(() => userMessageTrigger = false, SCROLL_CONFIG.USER_MESSAGE_RESET_DELAY);
       }
     }
     
@@ -59,14 +60,22 @@
     userMessageTrigger = true;
     messageVersion++;
     
-    if (customSendHandler) {
-      await customSendHandler(text);
-    } else {
-      await sendMessage({ threadId, content: text });
+    try {
+      if (customSendHandler) {
+        await customSendHandler(text);
+      } else {
+        await sendMessage({ threadId, content: text });
+      }
+    } catch (error) {
+      // Reset trigger state on error
+      userMessageTrigger = false;
+      console.error('Failed to send message:', error);
+      // Re-throw to let parent handle error display
+      throw error;
+    } finally {
+      // Keep trigger active a bit longer for async message addition
+      setTimeout(() => userMessageTrigger = false, SCROLL_CONFIG.USER_MESSAGE_RESET_DELAY);
     }
-    
-    // Keep trigger active a bit longer for async message addition
-    setTimeout(() => userMessageTrigger = false, 500);
   }
 </script>
 

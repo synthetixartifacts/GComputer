@@ -3,9 +3,12 @@
  * Scrolls the entire page instead of a container
  */
 
+import { SCROLL_CONFIG } from './scroll-config';
+
 export function createPageScroll() {
   let shouldAutoScroll = true;
   let lastScrollHeight = 0;
+  let lastStreamUpdate = 0;
   
   /**
    * Scroll to bottom of page immediately
@@ -33,12 +36,12 @@ export function createPageScroll() {
     const clientHeight = window.innerHeight;
     const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
     
-    // User has scrolled up if more than 100px from bottom
-    shouldAutoScroll = distanceFromBottom < 100;
+    // User has scrolled up if more than threshold from bottom
+    shouldAutoScroll = distanceFromBottom < SCROLL_CONFIG.USER_SCROLL_THRESHOLD;
   }
   
   /**
-   * Handle new content added
+   * Handle new content added with throttling for streaming
    */
   function handleContentAdded() {
     const currentScrollHeight = document.body.scrollHeight;
@@ -46,10 +49,15 @@ export function createPageScroll() {
       lastScrollHeight = currentScrollHeight;
       
       if (shouldAutoScroll) {
-        // Use requestAnimationFrame to ensure DOM is updated
-        requestAnimationFrame(() => {
-          scrollToBottom();
-        });
+        // Throttle rapid updates during streaming
+        const now = Date.now();
+        if (now - lastStreamUpdate >= SCROLL_CONFIG.STREAM_THROTTLE_MS) {
+          lastStreamUpdate = now;
+          // Use requestAnimationFrame to ensure DOM is updated
+          requestAnimationFrame(() => {
+            scrollToBottom();
+          });
+        }
       }
     }
   }

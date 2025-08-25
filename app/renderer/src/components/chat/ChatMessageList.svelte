@@ -16,6 +16,7 @@
   import type { ChatMessage } from '@features/chatbot/types';
   import ChatMessageBubble from './ChatMessageBubble.svelte';
   import { createPageScroll } from './usePageScroll';
+  import { SCROLL_CONFIG } from './scroll-config';
   import { onMount, onDestroy } from 'svelte';
   import { tick } from 'svelte';
 
@@ -57,7 +58,7 @@
       await tick();
       setTimeout(() => {
         pageScroll.scrollToBottom();
-      }, 100);
+      }, SCROLL_CONFIG.INITIAL_LOAD_DELAY);
     } else if (currentCount > previousMessageCount) {
       // New message added
       await tick();
@@ -79,7 +80,7 @@
     if (messages.length > 0) {
       setTimeout(() => {
         pageScroll.scrollToBottom();
-      }, 150);
+      }, SCROLL_CONFIG.MOUNT_SCROLL_DELAY);
     }
   });
 
