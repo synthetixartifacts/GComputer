@@ -17,6 +17,7 @@
   let isNewDiscussion = false;
   let selectedAgent: Agent | null = null;
   let selectedAgentId: number | null = null;
+  let refreshKey = 0; // Key to force component remount on refresh
 
   const unsubscribe = activeDiscussion.subscribe((discussion) => {
     // Update when active discussion changes
@@ -112,6 +113,7 @@
       discussionId = null;
       isNewDiscussion = true;
       selectedAgentId = agentId;
+      refreshKey++; // Increment key to force component remount
       
       // Load the agent if needed
       if (!selectedAgent || selectedAgent.id !== agentId) {
@@ -228,13 +230,15 @@
       </div>
     </div>
   {:else if $activeDiscussion || (isNewDiscussion && selectedAgent)}
-    <DiscussionContainer
-      discussion={$activeDiscussion}
-      agent={selectedAgent}
-      onDiscussionCreated={handleDiscussionCreated}
-      onTitleChange={handleTitleChange}
-      onFavoriteToggle={handleFavoriteToggle}
-    />
+    {#key refreshKey}
+      <DiscussionContainer
+        discussion={$activeDiscussion}
+        agent={selectedAgent}
+        onDiscussionCreated={handleDiscussionCreated}
+        onTitleChange={handleTitleChange}
+        onFavoriteToggle={handleFavoriteToggle}
+      />
+    {/key}
   {:else}
     <div class="empty-state">
       <p>{$t('discussion.chat.noDiscussion')}</p>

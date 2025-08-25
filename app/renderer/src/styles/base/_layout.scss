@@ -1,5 +1,20 @@
 @layer base {
   /* Common layout helpers */
+  
+  /* Main content container - 90vw with max 1500px */
+  .gc-content {
+    width: 90vw;
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Full width container for edge-to-edge elements */
+  .gc-content-full {
+    width: 100%;
+  }
+  
+  /* Legacy container for backwards compatibility */
   .container-page {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }

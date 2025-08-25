@@ -97,7 +97,7 @@
 
 <SidebarComponent open={isSidebarOpen} onClose={closeSidebar} />
 
-<main class="container-page stack-lg py-6">
+<main class="gc-content stack-lg py-6">
   {#if route === 'home'}
     <HomeView />
   {:else if route === 'discussion.list'}

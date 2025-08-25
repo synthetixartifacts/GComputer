@@ -8,5 +8,7 @@
 </script>
 
 <footer class="gc-footer">
-  {t('app.footer', { year })}
+  <div class="gc-footer__inner">
+    {t('app.footer', { year })}
+  </div>
 </footer>
