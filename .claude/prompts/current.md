@@ -1,6 +1,32 @@
 
 
 
+
+
+# New adjustment for the chatbot Ux/ui component 
+Theseh adjustment should be on the component level so that everywhere we use a chatbot window we have this.
+
+- On new submit, we scroll down to the printed message
+- When an AI answer back we should scroll on streaming except if the user has scroll up during the streaming
+
+We will create a lot of feature like these for our chatbot so verify that everything is dry and if the file created / updated are too long and really segmented per functionallity.
+
+Create a clean structure of file that will be scalable and easily manageable.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Big Task Alert
 
 It's a big task and I want you to do it step by step with a clear, complete and detailled plan from where we are to where we want to go and what we want to accomplish here.
