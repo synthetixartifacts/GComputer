@@ -217,6 +217,11 @@ app/
             service.ts    # Config access
             store.ts      # Config state
             index.ts      # Public exports
+
+Browser REST API notes
+- Base URL: Configure with `VITE_API_BASE_URL` (e.g., `http://localhost:3001/api`).
+- Alt: Set `window.__GC_API_BASE_URL__` at runtime for static HTML testing.
+- Dev server: Start standalone API via `npm run dev:api`, or run `npm run dev` (Electron) which starts the API automatically. For browser-only dev, use `npm run dev:browser`.
           
           environment.ts  # Environment detection and utilities
       

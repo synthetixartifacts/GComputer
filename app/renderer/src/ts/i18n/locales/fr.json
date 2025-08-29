@@ -33,7 +33,11 @@
       "parameters": "Paramètres",
       "version": "Version",
       "enabled": "Activé",
-      "system": "Système"
+      "system": "Système",
+      "category": "Catégorie",
+      "type": "Type",
+      "value": "Valeur",
+      "defaultValue": "Valeur par défaut"
     },
     "states": {
       "loading": "Chargement",
@@ -110,7 +114,8 @@
             "provider": "Fournisseur",
             "model": "Modèle",
             "agent": "Agent"
-          }
+          },
+          "configuration": "Configuration"
         }
       },
       "menu": "Menu",
@@ -462,6 +467,22 @@
           "systemPrompt": "Prompt système",
           "model": "Modèle",
           "provider": "Fournisseur"
+        }
+      },
+      "configuration": {
+        "title": "Configurations",
+        "singular": "Configuration",
+        "desc": "Gérez les configurations et paramètres de l'application.",
+        "add": "Ajouter une configuration",
+        "fields": {
+          "category": "Catégorie",
+          "type": "Type",
+          "value": "Valeur",
+          "defaultValue": "Valeur par défaut",
+          "options": "Options",
+          "validation": "Validation",
+          "isSystem": "Système",
+          "isSecret": "Secret"
         }
       }
     },

@@ -69,3 +69,21 @@ export const messages = sqliteTable('messages', {
   discussionId: integer('discussion_id').notNull().references(() => discussions.id, { onDelete: 'cascade' }),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
 });
+
+// Configuration Management Table
+export const configurations = sqliteTable('configurations', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  code: text('code').notNull().unique(),
+  name: text('name').notNull(),
+  type: text('type').notNull(), // 'string', 'number', 'boolean', 'json', 'select'
+  value: text('value').notNull(), // Stored as text, parsed based on type
+  defaultValue: text('default_value').notNull(),
+  options: text('options'), // JSON array for select type configurations
+  description: text('description'),
+  category: text('category').notNull().default('general'), // 'general', 'appearance', 'localization', 'advanced'
+  isSystem: integer('is_system', { mode: 'boolean' }).notNull().default(false),
+  isSecret: integer('is_secret', { mode: 'boolean' }).notNull().default(false),
+  validation: text('validation'), // JSON validation rules
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
+});

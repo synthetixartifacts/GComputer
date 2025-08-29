@@ -33,6 +33,7 @@ export const ADMIN_ROUTES = [
   'admin.entity.provider',
   'admin.entity.model',
   'admin.entity.agent',
+  'admin.entity.configuration',
 ] as const;
 
 export const BASE_ROUTES = [

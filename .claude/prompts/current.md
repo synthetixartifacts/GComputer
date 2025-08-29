@@ -1,5 +1,60 @@
 
 
+
+# NEW FEATURE/COMPONENT
+
+## Way to plan and execute
+This job is a really really heavy one so your plan must be in consequence. 
+We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something working and following our best standard from the documentation.
+
+We want to develop a complete new feature.
+We also need to expose a class for all the others to call/use when their is something realated to the "configuration".
+
+We already have a lot of existing component so make sure to list them before you start coding so that you are not recreating something that exist. Don't forget about translations.
+
+When you're confident that what you did is a production ready plan.
+Always ground yourself in the current project and do not overreach.
+
+## New task goal/context
+We want to create a new entity manageable through function and also the frontend in the section / menu "Admin > Entity > Configuration" 
+
+This will be the page to manage and view the configuration of the site.
+I want to transform our current configuration logic for "Theme" and "Language" and place it in this new entity / table
+
+Make sure to validate how we are currently managing entities in our app so you do it exactly the same. Look for agent entity.
+For each step, you will double check with how we are currently managing our entity
+- creation of table
+- base insert 
+- Make sure its editable and save for the app not static
+- Service DRY  
+  - by code
+  - search
+  - ...
+- Editable through admin table view
+- Current page Settings > Config also update table value, its like the normal way for the user to update this config.
+
+focus on making this code perfect and really re-using how things are done, this is the most important for each part of it.
+The new thing is the new entity. Dont change things just continue the same way we always do this.
+
+
+
+
+---------------------
+
+I want to make sure all view are within the same layout.
+I'm noticing difference in the content width in the homepage vs the setting config for exemple.
+Validate and make sure all view are using the same and proper layout for our app. 
+Clean whats not needed and update view layout to make sure our app is DRY
+
+
+
+
+
+---------------------
+
+
+
+
 When we open we open the sidebar we should remove the gobal page scrolling option and only let the sidebar scroll.
 
 On refresh of a discussion btn btn--secondary gc-icon-btn  we should scroll to the top

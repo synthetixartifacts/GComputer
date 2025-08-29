@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { providerService, modelService, agentService } from '../services/index.js';
+import { providerService, modelService, agentService, configurationService } from '../services/index.js';
 import type {
   ProviderFilters,
   ProviderInsert,
@@ -10,6 +10,9 @@ import type {
   AgentFilters,
   AgentInsert,
   AgentUpdate,
+  ConfigurationFilters,
+  ConfigurationInsert,
+  ConfigurationUpdate,
 } from '../types.js';
 
 /**
@@ -65,5 +68,34 @@ export function registerAdminHandlers(): void {
 
   ipcMain.handle('db:admin:agents:delete', async (_evt, id: number) => {
     return await agentService.delete(id);
+  });
+
+  // Configuration handlers
+  ipcMain.handle('db:admin:configurations:list', async (_evt, filters?: ConfigurationFilters) => {
+    return await configurationService.list(filters);
+  });
+
+  ipcMain.handle('db:admin:configurations:insert', async (_evt, payload: ConfigurationInsert) => {
+    return await configurationService.insert(payload);
+  });
+
+  ipcMain.handle('db:admin:configurations:update', async (_evt, payload: ConfigurationUpdate) => {
+    return await configurationService.update(payload);
+  });
+
+  ipcMain.handle('db:admin:configurations:delete', async (_evt, id: number) => {
+    return await configurationService.delete(id);
+  });
+
+  ipcMain.handle('db:admin:configurations:getByCode', async (_evt, code: string) => {
+    return await configurationService.getByCode(code);
+  });
+
+  ipcMain.handle('db:admin:configurations:updateByCode', async (_evt, code: string, value: string) => {
+    return await configurationService.updateByCode(code, value);
+  });
+
+  ipcMain.handle('db:admin:configurations:getAllAsMap', async () => {
+    return await configurationService.getAllAsMap();
   });
 }

@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { testService, providerService, modelService, agentService } from './db/services/index.js';
+import { testService, providerService, modelService, agentService, configurationService } from './db/services/index.js';
 import type {
   TestFilters,
   TestInsert, 
@@ -14,6 +14,9 @@ import type {
   AgentFilters,
   AgentInsert,
   AgentUpdate,
+  ConfigurationFilters,
+  ConfigurationInsert,
+  ConfigurationUpdate,
 } from './db/types.js';
 import { 
   asyncHandler, 
@@ -151,6 +154,55 @@ app.put('/api/admin/agents/:id', asyncHandler<IdParam, {}, Omit<AgentUpdate, 'id
 app.delete('/api/admin/agents/:id', asyncHandler<IdParam>(async (req, res) => {
   const id = parseIdParam(req.params.id);
   const result = await agentService.delete(id);
+  res.json(result);
+}));
+
+// Configuration endpoints
+app.get('/api/admin/configurations', asyncHandler<{}, ConfigurationFilters>(async (req, res) => {
+  const filters: ConfigurationFilters = req.query;
+  const rows = await configurationService.list(filters);
+  res.json(rows);
+}));
+
+app.post('/api/admin/configurations', asyncHandler<{}, {}, ConfigurationInsert>(async (req, res) => {
+  const payload: ConfigurationInsert = req.body;
+  const result = await configurationService.insert(payload);
+  res.status(201).json(result);
+}));
+
+app.put('/api/admin/configurations/:id', asyncHandler<IdParam, {}, Omit<ConfigurationUpdate, 'id'>>(async (req, res) => {
+  const id = parseIdParam(req.params.id);
+  const payload: ConfigurationUpdate = { id, ...req.body };
+  const result = await configurationService.update(payload);
+  res.json(result);
+}));
+
+app.delete('/api/admin/configurations/:id', asyncHandler<IdParam>(async (req, res) => {
+  const id = parseIdParam(req.params.id);
+  const result = await configurationService.delete(id);
+  res.json(result);
+}));
+
+app.get('/api/admin/configurations/code/:code', asyncHandler<{ code: string }>(async (req, res) => {
+  const result = await configurationService.getByCode(req.params.code);
+  if (!result) {
+    res.status(404).json({ error: 'Configuration not found' });
+    return;
+  }
+  res.json(result);
+}));
+
+app.put('/api/admin/configurations/code/:code', asyncHandler<{ code: string }, {}, { value: string }>(async (req, res) => {
+  const result = await configurationService.updateByCode(req.params.code, req.body.value);
+  if (!result) {
+    res.status(404).json({ error: 'Configuration not found' });
+    return;
+  }
+  res.json(result);
+}));
+
+app.get('/api/admin/configurations/map', asyncHandler(async (req, res) => {
+  const result = await configurationService.getAllAsMap();
   res.json(result);
 }));
 

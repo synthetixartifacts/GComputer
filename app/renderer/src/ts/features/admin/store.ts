@@ -3,9 +3,11 @@ import type {
   Provider,
   Model,
   Agent,
+  Configuration,
   ProviderFilters,
   ModelFilters,
   AgentFilters,
+  ConfigurationFilters,
   AdminEntity,
 } from './types';
 
@@ -13,23 +15,27 @@ import type {
 export const providers = writable<Provider[]>([]);
 export const models = writable<Model[]>([]);
 export const agents = writable<Agent[]>([]);
+export const configurations = writable<Configuration[]>([]);
 
 // Filter stores
 export const providerFilters = writable<ProviderFilters>({});
 export const modelFilters = writable<ModelFilters>({});
 export const agentFilters = writable<AgentFilters>({});
+export const configurationFilters = writable<ConfigurationFilters>({});
 
 // UI state stores
 export const editingRows = writable<Record<AdminEntity, Set<number>>>({
   providers: new Set(),
   models: new Set(),
   agents: new Set(),
+  configurations: new Set(),
 });
 
 export const loadingState = writable<Record<AdminEntity, boolean>>({
   providers: false,
   models: false,
   agents: false,
+  configurations: false,
 });
 
 export const selectedEntity = writable<AdminEntity>('providers');
@@ -71,6 +77,19 @@ export const filteredAgents = derived(
   }
 );
 
+export const filteredConfigurations = derived(
+  [configurations, configurationFilters],
+  ([configsList, filters]) => {
+    return configsList.filter((config) => {
+      const matchesCode = !filters.code || config.code.toLowerCase().includes(filters.code.toLowerCase());
+      const matchesName = !filters.name || config.name.toLowerCase().includes(filters.name.toLowerCase());
+      const matchesCategory = !filters.category || config.category === filters.category;
+      const matchesType = !filters.type || config.type === filters.type;
+      return matchesCode && matchesName && matchesCategory && matchesType;
+    });
+  }
+);
+
 // Helper functions
 export function toggleEditRow(entity: AdminEntity, id: number): void {
   editingRows.update((current) => {
@@ -106,6 +125,9 @@ export function clearAllFilters(entity: AdminEntity): void {
       break;
     case 'agents':
       agentFilters.set({});
+      break;
+    case 'configurations':
+      configurationFilters.set({});
       break;
   }
 }
