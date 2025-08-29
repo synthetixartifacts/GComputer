@@ -33,6 +33,9 @@ For each step, you will double check with how we are currently managing our enti
 - Editable through admin table view
 - Current page Settings > Config also update table value, its like the normal way for the user to update this config.
 
+focus on making this code perfect and really re-using how things are done, this is the most important for each part of it.
+The new thing is the new entity. Dont change things just continue the same way we always do this.
+
 
 
 

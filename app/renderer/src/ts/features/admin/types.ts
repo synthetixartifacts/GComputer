@@ -59,6 +59,23 @@ export interface Agent {
   };
 }
 
+export interface Configuration {
+  id: number;
+  code: string;
+  name: string;
+  type: string;
+  value: string;
+  defaultValue: string;
+  options?: string;
+  description?: string;
+  category: string;
+  isSystem: boolean;
+  isSecret: boolean;
+  validation?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Filter types
 export interface ProviderFilters {
   code?: string;
@@ -81,6 +98,14 @@ export interface AgentFilters {
   version?: string;
   modelId?: number;
   [key: string]: string | number | undefined;
+}
+
+export interface ConfigurationFilters {
+  code?: string;
+  name?: string;
+  category?: string;
+  type?: string;
+  [key: string]: string | undefined;
 }
 
 // Insert types
@@ -118,6 +143,20 @@ export interface AgentInsert {
   systemPrompt?: string;
   configuration?: string;
   modelId: number;
+}
+
+export interface ConfigurationInsert {
+  code: string;
+  name: string;
+  type: string;
+  value: string;
+  defaultValue: string;
+  options?: string;
+  description?: string;
+  category?: string;
+  isSystem?: boolean;
+  isSecret?: boolean;
+  validation?: string;
 }
 
 // Update types
@@ -160,8 +199,23 @@ export interface AgentUpdate {
   modelId?: number;
 }
 
+export interface ConfigurationUpdate {
+  id: number;
+  code?: string;
+  name?: string;
+  type?: string;
+  value?: string;
+  defaultValue?: string;
+  options?: string;
+  description?: string;
+  category?: string;
+  isSystem?: boolean;
+  isSecret?: boolean;
+  validation?: string;
+}
+
 // Admin entity type union
-export type AdminEntity = 'providers' | 'models' | 'agents';
+export type AdminEntity = 'providers' | 'models' | 'agents' | 'configurations';
 
 // Field types for forms
 export type FieldType = 'text' | 'number' | 'boolean' | 'select' | 'textarea' | 'email' | 'url' | 'relationship';

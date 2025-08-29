@@ -6,3 +6,4 @@ export { modelService, ModelService } from './model-service.js';
 export { agentService, AgentService } from './agent-service.js';
 export { discussionService } from './discussion-service.js';
 export { messageService } from './message-service.js';
+export { configurationService, ConfigurationService } from './configuration-service.js';

@@ -2,15 +2,19 @@ import type {
   Provider,
   Model,
   Agent,
+  Configuration,
   ProviderFilters,
   ModelFilters,
   AgentFilters,
+  ConfigurationFilters,
   ProviderInsert,
   ModelInsert,
   AgentInsert,
+  ConfigurationInsert,
   ProviderUpdate,
   ModelUpdate,
   AgentUpdate,
+  ConfigurationUpdate,
 } from './types';
 
 /**
@@ -38,6 +42,16 @@ type AgentApi = {
   insert: (payload: AgentInsert) => Promise<Agent | null>;
   update: (payload: AgentUpdate) => Promise<Agent | null>;
   delete: (id: number) => Promise<{ ok: true }>;
+};
+
+type ConfigurationApi = {
+  list: (filters?: ConfigurationFilters) => Promise<Configuration[]>;
+  insert: (payload: ConfigurationInsert) => Promise<Configuration | null>;
+  update: (payload: ConfigurationUpdate) => Promise<Configuration | null>;
+  delete: (id: number) => Promise<{ ok: true }>;
+  getByCode: (code: string) => Promise<Configuration | null>;
+  updateByCode: (code: string, value: string) => Promise<Configuration | null>;
+  getAllAsMap: () => Promise<Record<string, string>>;
 };
 
 // Fallback API implementations
@@ -68,6 +82,18 @@ function createFallbackAgentApi(): AgentApi {
   };
 }
 
+function createFallbackConfigurationApi(): ConfigurationApi {
+  return {
+    async list() { return []; },
+    async insert() { return null; },
+    async update() { return null; },
+    async delete() { return { ok: true } as const; },
+    async getByCode() { return null; },
+    async updateByCode() { return null; },
+    async getAllAsMap() { return {}; },
+  };
+}
+
 // API access functions
 function providerApi(): ProviderApi {
   const impl: unknown = (window as any).gc?.db?.admin?.providers;
@@ -82,6 +108,11 @@ function modelApi(): ModelApi {
 function agentApi(): AgentApi {
   const impl: unknown = (window as any).gc?.db?.admin?.agents;
   return (impl as AgentApi) ?? createFallbackAgentApi();
+}
+
+function configurationApi(): ConfigurationApi {
+  const impl: unknown = (window as any).gc?.db?.admin?.configurations;
+  return (impl as ConfigurationApi) ?? createFallbackConfigurationApi();
 }
 
 // Provider operations
@@ -133,4 +164,33 @@ export async function updateAgent(data: AgentUpdate): Promise<Agent | null> {
 
 export async function deleteAgent(id: number): Promise<{ ok: true }> {
   return await agentApi().delete(id);
+}
+
+// Configuration operations
+export async function listConfigurations(filters?: ConfigurationFilters): Promise<Configuration[]> {
+  return await configurationApi().list(filters);
+}
+
+export async function createConfiguration(data: ConfigurationInsert): Promise<Configuration | null> {
+  return await configurationApi().insert(data);
+}
+
+export async function updateConfiguration(data: ConfigurationUpdate): Promise<Configuration | null> {
+  return await configurationApi().update(data);
+}
+
+export async function deleteConfiguration(id: number): Promise<{ ok: true }> {
+  return await configurationApi().delete(id);
+}
+
+export async function getConfigurationByCode(code: string): Promise<Configuration | null> {
+  return await configurationApi().getByCode(code);
+}
+
+export async function updateConfigurationByCode(code: string, value: string): Promise<Configuration | null> {
+  return await configurationApi().updateByCode(code, value);
+}
+
+export async function getAllConfigurationsAsMap(): Promise<Record<string, string>> {
+  return await configurationApi().getAllAsMap();
 }

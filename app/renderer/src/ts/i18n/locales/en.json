@@ -33,7 +33,11 @@
       "parameters": "Parameters",
       "version": "Version",
       "enabled": "Enabled",
-      "system": "System"
+      "system": "System",
+      "category": "Category",
+      "type": "Type",
+      "value": "Value",
+      "defaultValue": "Default Value"
     },
     "states": {
       "loading": "Loading",
@@ -110,7 +114,8 @@
             "provider": "Provider",
             "model": "Model", 
             "agent": "Agent"
-          }
+          },
+          "configuration": "Configuration"
         }
       },
       "menu": "Menu",
@@ -444,6 +449,22 @@
           "systemPrompt": "System Prompt",
           "model": "Model",
           "provider": "Provider"
+        }
+      },
+      "configuration": {
+        "title": "Configurations",
+        "singular": "Configuration",
+        "desc": "Manage application configurations and settings.",
+        "add": "Add Configuration",
+        "fields": {
+          "category": "Category",
+          "type": "Type",
+          "value": "Value",
+          "defaultValue": "Default Value",
+          "options": "Options",
+          "validation": "Validation",
+          "isSystem": "System",
+          "isSecret": "Secret"
         }
       }
     },

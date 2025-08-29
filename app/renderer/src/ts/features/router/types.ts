@@ -21,6 +21,7 @@ export type Route =
   | 'admin.entity.provider'
   | 'admin.entity.model'
   | 'admin.entity.agent'
+  | 'admin.entity.configuration'
   | 'development.ai.communication'
   | 'discussion.list'
   | 'discussion.new'
@@ -49,6 +50,7 @@ export const ALL_ROUTES: Route[] = [
   'admin.entity.provider',
   'admin.entity.model',
   'admin.entity.agent',
+  'admin.entity.configuration',
   'development.ai.communication',
   'discussion.list',
   'discussion.new',

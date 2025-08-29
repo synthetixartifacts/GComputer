@@ -29,6 +29,7 @@
   import AdminProviderView from '@views-admin/entity/llm/AdminProviderView.svelte';
   import AdminModelView from '@views-admin/entity/llm/AdminModelView.svelte';
   import AdminAgentView from '@views-admin/entity/llm/AdminAgentView.svelte';
+  import AdminConfigurationView from '@views-admin/entity/configuration/AdminConfigurationView.svelte';
   import TestAICommunicationView from '@views-development/ai/TestAICommunicationView.svelte';
   import DiscussionListView from '@views-discussion/DiscussionListView.svelte';
   import AgentSelectionView from '@views-discussion/AgentSelectionView.svelte';
@@ -148,6 +149,8 @@
     <AdminModelView />
   {:else if canShowRoute(route) && route === 'admin.entity.agent'}
     <AdminAgentView />
+  {:else if canShowRoute(route) && route === 'admin.entity.configuration'}
+    <AdminConfigurationView />
   {:else if canShowRoute(route) && route === 'development.ai.communication'}
     <TestAICommunicationView />
   {/if}

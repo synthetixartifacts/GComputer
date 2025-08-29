@@ -8,7 +8,7 @@ export * from './types.js';
 export * from './services/index.js';
 
 // Export seeding functions
-export { runDbMigrations, seedDefaultData } from './seeding.js';
+export { runDbMigrations, seedDefaultData, seedDefaultConfigurations } from './seeding.js';
 
 // Export handler registration
 export { registerDbHandlers } from './handlers/index.js';

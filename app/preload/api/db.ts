@@ -8,7 +8,8 @@ import type {
   TestFilters, TestInsert, TestUpdate,
   ProviderFilters, ProviderInsert, ProviderUpdate,
   ModelFilters, ModelInsert, ModelUpdate,
-  AgentFilters, AgentInsert, AgentUpdate
+  AgentFilters, AgentInsert, AgentUpdate,
+  ConfigurationFilters, ConfigurationInsert, ConfigurationUpdate
 } from '../../main/db/types';
 
 // Discussion and Message types for preload API
@@ -68,6 +69,12 @@ export const adminApi = {
   providers: createCrudApi<ProviderFilters, ProviderInsert, ProviderUpdate, { id: number; code: string; name: string; url: string; authentication: string; secretKey?: string; configuration: string; createdAt: Date; updatedAt: Date }>('db:admin:providers'),
   models: createCrudApi<ModelFilters, ModelInsert, ModelUpdate, { id: number; code: string; name: string; model: string; inputPrice?: number; outputPrice?: number; endpoint: string; params: string; messageLocation?: string; messageStreamLocation?: string; inputTokenCountLocation?: string; outputTokenCountLocation?: string; providerId: number; createdAt: Date; updatedAt: Date }>('db:admin:models'),
   agents: createCrudApi<AgentFilters, AgentInsert, AgentUpdate, { id: number; code: string; name: string; description: string; version: string; enable: boolean; isSystem: boolean; systemPrompt?: string; configuration: string; modelId: number; createdAt: Date; updatedAt: Date }>('db:admin:agents'),
+  configurations: {
+    ...createCrudApi<ConfigurationFilters, ConfigurationInsert, ConfigurationUpdate, { id: number; code: string; name: string; type: string; value: string; defaultValue: string; options?: string; description?: string; category: string; isSystem: boolean; isSecret: boolean; validation?: string; createdAt: Date; updatedAt: Date }>('db:admin:configurations'),
+    getByCode: createInvokeWrapper<[string], { id: number; code: string; name: string; type: string; value: string; defaultValue: string; options?: string; description?: string; category: string; isSystem: boolean; isSecret: boolean; validation?: string; createdAt: Date; updatedAt: Date } | null>('db:admin:configurations:getByCode'),
+    updateByCode: createInvokeWrapper<[string, string], { id: number; code: string; name: string; type: string; value: string; defaultValue: string; options?: string; description?: string; category: string; isSystem: boolean; isSecret: boolean; validation?: string; createdAt: Date; updatedAt: Date } | null>('db:admin:configurations:updateByCode'),
+    getAllAsMap: createInvokeWrapper<[], Record<string, string>>('db:admin:configurations:getAllAsMap'),
+  },
 };
 
 // Discussion API

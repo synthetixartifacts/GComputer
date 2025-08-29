@@ -94,6 +94,7 @@ export const menuItems = derived(configMode, ($configMode) => {
                   { label: 'app.menu.admin.entity.llm.agent', i18nKey: 'app.menu.admin.entity.llm.agent', route: 'admin.entity.agent' as Route },
                 ],
               },
+              { label: 'app.menu.admin.entity.configuration', i18nKey: 'app.menu.admin.entity.configuration', route: 'admin.entity.configuration' as Route },
             ],
           },
         ],
