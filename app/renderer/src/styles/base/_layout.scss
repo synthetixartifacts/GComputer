@@ -28,10 +28,11 @@
     width: 100%;
   }
   
-  /* Legacy container for backwards compatibility */
-  .container-page {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
+  /* Legacy container - deprecated, views should use stack classes only
+   * since App.svelte already provides .gc-content wrapper */
+  // .container-page {
+  //   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  // }
 
   .stack-md > * + * {
     margin-top: 1rem;

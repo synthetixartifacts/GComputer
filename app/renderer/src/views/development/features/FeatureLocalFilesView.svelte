@@ -37,7 +37,7 @@
   });
 </script>
 
-<section class="container-page stack-lg">
+<section class="stack-lg">
   <h2 class="text-2xl font-bold">{t('pages.features.localFiles.title')}</h2>
   <p class="opacity-80">{t('pages.features.localFiles.desc')}</p>
 

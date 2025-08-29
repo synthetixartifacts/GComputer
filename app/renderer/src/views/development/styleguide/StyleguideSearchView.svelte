@@ -46,7 +46,7 @@
   }
 </script>
 
-<section class="container-page stack-lg">
+<section class="stack-lg">
   <h2 class="text-2xl font-bold">{t('pages.styleguide.search.title')}</h2>
   <p class="text-sm opacity-80">{t('pages.styleguide.search.desc')}</p>
 

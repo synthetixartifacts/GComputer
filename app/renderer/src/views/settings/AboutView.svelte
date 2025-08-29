@@ -6,7 +6,7 @@
   onDestroy(() => unsubT());
 </script>
 
-<section class="container-page stack-lg">
+<section class="stack-lg">
   <h2 class="text-2xl font-bold">{t('pages.about.title')}</h2>
   <div class="prose max-w-none">
     <p>{t('pages.about.desc1')}</p>
