@@ -26,7 +26,8 @@
       "WebFetch(domain:www.anthropic.com)",
       "Bash(find:*)",
       "Bash(npx tsc:*)",
-      "Bash(npm --workspace @gcomputer/db run drizzle:generate)"
+      "Bash(npm --workspace @gcomputer/db run drizzle:generate)",
+      "Bash(npm --workspace @gcomputer/db run drizzle:studio)"
     ],
     "defaultMode": "acceptEdits"
   }

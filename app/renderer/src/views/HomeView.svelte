@@ -1,29 +1,16 @@
 <script lang="ts">
-  import BrowseView from '@views-browse/BrowseView.svelte';
-  import { openModal } from '@features/ui/service';
-  import { setPageTitle, clearPageTitle } from '@ts/shared/utils/page-utils';
-  import { t as tStore } from '@ts/i18n/store';
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount } from 'svelte';
+  import { getDefaultAgent } from '@features/discussion/default-agent';
+  import { goto } from '@features/router/service';
   
-  let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
-  const unsubT = tStore.subscribe((fn) => (t = fn));
-  
-  onMount(() => {
-    setPageTitle('pages.home.title');
-  });
-  
-  onDestroy(() => {
-    clearPageTitle();
-    unsubT();
+  onMount(async () => {
+    const defaultAgent = await getDefaultAgent();
+    if (defaultAgent) {
+      // Redirect to discussion chat with the default agent
+      goto('discussion.chat', { agentId: defaultAgent.id });
+    } else {
+      // Redirect to discussion chat without agent (will show agent selection)
+      goto('discussion.chat');
+    }
   });
 </script>
-
-<section class="stack-md">
-  <p>{t('pages.home.configured')}</p>
-  <div class="flex gap-2">
-    <button class="btn btn--primary" on:click={openModal}>{t('app.actions.openModal')}</button>
-  </div>
-  <BrowseView />
-</section>
-
-

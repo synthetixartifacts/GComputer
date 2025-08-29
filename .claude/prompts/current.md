@@ -1,5 +1,16 @@
 
+# Context
+I want to change the current context of the home page of our app.
+The goal is to have a quick acces to a specific agent through a chatbot like there is in the discussion section app\renderer\src\views\discussion but its for a specific configuration. 
+We have an object/entity for the configuration entity.
+So I want to load on the hompage everytime a new discussion for the agent that is specified in a new configuraton "default_agent" where we story the code of the agent entity.
 
+The home page is always a "new discussion" with this agent like #/discussion/chat?agentId=1
+Make sure everything is dry and the homepage is using the same logic as a new discussion with the/an (default) agent
+
+
+
+---------------------
 
 # NEW FEATURE/COMPONENT
 
