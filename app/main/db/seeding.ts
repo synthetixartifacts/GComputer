@@ -39,102 +39,60 @@ async function seedConfigurations(): Promise<void> {
   await configurationService.insert({
     code: 'theme_mode',
     name: 'Theme Mode',
-    type: 'select',
     value: 'light',
     defaultValue: 'light',
-    options: JSON.stringify(['light', 'dark', 'fun']),
-    description: 'Application theme mode',
-    category: 'appearance',
-    isSystem: false,
-    isSecret: false,
-    validation: JSON.stringify({ required: true })
+    description: 'Application theme mode (light, dark, fun)'
   });
 
   // Language configuration
   await configurationService.insert({
     code: 'locale',
     name: 'Language',
-    type: 'select',
     value: 'en',
     defaultValue: 'en',
-    options: JSON.stringify(['en', 'fr']),
-    description: 'Application language',
-    category: 'localization',
-    isSystem: false,
-    isSecret: false,
-    validation: JSON.stringify({ required: true })
+    description: 'Application language (en, fr)'
   });
 
   // General configurations
   await configurationService.insert({
     code: 'auto_save',
     name: 'Auto Save',
-    type: 'boolean',
     value: 'true',
     defaultValue: 'true',
-    options: undefined,
-    description: 'Automatically save changes',
-    category: 'general',
-    isSystem: false,
-    isSecret: false,
-    validation: JSON.stringify({ required: true })
+    description: 'Automatically save changes'
   });
 
   await configurationService.insert({
     code: 'max_file_size',
     name: 'Max File Size (MB)',
-    type: 'number',
     value: '10',
     defaultValue: '10',
-    options: undefined,
-    description: 'Maximum file size for uploads in MB',
-    category: 'general',
-    isSystem: false,
-    isSecret: false,
-    validation: JSON.stringify({ required: true, min: 1, max: 100 })
+    description: 'Maximum file size for uploads in MB'
   });
 
   // Advanced configurations
   await configurationService.insert({
     code: 'api_timeout',
     name: 'API Timeout (seconds)',
-    type: 'number',
     value: '30',
     defaultValue: '30',
-    options: undefined,
-    description: 'API request timeout in seconds',
-    category: 'advanced',
-    isSystem: false,
-    isSecret: false,
-    validation: JSON.stringify({ required: true, min: 5, max: 300 })
+    description: 'API request timeout in seconds'
   });
 
   await configurationService.insert({
     code: 'enable_analytics',
     name: 'Enable Analytics',
-    type: 'boolean',
     value: 'false',
     defaultValue: 'false',
-    options: undefined,
-    description: 'Enable usage analytics',
-    category: 'advanced',
-    isSystem: false,
-    isSecret: false,
-    validation: JSON.stringify({ required: true })
+    description: 'Enable usage analytics'
   });
 
   await configurationService.insert({
     code: 'debug_mode',
     name: 'Debug Mode',
-    type: 'boolean',
     value: 'false',
     defaultValue: 'false',
-    options: undefined,
-    description: 'Enable debug mode for detailed logging',
-    category: 'advanced',
-    isSystem: false,
-    isSecret: false,
-    validation: JSON.stringify({ required: true })
+    description: 'Enable debug mode for detailed logging'
   });
 
   console.log('[seeding] Default configurations created');

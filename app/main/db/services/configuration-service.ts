@@ -1,25 +1,23 @@
 import { eq } from 'drizzle-orm';
 import { configurations } from '../../../../packages/db/src/db/schema.js';
 import { BaseService } from './base-service.js';
-import type { ConfigurationFilters, ConfigurationInsert, ConfigurationUpdate } from '../types.js';
+import type { Configuration, ConfigurationFilters, ConfigurationInsert, ConfigurationUpdate } from '../types.js';
 
 /**
  * Service for configuration operations
  * Extends BaseService with configuration-specific logic
  */
-export class ConfigurationService extends BaseService<any, ConfigurationFilters, ConfigurationInsert, ConfigurationUpdate> {
+export class ConfigurationService extends BaseService<Configuration, ConfigurationFilters, ConfigurationInsert, ConfigurationUpdate> {
   protected tableName = 'configurations';
   protected table = configurations;
 
   /**
    * Build where clauses for configuration filtering
    */
-  protected buildWhereClause(filters: ConfigurationFilters): any[] {
+  protected buildWhereClause(filters: ConfigurationFilters): unknown[] {
     const clauses = [
       this.buildLikeClause(configurations.code, filters.code),
       this.buildLikeClause(configurations.name, filters.name),
-      this.buildEqualClause(configurations.category, filters.category),
-      this.buildEqualClause(configurations.type, filters.type),
     ];
     
     return this.filterClauses(clauses);
@@ -28,20 +26,14 @@ export class ConfigurationService extends BaseService<any, ConfigurationFilters,
   /**
    * Prepare insert data with timestamps and defaults
    */
-  protected prepareInsertData(payload: ConfigurationInsert): any {
+  protected prepareInsertData(payload: ConfigurationInsert): Omit<Configuration, 'id'> {
     const now = new Date();
     return {
       code: payload.code,
       name: payload.name,
-      type: payload.type,
       value: payload.value,
       defaultValue: payload.defaultValue,
-      options: payload.options ?? null,
       description: payload.description ?? null,
-      category: payload.category ?? 'general',
-      isSystem: payload.isSystem ?? false,
-      isSecret: payload.isSecret ?? false,
-      validation: payload.validation ?? null,
       createdAt: now,
       updatedAt: now,
     } as const;
@@ -50,7 +42,7 @@ export class ConfigurationService extends BaseService<any, ConfigurationFilters,
   /**
    * Prepare update data with updated timestamp
    */
-  protected prepareUpdateData(payload: ConfigurationUpdate): any {
+  protected prepareUpdateData(payload: ConfigurationUpdate): Partial<Configuration> {
     const { id, ...updates } = payload;
     return {
       ...updates,
@@ -61,7 +53,7 @@ export class ConfigurationService extends BaseService<any, ConfigurationFilters,
   /**
    * Get configuration value by code
    */
-  async getByCode(code: string): Promise<any | null> {
+  async getByCode(code: string): Promise<Configuration | null> {
     const orm = await this.getOrm();
     const rows = await orm
       .select()
@@ -75,7 +67,7 @@ export class ConfigurationService extends BaseService<any, ConfigurationFilters,
   /**
    * Update configuration value by code
    */
-  async updateByCode(code: string, value: string): Promise<any | null> {
+  async updateByCode(code: string, value: string): Promise<Configuration | null> {
     const orm = await this.getOrm();
     const res = await orm
       .update(configurations)
@@ -92,7 +84,7 @@ export class ConfigurationService extends BaseService<any, ConfigurationFilters,
   /**
    * List configurations with ordering by category and name
    */
-  async list(filters?: ConfigurationFilters): Promise<any[]> {
+  async list(filters?: ConfigurationFilters): Promise<Configuration[]> {
     const orm = await this.getOrm();
     const f = filters ?? {} as ConfigurationFilters;
     const whereClauses = this.buildWhereClause(f);
@@ -101,7 +93,7 @@ export class ConfigurationService extends BaseService<any, ConfigurationFilters,
       .select()
       .from(configurations)
       .where(whereClauses.length ? this.buildAndClause(...whereClauses) : undefined)
-      .orderBy(configurations.category, configurations.name);
+      .orderBy(configurations.name);
     
     return rows;
   }
@@ -110,16 +102,29 @@ export class ConfigurationService extends BaseService<any, ConfigurationFilters,
    * Get all configuration values as a key-value map
    */
   async getAllAsMap(): Promise<Record<string, string>> {
-    const rows = await this.list();
-    const map: Record<string, string> = {};
+    const orm = await this.getOrm();
+    const rows = await orm
+      .select({
+        code: configurations.code,
+        value: configurations.value
+      })
+      .from(configurations)
+      .orderBy(configurations.name);
     
+    const map: Record<string, string> = {};
     for (const row of rows) {
-      if (!row.isSecret) {
-        map[row.code] = row.value;
-      }
+      map[row.code] = row.value;
     }
     
     return map;
+  }
+
+  /**
+   * Get configuration by code without filtering (for system use only)
+   * Used by internal systems like settings that need access to actual values
+   */
+  async getByCodeSystem(code: string): Promise<Configuration | null> {
+    return this.getByCode(code);
   }
 }
 

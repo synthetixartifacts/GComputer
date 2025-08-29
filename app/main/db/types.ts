@@ -114,40 +114,37 @@ export interface AgentUpdate {
 }
 
 // Configuration types
+export interface Configuration {
+  id: number;
+  code: string;
+  name: string;
+  value: string;
+  defaultValue: string;
+  description: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface ConfigurationFilters {
   code?: string;
   name?: string;
-  category?: string;
-  type?: string;
 }
 
 export interface ConfigurationInsert {
   code: string;
   name: string;
-  type: string;
   value: string;
   defaultValue: string;
-  options?: string;
   description?: string;
-  category?: string;
-  isSystem?: boolean;
-  isSecret?: boolean;
-  validation?: string;
 }
 
 export interface ConfigurationUpdate {
   id: number;
   code?: string;
   name?: string;
-  type?: string;
   value?: string;
   defaultValue?: string;
-  options?: string;
   description?: string;
-  category?: string;
-  isSystem?: boolean;
-  isSecret?: boolean;
-  validation?: string;
 }
 
 // Generic database operation result
