@@ -1,5 +1,14 @@
 
 
+I want to make the context-window advance.
+Our POC to make it appears is now done. So lets hide all the option except for the translate.
+The translate should have this behavior:
+- If we have
+
+
+
+
+
 # NEW FEATURE/COMPONENT
 
 ## Way to plan and execute

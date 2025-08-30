@@ -3,6 +3,192 @@
  * Pure SCSS following BEM convention - NO Tailwind
  */
 
+// Context Menu Overlay specific styles
+.context-menu-overlay {
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 280px;
+  max-width: 400px;
+  
+  .selected-text {
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    
+    .label {
+      font-weight: 600;
+      margin-right: 8px;
+      color: #6b7280;
+    }
+    
+    .text {
+      color: #374151;
+    }
+  }
+  
+  .actions-container {
+    margin-bottom: 12px;
+  }
+  
+  .action-group {
+    margin-bottom: 12px;
+    
+    .group-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #9ca3af;
+      padding: 4px 8px;
+      margin-bottom: 4px;
+    }
+  }
+  
+  .action-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 150ms ease;
+    text-align: left;
+    
+    .icon {
+      margin-right: 12px;
+      font-size: 1.125rem;
+    }
+    
+    .label {
+      flex: 1;
+      font-size: 0.875rem;
+      color: #374151;
+    }
+    
+    .shortcut {
+      margin-left: auto;
+      padding: 2px 6px;
+      background: #f3f4f6;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #6b7280;
+    }
+    
+    &:hover:not(.disabled) {
+      background: #f3f4f6;
+    }
+    
+    &.selected {
+      background: #eff6ff;
+      
+      .label {
+        color: #2563eb;
+      }
+    }
+    
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      
+      .label {
+        color: #9ca3af;
+      }
+    }
+  }
+  
+  .error-message {
+    padding: 8px 12px;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-bottom: 12px;
+  }
+  
+  .shortcuts-hint {
+    padding-top: 8px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    
+    .separator {
+      color: #d1d5db;
+    }
+  }
+}
+
+[data-theme='dark'] .context-menu-overlay {
+  background: #1f2937;
+  
+  .selected-text {
+    background: #374151;
+    
+    .label {
+      color: #9ca3af;
+    }
+    
+    .text {
+      color: #e5e7eb;
+    }
+  }
+  
+  .action-group .group-label {
+    color: #6b7280;
+  }
+  
+  .action-item {
+    .label {
+      color: #e5e7eb;
+    }
+    
+    .shortcut {
+      background: #374151;
+      color: #9ca3af;
+    }
+    
+    &:hover:not(.disabled) {
+      background: #374151;
+    }
+    
+    &.selected {
+      background: #1e3a8a;
+      
+      .label {
+        color: #60a5fa;
+      }
+    }
+    
+    &.disabled .label {
+      color: #6b7280;
+    }
+  }
+  
+  .error-message {
+    background: #7f1d1d;
+    border-color: #991b1b;
+    color: #fca5a5;
+  }
+  
+  .shortcuts-hint {
+    border-top-color: #374151;
+    color: #6b7280;
+    
+    .separator {
+      color: #4b5563;
+    }
+  }
+}
+
 .context-menu {
   position: fixed;
   z-index: 9999;

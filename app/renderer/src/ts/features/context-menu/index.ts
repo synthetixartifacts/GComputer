@@ -1,41 +1,46 @@
 /**
- * Context Menu Feature Module
- * Public API exports for the context menu feature
+ * Context Menu Feature
+ * Public API exports
  */
 
-// Types
+// Export types
 export type {
-  ContextMenuAction,
-  ContextMenuPosition,
-  ContextMenuState,
-  ActionExecutionResult,
-  AIActionOptions,
   ContextMenuConfig,
-  ActionHandler,
-  ActionHandlerMap,
-  ContextMenuEvent
+  ContextMenuAction,
+  ContextMenuState,
+  ActionExecutionResult
 } from './types';
 
-// Actions
+export { DEFAULT_ACTIONS, ACTION_PROMPTS } from './types';
+
+// Export service functions
 export {
-  defaultActions,
-  actionPrompts,
-  getActionById,
-  getActionsByCategory,
+  getContextMenuConfig,
+  updateContextMenuConfig,
+  getAvailableActions,
+  getEnabledActions,
+  executeContextMenuAction,
   actionRequiresText,
-  getAIActions,
-  canExecuteAction
-} from './actions';
+  getActionById,
+  showContextMenu,
+  hideContextMenu,
+  getSelectedText
+} from './service';
 
-// Service
-export { contextMenuService } from './service';
-
-// Store
+// Export store and store functions
 export {
-  contextMenuStore,
-  contextMenuActions,
-  actionResults,
+  contextMenuConfig,
+  selectedText,
+  contextMenuVisible,
+  contextMenuLoading,
+  contextMenuError,
   enabledActions,
   groupedActions,
-  clearActionResults
+  contextMenuStore,
+  updateConfig,
+  showMenu,
+  hideMenu,
+  setLoading,
+  setError,
+  executeAction
 } from './store';

@@ -29,6 +29,18 @@ declare global {
         delete: (filename: string, customPath?: string) => Promise<boolean>;
         get: (filename: string, customPath?: string) => Promise<string | null>;
       };
+      context: {
+        getSelected: () => Promise<{ success: boolean; text?: string; timestamp?: number; error?: string }>;
+        showMenu: (position?: { x: number; y: number }) => Promise<{ success: boolean; error?: string }>;
+        hideMenu: () => Promise<{ success: boolean; error?: string }>;
+        executeAction: (action: string, text: string) => Promise<{ success: boolean; action?: string; text?: string; result?: string; error?: string }>;
+        getClipboard: () => Promise<{ success: boolean; text?: string; timestamp?: number; error?: string }>;
+        setClipboard: (text: string) => Promise<{ success: boolean; error?: string }>;
+        getShortcuts: () => Promise<{ success: boolean; shortcuts?: { primary: string; secondary?: string }; error?: string }>;
+        updateShortcuts: (shortcuts: { primary?: string; secondary?: string }) => Promise<{ success: boolean; error?: string }>;
+        getConfig: () => Promise<{ success: boolean; config?: { enabled: boolean; shortcut: string; actions: string[] }; error?: string }>;
+        updateConfig: (config: { enabled?: boolean; shortcut?: string; actions?: string[] }) => Promise<{ success: boolean; error?: string }>;
+      };
       db: {
         test: {
           list: (filters?: { column1?: string; column2?: string }) => Promise<Array<{ id: number; column1: string | null; column2: string | null }>>;

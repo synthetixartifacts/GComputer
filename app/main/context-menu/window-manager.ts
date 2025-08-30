@@ -49,6 +49,7 @@ export class ContextMenuWindowManager extends EventEmitter {
       hasShadow: true,
       show: false,
       opacity: 1.0,  // Ensure full opacity
+      focusable: true,
       webPreferences: {
         preload: path.join(__dirname, '../preload/index.cjs'),
         contextIsolation: false,  // Temporarily disable for inline HTML
@@ -330,14 +331,17 @@ export class ContextMenuWindowManager extends EventEmitter {
     console.log(`[context-menu] Setting window position to: ${x}, ${y}`);
     window.setPosition(x, y);
     
-    // macOS-specific focus handling
+    // Show window without stealing focus from other apps
     if (process.platform === 'darwin') {
-      // On macOS, show the window and focus it properly
-      window.show();
-      window.focus();
+      // On macOS, use showInactive to prevent bringing main window forward
+      window.showInactive();
       window.setAlwaysOnTop(true, 'screen-saver');
+      // Focus after showing to ensure keyboard input works
+      setTimeout(() => {
+        window.focus();
+      }, 10);
     } else {
-      // On other platforms, use showInactive
+      // On other platforms
       window.showInactive();
       window.focus();
       window.setAlwaysOnTop(true, 'floating');
@@ -373,28 +377,9 @@ export class ContextMenuWindowManager extends EventEmitter {
 
     console.log('[context-menu] Hiding window');
     
-    // Check if our context menu currently has focus
-    const contextMenuHasFocus = this.overlayWindow.isFocused();
-    console.log('[context-menu] Context menu has focus:', contextMenuHasFocus);
-    
-    // Simple approach: hide first, then handle focus
+    // Simply hide and blur the overlay window
     this.overlayWindow.hide();
-    
-    // Only handle focus if the context menu had focus
-    if (contextMenuHasFocus && process.platform === 'darwin') {
-      const mainWindow = require('../window').getMainWindow();
-      
-      // Prevent main window from coming to front
-      if (mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.blur();
-        // Use app.hide() briefly to release focus to previous app
-        const { app } = require('electron');
-        app.hide();
-      }
-    } else {
-      // Just blur for other cases
-      this.overlayWindow.blur();
-    }
+    this.overlayWindow.blur();
     
     this.isVisible = false;
     this.previouslyFocusedWindow = null;

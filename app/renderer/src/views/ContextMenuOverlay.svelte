@@ -1,9 +1,14 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { t } from '@ts/i18n/store';
-  import { contextMenuStore, enabledActions, groupedActions } from '@features/context-menu';
+  import { 
+    contextMenuStore, 
+    enabledActions, 
+    groupedActions,
+    executeAction,
+    hideMenu
+  } from '@features/context-menu';
   import type { ContextMenuAction } from '@features/context-menu';
-  import ActionItem from '@components/context-menu/ActionItem.svelte';
   
   let menuElement: HTMLDivElement;
   let selectedIndex = 0;
@@ -30,7 +35,7 @@
       case 'Enter':
         event.preventDefault();
         if (actions[selectedIndex] && actions[selectedIndex].enabled !== false) {
-          executeAction(actions[selectedIndex]);
+          handleActionClick(actions[selectedIndex]);
         }
         break;
       
@@ -47,25 +52,25 @@
         );
         if (action) {
           event.preventDefault();
-          executeAction(action);
+          handleActionClick(action);
         }
         break;
     }
   }
   
-  async function executeAction(action: ContextMenuAction) {
+  async function handleActionClick(action: ContextMenuAction) {
     if (isLoading || action.enabled === false) return;
     
     isLoading = true;
     try {
-      await contextMenuStore.executeAction(action.id);
+      await executeAction(action.id);
     } finally {
       isLoading = false;
     }
   }
   
   function closeMenu() {
-    contextMenuStore.hide();
+    hideMenu();
     // Close the window if we're in the overlay
     if (window.opener === null) {
       window.close();
@@ -109,14 +114,18 @@
         <div class="action-group">
           <div class="group-label">{$t(`contextMenu.categories.${category}`)}</div>
           {#each categoryActions as action, index}
-            <ActionItem
-              {action}
-              isSelected={actions.indexOf(action) === selectedIndex}
-              isDisabled={action.enabled === false}
-              {isLoading}
-              on:click={() => executeAction(action)}
+            <button
+              class="action-item {actions.indexOf(action) === selectedIndex ? 'selected' : ''} {action.enabled === false || (action.requiresText && !hasText) ? 'disabled' : ''}"
+              disabled={isLoading || action.enabled === false || (action.requiresText && !hasText)}
+              on:click={() => handleActionClick(action)}
               on:mouseenter={() => selectedIndex = actions.indexOf(action)}
-            />
+            >
+              <span class="icon">{action.icon}</span>
+              <span class="label">{$t(action.label)}</span>
+              {#if action.shortcut}
+                <span class="shortcut">{action.shortcut}</span>
+              {/if}
+            </button>
           {/each}
         </div>
       {/if}
