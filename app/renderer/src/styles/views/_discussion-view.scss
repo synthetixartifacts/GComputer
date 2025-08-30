@@ -1,0 +1,80 @@
+// Discussion View - Full page scroll layout
+
+// Remove fixed heights - let content flow naturally
+.view-container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 8rem); // Minimum height to push footer down
+  
+  &.discussion-chat-view {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// Discussion container flows naturally
+.discussion-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  
+  .discussion-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    // ChatThread container
+    section {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+  }
+}
+
+// Remove scroll from message container - let it flow
+.message-list-container {
+  flex: 1;
+  // Remove overflow - content flows naturally
+  overflow: visible !important;
+  display: flex;
+  flex-direction: column;
+}
+
+// Sticky composer at viewport bottom
+.chat-composer-wrapper {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  padding: 0.75rem;
+  margin-top: 2rem; // Space before composer
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  
+  // Dark mode
+  @media (prefers-color-scheme: dark) {
+    background: #111827;
+    border-top-color: #374151;
+  }
+  
+  &:hover {
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Ensure main app container is scrollable
+body {
+  overflow-y: auto !important;
+  scroll-behavior: smooth;
+}
+
+// Remove overflow hidden from main
+main.gc-content {
+  overflow: visible !important;
+}
+
+// Adjust footer to be after content
+footer {
+  margin-top: auto;
+}

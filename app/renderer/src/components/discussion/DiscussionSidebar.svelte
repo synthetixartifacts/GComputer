@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { goto } from '@features/router/service';
+  import { lockBodyScroll, unlockBodyScroll } from '@renderer/ts/shared/utils/scroll-lock';
   import { listAgents } from '@features/admin/service';
   import { discussionService } from '@features/discussion/service';
   import { discussions, discussionStore } from '@features/discussion/store';
@@ -80,6 +81,20 @@
       onClose();
     }
   }
+
+  // Handle scroll lock when sidebar opens/closes
+  $: if (open) {
+    lockBodyScroll();
+  } else {
+    unlockBodyScroll();
+  }
+
+  onDestroy(() => {
+    // Ensure we release the lock if unmounting while open
+    if (open) {
+      unlockBodyScroll();
+    }
+  });
 </script>
 
 {#if open}
@@ -107,7 +122,7 @@
       <div class="discussion-sidebar__content">
         {#if loading}
           <div class="loading-container">
-            <div class="spinner"></div>
+            <div class="spinner spinner--accent"></div>
             <p>{t('common.loading')}</p>
           </div>
         {:else}

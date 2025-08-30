@@ -1,8 +1,38 @@
 @layer base {
   /* Common layout helpers */
-  .container-page {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  
+  /* Offset page content for fixed header */
+  body {
+    padding-top: var(--gc-header-offset, 0px);
   }
+
+  /* Disable background scroll (used when drawers/sidebars are open) */
+  body.gc-no-scroll {
+    overflow: hidden !important;
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+    height: 100vh; /* prevent page scroll */
+    overscroll-behavior: none !important;
+  }
+  
+  /* Main content container - 90vw with max 1500px */
+  .gc-content {
+    width: 90vw;
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Full width container for edge-to-edge elements */
+  .gc-content-full {
+    width: 100%;
+  }
+  
+  /* Legacy container - deprecated, views should use stack classes only
+   * since App.svelte already provides .gc-content wrapper */
+  // .container-page {
+  //   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  // }
 
   .stack-md > * + * {
     margin-top: 1rem;

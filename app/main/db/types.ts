@@ -113,6 +113,40 @@ export interface AgentUpdate {
   modelId?: number;
 }
 
+// Configuration types
+export interface Configuration {
+  id: number;
+  code: string;
+  name: string;
+  value: string;
+  defaultValue: string;
+  description: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ConfigurationFilters {
+  code?: string;
+  name?: string;
+}
+
+export interface ConfigurationInsert {
+  code: string;
+  name: string;
+  value: string;
+  defaultValue: string;
+  description?: string;
+}
+
+export interface ConfigurationUpdate {
+  id: number;
+  code?: string;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
+  description?: string;
+}
+
 // Generic database operation result
 export interface DbResult {
   ok: true;

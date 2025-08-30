@@ -19,6 +19,7 @@
   let agentsList: Agent[] = [];
   let currentAgent: Agent | null = null;
   let isValidating = false;
+  let isStreaming = false;
   let tokenUsage = { input: 0, output: 0, total: 0 };
 
   const threadId = 'ai-communication-test';
@@ -103,11 +104,16 @@
       return;
     }
 
-    // Use the bridge to send the message with real AI
-    await bridge.sendMessage(threadId, text, streamingMode);
-    
-    // Update token usage display
-    tokenUsage = bridge.getTokenUsage();
+    try {
+      isStreaming = true;
+      // Use the bridge to send the message with real AI
+      await bridge.sendMessage(threadId, text, streamingMode);
+      
+      // Update token usage display
+      tokenUsage = bridge.getTokenUsage();
+    } finally {
+      isStreaming = false;
+    }
   }
 
   function clearChat() {
@@ -244,6 +250,12 @@
           <ChatThread 
             {threadId} 
             customSendHandler={handleSend}
+            {isStreaming}
+            copyKey="pages.development.ai.messages.copy"
+            copiedKey="pages.development.ai.messages.copied"
+            placeholderKey="pages.development.ai.composer.placeholder"
+            inputLabelKey="pages.development.ai.composer.inputLabel"
+            sendKey="pages.development.ai.composer.send"
           />
         </div>
       </div>

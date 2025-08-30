@@ -3,6 +3,7 @@
 @use './base/motion';
 @use './base/elements';
 @use './base/layout';
+@use './base/utilities';
 @use './components/controls';
 @use './components/layout-components';
 @use './components/nav-tree';
@@ -21,6 +22,7 @@
 @use './components/discussion-sidebar';
 @use './components/context-menu';
 @use './views/capture-screen';
+@use './views/discussion-view';
 
 @tailwind base;
 @tailwind components;

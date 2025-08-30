@@ -174,7 +174,7 @@
   });
 </script>
 
-<section class="container-page stack-lg capture-screen-view">
+<section class="stack-lg capture-screen-view">
   <div class="capture-screen-view__header">
     <h2 class="text-2xl font-bold">{t('pages.features.capture.title')}</h2>
     <p class="text-muted">{t('pages.features.capture.description')}</p>

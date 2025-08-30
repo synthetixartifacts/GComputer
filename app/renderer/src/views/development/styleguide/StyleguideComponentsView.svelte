@@ -39,7 +39,7 @@
   }
 </script>
 
-<section class="container-page stack-lg px-4 md:px-6 py-4 md:py-6">
+<section class="stack-lg">
   <h2 class="text-2xl font-bold">{t('pages.styleguide.components.title')}</h2>
   <p class="opacity-80 mb-4 md:mb-6">{t('pages.styleguide.components.desc')}</p>
 

@@ -4,12 +4,12 @@
   import SidebarComponent from '@components/Sidebar.svelte';
   import ModalComponent from '@components/Modal.svelte';
   import DiscussionSidebarComponent from '@components/discussion/DiscussionSidebar.svelte';
+  import HomeView from '@views/HomeView.svelte';
   import StyleguideOverviewView from '@views-development/styleguide/StyleguideOverviewView.svelte';
   import StyleguideBaseView from '@views-development/styleguide/StyleguideBaseView.svelte';
   import StyleguideTableView from '@views-development/styleguide/StyleguideTableView.svelte';
   import StyleguideInputsView from '@views-development/styleguide/StyleguideInputsView.svelte';
   import StyleguideButtonsView from '@views-development/styleguide/StyleguideButtonsView.svelte';
-  import HomeView from '@views/HomeView.svelte';
   import AboutView from '@views-settings/AboutView.svelte';
   
   import SettingsConfigView from '@views-settings/SettingsConfigView.svelte';
@@ -29,6 +29,7 @@
   import AdminProviderView from '@views-admin/entity/llm/AdminProviderView.svelte';
   import AdminModelView from '@views-admin/entity/llm/AdminModelView.svelte';
   import AdminAgentView from '@views-admin/entity/llm/AdminAgentView.svelte';
+  import AdminConfigurationView from '@views-admin/entity/configuration/AdminConfigurationView.svelte';
   import TestAICommunicationView from '@views-development/ai/TestAICommunicationView.svelte';
   import DiscussionListView from '@views-discussion/DiscussionListView.svelte';
   import AgentSelectionView from '@views-discussion/AgentSelectionView.svelte';
@@ -97,7 +98,7 @@
 
 <SidebarComponent open={isSidebarOpen} onClose={closeSidebar} />
 
-<main class="container-page stack-lg py-6">
+<main class="gc-content stack-lg py-6">
   {#if route === 'home'}
     <HomeView />
   {:else if route === 'discussion.list'}
@@ -148,6 +149,8 @@
     <AdminModelView />
   {:else if canShowRoute(route) && route === 'admin.entity.agent'}
     <AdminAgentView />
+  {:else if canShowRoute(route) && route === 'admin.entity.configuration'}
+    <AdminConfigurationView />
   {:else if canShowRoute(route) && route === 'development.ai.communication'}
     <TestAICommunicationView />
   {/if}

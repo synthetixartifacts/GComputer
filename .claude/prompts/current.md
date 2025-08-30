@@ -2,6 +2,18 @@
 
 
 
+# Context
+I want to change the current context of the home page of our app.
+The goal is to have a quick acces to a specific agent through a chatbot like there is in the discussion section app\renderer\src\views\discussion but its for a specific configuration. 
+We have an object/entity for the configuration entity.
+So I want to load on the hompage everytime a new discussion for the agent that is specified in a new configuraton "default_agent" where we story the code of the agent entity.
+
+The home page is always a "new discussion" with this agent like #/discussion/chat?agentId=1
+Make sure everything is dry and the homepage is using the same logic as a new discussion with the/an (default) agent
+
+
+
+---------------------
 
 # NEW FEATURE/COMPONENT
 
@@ -21,6 +33,89 @@ We have a lot of up to date documentation you can check at any time to verify th
  Our ./docs/coding_standards.md are always good and you should follow it.
 If you need specific libraries or third-party libraries or you are hitting a wall, do not forget that you can browse and search the web for up to date answer.
 Always ground yourself in the current project and do not overreach.
+
+We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something working and following our best standard from the documentation.
+
+We want to develop a complete new feature.
+We also need to expose a class for all the others to call/use when their is something realated to the "configuration".
+
+We already have a lot of existing component so make sure to list them before you start coding so that you are not recreating something that exist. Don't forget about translations.
+
+When you're confident that what you did is a production ready plan.
+Always ground yourself in the current project and do not overreach.
+
+## New task goal/context
+We want to create a new entity manageable through function and also the frontend in the section / menu "Admin > Entity > Configuration" 
+
+This will be the page to manage and view the configuration of the site.
+I want to transform our current configuration logic for "Theme" and "Language" and place it in this new entity / table
+
+Make sure to validate how we are currently managing entities in our app so you do it exactly the same. Look for agent entity.
+For each step, you will double check with how we are currently managing our entity
+- creation of table
+- base insert 
+- Make sure its editable and save for the app not static
+- Service DRY  
+  - by code
+  - search
+  - ...
+- Editable through admin table view
+- Current page Settings > Config also update table value, its like the normal way for the user to update this config.
+
+focus on making this code perfect and really re-using how things are done, this is the most important for each part of it.
+The new thing is the new entity. Dont change things just continue the same way we always do this.
+
+
+
+
+---------------------
+
+I want to make sure all view are within the same layout.
+I'm noticing difference in the content width in the homepage vs the setting config for exemple.
+Validate and make sure all view are using the same and proper layout for our app. 
+Clean whats not needed and update view layout to make sure our app is DRY
+
+
+
+
+
+---------------------
+
+
+
+
+When we open we open the sidebar we should remove the gobal page scrolling option and only let the sidebar scroll.
+
+On refresh of a discussion btn btn--secondary gc-icon-btn  we should scroll to the top
+
+
+
+
+In the header we hide it when scroll down we hide it after a certain point. And when we scroll up we show it back but its we are enough up but the scroll up should show the header if we scroll up more than 100px we should show it not depending on how far to the bottom we are it should not impact
+Right now our header is sticky I think we should place it as fixed and do our logic. 
+This logic should be placed on the .ts of the header itself and also update the scss.
+
+
+
+# New adjustment for the chatbot Ux/ui component 
+Theseh adjustment should be on the component level so that everywhere we use a chatbot window we have this.
+
+- On new submit, we scroll down to the printed message
+- When an AI answer back we should scroll on streaming except if the user has scroll up during the streaming
+
+We will create a lot of feature like these for our chatbot so verify that everything is dry and if the file created / updated are too long and really segmented per functionallity.
+
+Create a clean structure of file that will be scalable and easily manageable.
+
+
+I think it's important to review any references to "sticky" in the documentation. However, it seems like that's not necessary right now. I’m considering whether we should add a test for this, but it appears
+that's also not required. Next, I want to update our plan and make sure to mark all completed steps. This will help keep everything organized and ensure I track our progress accurately!
+
+
+
+
+
+
 
 
 ## Big Task Alert
@@ -368,6 +463,18 @@ Always ground yourself in the current project and do not overreach.
 
 
 ## New task goal/context
+## New task
+
+I want you to enhance the ux/ui of the input inside the dicusssionn/chatbot page.
+I want to enhance its ux and make it available on each agewnt but also based on configuration, like some agent will only be able to drop file, not enter text in input or different combination like this.
+
+
+
+
+
+
+
+
 
 
 

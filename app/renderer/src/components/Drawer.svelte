@@ -9,6 +9,7 @@
    */
   import { t as tStore } from '@ts/i18n/store';
   import { onDestroy } from 'svelte';
+  import { lockBodyScroll, unlockBodyScroll } from '@renderer/ts/shared/utils/scroll-lock';
   let t: (key: string, params?: Record<string, string | number>) => string = (k) => k;
   const unsubT = tStore.subscribe((fn) => (t = fn));
   onDestroy(() => unsubT());
@@ -18,6 +19,20 @@
   let panelEl: HTMLElement | null = null;
   let headingId: string = 'gc-drawer-title-' + Math.random().toString(36).slice(2);
   let previouslyFocusedEl: HTMLElement | null = null;
+
+  // Handle scroll lock when drawer opens/closes
+  $: if (open) {
+    lockBodyScroll();
+  } else {
+    unlockBodyScroll();
+  }
+
+  onDestroy(() => {
+    // Ensure we release the lock if unmounting while open
+    if (open) {
+      unlockBodyScroll();
+    }
+  });
 
   function getFocusable(container: HTMLElement): HTMLElement[] {
     const nodes = container.querySelectorAll<HTMLElement>(
@@ -65,5 +80,3 @@
   </div>
   
 </aside>
-
-

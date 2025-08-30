@@ -2,15 +2,19 @@ import type {
   Provider,
   Model,
   Agent,
+  Configuration,
   ProviderFilters,
   ModelFilters,
   AgentFilters,
+  ConfigurationFilters,
   ProviderInsert,
   ModelInsert,
   AgentInsert,
+  ConfigurationInsert,
   ProviderUpdate,
   ModelUpdate,
   AgentUpdate,
+  ConfigurationUpdate,
 } from './types';
 import { isElectronEnvironment } from '../environment/service';
 import { parseConfiguration, stringifyConfiguration } from '@ts/shared/utils/json-config';
@@ -115,6 +119,63 @@ export async function deleteAgent(id: number): Promise<{ ok: true }> {
     return electronService.deleteAgent(id);
   } else {
     return browserService.deleteAgent(id);
+  }
+}
+
+// Configuration operations
+export async function listConfigurations(filters?: ConfigurationFilters): Promise<Configuration[]> {
+  if (isElectronEnvironment()) {
+    return electronService.listConfigurations(filters);
+  } else {
+    return browserService.listConfigurations(filters);
+  }
+}
+
+export async function createConfiguration(data: ConfigurationInsert): Promise<Configuration | null> {
+  if (isElectronEnvironment()) {
+    return electronService.createConfiguration(data);
+  } else {
+    return browserService.createConfiguration(data);
+  }
+}
+
+export async function updateConfiguration(data: ConfigurationUpdate): Promise<Configuration | null> {
+  if (isElectronEnvironment()) {
+    return electronService.updateConfiguration(data);
+  } else {
+    return browserService.updateConfiguration(data);
+  }
+}
+
+export async function deleteConfiguration(id: number): Promise<{ ok: true }> {
+  if (isElectronEnvironment()) {
+    return electronService.deleteConfiguration(id);
+  } else {
+    return browserService.deleteConfiguration(id);
+  }
+}
+
+export async function getConfigurationByCode(code: string): Promise<Configuration | null> {
+  if (isElectronEnvironment()) {
+    return electronService.getConfigurationByCode(code);
+  } else {
+    return browserService.getConfigurationByCode(code);
+  }
+}
+
+export async function updateConfigurationByCode(code: string, value: string): Promise<Configuration | null> {
+  if (isElectronEnvironment()) {
+    return electronService.updateConfigurationByCode(code, value);
+  } else {
+    return browserService.updateConfigurationByCode(code, value);
+  }
+}
+
+export async function getAllConfigurationsAsMap(): Promise<Record<string, string>> {
+  if (isElectronEnvironment()) {
+    return electronService.getAllConfigurationsAsMap();
+  } else {
+    return browserService.getAllConfigurationsAsMap();
   }
 }
 
