@@ -122,7 +122,7 @@
       <div class="discussion-sidebar__content">
         {#if loading}
           <div class="loading-container">
-            <div class="spinner"></div>
+            <div class="spinner spinner--accent"></div>
             <p>{t('common.loading')}</p>
           </div>
         {:else}

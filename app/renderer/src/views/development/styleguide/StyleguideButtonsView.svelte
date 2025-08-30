@@ -50,7 +50,7 @@
     <h3 class="text-lg font-semibold">{t('pages.styleguide.buttons.withIcons')}</h3>
     <div class="flex flex-wrap gap-2 items-center">
       <button class="btn btn--primary inline-flex items-center gap-2" aria-busy="true">
-        <span class="spinner" aria-hidden="true"></span>
+        <span class="spinner spinner--small" aria-hidden="true"></span>
         <span>{t('pages.styleguide.buttons.loading')}</span>
       </button>
       <button class="btn btn--primary inline-flex items-center gap-2">

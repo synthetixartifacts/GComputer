@@ -216,7 +216,7 @@
 <div class="view-container discussion-chat-view">
   {#if loading}
     <div class="loading-container">
-      <div class="spinner"></div>
+      <div class="spinner spinner--xl"></div>
       <p>{$t('discussion.chat.loading')}</p>
     </div>
   {:else if error}
