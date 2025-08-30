@@ -86,6 +86,27 @@ async function seedConfigurations(): Promise<void> {
       value: 'assistant',
       defaultValue: 'assistant',
       description: 'Main agent code for home page quick chat'
+    },
+    {
+      code: 'context_menu_enabled',
+      name: 'Context Menu Enabled',
+      value: 'true',
+      defaultValue: 'true',
+      description: 'Enable the global context menu'
+    },
+    {
+      code: 'context_menu_shortcut',
+      name: 'Context Menu Shortcut',
+      value: 'Alt+Space',
+      defaultValue: 'Alt+Space',
+      description: 'Keyboard shortcut to trigger the context menu'
+    },
+    {
+      code: 'context_menu_actions',
+      name: 'Context Menu Actions',
+      value: JSON.stringify(['translate', 'fix-grammar', 'summarize', 'explain', 'screenshot', 'copy', 'paste']),
+      defaultValue: JSON.stringify(['translate', 'fix-grammar', 'summarize', 'explain', 'screenshot', 'copy', 'paste']),
+      description: 'Enabled actions in the context menu'
     }
   ];
 

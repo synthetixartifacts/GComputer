@@ -20,7 +20,7 @@ app.setName('GComputer');
  */
 app.whenReady().then(async () => {
   // Register all IPC handlers
-  registerAllIpcHandlers();
+  await registerAllIpcHandlers();
   
   // Initialize application features
   await initializeApplication();

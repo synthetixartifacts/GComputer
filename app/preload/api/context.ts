@@ -29,6 +29,18 @@ export interface ShortcutResult {
   error?: string;
 }
 
+export interface ContextMenuConfig {
+  enabled: boolean;
+  shortcut: string;
+  actions: string[];
+}
+
+export interface ConfigResult {
+  success: boolean;
+  config?: ContextMenuConfig;
+  error?: string;
+}
+
 /**
  * Context Menu API exposed to renderer process
  */
@@ -87,6 +99,20 @@ export const contextApi = {
    */
   updateShortcuts: (shortcuts: { primary?: string; secondary?: string }): Promise<{ success: boolean; error?: string }> => {
     return ipcRenderer.invoke('context:update-shortcuts', shortcuts);
+  },
+
+  /**
+   * Get context menu configuration
+   */
+  getConfig: (): Promise<ConfigResult> => {
+    return ipcRenderer.invoke('context:get-config');
+  },
+
+  /**
+   * Update context menu configuration
+   */
+  updateConfig: (config: Partial<ContextMenuConfig>): Promise<{ success: boolean; error?: string }> => {
+    return ipcRenderer.invoke('context:update-config', config);
   },
 
   /**
