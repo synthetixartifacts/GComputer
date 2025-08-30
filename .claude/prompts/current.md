@@ -1,4 +1,25 @@
 
+
+# Context
+We are currently working on making hotkeys print a specific in context window where we have options.
+
+When I open my context window the dev tools also open (which I dont want) and I see these errors
+node:electron/js2c/renderer_init:2 Unable to load preload script: /Users/tommythierry/Documents/Code/GComputer/preload/index.cjs
+(anonymous) @ node:electron/js2c/renderer_init:2
+node:electron/js2c/renderer_init:2 Error: Cannot find module '/Users/tommythierry/Documents/Code/GComputer/preload/index.cjs'
+    at Module._resolveFilename
+
+Verify our implementation.
+
+
+
+
+---------------------
+
+
+
+
+
 # Context
 I want to change the current context of the home page of our app.
 The goal is to have a quick acces to a specific agent through a chatbot like there is in the discussion section app\renderer\src\views\discussion but its for a specific configuration. 
@@ -16,6 +37,21 @@ Make sure everything is dry and the homepage is using the same logic as a new di
 
 ## Way to plan and execute
 This job is a really really heavy one so your plan must be in consequence. 
+We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something like an MVP.
+
+We need to have a lot of new component and code develop but remind yourself that we want thing to be componant driven and DRY at all time. No scss in files, no overlap of logic in component, each part of our logic will either reuse an existing component or create new independant ones.
+
+We already have a lot of existing component so make sure to list them before you start coding so that you are not recreating something that exist. 
+
+Don't forget about translations.
+
+When you're confident that what you did is at a production ready state, you will verify the key point through unit testing. Once you are at this steps you will need to rething about everything you did and create a new clear and detailed plan just for that. Make it clear in your initial plan that you will have to rethink and replan at this steps because a lot of things will probably differ from your initial plan as you go on and discover things.
+
+We have a lot of up to date documentation you can check at any time to verify things. 
+ Our ./docs/coding_standards.md are always good and you should follow it.
+If you need specific libraries or third-party libraries or you are hitting a wall, do not forget that you can browse and search the web for up to date answer.
+Always ground yourself in the current project and do not overreach.
+
 We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something working and following our best standard from the documentation.
 
 We want to develop a complete new feature.
@@ -116,6 +152,335 @@ It's a big project so in everything we do/create/update, the main focus is that 
 Do not hesitate in the middle of the execution based on your finding to challenge and revisit the inital plan and redo a planning phase, it is important that your plan go along you coding execution and your discovery.
 
 
+
+## New task goal/context
+
+I want to setup a new feature test I want to setup the base of MVP concept of having my app create an update the the right mouse click menu on ALL apps as long as my app GComputer is open and running in the background. We should see a new section separated by line like in the print screen. 
+Here is the recommendation I got to do this. Study it, analyze it, especially verify it and implement it based on our code logic, coding standard and app architecture.
+
+own it so that you can execute for OUR APP.
+
+--------------
+
+Based on both analyses of your GComputer codebase, here's the consolidated and verified recommendation for implementing context menu functionality:
+
+## **Verified Solution: System-wide Overlay is the Correct Approach**
+
+Both analyses confirm that **you cannot inject items into every app's native context menu**. The overlay approach is indeed the only viable solution for universal functionality across all applications.
+
+## **Recommended Implementation for GComputer MVP**
+
+### **Primary Solution: System-wide Overlay**
+
+Given your existing architecture with Electron, proper IPC infrastructure, and component system, here's the optimal implementation:
+
+#### **1. Global Shortcut Trigger (Immediate Implementation)**
+
+```typescript
+// app/main/context-menu/handler.ts
+import { globalShortcut, BrowserWindow, screen } from 'electron';
+
+let contextOverlay: BrowserWindow | null = null;
+
+export function registerContextMenuShortcuts(): void {
+  // Primary trigger: Alt+Space (works everywhere)
+  globalShortcut.register('Alt+Space', showContextMenu);
+  
+  // Alternative: Ctrl+Shift+G for "GComputer"
+  globalShortcut.register('CommandOrControl+Shift+G', showContextMenu);
+}
+
+function showContextMenu(): void {
+  const { x, y } = screen.getCursorScreenPoint();
+  
+  if (!contextOverlay) {
+    contextOverlay = new BrowserWindow({
+      x, y,
+      width: 250,
+      height: 'auto',
+      frame: false,
+      transparent: true,
+      alwaysOnTop: true,
+      skipTaskbar: true,
+      resizable: false,
+      webPreferences: {
+        preload: path.join(__dirname, '../../preload/index.cjs'),
+        contextIsolation: true,
+        nodeIntegration: false
+      }
+    });
+    
+    contextOverlay.loadFile('app/renderer/context-menu.html');
+    
+    // Auto-hide on blur
+    contextOverlay.on('blur', () => contextOverlay?.hide());
+  } else {
+    contextOverlay.setPosition(x, y);
+    contextOverlay.show();
+  }
+}
+```
+
+#### **2. Context Acquisition Strategy**
+
+Start with the **clipboard peek method** for MVP (most reliable):
+
+```typescript
+// app/main/context-menu/context-service.ts
+import { clipboard } from 'electron';
+
+export async function getSelectedText(): Promise<string> {
+  // Save current clipboard
+  const backup = clipboard.readText();
+  
+  // Trigger copy using robotjs (cross-platform)
+  const robot = require('robotjs');
+  robot.keyTap('c', process.platform === 'darwin' ? ['cmd'] : ['control']);
+  
+  // Small delay for clipboard update
+  await new Promise(resolve => setTimeout(resolve, 50));
+  
+  // Read selection
+  const selected = clipboard.readText();
+  
+  // Restore original if different
+  if (selected !== backup) {
+    setTimeout(() => clipboard.writeText(backup), 100);
+    return selected;
+  }
+  
+  return '';
+}
+```
+
+#### **3. UI Implementation Using Existing Components**
+
+```svelte
+<!-- app/renderer/src/views/ContextMenuOverlay.svelte -->
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { t } from '@ts/i18n/store';
+  
+  interface Action {
+    id: string;
+    label: string;
+    icon: string;
+    shortcut?: string;
+  }
+  
+  const actions: Action[] = [
+    { id: 'translate', label: 'Translate', icon: '🌐', shortcut: 'T' },
+    { id: 'fix-grammar', label: 'Fix Grammar', icon: '✏️', shortcut: 'G' },
+    { id: 'summarize', label: 'Summarize', icon: '📝', shortcut: 'S' },
+    { id: 'screenshot', label: 'Screenshot', icon: '📸', shortcut: 'P' },
+  ];
+  
+  async function executeAction(actionId: string) {
+    const context = await window.gc.context.getSelected();
+    
+    switch(actionId) {
+      case 'translate':
+      case 'fix-grammar':
+      case 'summarize':
+        await window.gc.ai.process(actionId, context);
+        break;
+      case 'screenshot':
+        await window.gc.screen.capture();
+        break;
+    }
+    
+    window.close();
+  }
+  
+  // Keyboard shortcuts
+  function handleKeypress(e: KeyboardEvent) {
+    const action = actions.find(a => 
+      a.shortcut?.toLowerCase() === e.key.toLowerCase()
+    );
+    if (action) executeAction(action.id);
+    if (e.key === 'Escape') window.close();
+  }
+  
+  onMount(() => {
+    document.addEventListener('keydown', handleKeypress);
+    return () => document.removeEventListener('keydown', handleKeypress);
+  });
+</script>
+
+<div class="context-menu-overlay">
+  {#each actions as action}
+    <button 
+      class="action-item"
+      on:click={() => executeAction(action.id)}
+      title="{action.label} ({action.shortcut})"
+    >
+      <span class="icon">{action.icon}</span>
+      <span class="label">{$t(action.label)}</span>
+      <span class="shortcut">{action.shortcut}</span>
+    </button>
+  {/each}
+</div>
+
+<style lang="scss">
+  .context-menu-overlay {
+    @apply bg-white dark:bg-gray-900;
+    @apply rounded-lg shadow-xl;
+    @apply border border-gray-200 dark:border-gray-700;
+    @apply p-1;
+    min-width: 200px;
+  }
+  
+  .action-item {
+    @apply flex items-center gap-3 w-full;
+    @apply px-3 py-2 rounded;
+    @apply hover:bg-gray-100 dark:hover:bg-gray-800;
+    @apply transition-colors;
+    
+    .shortcut {
+      @apply ml-auto text-xs text-gray-500;
+    }
+  }
+</style>
+```
+
+#### **4. IPC Bridge Extension**
+
+Add to your existing preload:
+
+```typescript
+// app/preload/index.ts - Add to existing contextBridge
+contextBridge.exposeInMainWorld('gc', {
+  // ... existing APIs
+  context: {
+    getSelected: () => ipcRenderer.invoke('context:get-selected'),
+    showMenu: () => ipcRenderer.invoke('context:show-menu'),
+  },
+  ai: {
+    process: (action: string, text: string) => 
+      ipcRenderer.invoke('ai:process', action, text),
+  }
+});
+```
+
+### **Optional Enhancement: Mouse Hook for Right-Click-Hold**
+
+For a more native feel, add mouse detection after MVP:
+
+```bash
+npm install iohook --save
+npm run rebuild:native
+```
+
+```typescript
+// app/main/mouse-hook.ts
+const ioHook = require('iohook');
+
+export function setupMouseHook() {
+  let rightClickTimer: NodeJS.Timeout | null = null;
+  
+  ioHook.on('mousedown', (event: any) => {
+    if (event.button === 2) { // Right mouse
+      rightClickTimer = setTimeout(() => {
+        showContextMenu();
+      }, 500); // 500ms hold
+    }
+  });
+  
+  ioHook.on('mouseup', (event: any) => {
+    if (event.button === 2 && rightClickTimer) {
+      clearTimeout(rightClickTimer);
+    }
+  });
+  
+  ioHook.start();
+}
+```
+
+### **Why Option 2 (Native Explorer) is Not Recommended for MVP**
+
+While Windows 11 supports IExplorerCommand with sparse packages for File Explorer integration, this approach:
+- Only works in File Explorer, not other apps
+- Requires COM server implementation (C++/C#)
+- Needs code signing for sparse packages
+- Is Windows-specific with no macOS equivalent
+- Adds significant complexity for limited benefit
+
+## **Implementation Priority**
+
+1. **Week 1**: Implement overlay with keyboard trigger (Alt+Space)
+2. **Week 2**: Add clipboard-based text extraction and AI actions
+3. **Week 3**: Integrate with your existing AI providers for translation/grammar
+4. **Future**: Add mouse hooks and native Explorer integration if needed
+
+## **Key Advantages for GComputer**
+
+✅ **Leverages existing architecture** - Your IPC, window management, and components are ready  
+✅ **Cross-platform** - Works on Windows, macOS, and Linux  
+✅ **Immediate value** - Can ship quickly without native compilation  
+✅ **Extensible** - Easy to add more actions as you build features  
+✅ **Aligns with vision** - Fits the "Everything App" concept perfectly  
+
+The overlay approach is definitively the correct choice for your MVP. It provides universal functionality while maintaining your clean architecture and avoiding the complexity of native OS integration.
+
+---------------
+
+Now create you plan to create this MVP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# NEW FEATURE/COMPONENT
+
+## Way to plan and execute
+This job is a really really heavy one so your plan must be in consequence. 
+We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something like an MVP.
+
+We need to have a lot of new component and code develop but remind yourself that we want thing to be componant driven and DRY at all time. No scss in files, no overlap of logic in component, each part of our logic will either reuse an existing component or create new independant ones.
+
+We already have a lot of existing component so make sure to list them before you start coding so that you are not recreating something that exist. 
+
+Don't forget about translations.
+
+When you're confident that what you did is at a production ready state, you will verify the key point through unit testing. Once you are at this steps you will need to rething about everything you did and create a new clear and detailed plan just for that. Make it clear in your initial plan that you will have to rethink and replan at this steps because a lot of things will probably differ from your initial plan as you go on and discover things.
+
+We have a lot of up to date documentation you can check at any time to verify things. 
+ Our ./docs/coding_standards.md are always good and you should follow it.
+If you need specific libraries or third-party libraries or you are hitting a wall, do not forget that you can browse and search the web for up to date answer.
+Always ground yourself in the current project and do not overreach.
+
+
+## New task goal/context
 ## New task
 
 I want you to enhance the ux/ui of the input inside the dicusssionn/chatbot page.

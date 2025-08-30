@@ -10,7 +10,7 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 - **Security First**: All IPC through preload, no Node in renderer
 - **Type Safety**: Strict TypeScript, no `any` types
 - **DRY Code**: Always check for existing components/utilities before creating new ones
-- **Component Reuse**: Use existing 30+ components before creating new ones
+- **Component Reuse**: Use existing 38+ components before creating new ones
 - **Test Critical Paths**: DB operations, AI communication, IPC handlers
 - **Clean Architecture**: Thin views, logic in services, state in stores
 
@@ -25,11 +25,11 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 **GComputer**: The "Everything App" for your computer - a local-first personal OS layer  
 **Core Mission**: Unified control center for search, chat, automation, and computer control  
 **Tech Stack**: Electron + TypeScript + Svelte 5 + Tailwind + SQLite + Drizzle ORM  
-**Current State**: 14 production features, 30+ components, live AI integration with OpenAI/Anthropic
+**Current State**: 17 production features, 38+ components, live AI integration with OpenAI/Anthropic
 
 ## Current Features (Production-Ready)
 
-### Core Infrastructure (7)
+### Core Infrastructure (8)
 1. **router** - Hash-based routing with 27 routes
 2. **settings** - Persistent config via IPC + localStorage fallback
 3. **ui** - Theme system (light/dark/fun) and global UI state
@@ -37,17 +37,19 @@ You are the **sole senior developer** of GComputer. You own the entire codebase 
 5. **db** - Full CRUD with Drizzle ORM, staging, dual access (IPC/REST)
 6. **navigation** - Hierarchical menu system
 7. **environment** - Environment detection and configuration
+8. **config** - Application configuration system
 
-### User Features (7)
-8. **browse** - File system browsing with permissions
-9. **files-access** - File picker integration
-10. **search** - Search infrastructure with autocomplete
-11. **chatbot** - Chat interface with thread management
-12. **admin** - Complete AI entity management (providers/models/agents)
-13. **ai-communication** - Live AI with OpenAI/Anthropic adapters
-14. **discussion** - AI-powered discussion threads with agents
-15. **computer-capture** - Screen capture capabilities (in development)
-16. **config-manager** - Configuration management system
+### User Features (9)
+9. **browse** - File system browsing with permissions
+10. **files-access** - File picker integration
+11. **search** - Search infrastructure with autocomplete
+12. **chatbot** - Chat interface with thread management
+13. **admin** - Complete AI entity management (providers/models/agents)
+14. **ai-communication** - Live AI with OpenAI/Anthropic adapters
+15. **discussion** - AI-powered discussion threads with agents
+16. **computer-capture** - Screen capture capabilities
+17. **config-manager** - Configuration management system
+18. **context-menu** - Context menu system
 
 ## Critical Rules
 ### ❌ NEVER Do This
@@ -154,7 +156,7 @@ test (id, column1, column2)
 - actions (audit log)
 - permissions (consent management)
 
-## Available Components (30+)
+## Available Components (38+)
 
 ### Layout Components
 - `Header.svelte` - App header with navigation
@@ -235,11 +237,21 @@ See `docs/coding_standards.md#project-structure` for detailed steps
 - **New component**: Check if Table/Modal/SearchBox can be configured instead
 
 ## Key Documentation
-- **`docs/coding_standards.md`** - MUST READ: Comprehensive coding standards
-- `docs/PROJECT.md` - Vision, roadmap, and future plans
-- `docs/architecture.md` - System architecture and patterns
-- `docs/howto/*.md` - Specific feature guides
-- `packages/db/src/db/schema-future.ts` - Planned schema
+- **`docs/coding_standards.md`** - MUST READ: Comprehensive coding standards and patterns
+- **`docs/DOC.md`** - Master documentation and single source of truth
+- **`docs/PROJECT.md`** - Vision, roadmap, and Everything App roadmap
+- **`docs/architecture.md`** - Detailed system architecture and component patterns
+- **`docs/README.md`** - Documentation index and quick reference
+- `docs/howto/*.md` - Feature-specific implementation guides
+- `packages/db/src/db/schema-future.ts` - Planned database schema
+
+### Documentation Usage
+These documentation files provide comprehensive coverage of the codebase:
+- Use `docs/DOC.md` for high-level project understanding and current state
+- Reference `docs/coding_standards.md` for implementation patterns and requirements  
+- Check `docs/architecture.md` for detailed technical architecture
+- Browse `docs/howto/*.md` for specific feature implementation examples
+- Review `docs/PROJECT.md` for future vision and roadmap planning
 
 ## Debugging Checklist
 When stuck, check:

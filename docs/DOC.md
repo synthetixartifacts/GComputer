@@ -71,9 +71,9 @@ app/
 
 **📈 Significant Evolution**: 
 - Main process expanded to include Express REST API server
-- Features grew from 5 to 12 comprehensive modules including AI communication
-- Component library matured to 30+ production-ready components
-- Views expanded to 24+ with comprehensive admin interface
+- Features grew from 5 to 17 comprehensive modules including AI communication
+- Component library matured to 38+ production-ready components  
+- Views expanded to 30+ with comprehensive admin interface
 - Database evolved to include complete AI management system
 - Live AI integration with OpenAI/Anthropic providers
 
@@ -81,21 +81,32 @@ app/
 
 ## Feature Architecture (Grade: A+)
 
-### 11 Production Features
+### 17 Production Features
+
+**Core Infrastructure (8)**:
 1. **router** - Type-safe hash routing with dev gating
 2. **settings** - Persistent config with IPC + localStorage fallback
 3. **ui** - Global UI state (theme, sidebar, modal)
 4. **i18n** - English/French localization system
-5. **browse** - File browsing with path input
-6. **files-access** - File picker integration with UI mapping
-7. **db** - Full CRUD operations with staged editing
-8. **search** - Search infrastructure with suggestions
-9. **chatbot** - Chat interface with thread management
-10. **navigation** - Hierarchical menu system
-11. **admin** - Complete admin system with AI provider/model/agent management
+5. **db** - Full CRUD operations with staged editing
+6. **navigation** - Hierarchical menu system
+7. **environment** - Environment detection and configuration
+8. **config** - Application configuration system
+
+**User Features (9)**:
+9. **browse** - File browsing with path input
+10. **files-access** - File picker integration with UI mapping
+11. **search** - Search infrastructure with suggestions
+12. **chatbot** - Chat interface with thread management
+13. **admin** - Complete admin system with AI provider/model/agent management
+14. **ai-communication** - Live AI integration with OpenAI/Anthropic adapters
+15. **discussion** - AI-powered discussion threads with agents
+16. **computer-capture** - Screen capture capabilities
+17. **config-manager** - Configuration management system
+18. **context-menu** - Context menu system
 
 ### Architectural Patterns
-**✅ Consistent Structure** (10/12 features):
+**✅ Consistent Structure** (17/17 features):
 ```typescript
 features/<name>/
   types.ts    // TypeScript interfaces
@@ -164,7 +175,7 @@ The admin system includes a sophisticated relationship field architecture:
 
 ## Component Library (Grade: A+)
 
-### 30 Production-Ready Components
+### 38+ Production-Ready Components
 
 **Core Layout** (6):
 - Header, Footer, Sidebar, Drawer, Modal, ProgressBar

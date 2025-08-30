@@ -8,6 +8,11 @@ Have file for main agent:
 - ... 
 
 
+Image generation:
+- Nano banana
+- ...
+
+
 
 Eye tracker to click on things with saying click, execute action etc...
 
