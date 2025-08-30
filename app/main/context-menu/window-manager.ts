@@ -17,6 +17,7 @@ export class ContextMenuWindowManager extends EventEmitter {
   private overlayWindow: BrowserWindow | null = null;
   private isVisible: boolean = false;
   private lastPosition: WindowPosition | null = null;
+  private previouslyFocusedWindow: BrowserWindow | null = null;
 
   constructor() {
     super();
@@ -36,29 +37,30 @@ export class ContextMenuWindowManager extends EventEmitter {
     this.overlayWindow = new BrowserWindow({
       width: 280,
       height: 400,
-      maxHeight: 600,
       frame: false,
-      transparent: false,  // Changed to false to ensure visibility
-      backgroundColor: '#ffffff',  // Set background color
+      transparent: true,
       alwaysOnTop: true,
       skipTaskbar: true,
       resizable: false,
       movable: false,
-      focusable: true,
+      minimizable: false,
+      maximizable: false,
+      fullscreenable: false,
       hasShadow: true,
       show: false,
       opacity: 1.0,  // Ensure full opacity
       webPreferences: {
-        preload: path.join(__dirname, '../../preload/index.cjs'),
+        preload: path.join(__dirname, '../preload/index.cjs'),
         contextIsolation: false,  // Temporarily disable for inline HTML
         nodeIntegration: true,   // Enable for inline HTML to use ipcRenderer
         sandbox: false
       }
     });
 
-    // For now, use inline HTML for both dev and production
-    // This ensures it works immediately
+    // Load inline HTML for now to ensure it works
     this.loadInlineHTML();
+    
+    return this.overlayWindow;
   }
 
   /**
@@ -144,6 +146,37 @@ export class ContextMenuWindowManager extends EventEmitter {
               border-top: 1px solid #e0e0e0;
               margin-top: 4px;
             }
+            
+            /* Dark mode support */
+            @media (prefers-color-scheme: dark) {
+              .context-menu {
+                background: #2a2a2a;
+                color: #f0f0f0;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+              }
+              
+              .menu-item:hover {
+                background: #3a3a3a;
+              }
+              
+              .menu-item.selected {
+                background: #404040;
+              }
+              
+              .menu-shortcut {
+                background: #444;
+                color: #ccc;
+              }
+              
+              .divider {
+                background: #444;
+              }
+              
+              .status {
+                color: #999;
+                border-color: #444;
+              }
+            }
           </style>
         </head>
         <body>
@@ -171,17 +204,16 @@ export class ContextMenuWindowManager extends EventEmitter {
             </div>
             <div class="status">Press ESC to close</div>
           </div>
-          
           <script>
             const { ipcRenderer } = require('electron');
             
             let selectedIndex = 0;
-            const items = document.querySelectorAll('.menu-item');
+            const menuItems = document.querySelectorAll('.menu-item');
             
-            // Update selection
+            // Update selected item
             function updateSelection() {
-              items.forEach((item, i) => {
-                if (i === selectedIndex) {
+              menuItems.forEach((item, index) => {
+                if (index === selectedIndex) {
                   item.classList.add('selected');
                 } else {
                   item.classList.remove('selected');
@@ -189,13 +221,53 @@ export class ContextMenuWindowManager extends EventEmitter {
               });
             }
             
-            // Handle click
-            items.forEach((item, index) => {
+            // Handle keyboard navigation
+            document.addEventListener('keydown', (e) => {
+              switch(e.key) {
+                case 'ArrowUp':
+                  e.preventDefault();
+                  selectedIndex = Math.max(0, selectedIndex - 1);
+                  updateSelection();
+                  break;
+                case 'ArrowDown':
+                  e.preventDefault();
+                  selectedIndex = Math.min(menuItems.length - 1, selectedIndex + 1);
+                  updateSelection();
+                  break;
+                case 'Enter':
+                  e.preventDefault();
+                  const selectedItem = menuItems[selectedIndex];
+                  if (selectedItem) {
+                    const action = selectedItem.dataset.action;
+                    console.log('Executing action:', action);
+                    ipcRenderer.send('context-menu:action', { action });
+                  }
+                  break;
+                case 'Escape':
+                  e.preventDefault();
+                  ipcRenderer.send('context-menu:hide');
+                  break;
+              }
+              
+              // Handle shortcut keys
+              const shortcutKey = e.key.toUpperCase();
+              menuItems.forEach(item => {
+                const shortcut = item.querySelector('.menu-shortcut')?.textContent;
+                if (shortcut === shortcutKey) {
+                  e.preventDefault();
+                  const action = item.dataset.action;
+                  console.log('Executing action via shortcut:', action);
+                  ipcRenderer.send('context-menu:action', { action });
+                }
+              });
+            });
+            
+            // Handle mouse clicks
+            menuItems.forEach((item, index) => {
               item.addEventListener('click', () => {
                 const action = item.dataset.action;
-                console.log('Action clicked:', action);
-                ipcRenderer.invoke('context:execute-action', action, '');
-                window.close();
+                console.log('Executing action via click:', action);
+                ipcRenderer.send('context-menu:action', { action });
               });
               
               item.addEventListener('mouseenter', () => {
@@ -204,113 +276,41 @@ export class ContextMenuWindowManager extends EventEmitter {
               });
             });
             
-            // Handle keyboard
-            document.addEventListener('keydown', (e) => {
-              switch(e.key) {
-                case 'ArrowUp':
-                  e.preventDefault();
-                  selectedIndex = Math.max(0, selectedIndex - 1);
-                  updateSelection();
-                  break;
-                  
-                case 'ArrowDown':
-                  e.preventDefault();
-                  selectedIndex = Math.min(items.length - 1, selectedIndex + 1);
-                  updateSelection();
-                  break;
-                  
-                case 'Enter':
-                  e.preventDefault();
-                  if (items[selectedIndex]) {
-                    items[selectedIndex].click();
-                  }
-                  break;
-                  
-                case 'Escape':
-                  e.preventDefault();
-                  window.close();
-                  break;
-                  
-                case 't':
-                case 'T':
-                  e.preventDefault();
-                  document.querySelector('[data-action="translate"]').click();
-                  break;
-                  
-                case 'g':
-                case 'G':
-                  e.preventDefault();
-                  document.querySelector('[data-action="grammar"]').click();
-                  break;
-                  
-                case 's':
-                case 'S':
-                  e.preventDefault();
-                  document.querySelector('[data-action="summarize"]').click();
-                  break;
-                  
-                case 'p':
-                case 'P':
-                  e.preventDefault();
-                  document.querySelector('[data-action="screenshot"]').click();
-                  break;
-              }
-            });
-            
-            // Initial selection
+            // Initialize selection
             updateSelection();
             
-            console.log('[context-menu] Inline menu loaded');
+            // Focus the window for keyboard navigation
+            window.focus();
+            document.body.focus();
+            
+            console.log('[context-menu] Renderer ready');
           </script>
         </body>
       </html>
     `;
     
-    this.overlayWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(html)}`)
-      .then(() => {
-        console.log('[context-menu] Inline HTML loaded successfully');
-      })
-      .catch(error => {
-        console.error('[context-menu] Failed to load inline HTML:', error);
-      });
-
-    // Handle window events
-    // TEMPORARILY DISABLE BLUR HANDLING TO DEBUG
-    // this.overlayWindow.on('blur', () => {
-    //   console.log('[context-menu] Window lost focus, hiding');
-    //   this.hide();
-    // });
-    
-    this.overlayWindow.on('focus', () => {
-      console.log('[context-menu] Window gained focus');
-    });
-    
-    this.overlayWindow.on('show', () => {
-      console.log('[context-menu] Window show event');
-    });
-
-    this.overlayWindow.on('closed', () => {
-      console.log('[context-menu] Window closed');
-      this.overlayWindow = null;
-      this.isVisible = false;
-    });
-
-    // Don't prevent close for now - let's see if window stays open
-    // this.overlayWindow.on('close', (event) => {
-    //   if (!this.overlayWindow?.isDestroyed()) {
-    //     event.preventDefault();
-    //     this.hide();
-    //   }
-    // });
-
-    return this.overlayWindow;
+    this.overlayWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(html)}`);
+    console.log('[context-menu] Loaded inline HTML');
   }
 
   /**
    * Show the context menu at cursor position or specified position
    */
-  show(position?: WindowPosition): void {
+  async show(position?: WindowPosition): Promise<void> {
     console.log('[context-menu] Show method called');
+    console.log('[context-menu] Current state - isVisible:', this.isVisible);
+    
+    // If already visible, just hide it (toggle behavior)
+    if (this.isVisible && this.overlayWindow && !this.overlayWindow.isDestroyed() && this.overlayWindow.isVisible()) {
+      console.log('[context-menu] Window already visible, hiding instead');
+      this.hide();
+      return;
+    }
+    
+    // Store the currently focused window before showing our overlay
+    this.previouslyFocusedWindow = BrowserWindow.getFocusedWindow();
+    console.log('[context-menu] Stored previously focused window:', this.previouslyFocusedWindow ? 'exists' : 'none');
+    
     const window = this.createWindow();
     
     if (!window || window.isDestroyed()) {
@@ -330,21 +330,33 @@ export class ContextMenuWindowManager extends EventEmitter {
     console.log(`[context-menu] Setting window position to: ${x}, ${y}`);
     window.setPosition(x, y);
     
-    // Show and focus the window
-    window.show();
-    window.focus();
+    // macOS-specific focus handling
+    if (process.platform === 'darwin') {
+      // On macOS, show the window and focus it properly
+      window.show();
+      window.focus();
+      window.setAlwaysOnTop(true, 'screen-saver');
+    } else {
+      // On other platforms, use showInactive
+      window.showInactive();
+      window.focus();
+      window.setAlwaysOnTop(true, 'floating');
+    }
     
-    // Force the window to stay on top
-    window.setAlwaysOnTop(true, 'floating');
     window.setVisibleOnAllWorkspaces(true);
     
-    // Open dev tools for debugging (TEMPORARY)
-    window.webContents.openDevTools({ mode: 'detach' });
+    // Dev tools disabled - remove this line to enable for debugging
+    // window.webContents.openDevTools({ mode: 'detach' });
     
     this.isVisible = true;
     console.log(`[context-menu] Window shown at position: ${x}, ${y}`);
     console.log(`[context-menu] Window visible: ${window.isVisible()}`);
     console.log(`[context-menu] Window focused: ${window.isFocused()}`);
+    
+    // Register Escape key to close the menu
+    const { getShortcutManager } = require('./shortcuts');
+    const shortcutManager = getShortcutManager();
+    shortcutManager.registerEscape();
     
     this.emit('shown', { x, y });
   }
@@ -354,12 +366,44 @@ export class ContextMenuWindowManager extends EventEmitter {
    */
   hide(): void {
     if (!this.overlayWindow || this.overlayWindow.isDestroyed()) {
+      this.isVisible = false;
+      this.previouslyFocusedWindow = null;
       return;
     }
 
+    console.log('[context-menu] Hiding window');
+    
+    // Check if our context menu currently has focus
+    const contextMenuHasFocus = this.overlayWindow.isFocused();
+    console.log('[context-menu] Context menu has focus:', contextMenuHasFocus);
+    
+    // Simple approach: hide first, then handle focus
     this.overlayWindow.hide();
+    
+    // Only handle focus if the context menu had focus
+    if (contextMenuHasFocus && process.platform === 'darwin') {
+      const mainWindow = require('../window').getMainWindow();
+      
+      // Prevent main window from coming to front
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.blur();
+        // Use app.hide() briefly to release focus to previous app
+        const { app } = require('electron');
+        app.hide();
+      }
+    } else {
+      // Just blur for other cases
+      this.overlayWindow.blur();
+    }
+    
     this.isVisible = false;
-    console.log('[context-menu] Hidden');
+    this.previouslyFocusedWindow = null;
+    console.log('[context-menu] Window hidden');
+    
+    // Unregister Escape key when menu is hidden
+    const { getShortcutManager } = require('./shortcuts');
+    const shortcutManager = getShortcutManager();
+    shortcutManager.unregisterEscape();
     
     this.emit('hidden');
   }
@@ -367,11 +411,11 @@ export class ContextMenuWindowManager extends EventEmitter {
   /**
    * Toggle visibility of the context menu
    */
-  toggle(position?: WindowPosition): void {
+  async toggle(position?: WindowPosition): Promise<void> {
     if (this.isVisible) {
       this.hide();
     } else {
-      this.show(position);
+      await this.show(position);
     }
   }
 

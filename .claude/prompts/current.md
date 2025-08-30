@@ -1,5 +1,23 @@
 
 
+# Context
+We are currently working on making hotkeys print a specific in context window where we have options.
+
+When I open my context window the dev tools also open (which I dont want) and I see these errors
+node:electron/js2c/renderer_init:2 Unable to load preload script: /Users/tommythierry/Documents/Code/GComputer/preload/index.cjs
+(anonymous) @ node:electron/js2c/renderer_init:2
+node:electron/js2c/renderer_init:2 Error: Cannot find module '/Users/tommythierry/Documents/Code/GComputer/preload/index.cjs'
+    at Module._resolveFilename
+
+Verify our implementation.
+
+
+
+
+---------------------
+
+
+
 
 
 # Context

@@ -11,8 +11,12 @@ export interface ContextMenuAction {
   description?: string;
   enabled?: boolean;
   requiresText?: boolean;
-  category?: 'text' | 'ai' | 'utility' | 'custom';
+  category?: ActionCategory;
+  handler?: ActionHandler;
+  metadata?: Record<string, unknown>;
 }
+
+export type ActionCategory = 'text' | 'ai' | 'clipboard' | 'system' | 'utility' | 'custom';
 
 export interface ContextMenuPosition {
   x: number;

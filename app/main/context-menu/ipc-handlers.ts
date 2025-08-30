@@ -45,7 +45,7 @@ export function registerContextMenuIpc(): void {
   ipcMain.handle('context:show-menu', async (_event: IpcMainInvokeEvent, position?: { x: number; y: number }) => {
     try {
       const windowManager = getWindowManager();
-      windowManager.show(position);
+      await windowManager.show(position);
       return { success: true };
     } catch (error) {
       console.error('[context-menu] Error showing menu:', error);
@@ -182,9 +182,20 @@ export function initializeContextMenu(): void {
   const windowManager = getWindowManager();
   
   // When shortcut is triggered, show the menu
-  shortcutManager.on('show-menu', () => {
+  shortcutManager.on('show-menu', async () => {
     console.log('[context-menu] Shortcut triggered event received, showing window...');
-    windowManager.show();
+    try {
+      await windowManager.show();
+      console.log('[context-menu] Window shown successfully');
+    } catch (error) {
+      console.error('[context-menu] Error showing window:', error);
+    }
+  });
+  
+  // When escape is pressed, hide the menu
+  shortcutManager.on('hide-menu', () => {
+    console.log('[context-menu] Escape pressed, hiding window...');
+    windowManager.hide();
   });
   
   // Register the global shortcuts

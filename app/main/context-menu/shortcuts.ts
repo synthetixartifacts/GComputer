@@ -18,6 +18,7 @@ export class ContextMenuShortcuts extends EventEmitter {
   };
   
   private registered: boolean = false;
+  private escapeRegistered: boolean = false;
 
   constructor(customShortcuts?: Partial<ShortcutConfig>) {
     super();
@@ -75,6 +76,50 @@ export class ContextMenuShortcuts extends EventEmitter {
   }
 
   /**
+   * Register Escape key to hide the menu
+   */
+  registerEscape(): void {
+    if (this.escapeRegistered) {
+      return;
+    }
+    
+    try {
+      const success = globalShortcut.register('Escape', () => {
+        console.log('[context-menu] Escape pressed, hiding menu');
+        this.emit('hide-menu');
+      });
+      
+      if (success) {
+        this.escapeRegistered = true;
+        console.log('[context-menu] Escape shortcut registered');
+      } else {
+        console.error('[context-menu] Failed to register Escape shortcut');
+      }
+    } catch (error) {
+      console.error('[context-menu] Error registering Escape:', error);
+    }
+  }
+  
+  /**
+   * Unregister Escape key
+   */
+  unregisterEscape(): void {
+    if (!this.escapeRegistered) {
+      return;
+    }
+    
+    try {
+      if (globalShortcut.isRegistered('Escape')) {
+        globalShortcut.unregister('Escape');
+        this.escapeRegistered = false;
+        console.log('[context-menu] Escape shortcut unregistered');
+      }
+    } catch (error) {
+      console.error('[context-menu] Error unregistering Escape:', error);
+    }
+  }
+
+  /**
    * Unregister all global shortcuts
    */
   unregister(): void {
@@ -91,6 +136,9 @@ export class ContextMenuShortcuts extends EventEmitter {
         globalShortcut.unregister(this.shortcuts.secondary);
       }
 
+      // Also unregister Escape if it's registered
+      this.unregisterEscape();
+      
       this.registered = false;
       console.log('[context-menu] Global shortcuts unregistered');
     } catch (error) {

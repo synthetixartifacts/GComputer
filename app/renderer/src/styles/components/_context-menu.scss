@@ -1,162 +1,201 @@
 /**
- * Context Menu Styles
- * Styles for the context menu overlay and action items
+ * Context Menu Component Styles
+ * Pure SCSS following BEM convention - NO Tailwind
  */
 
-.context-menu-overlay {
-  @apply fixed;
-  @apply bg-white dark:bg-gray-900;
-  @apply rounded-lg shadow-2xl;
-  @apply border border-gray-200 dark:border-gray-700;
-  @apply p-2;
-  @apply min-w-[250px] max-w-[320px];
-  @apply max-h-[600px] overflow-y-auto;
-  @apply z-[9999];
+.context-menu {
+  position: fixed;
+  z-index: 9999;
+  min-width: 250px;
+  max-width: 320px;
+  max-height: 600px;
+  padding: 8px;
+  background-color: var(--color-background-elevated, #ffffff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1),
+    0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
   
-  // Smooth animations
-  animation: fadeIn 0.15s ease-out;
+  animation: contextMenuFadeIn 150ms ease-out;
+  outline: none;
   
-  &:focus {
-    @apply outline-none;
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #3b82f6);
+    outline-offset: -2px;
   }
   
-  // Selected text preview
-  .selected-text {
-    @apply px-3 py-2 mb-2;
-    @apply bg-gray-50 dark:bg-gray-800;
-    @apply rounded-md;
-    @apply text-sm;
-    @apply border border-gray-200 dark:border-gray-700;
+  // Container for scrollable content
+  &__container {
+    max-height: 520px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-scrollbar, #9ca3af) transparent;
     
-    .label {
-      @apply text-gray-500 dark:text-gray-400;
-      @apply text-xs uppercase tracking-wide;
-      @apply block mb-1;
+    &::-webkit-scrollbar {
+      width: 6px;
     }
     
-    .text {
-      @apply text-gray-700 dark:text-gray-300;
-      @apply italic;
-      @apply line-clamp-2;
-    }
-  }
-  
-  // Actions container
-  .actions-container {
-    @apply space-y-1;
-  }
-  
-  // Action group
-  .action-group {
-    @apply space-y-1;
-    
-    &:not(:first-child) {
-      @apply pt-2 mt-2;
-      @apply border-t border-gray-200 dark:border-gray-700;
+    &::-webkit-scrollbar-track {
+      background: transparent;
     }
     
-    .group-label {
-      @apply px-3 py-1;
-      @apply text-xs uppercase tracking-wide;
-      @apply text-gray-500 dark:text-gray-400;
-      @apply font-semibold;
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--color-scrollbar, #9ca3af);
+      border-radius: 3px;
+      
+      &:hover {
+        background-color: var(--color-scrollbar-hover, #6b7280);
+      }
     }
   }
   
-  // Error message
-  .error-message {
-    @apply mt-2 px-3 py-2;
-    @apply bg-red-50 dark:bg-red-900/20;
-    @apply text-red-600 dark:text-red-400;
-    @apply text-sm rounded-md;
-    @apply border border-red-200 dark:border-red-800;
+  // Menu group styles
+  &__group {
+    margin-bottom: 4px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
   
-  // Shortcuts hint
-  .shortcuts-hint {
-    @apply mt-3 pt-2;
-    @apply border-t border-gray-200 dark:border-gray-700;
-    @apply text-xs text-gray-500 dark:text-gray-400;
-    @apply flex items-center justify-center gap-2;
+  &__group-label {
+    padding: 4px 12px;
+    margin-bottom: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary, #6b7280);
+    user-select: none;
+  }
+  
+  &__group-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  
+  // Menu item styles
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 8px 12px;
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-text, #1f2937);
+    text-align: left;
+    cursor: pointer;
+    transition: all 150ms ease;
+    outline: none;
     
-    .separator {
-      @apply text-gray-400 dark:text-gray-600;
+    &:hover:not(&--disabled) {
+      background-color: var(--color-background-hover, #f3f4f6);
     }
+    
+    &:focus-visible {
+      box-shadow: 0 0 0 2px var(--color-primary-alpha, rgba(59, 130, 246, 0.2));
+    }
+    
+    &--selected {
+      background-color: var(--color-primary-alpha, rgba(59, 130, 246, 0.1));
+      
+      &:hover {
+        background-color: var(--color-primary-alpha-hover, rgba(59, 130, 246, 0.15));
+      }
+    }
+    
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      
+      .context-menu__item-label {
+        color: var(--color-text-disabled, #9ca3af);
+      }
+    }
+  }
+  
+  &__item-icon {
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  &__item-label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  &__item-shortcut {
+    flex-shrink: 0;
+    padding: 2px 6px;
+    background-color: var(--color-background-secondary, #f3f4f6);
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--color-text-secondary, #6b7280);
+  }
+  
+  &__item-badge {
+    flex-shrink: 0;
+    padding: 2px 6px;
+    background-color: var(--color-warning-alpha, rgba(251, 191, 36, 0.1));
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--color-warning, #f59e0b);
+  }
+
+  // Divider
+  &__divider {
+    height: 1px;
+    margin: 4px 8px;
+    background-color: var(--color-border, #e5e7eb);
+  }
+  
+  // Footer
+  &__footer {
+    padding: 8px 12px;
+    margin-top: 4px;
+    border-top: 1px solid var(--color-border, #e5e7eb);
+    background-color: var(--color-background-secondary, #f9fafb);
+  }
+  
+  &__hint {
+    font-size: 12px;
+    color: var(--color-text-secondary, #6b7280);
+    text-align: center;
   }
 }
 
-// Action item component
-.action-item {
-  @apply w-full;
-  @apply flex items-center gap-3;
-  @apply px-3 py-2;
-  @apply rounded-md;
-  @apply text-left;
-  @apply transition-all duration-150;
-  @apply text-gray-700 dark:text-gray-300;
-  
-  // Hover state
-  &:hover:not(.disabled) {
-    @apply bg-gray-100 dark:bg-gray-800;
-  }
-  
-  // Selected state
-  &.selected:not(.disabled) {
-    @apply bg-blue-50 dark:bg-blue-900/20;
-    @apply text-blue-700 dark:text-blue-300;
-    @apply ring-1 ring-blue-400 dark:ring-blue-600;
-  }
-  
-  // Disabled state
-  &.disabled {
-    @apply opacity-40 cursor-not-allowed;
-  }
-  
-  // Loading state
-  &.loading {
-    @apply cursor-wait;
-    
-    .spinner {
-      animation: spin 1s linear infinite;
-    }
-  }
-  
-  // Icon
-  .icon {
-    @apply text-lg flex-shrink-0;
-    @apply w-6 h-6 flex items-center justify-center;
-  }
-  
-  // Label
-  .label {
-    @apply flex-1;
-    @apply text-sm font-medium;
-  }
-  
-  // Shortcut
-  .shortcut {
-    @apply ml-auto;
-    @apply px-2 py-0.5;
-    @apply bg-gray-200 dark:bg-gray-700;
-    @apply text-xs font-mono;
-    @apply rounded;
-    @apply text-gray-600 dark:text-gray-400;
-  }
-}
-
-// Animations
-@keyframes fadeIn {
+// Animation keyframes
+@keyframes contextMenuFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-10px) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-@keyframes spin {
+// Spin animation for loading states
+@keyframes contextMenuSpin {
   from {
     transform: rotate(0deg);
   }
@@ -165,25 +204,44 @@
   }
 }
 
-// Scrollbar styling for overlay
-.context-menu-overlay {
-  scrollbar-width: thin;
-  scrollbar-color: theme('colors.gray.400') transparent;
-  
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    @apply bg-gray-400 dark:bg-gray-600;
-    @apply rounded-full;
+// Dark theme overrides
+[data-theme="dark"] {
+  .context-menu {
+    background-color: var(--color-background-dark-elevated, #1f2937);
+    border-color: var(--color-border-dark, #374151);
     
-    &:hover {
-      @apply bg-gray-500 dark:bg-gray-500;
+    &__item {
+      color: var(--color-text-dark, #f3f4f6);
+      
+      &:hover:not(&--disabled) {
+        background-color: var(--color-background-dark-hover, #374151);
+      }
+      
+      &--selected {
+        background-color: var(--color-primary-dark-alpha, rgba(96, 165, 250, 0.1));
+        
+        &:hover {
+          background-color: var(--color-primary-dark-alpha-hover, rgba(96, 165, 250, 0.15));
+        }
+      }
+    }
+    
+    &__group-label {
+      color: var(--color-text-dark-secondary, #9ca3af);
+    }
+    
+    &__item-shortcut {
+      background-color: var(--color-background-dark-secondary, #374151);
+      color: var(--color-text-dark-secondary, #9ca3af);
+    }
+    
+    &__divider {
+      background-color: var(--color-border-dark, #374151);
+    }
+    
+    &__footer {
+      background-color: var(--color-background-dark-secondary, #111827);
+      border-color: var(--color-border-dark, #374151);
     }
   }
 }
