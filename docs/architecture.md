@@ -111,7 +111,7 @@ app/
         app.d.ts          # Global type declarations
         vite-env.d.ts     # Vite environment types
         
-        features/         # 16 feature modules (business logic)
+        features/         # 17 feature modules (business logic)
           router/         # Hash-based routing with type safety
             types.ts      # Route union type (19 routes)
             service.ts    # Navigation functions

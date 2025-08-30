@@ -6,7 +6,7 @@
 
 ## 0) Quick Summary
 
-**What it is now.** A secure, typed **Electron + Svelte 5** desktop app with routing, settings, i18n (en/fr), complete admin system for AI management, live AI communication with OpenAI/Anthropic, production database, and composable UI architecture with 30+ components.
+**What it is now.** A secure, typed **Electron + Svelte 5** desktop app with routing, settings, i18n (en/fr), complete admin system for AI management, live AI communication with OpenAI/Anthropic, production database, and composable UI architecture with 38+ components.
 **What it becomes.** The **Everything App** for your computer: unified search, chat, and **automation**. It can **see your screen** (with consent), **control apps** (with explicit approval), and **do tasks for you**—or explain how.
 **How we get there.** Expand today’s local-indexing foundation into **agents + tools**, **screen understanding**, and **OS automation adapters**, all under a **local-first, permissioned** model.
 
@@ -50,8 +50,8 @@
   * `window.gc.{settings, db, fs}` with full type safety
 * **Renderer (`app/renderer/`)**
 
-  * **Svelte 5 UI** with 30+ production-ready components
-  * **12 Feature Modules** including AI communication system
+  * **Svelte 5 UI** with 38+ production-ready components
+  * **17 Feature Modules** including AI communication system
   * **Admin System** for AI provider/model/agent management
   * **Live AI Integration** with streaming support
   * Hash router; i18n (en/fr); theme cycling (`light` → `dark` → `fun`)
