@@ -52,15 +52,14 @@
   margin-top: 2rem; // Space before composer
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   
-  // Dark mode
-  @media (prefers-color-scheme: dark) {
-    background: #111827;
-    border-top-color: #374151;
-  }
-  
   &:hover {
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   }
+}
+
+[data-theme='dark'] .chat-composer-wrapper {
+  background: #111827;
+  border-top-color: #374151;
 }
 
 // Ensure main app container is scrollable

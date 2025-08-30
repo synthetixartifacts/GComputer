@@ -8,6 +8,7 @@ import type { IpcMainInvokeEvent } from 'electron';
 import { getWindowManager } from './window-manager';
 import { getContextService } from './context-service';
 import { getShortcutManager } from './shortcuts';
+import { configurationService } from '../db/services/index';
 
 export interface ContextMenuAction {
   id: string;
@@ -165,44 +166,137 @@ export function registerContextMenuIpc(): void {
     }
   });
 
+  // Get context menu configuration from database
+  ipcMain.handle('context:get-config', async (_event: IpcMainInvokeEvent) => {
+    try {
+      const [enabledConfig, shortcutConfig, actionsConfig] = await Promise.all([
+        configurationService.getByCode('context_menu_enabled'),
+        configurationService.getByCode('context_menu_shortcut'),
+        configurationService.getByCode('context_menu_actions')
+      ]);
+
+      return {
+        success: true,
+        config: {
+          enabled: enabledConfig?.value === 'true',
+          shortcut: shortcutConfig?.value || 'Alt+Space',
+          actions: actionsConfig?.value ? JSON.parse(actionsConfig.value) : []
+        }
+      };
+    } catch (error) {
+      console.error('[context-menu] Error getting configuration:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to get configuration'
+      };
+    }
+  });
+
+  // Update context menu configuration in database
+  ipcMain.handle('context:update-config', async (_event: IpcMainInvokeEvent, config: any) => {
+    try {
+      const updates = [];
+
+      if (config.enabled !== undefined) {
+        updates.push(configurationService.updateByCode('context_menu_enabled', config.enabled.toString()));
+      }
+
+      if (config.shortcut !== undefined) {
+        updates.push(configurationService.updateByCode('context_menu_shortcut', config.shortcut));
+        
+        // Update the active shortcut if context menu is enabled
+        const enabledConfig = await configurationService.getByCode('context_menu_enabled');
+        if (enabledConfig?.value === 'true') {
+          const shortcutManager = getShortcutManager();
+          shortcutManager.updateShortcuts({ primary: config.shortcut });
+        }
+      }
+
+      if (config.actions !== undefined) {
+        updates.push(configurationService.updateByCode('context_menu_actions', JSON.stringify(config.actions)));
+      }
+
+      await Promise.all(updates);
+
+      // If enabled state changed, initialize or cleanup accordingly
+      if (config.enabled !== undefined) {
+        if (config.enabled) {
+          await initializeContextMenu();
+        } else {
+          cleanupContextMenu();
+        }
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error('[context-menu] Error updating configuration:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to update configuration'
+      };
+    }
+  });
+
   console.log('[context-menu] IPC handlers registered successfully');
 }
 
 /**
  * Initialize the context menu system
  */
-export function initializeContextMenu(): void {
+export async function initializeContextMenu(): Promise<void> {
   console.log('[context-menu] Initializing context menu system');
   
-  // Register IPC handlers
-  registerContextMenuIpc();
-  
-  // Setup shortcuts and link to window manager
-  const shortcutManager = getShortcutManager();
-  const windowManager = getWindowManager();
-  
-  // When shortcut is triggered, show the menu
-  shortcutManager.on('show-menu', async () => {
-    console.log('[context-menu] Shortcut triggered event received, showing window...');
-    try {
-      await windowManager.show();
-      console.log('[context-menu] Window shown successfully');
-    } catch (error) {
-      console.error('[context-menu] Error showing window:', error);
+  try {
+    // Check if context menu is enabled in configuration
+    const enabledConfig = await configurationService.getByCode('context_menu_enabled');
+    const isEnabled = enabledConfig?.value === 'true';
+    
+    if (!isEnabled) {
+      console.log('[context-menu] Context menu is disabled in configuration');
+      return;
     }
-  });
-  
-  // When escape is pressed, hide the menu
-  shortcutManager.on('hide-menu', () => {
-    console.log('[context-menu] Escape pressed, hiding window...');
-    windowManager.hide();
-  });
-  
-  // Register the global shortcuts
-  const registered = shortcutManager.register();
-  console.log(`[context-menu] Shortcuts registration result: ${registered}`);
-  
-  console.log('[context-menu] Context menu system initialized');
+    
+    // Register IPC handlers
+    registerContextMenuIpc();
+    
+    // Get shortcut configuration
+    const shortcutConfig = await configurationService.getByCode('context_menu_shortcut');
+    const shortcutValue = shortcutConfig?.value || 'Alt+Space';
+    
+    // Setup shortcuts and link to window manager
+    const shortcutManager = getShortcutManager();
+    const windowManager = getWindowManager();
+    
+    // Update shortcuts based on configuration
+    if (shortcutValue !== 'Alt+Space') {
+      shortcutManager.updateShortcuts({ primary: shortcutValue });
+    }
+    
+    // When shortcut is triggered, show the menu
+    shortcutManager.on('show-menu', async () => {
+      console.log('[context-menu] Shortcut triggered event received, showing window...');
+      try {
+        await windowManager.show();
+        console.log('[context-menu] Window shown successfully');
+      } catch (error) {
+        console.error('[context-menu] Error showing window:', error);
+      }
+    });
+    
+    // When escape is pressed, hide the menu
+    shortcutManager.on('hide-menu', () => {
+      console.log('[context-menu] Escape pressed, hiding window...');
+      windowManager.hide();
+    });
+    
+    // Register the global shortcuts
+    const registered = shortcutManager.register();
+    console.log(`[context-menu] Shortcuts registration result: ${registered}`);
+    
+    console.log('[context-menu] Context menu system initialized');
+  } catch (error) {
+    console.error('[context-menu] Error initializing context menu:', error);
+  }
 }
 
 /**

@@ -14,7 +14,7 @@ import { initializeContextMenu, cleanupContextMenu } from './context-menu/index'
 /**
  * Register all IPC handlers
  */
-export function registerAllIpcHandlers(): void {
+export async function registerAllIpcHandlers(): Promise<void> {
   console.log('[ipc] Registering IPC handlers...');
   
   // Register feature-specific IPC handlers
@@ -28,7 +28,7 @@ export function registerAllIpcHandlers(): void {
   initializeDisplayMedia();
   
   // Initialize context menu system
-  initializeContextMenu();
+  await initializeContextMenu();
   
   console.log('[ipc] IPC handlers registered successfully');
 }

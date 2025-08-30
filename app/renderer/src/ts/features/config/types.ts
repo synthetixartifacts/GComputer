@@ -39,6 +39,7 @@ export const ADMIN_ROUTES = [
 export const BASE_ROUTES = [
   'home',
   'settings.config',
+  'settings.contextmenu',
   'settings.about',
   'discussion.list',
   'discussion.new',

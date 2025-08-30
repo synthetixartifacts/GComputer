@@ -70,6 +70,7 @@
       "item2": "Élément 2",
       "settings": "Paramètres",
       "config": "Configuration",
+      "contextMenu": "Menu Contextuel",
       "about": "À propos",
       "discussions": {
         "label": "Discussions",
@@ -492,6 +493,12 @@
         "desc": "La configuration de l'application sera affichée ici.",
         "theme": "Thème",
         "language": "Langue"
+      },
+      "contextMenu": {
+        "title": "Paramètres du Menu Contextuel",
+        "desc": "Configurer le comportement et les raccourcis du menu contextuel global",
+        "enabledActions": "Actions Activées",
+        "actionsHelp": "Sélectionnez les actions à afficher dans le menu contextuel"
       }
     }
   },

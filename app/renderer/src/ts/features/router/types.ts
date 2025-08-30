@@ -1,6 +1,7 @@
 export type Route =
   | 'home'
   | 'settings.config'
+  | 'settings.contextmenu'
   | 'settings.about'
   | 'development.styleguide'
   | 'development.styleguide.base'
@@ -30,6 +31,7 @@ export type Route =
 export const ALL_ROUTES: Route[] = [
   'home',
   'settings.config',
+  'settings.contextmenu',
   'settings.about',
   'development.styleguide',
   'development.styleguide.base',

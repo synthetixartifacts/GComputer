@@ -24,6 +24,7 @@ export const menuItems = derived(configMode, ($configMode) => {
       i18nKey: 'app.menu.settings',
       children: [
         { label: 'app.menu.config', i18nKey: 'app.menu.config', route: 'settings.config' },
+        { label: 'app.menu.contextMenu', i18nKey: 'app.menu.contextMenu', route: 'settings.contextmenu' },
         { label: 'app.menu.about', i18nKey: 'app.menu.about', route: 'settings.about' },
       ],
     },

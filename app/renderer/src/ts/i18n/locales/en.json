@@ -70,6 +70,7 @@
       "item2": "Item 2",
       "settings": "Settings",
       "config": "Config",
+      "contextMenu": "Context Menu",
       "about": "About",
       "discussions": {
         "label": "Discussions",
@@ -474,6 +475,12 @@
         "desc": "Application configuration will go here.",
         "theme": "Theme",
         "language": "Language"
+      },
+      "contextMenu": {
+        "title": "Context Menu Settings",
+        "desc": "Configure the global context menu behavior and shortcuts",
+        "enabledActions": "Enabled Actions",
+        "actionsHelp": "Select which actions to show in the context menu"
       }
     }
   },

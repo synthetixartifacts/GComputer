@@ -1,5 +1,43 @@
 
 
+# NEW FEATURE/COMPONENT
+
+## Way to plan and execute
+This job is a really really heavy one so your plan must be in consequence. 
+We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something like an MVP.
+
+We need to have a lot of new component and code develop but remind yourself that we want thing to be componant driven and DRY at all time. No scss in files, no overlap of logic in component, each part of our logic will either reuse an existing component or create new independant ones.
+
+We already have a lot of existing component so make sure to list them before you start coding so that you are not recreating something that exist. 
+
+Don't forget about translations.
+
+When you're confident that what you did is at a production ready state, you will verify the key point through unit testing. Once you are at this steps you will need to rething about everything you did and create a new clear and detailed plan just for that. Make it clear in your initial plan that you will have to rethink and replan at this steps because a lot of things will probably differ from your initial plan as you go on and discover things.
+
+We have a lot of up to date documentation you can check at any time to verify things. 
+ Our ./docs/coding_standards.md are always good and you should follow it.
+If you need specific libraries or third-party libraries or you are hitting a wall, do not forget that you can browse and search the web for up to date answer.
+Always ground yourself in the current project and do not overreach.
+
+
+## New task goal/context
+We have create a new context-menu that opens on a specific shortcut ALT+SPACE.
+What I want now is to add a configuration that will enable or not the context menu.
+I want to have a specific section for the management of the context-menu in our configuration section of our app.
+Make sure to read documentation and code on how we are currently managing configuration settings so that you do the same exact things and not redo a new way of doing this.
+I want multiple new settings/configuration options in that new section:
+- Enable menu (yes/no)
+- Shortcut (list of options - ALT+SPACE / F5 / F6 for now but we will add more option)
+- List of enable option in the menu (Translation / SUmmary etc... everything we have right now)
+
+We should have default value for these and they should as the others configuration be in db. 
+
+
+
+
+---------------
+
+
 # Context
 We are currently working on making hotkeys print a specific in context window where we have options.
 
