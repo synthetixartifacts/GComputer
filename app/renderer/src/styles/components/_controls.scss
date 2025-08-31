@@ -96,15 +96,6 @@
 
   /* Loading helpers */
   .btn[aria-busy='true'] { cursor: progress; opacity: 0.85; }
-  .spinner {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 9999px;
-    border: 2px solid color-mix(in oklab, var(--color-text) 50%, transparent);
-    border-top-color: var(--color-text);
-    animation: gc-spin 0.9s linear infinite;
-  }
-  @keyframes gc-spin { to { transform: rotate(360deg); } }
 
   /* Inputs */
   .input {

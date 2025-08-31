@@ -64,7 +64,7 @@
   <div class="view-content">
     {#if loading}
       <div class="loading-container">
-        <div class="spinner"></div>
+        <div class="spinner spinner--xl"></div>
         <p>{$t('common.loading')}</p>
       </div>
     {:else if error}
@@ -76,7 +76,7 @@
       </div>
     {:else if creatingDiscussion}
       <div class="loading-container">
-        <div class="spinner"></div>
+        <div class="spinner spinner--xl"></div>
         <p>{$t('discussion.creatingDiscussion')}</p>
       </div>
     {:else if agents.length === 0}

@@ -4,12 +4,12 @@
   import SidebarComponent from '@components/Sidebar.svelte';
   import ModalComponent from '@components/Modal.svelte';
   import DiscussionSidebarComponent from '@components/discussion/DiscussionSidebar.svelte';
+  import HomeView from '@views/HomeView.svelte';
   import StyleguideOverviewView from '@views-development/styleguide/StyleguideOverviewView.svelte';
   import StyleguideBaseView from '@views-development/styleguide/StyleguideBaseView.svelte';
   import StyleguideTableView from '@views-development/styleguide/StyleguideTableView.svelte';
   import StyleguideInputsView from '@views-development/styleguide/StyleguideInputsView.svelte';
   import StyleguideButtonsView from '@views-development/styleguide/StyleguideButtonsView.svelte';
-  import HomeView from '@views/HomeView.svelte';
   import AboutView from '@views-settings/AboutView.svelte';
   
   import SettingsConfigView from '@views-settings/SettingsConfigView.svelte';

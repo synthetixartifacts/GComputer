@@ -90,7 +90,7 @@
   <div class="view-content">
     {#if loading}
       <div class="loading-container">
-        <div class="spinner"></div>
+        <div class="spinner spinner--xl"></div>
         <p>{$t('common.loading')}</p>
       </div>
     {:else if error}
