@@ -52,6 +52,22 @@ Always ground yourself in the current project and do not overreach.
 ## New task goal/context
 
 
+
+---------------------
+
+# AGENTHUB INSPIRATION
+
+I want to add a lot of styling and setup to the chatbot component.
+I have a lot of exemple from another project of each section and how I want them to behave from old code. You can use it to understand what I want and use it as inspiration but make sure to always create code adapted for our project and respecting our coding standards.
+
+The first thing I want to adjust is the input area logic
+Input area:
+- Style
+  - The zone should be like fullwidth but the input itself 
+
+
+
+
 ------
 
 

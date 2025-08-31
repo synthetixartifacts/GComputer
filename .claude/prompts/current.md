@@ -1,5 +1,24 @@
 
 
+
+I want to add a lot of styling and setup to the chatbot component.
+I want to update our user input section and make it like it own component because there will be a lot of thing associate to it from style to behavior/functions attached to it.
+
+Style:
+Must stays sticky like this and then placed itself before the footer is ok.
+I want tho the section to be full width because right now .chat-composer-wrapper and its background filled is not filling our complete window.
+Make it.
+I also want the input of the user to be a div contenteditable=true so that we can pasted styled text an not just plain. Like a text from readme or word and we can represent it visually as is.
+
+Feature:
+Whenever I'm on this view (discussion chat), whenever I click a character of my keyboard even if im not in the input//div editable i focus by itself and press/print the key.
+
+
+
+
+
+
+
 # Context
 We are currently working on making hotkeys print a specific in context window where we have options.
 
