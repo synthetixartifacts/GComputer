@@ -36,6 +36,7 @@ declare global {
         executeAction: (action: string, text: string) => Promise<{ success: boolean; action?: string; text?: string; result?: string; error?: string }>;
         getClipboard: () => Promise<{ success: boolean; text?: string; timestamp?: number; error?: string }>;
         setClipboard: (text: string) => Promise<{ success: boolean; error?: string }>;
+        replaceSelected: (text: string) => Promise<{ success: boolean; error?: string }>;
         getShortcuts: () => Promise<{ success: boolean; shortcuts?: { primary: string; secondary?: string }; error?: string }>;
         updateShortcuts: (shortcuts: { primary?: string; secondary?: string }) => Promise<{ success: boolean; error?: string }>;
         getConfig: () => Promise<{ success: boolean; config?: { enabled: boolean; shortcut: string; actions: string[] }; error?: string }>;

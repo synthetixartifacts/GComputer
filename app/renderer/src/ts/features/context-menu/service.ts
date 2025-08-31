@@ -66,75 +66,47 @@ export function getEnabledActions(config: ContextMenuConfig): ContextMenuAction[
 }
 
 /**
- * Execute a context menu action
- * This is scalable - we can easily add new action handlers as features are implemented
+ * Execute a context menu action using the action registry
+ * This is scalable - actions are registered in the registry and can be added dynamically
  */
 export async function executeContextMenuAction(
   actionId: string, 
   text: string
 ): Promise<ActionExecutionResult> {
-  if (!isElectronEnvironment() || !window.gc?.context) {
+  // Import action registry dynamically to avoid circular dependencies
+  const { getAction } = await import('./actions/registry');
+  
+  const action = getAction(actionId);
+  
+  if (!action) {
+    console.error(`Action not found in registry: ${actionId}`);
     return {
       success: false,
       actionId,
-      error: 'Context menu API not available'
+      error: `Unknown action: ${actionId}`
     };
   }
   
   try {
-    // For AI actions, we'll integrate with the AI communication feature later
-    if (ACTION_PROMPTS[actionId]) {
-      // TODO: Integrate with AI communication feature when ready
-      // For now, show alert as placeholder
-      alert(`AI Action: ${actionId}\nPrompt: ${ACTION_PROMPTS[actionId]}\nText: ${text}`);
-      
-      // Hide the context menu after action
-      await hideContextMenu();
-      
+    // Create action context
+    const context = {
+      selectedText: text,
+      hasSelection: text.length > 0
+    };
+    
+    // Validate action can be executed
+    if (!action.validate(context)) {
       return {
-        success: true,
+        success: false,
         actionId,
-        result: 'AI action executed (placeholder)'
+        error: 'Action validation failed'
       };
     }
     
-    // Handle non-AI actions
-    switch (actionId) {
-      case 'copy':
-        // TODO: Implement actual clipboard copy
-        alert(`Copy action triggered\nText to copy: ${text}`);
-        await hideContextMenu();
-        return { success: true, actionId };
-        
-      case 'paste':
-        // TODO: Implement actual clipboard paste
-        alert('Paste action triggered');
-        await hideContextMenu();
-        return {
-          success: true,
-          actionId,
-          result: 'Clipboard content (placeholder)'
-        };
-        
-      case 'screenshot':
-        // TODO: Integrate with screen capture feature
-        alert('Screenshot action triggered');
-        await hideContextMenu();
-        return {
-          success: true,
-          actionId,
-          result: 'Screenshot taken (placeholder)'
-        };
-        
-      default:
-        alert(`Unknown action: ${actionId}`);
-        await hideContextMenu();
-        return {
-          success: false,
-          actionId,
-          error: `Unknown action: ${actionId}`
-        };
-    }
+    // Execute the action
+    const result = await action.execute(context);
+    
+    return result;
   } catch (error) {
     console.error('Failed to execute context menu action:', error);
     return {

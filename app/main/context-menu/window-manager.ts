@@ -18,6 +18,7 @@ export class ContextMenuWindowManager extends EventEmitter {
   private isVisible: boolean = false;
   private lastPosition: WindowPosition | null = null;
   private previouslyFocusedWindow: BrowserWindow | null = null;
+  private capturedText: string = '';
 
   constructor() {
     super();
@@ -50,6 +51,7 @@ export class ContextMenuWindowManager extends EventEmitter {
       show: false,
       opacity: 1.0,  // Ensure full opacity
       focusable: true,
+      type: 'panel',  // On macOS, creates a panel that doesn't activate the app
       webPreferences: {
         preload: path.join(__dirname, '../preload/index.cjs'),
         contextIsolation: false,  // Temporarily disable for inline HTML
@@ -58,7 +60,7 @@ export class ContextMenuWindowManager extends EventEmitter {
       }
     });
 
-    // Load inline HTML for now to ensure it works
+    // Load inline HTML for the context menu
     this.loadInlineHTML();
     
     return this.overlayWindow;
@@ -182,26 +184,16 @@ export class ContextMenuWindowManager extends EventEmitter {
         </head>
         <body>
           <div class="context-menu" id="menu">
+            <div id="no-text-alert" style="padding: 12px; background: #fee; color: #c00; border-radius: 4px; margin: 8px; display: none;">
+              No text selected
+            </div>
+            <div id="success-alert" style="padding: 12px; background: #efe; color: #060; border-radius: 4px; margin: 8px; display: none;">
+              <strong>✓ Transformed!</strong> Press Cmd+V to paste
+            </div>
             <div class="menu-item" data-action="translate">
               <span class="menu-icon">🌐</span>
               <span class="menu-label">Translate</span>
               <span class="menu-shortcut">T</span>
-            </div>
-            <div class="menu-item" data-action="grammar">
-              <span class="menu-icon">✏️</span>
-              <span class="menu-label">Fix Grammar</span>
-              <span class="menu-shortcut">G</span>
-            </div>
-            <div class="menu-item" data-action="summarize">
-              <span class="menu-icon">📝</span>
-              <span class="menu-label">Summarize</span>
-              <span class="menu-shortcut">S</span>
-            </div>
-            <div class="divider"></div>
-            <div class="menu-item" data-action="screenshot">
-              <span class="menu-icon">📸</span>
-              <span class="menu-label">Screenshot</span>
-              <span class="menu-shortcut">P</span>
             </div>
             <div class="status">Press ESC to close</div>
           </div>
@@ -209,7 +201,82 @@ export class ContextMenuWindowManager extends EventEmitter {
             const { ipcRenderer } = require('electron');
             
             let selectedIndex = 0;
+            let capturedText = ''; // Store the captured text
             const menuItems = document.querySelectorAll('.menu-item');
+            const noTextAlert = document.getElementById('no-text-alert');
+            const successAlert = document.getElementById('success-alert');
+            
+            console.log('[context-menu] Script initialized');
+            
+            // Listen for captured text from main process
+            ipcRenderer.on('context-menu:captured-text', (event, text) => {
+              console.log('[context-menu] Received captured text:', text ? text.substring(0, 30) + '...' : 'empty');
+              capturedText = text || '';
+            });
+            
+            // Function to show no text alert
+            function showNoTextAlert() {
+              console.log('[context-menu] Showing no text alert');
+              noTextAlert.style.display = 'block';
+              successAlert.style.display = 'none';
+              
+              // Hide alert after 2 seconds
+              setTimeout(() => {
+                noTextAlert.style.display = 'none';
+                console.log('[context-menu] No text alert hidden');
+              }, 2000);
+            }
+            
+            // Function to show success alert
+            function showSuccessAlert() {
+              console.log('[context-menu] Showing success alert');
+              successAlert.style.display = 'block';
+              noTextAlert.style.display = 'none';
+              
+              // Hide alert and close window after 2 seconds
+              setTimeout(() => {
+                successAlert.style.display = 'none';
+                console.log('[context-menu] Success alert hidden, closing window');
+                ipcRenderer.send('context-menu:hide');
+              }, 2000);
+            }
+            
+            // Function to execute translate action
+            async function executeTranslateAction() {
+              console.log('[context-menu] Executing translate action');
+              console.log('[context-menu] Current capturedText in renderer:', capturedText);
+              
+              try {
+                // Copy selected text, transform to uppercase, and paste back
+                console.log('[context-menu] Calling transform-selected with uppercase');
+                const result = await ipcRenderer.invoke('context:transform-selected', 'uppercase');
+                
+                if (result.success) {
+                  console.log('[context-menu] Transform successful');
+                  console.log('[context-menu] Original:', result.originalText);
+                  console.log('[context-menu] Transformed:', result.transformedText);
+                  
+                  // Window will be hidden automatically by the main process
+                  // No need to manually close it here
+                  
+                  if (result.requiresManualPaste) {
+                    console.log('[context-menu] Manual paste required - text in clipboard');
+                  } else {
+                    console.log('[context-menu] Text auto-pasted successfully');
+                  }
+                } else {
+                  console.error('[context-menu] Transform failed:', result.error);
+                  // Show error in alert
+                  noTextAlert.textContent = result.error || 'Failed to transform text';
+                  showNoTextAlert();
+                }
+              } catch (error) {
+                console.error('[context-menu] Error transforming text:', error);
+                noTextAlert.textContent = 'Error: ' + error.message;
+                showNoTextAlert();
+              }
+            }
+            
             
             // Update selected item
             function updateSelection() {
@@ -223,52 +290,73 @@ export class ContextMenuWindowManager extends EventEmitter {
             }
             
             // Handle keyboard navigation
-            document.addEventListener('keydown', (e) => {
+            document.addEventListener('keydown', async (e) => {
+              console.log('[context-menu] Key pressed:', e.key);
+              
+              // Define valid keys that should be handled
+              const validKeys = ['ArrowUp', 'ArrowDown', 'Enter', 'Escape', 't', 'T'];
+              
+              // Check if this is a valid key for our menu
+              if (!validKeys.includes(e.key)) {
+                // Any other key closes the menu
+                console.log('[context-menu] Invalid key pressed, closing menu');
+                e.preventDefault();
+                ipcRenderer.send('context-menu:hide');
+                return;
+              }
+              
               switch(e.key) {
                 case 'ArrowUp':
                   e.preventDefault();
                   selectedIndex = Math.max(0, selectedIndex - 1);
                   updateSelection();
                   break;
+                  
                 case 'ArrowDown':
                   e.preventDefault();
                   selectedIndex = Math.min(menuItems.length - 1, selectedIndex + 1);
                   updateSelection();
                   break;
+                  
                 case 'Enter':
                   e.preventDefault();
                   const selectedItem = menuItems[selectedIndex];
                   if (selectedItem) {
                     const action = selectedItem.dataset.action;
-                    console.log('Executing action:', action);
-                    ipcRenderer.send('context-menu:action', { action });
+                    console.log('[context-menu] Enter pressed, action:', action);
+                    
+                    if (action === 'translate') {
+                      await executeTranslateAction();
+                    }
                   }
                   break;
+                  
                 case 'Escape':
                   e.preventDefault();
+                  console.log('[context-menu] Escape pressed, closing menu');
                   ipcRenderer.send('context-menu:hide');
                   break;
-              }
-              
-              // Handle shortcut keys
-              const shortcutKey = e.key.toUpperCase();
-              menuItems.forEach(item => {
-                const shortcut = item.querySelector('.menu-shortcut')?.textContent;
-                if (shortcut === shortcutKey) {
+                  
+                case 't':
+                case 'T':
+                  // Handle T shortcut for translate
                   e.preventDefault();
-                  const action = item.dataset.action;
-                  console.log('Executing action via shortcut:', action);
-                  ipcRenderer.send('context-menu:action', { action });
-                }
-              });
+                  console.log('[context-menu] T shortcut pressed');
+                  await executeTranslateAction();
+                  break;
+              }
             });
             
             // Handle mouse clicks
             menuItems.forEach((item, index) => {
-              item.addEventListener('click', () => {
+              item.addEventListener('click', async (e) => {
+                e.preventDefault();
                 const action = item.dataset.action;
-                console.log('Executing action via click:', action);
-                ipcRenderer.send('context-menu:action', { action });
+                console.log('[context-menu] Click on action:', action);
+                
+                if (action === 'translate') {
+                  await executeTranslateAction();
+                }
               });
               
               item.addEventListener('mouseenter', () => {
@@ -280,11 +368,29 @@ export class ContextMenuWindowManager extends EventEmitter {
             // Initialize selection
             updateSelection();
             
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+              // Check if click is outside the menu
+              const menu = document.getElementById('menu');
+              if (!menu.contains(e.target)) {
+                console.log('[context-menu] Click outside menu, closing');
+                ipcRenderer.send('context-menu:hide');
+              }
+            });
+            
+            // Close menu when window loses focus
+            window.addEventListener('blur', () => {
+              console.log('[context-menu] Window lost focus, closing menu');
+              setTimeout(() => {
+                ipcRenderer.send('context-menu:hide');
+              }, 100); // Small delay to allow for action execution
+            });
+            
             // Focus the window for keyboard navigation
             window.focus();
             document.body.focus();
             
-            console.log('[context-menu] Renderer ready');
+            console.log('[context-menu] Renderer ready, waiting for user interaction');
           </script>
         </body>
       </html>
@@ -308,9 +414,29 @@ export class ContextMenuWindowManager extends EventEmitter {
       return;
     }
     
-    // Store the currently focused window before showing our overlay
-    this.previouslyFocusedWindow = BrowserWindow.getFocusedWindow();
-    console.log('[context-menu] Stored previously focused window:', this.previouslyFocusedWindow ? 'exists' : 'none');
+    // Get the text from clipboard (already copied by shortcut handler)
+    try {
+      console.log('[context-menu] Getting text from clipboard...');
+      const { getContextService } = require('./context-service');
+      const contextService = getContextService();
+      
+      // Simply get what's in the clipboard - the copy was already done
+      const clipboardText = contextService.getClipboardText();
+      console.log('[context-menu] Clipboard content:', clipboardText ? clipboardText.substring(0, 50) + '...' : 'empty');
+      
+      this.capturedText = clipboardText || '';
+      
+      if (!this.capturedText) {
+        console.log('[context-menu] No text in clipboard - user needs to select text first');
+      }
+    } catch (error) {
+      console.error('[context-menu] Error getting clipboard text:', error);
+      this.capturedText = '';
+    }
+    
+    // Don't store our own main window - we only care about external apps
+    // this.previouslyFocusedWindow = BrowserWindow.getFocusedWindow();
+    // console.log('[context-menu] Not storing focused window to avoid interference');
     
     const window = this.createWindow();
     
@@ -331,23 +457,25 @@ export class ContextMenuWindowManager extends EventEmitter {
     console.log(`[context-menu] Setting window position to: ${x}, ${y}`);
     window.setPosition(x, y);
     
-    // Show window without stealing focus from other apps
+    // Show window without activating the app
     if (process.platform === 'darwin') {
-      // On macOS, use showInactive to prevent bringing main window forward
+      // On macOS, use showInactive to prevent app activation
       window.showInactive();
-      window.setAlwaysOnTop(true, 'screen-saver');
-      // Focus after showing to ensure keyboard input works
+      window.setAlwaysOnTop(true, 'floating', 1);
+      // Focus the window without bringing the app forward
       setTimeout(() => {
         window.focus();
       }, 10);
+      window.setVisibleOnAllWorkspaces(true);
     } else {
       // On other platforms
       window.showInactive();
-      window.focus();
       window.setAlwaysOnTop(true, 'floating');
+      setTimeout(() => {
+        window.focus();
+      }, 10);
+      window.setVisibleOnAllWorkspaces(true);
     }
-    
-    window.setVisibleOnAllWorkspaces(true);
     
     // Dev tools disabled - remove this line to enable for debugging
     // window.webContents.openDevTools({ mode: 'detach' });
@@ -362,6 +490,12 @@ export class ContextMenuWindowManager extends EventEmitter {
     const shortcutManager = getShortcutManager();
     shortcutManager.registerEscape();
     
+    // Always send the captured text to the window (even if empty - let renderer handle it)
+    setTimeout(() => {
+      console.log('[context-menu] Sending captured text to overlay:', this.capturedText ? `"${this.capturedText.substring(0, 20)}..."` : 'empty');
+      this.sendToOverlay('context-menu:captured-text', this.capturedText || '');
+    }, 50);
+    
     this.emit('shown', { x, y });
   }
 
@@ -372,23 +506,30 @@ export class ContextMenuWindowManager extends EventEmitter {
     if (!this.overlayWindow || this.overlayWindow.isDestroyed()) {
       this.isVisible = false;
       this.previouslyFocusedWindow = null;
+      // Don't clear captured text - it might be needed for retry
       return;
     }
 
-    console.log('[context-menu] Hiding window');
+    console.log('[context-menu] Hiding window and resetting state');
     
     // Simply hide and blur the overlay window
     this.overlayWindow.hide();
     this.overlayWindow.blur();
     
+    // Reset visibility state
     this.isVisible = false;
     this.previouslyFocusedWindow = null;
-    console.log('[context-menu] Window hidden');
+    // Don't clear captured text - keep it for potential retry
+    // Text will be refreshed on next show() anyway
+    
+    console.log('[context-menu] Window hidden and state reset');
     
     // Unregister Escape key when menu is hidden
     const { getShortcutManager } = require('./shortcuts');
     const shortcutManager = getShortcutManager();
     shortcutManager.unregisterEscape();
+    
+    // Don't try to restore focus - let the OS handle it naturally
     
     this.emit('hidden');
   }
@@ -443,12 +584,31 @@ export class ContextMenuWindowManager extends EventEmitter {
    * Setup IPC handlers for window control
    */
   private setupIpcHandlers(): void {
+    // Handle hide request from renderer (using 'on' for regular IPC message)
+    ipcMain.on('context-menu:hide', () => {
+      console.log('[context-menu] Received hide request from renderer');
+      this.hide();
+    });
+
+    // Also handle as invoke for compatibility
     ipcMain.handle('context-menu:hide', () => {
+      console.log('[context-menu] Received hide request via invoke');
       this.hide();
     });
 
     ipcMain.handle('context-menu:get-position', () => {
       return this.lastPosition;
+    });
+
+    // Handle get selected text request
+    ipcMain.handle('context:get-selected-text', async () => {
+      console.log('[context-menu] Getting selected text from stored value');
+      // Return the text that was captured BEFORE the window was shown
+      // This avoids trying to capture text while our window has focus
+      return {
+        success: true,
+        text: this.capturedText || ''
+      };
     });
   }
 
@@ -464,6 +624,13 @@ export class ContextMenuWindowManager extends EventEmitter {
    */
   getWindow(): BrowserWindow | null {
     return this.overlayWindow;
+  }
+  
+  /**
+   * Get the captured text
+   */
+  getCapturedText(): string {
+    return this.capturedText;
   }
 
   /**

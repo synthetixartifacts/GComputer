@@ -6,6 +6,7 @@
 import { writable, derived } from 'svelte/store';
 import type { ContextMenuConfig, ContextMenuAction, ContextMenuState } from './types';
 import { DEFAULT_ACTIONS } from './types';
+import { viewState } from './view-manager';
 
 /**
  * Context menu configuration store
@@ -72,15 +73,17 @@ export const groupedActions = derived(
  * Combined state store
  */
 export const contextMenuStore = derived(
-  [contextMenuConfig, selectedText, contextMenuVisible, contextMenuLoading, contextMenuError, enabledActions],
-  ([$config, $selectedText, $visible, $loading, $error, $enabledActions]) => ({
+  [contextMenuConfig, selectedText, contextMenuVisible, contextMenuLoading, contextMenuError, enabledActions, viewState],
+  ([$config, $selectedText, $visible, $loading, $error, $enabledActions, $viewState]) => ({
     config: $config,
     selectedText: $selectedText,
     isVisible: $visible,
     loading: $loading,
     error: $error,
     enabledActions: $enabledActions,
-    hasText: $selectedText.length > 0
+    hasText: $selectedText.length > 0,
+    currentView: $viewState.currentView,
+    viewData: $viewState.viewData
   })
 );
 
@@ -130,22 +133,43 @@ export function setError(error: string | null): void {
  * Execute action from store
  */
 export async function executeAction(actionId: string): Promise<void> {
-  const { executeContextMenuAction } = await import('./service');
+  console.log('[Context Menu] Executing action:', actionId);
+  
+  const { getAction } = await import('./actions/registry');
   const text = await new Promise<string>(resolve => {
     selectedText.subscribe(value => resolve(value))();
   });
+  
+  console.log('[Context Menu] Selected text:', text);
   
   setLoading(true);
   setError(null);
   
   try {
-    const result = await executeContextMenuAction(actionId, text);
+    // Get the action from registry
+    const action = getAction(actionId);
+    
+    if (!action) {
+      console.error('[Context Menu] Action not found:', actionId);
+      setError(`Unknown action: ${actionId}`);
+      return;
+    }
+    
+    console.log('[Context Menu] Found action:', action.id, action.name);
+    
+    // Execute the action with context
+    const context = {
+      selectedText: text,
+      hasSelection: text.length > 0
+    };
+    
+    const result = await action.execute(context);
     
     if (!result.success) {
       setError(result.error || 'Action failed');
     } else {
-      // Action succeeded - menu will be hidden by the service
-      hideMenu();
+      // Action succeeded - it should handle hiding the menu
+      // hideMenu() is called by the action itself if needed
     }
   } catch (error) {
     setError(error instanceof Error ? error.message : 'Unknown error');

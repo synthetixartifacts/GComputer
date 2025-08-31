@@ -27,6 +27,36 @@ export interface ContextMenuState {
   error: string | null;
 }
 
+// View management types
+export type ViewType = 'menu' | 'alert' | 'translate' | 'summary' | 'settings' | 'custom';
+
+export interface ViewState {
+  currentView: ViewType;
+  previousView?: ViewType;
+  viewData?: any;
+  transitionDirection?: 'forward' | 'back';
+}
+
+export interface AlertConfig {
+  message: string;
+  type?: 'info' | 'success' | 'warning' | 'error';
+  duration?: number; // in ms, 0 for persistent
+  onClose?: () => void;
+}
+
+export interface ActionContext {
+  selectedText: string;
+  hasSelection: boolean;
+  metadata?: Record<string, any>;
+}
+
+export interface ActionModule {
+  id: string;
+  execute: (context: ActionContext) => Promise<ActionExecutionResult>;
+  validate?: (context: ActionContext) => boolean;
+  getPrompt?: (text: string) => string;
+}
+
 export interface ActionExecutionResult {
   success: boolean;
   actionId: string;
@@ -34,7 +64,22 @@ export interface ActionExecutionResult {
   error?: string;
 }
 
+// Only show translate action for MVP
 export const DEFAULT_ACTIONS: ContextMenuAction[] = [
+  {
+    id: 'translate',
+    label: 'contextMenu.actions.translate',
+    icon: '🌐',
+    enabled: true,
+    requiresText: true,
+    category: 'ai',
+    shortcut: 'T',
+    description: 'Translate selected text'
+  }
+];
+
+// Keep all actions for future reference
+export const ALL_AVAILABLE_ACTIONS: ContextMenuAction[] = [
   {
     id: 'translate',
     label: 'contextMenu.actions.translate',
@@ -49,7 +94,7 @@ export const DEFAULT_ACTIONS: ContextMenuAction[] = [
     id: 'fix-grammar',
     label: 'contextMenu.actions.fixGrammar',
     icon: '✏️',
-    enabled: true,
+    enabled: false,
     requiresText: true,
     category: 'ai',
     shortcut: 'G',
@@ -59,7 +104,7 @@ export const DEFAULT_ACTIONS: ContextMenuAction[] = [
     id: 'summarize',
     label: 'contextMenu.actions.summarize',
     icon: '📝',
-    enabled: true,
+    enabled: false,
     requiresText: true,
     category: 'ai',
     shortcut: 'S',
@@ -69,7 +114,7 @@ export const DEFAULT_ACTIONS: ContextMenuAction[] = [
     id: 'explain',
     label: 'contextMenu.actions.explain',
     icon: '💡',
-    enabled: true,
+    enabled: false,
     requiresText: true,
     category: 'ai',
     shortcut: 'E',
@@ -79,7 +124,7 @@ export const DEFAULT_ACTIONS: ContextMenuAction[] = [
     id: 'screenshot',
     label: 'contextMenu.actions.screenshot',
     icon: '📸',
-    enabled: true,
+    enabled: false,
     requiresText: false,
     category: 'utility',
     shortcut: 'P',
@@ -89,7 +134,7 @@ export const DEFAULT_ACTIONS: ContextMenuAction[] = [
     id: 'copy',
     label: 'contextMenu.actions.copy',
     icon: '📋',
-    enabled: true,
+    enabled: false,
     requiresText: true,
     category: 'text',
     shortcut: 'C',
@@ -99,7 +144,7 @@ export const DEFAULT_ACTIONS: ContextMenuAction[] = [
     id: 'paste',
     label: 'contextMenu.actions.paste',
     icon: '📄',
-    enabled: true,
+    enabled: false,
     requiresText: false,
     category: 'text',
     shortcut: 'V',

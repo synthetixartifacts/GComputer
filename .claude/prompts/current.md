@@ -1,9 +1,56 @@
 
 
+It worked the first time.
+But i think the modal is not reseting as it is not closed.
+We need to add a setup where if the user do whatever as input that is not a hotkey for our popup, it need to close and reset so that the alt+t capture selected text if there is and place it in the clipboard.
+Each key/input non specific / USED in the MODAL should make it close and then when not open it should not listen to ANY hot key again UNTIL THE atl+space command...
+
+
+totot
+TUutt
+
+# NEW FEATURE/COMPONENT
+
+## Way to plan and execute
+This job is a really really heavy one so your plan must be in consequence. 
+We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something like an MVP.
+
+We need to have a lot of new component and code develop but remind yourself that we want thing to be componant driven and DRY at all time. No scss in files, no overlap of logic in component, each part of our logic will either reuse an existing component or create new independant ones.
+
+We already have a lot of existing component so make sure to list them before you start coding so that you are not recreating something that exist. 
+
+Don't forget about translations.
+
+When you're confident that what you did is at a production ready state, you will verify the key point through unit testing. Once you are at this steps you will need to rething about everything you did and create a new clear and detailed plan just for that. Make it clear in your initial plan that you will have to rethink and replan at this steps because a lot of things will probably differ from your initial plan as you go on and discover things.
+
+We have a lot of up to date documentation you can check at any time to verify things. 
+ Our ./docs/coding_standards.md are always good and you should follow it.
+If you need specific libraries or third-party libraries or you are hitting a wall, do not forget that you can browse and search the web for up to date answer.
+Always ground yourself in the current project and do not overreach.
+
+
+## New task goal/context
 I want to make the context-window advance.
 Our POC to make it appears is now done. So lets hide all the option except for the translate.
 The translate should have this behavior:
-- If we have
+- If we have a selected text in any app, we replace the text with "Hello World" 
+- If there is no text selected we make some type of alert within our context modal popup. So we hide the main menu option and print the alert "No text selected" for 2sec and close the popup and make the state back to normal so that when we reopen it goes main menu of the modal.
+
+We will have this alert system for a lot of "function" of the modal.
+Also the Translate modal option should be its own logic and each other option of the menu should also be there own logic so that file are not too big and its easier to see what does what and to maintain things.
+
+The trigger of translate should be with its shortcut or with the click of the menu item.
+
+We will have multiple window that can happens in the modal like for exemple later the summarie will display the summarized selected text in its own view.
+
+We need to think about all of this before going and coding, our modal context should be expandable with everything I just said. We need for this to be easily scalable and manipulated to match what we want to do.
+
+The first thing for you right now its to analyze the global goal of the modal, make sure we adjust what we have to match what we want to do with that then once we have something scalable for the menu and other interface / view that will be displayed within we can go on and do the specific translate function. 
+Make sure to again do some component withing the modal like the alert or any other reusable logic / view / style... 
+We really want to make the base of this strong so that we can iterate and enhance as far as we want as easy as possible.
+
+
+----------------
 
 
 

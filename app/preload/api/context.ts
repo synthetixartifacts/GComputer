@@ -88,6 +88,13 @@ export const contextApi = {
   },
 
   /**
+   * Replace selected text in the active application
+   */
+  replaceSelected: (text: string): Promise<{ success: boolean; error?: string }> => {
+    return ipcRenderer.invoke('context:replace-selected', text);
+  },
+
+  /**
    * Get current shortcut configuration
    */
   getShortcuts: (): Promise<ShortcutResult> => {
@@ -119,7 +126,7 @@ export const contextApi = {
    * Listen for context menu events from main process
    */
   on: (channel: string, callback: (data: any) => void) => {
-    const validChannels = ['context-menu:show', 'context-menu:hide', 'context-menu:action-result'];
+    const validChannels = ['context-menu:show', 'context-menu:hide', 'context-menu:action-result', 'context-menu:set-selected-text'];
     if (validChannels.includes(channel)) {
       ipcRenderer.on(channel, (_event, data) => callback(data));
     }

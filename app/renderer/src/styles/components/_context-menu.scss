@@ -3,6 +3,249 @@
  * Pure SCSS following BEM convention - NO Tailwind
  */
 
+// Alert Component Styles
+.context-menu-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  animation: alertFadeIn 200ms ease-out;
+  
+  &__icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  &__message {
+    flex: 1;
+    font-weight: 500;
+  }
+  
+  // Alert type variants
+  &--info {
+    background-color: #eff6ff;
+    color: #1e40af;
+    
+    .context-menu-alert__icon {
+      background-color: #3b82f6;
+      color: white;
+    }
+  }
+  
+  &--success {
+    background-color: #f0fdf4;
+    color: #166534;
+    
+    .context-menu-alert__icon {
+      background-color: #22c55e;
+      color: white;
+    }
+  }
+  
+  &--warning {
+    background-color: #fefce8;
+    color: #854d0e;
+    
+    .context-menu-alert__icon {
+      background-color: #f59e0b;
+      color: white;
+    }
+  }
+  
+  &--error {
+    background-color: #fef2f2;
+    color: #991b1b;
+    
+    .context-menu-alert__icon {
+      background-color: #ef4444;
+      color: white;
+    }
+  }
+}
+
+// Main Menu Component Styles
+.context-menu-main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  
+  &__selected-text {
+    padding: 8px 12px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    margin-bottom: 4px;
+  }
+  
+  &__selected-label {
+    font-weight: 600;
+    margin-right: 8px;
+    color: #6b7280;
+  }
+  
+  &__selected-content {
+    color: #374151;
+  }
+  
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  &__group {
+    margin-bottom: 8px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  &__group-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #9ca3af;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+  }
+  
+  &__action {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 150ms ease;
+    text-align: left;
+    
+    &:hover:not(&--disabled) {
+      background: #f3f4f6;
+    }
+    
+    &--selected {
+      background: #eff6ff;
+      
+      .context-menu-main__action-label {
+        color: #2563eb;
+      }
+    }
+    
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      
+      .context-menu-main__action-label {
+        color: #9ca3af;
+      }
+    }
+  }
+  
+  &__action-icon {
+    margin-right: 12px;
+    font-size: 1.125rem;
+  }
+  
+  &__action-label {
+    flex: 1;
+    font-size: 0.875rem;
+    color: #374151;
+  }
+  
+  &__action-shortcut {
+    margin-left: auto;
+    padding: 2px 6px;
+    background: #f3f4f6;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+  }
+  
+  &__hint {
+    padding-top: 8px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  &__hint-separator {
+    color: #d1d5db;
+  }
+}
+
+// View Container Styles
+.context-menu-view {
+  position: relative;
+  min-height: 100px;
+  
+  &__placeholder {
+    padding: 20px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+  
+  // Transition animations
+  &--transition-forward {
+    animation: slideInRight 200ms ease-out;
+  }
+  
+  &--transition-back {
+    animation: slideInLeft 200ms ease-out;
+  }
+}
+
+// Animation keyframes
+@keyframes alertFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 // Context Menu Overlay specific styles
 .context-menu-overlay {
   padding: 12px;
@@ -390,7 +633,110 @@
   }
 }
 
-// Dark theme overrides
+// Dark theme overrides for new components
+[data-theme='dark'] {
+  .context-menu-alert {
+    &--info {
+      background-color: #1e3a8a;
+      color: #93c5fd;
+      
+      .context-menu-alert__icon {
+        background-color: #2563eb;
+      }
+    }
+    
+    &--success {
+      background-color: #14532d;
+      color: #86efac;
+      
+      .context-menu-alert__icon {
+        background-color: #16a34a;
+      }
+    }
+    
+    &--warning {
+      background-color: #713f12;
+      color: #fde68a;
+      
+      .context-menu-alert__icon {
+        background-color: #d97706;
+      }
+    }
+    
+    &--error {
+      background-color: #7f1d1d;
+      color: #fca5a5;
+      
+      .context-menu-alert__icon {
+        background-color: #dc2626;
+      }
+    }
+  }
+  
+  .context-menu-main {
+    &__selected-text {
+      background: #374151;
+    }
+    
+    &__selected-label {
+      color: #9ca3af;
+    }
+    
+    &__selected-content {
+      color: #e5e7eb;
+    }
+    
+    &__group-label {
+      color: #6b7280;
+    }
+    
+    &__action {
+      &:hover:not(&--disabled) {
+        background: #374151;
+      }
+      
+      &--selected {
+        background: #1e3a8a;
+        
+        .context-menu-main__action-label {
+          color: #60a5fa;
+        }
+      }
+      
+      &--disabled {
+        .context-menu-main__action-label {
+          color: #6b7280;
+        }
+      }
+    }
+    
+    &__action-label {
+      color: #e5e7eb;
+    }
+    
+    &__action-shortcut {
+      background: #374151;
+      color: #9ca3af;
+    }
+    
+    &__hint {
+      border-top-color: #374151;
+      color: #6b7280;
+    }
+    
+    &__hint-separator {
+      color: #4b5563;
+    }
+  }
+  
+  .context-menu-view {
+    &__placeholder {
+      color: #9ca3af;
+    }
+  }
+}
+
+// Dark theme overrides for existing components
 [data-theme="dark"] {
   .context-menu {
     background-color: var(--color-background-dark-elevated, #1f2937);
