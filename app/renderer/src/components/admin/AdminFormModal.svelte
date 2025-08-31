@@ -19,6 +19,7 @@
   export let entityType: string;
   export let data: Partial<T> = {};
   export let loading: boolean = false;
+  export let size: 'small' | 'medium' | 'large' | 'full' = 'large';
 
   const dispatch = createEventDispatcher<{
     close: void;
@@ -200,7 +201,7 @@
         : `${$t('common.actions.view')} ${$t(getEntityTranslationPath(entityType, 'singular'))}`;
 </script>
 
-<Modal {open} onClose={handleClose} title={modalTitle}>
+<Modal {open} onClose={handleClose} title={modalTitle} {size}>
   <form class="admin-form" on:submit|preventDefault={handleSubmit} on:keydown={handleKeyDown}>
     <div class="admin-form__fields">
       {#each formFields as field (field.id)}

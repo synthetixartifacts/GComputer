@@ -1,5 +1,35 @@
 
 
+I want to add a new agent, that will be the translator.
+
+We have the agent concept already as we have already two.
+This one will be used as agent to talk to but also as internal call as a tool.
+This one will not have memory.
+
+the system prompt will be
+
+"You are TranslateBot, a specialized AI translator focused exclusively on bidirectional translation between English and French. Your sole purpose is to provide accurate, context-aware translations while maintaining the original meaning and tone of the content."
+
+create the new agent.
+
+
+
+My main goal is to create a new agent that will be the translator.
+We have the agent concept already as we have already two.
+This one will be used as agent to talk to but also as internal call as a tool.
+This one will not have memory.
+We need to add a new field to the agent entity. Default will be yes.
+We need to update our chatbot logic so that when I talk to it through this logic it do not send back the discussion as message to the llm, but still save it to the discussion thread.
+When we dont have the memory the message we send useMemory to false.
+
+
+
+
+--------
+-----------------
+
+
+
 It worked the first time.
 But i think the modal is not reseting as it is not closed.
 We need to add a setup where if the user do whatever as input that is not a hotkey for our popup, it need to close and reset so that the alt+t capture selected text if there is and place it in the clipboard.
