@@ -1,163 +1,64 @@
 /**
  * Context Menu Store
- * State management for the context menu feature
+ * State management for context menu feature
  */
 
-import { writable, derived, get } from 'svelte/store';
-import type { ContextMenuState, ContextMenuAction, ActionExecutionResult } from './types';
-import { defaultActions } from './actions';
-import { contextMenuService } from './service';
+import { writable, derived } from 'svelte/store';
+import type { ContextMenuConfig, ContextMenuAction, ContextMenuState } from './types';
+import { DEFAULT_ACTIONS } from './types';
+import { viewState } from './view-manager';
 
-// Initial state
-const initialState: ContextMenuState = {
-  isVisible: false,
-  position: null,
-  selectedText: '',
-  activeAction: null,
-  isLoading: false,
-  error: null
-};
+/**
+ * Context menu configuration store
+ */
+export const contextMenuConfig = writable<ContextMenuConfig>({
+  enabled: false,
+  shortcut: 'Alt+Space',
+  actions: DEFAULT_ACTIONS.map(a => a.id)
+});
 
-// Create the main store
-function createContextMenuStore() {
-  const { subscribe, set, update } = writable<ContextMenuState>(initialState);
+/**
+ * Selected text store
+ */
+export const selectedText = writable<string>('');
 
-  return {
-    subscribe,
-    
-    // Show the context menu
-    show: async (position?: { x: number; y: number }) => {
-      try {
-        // Get selected text first
-        const selectedText = await contextMenuService.getSelectedText();
-        
-        update(state => ({
-          ...state,
-          isVisible: true,
-          position: position || null,
-          selectedText,
-          error: null
-        }));
-        
-        // Show the actual menu window
-        await contextMenuService.showMenu(position);
-      } catch (error) {
-        console.error('Error showing context menu:', error);
-        update(state => ({
-          ...state,
-          error: error instanceof Error ? error.message : 'Failed to show menu'
-        }));
-      }
-    },
-    
-    // Hide the context menu
-    hide: async () => {
-      update(state => ({
-        ...state,
-        isVisible: false,
-        activeAction: null,
-        error: null
-      }));
-      
-      try {
-        await contextMenuService.hideMenu();
-      } catch (error) {
-        console.error('Error hiding context menu:', error);
-      }
-    },
-    
-    // Execute an action
-    executeAction: async (actionId: string) => {
-      const state = get(contextMenuStore);
-      
-      update(s => ({
-        ...s,
-        activeAction: actionId,
-        isLoading: true,
-        error: null
-      }));
-      
-      try {
-        const result = await contextMenuService.executeAction(
-          actionId,
-          state.selectedText
-        );
-        
-        if (result.success) {
-          // Store the result for display
-          actionResults.set(result);
-          
-          // Hide menu after successful action
-          await contextMenuStore.hide();
-        } else {
-          update(s => ({
-            ...s,
-            isLoading: false,
-            error: result.error || 'Action failed'
-          }));
-        }
-      } catch (error) {
-        update(s => ({
-          ...s,
-          isLoading: false,
-          error: error instanceof Error ? error.message : 'Unknown error'
-        }));
-      }
-    },
-    
-    // Set selected text manually
-    setSelectedText: (text: string) => {
-      update(state => ({
-        ...state,
-        selectedText: text
-      }));
-    },
-    
-    // Clear error
-    clearError: () => {
-      update(state => ({
-        ...state,
-        error: null
-      }));
-    },
-    
-    // Reset state
-    reset: () => {
-      set(initialState);
-    }
-  };
-}
+/**
+ * Context menu visibility store
+ */
+export const contextMenuVisible = writable<boolean>(false);
 
-// Create the store instance
-export const contextMenuStore = createContextMenuStore();
+/**
+ * Loading state store
+ */
+export const contextMenuLoading = writable<boolean>(false);
 
-// Store for available actions
-export const contextMenuActions = writable<ContextMenuAction[]>(defaultActions);
+/**
+ * Error state store
+ */
+export const contextMenuError = writable<string | null>(null);
 
-// Store for action results
-export const actionResults = writable<ActionExecutionResult | null>(null);
-
-// Derived store for enabled actions based on selected text
+/**
+ * Derived store for enabled actions based on configuration
+ */
 export const enabledActions = derived(
-  [contextMenuStore, contextMenuActions],
-  ([$contextMenu, $actions]) => {
-    const hasText = $contextMenu.selectedText.length > 0;
-    
-    return $actions.map(action => ({
-      ...action,
-      enabled: action.requiresText ? hasText : true
-    }));
+  contextMenuConfig,
+  ($config) => {
+    return DEFAULT_ACTIONS.filter(action => 
+      $config.actions.includes(action.id)
+    );
   }
 );
 
-// Derived store for grouped actions by category
+/**
+ * Derived store for grouped actions by category
+ */
 export const groupedActions = derived(
   enabledActions,
   ($actions) => {
     const groups: Record<string, ContextMenuAction[]> = {};
     
     $actions.forEach(action => {
-      const category = action.category || 'custom';
+      const category = action.category || 'other';
       if (!groups[category]) {
         groups[category] = [];
       }
@@ -168,7 +69,111 @@ export const groupedActions = derived(
   }
 );
 
-// Helper function to clear action results
-export function clearActionResults(): void {
-  actionResults.set(null);
+/**
+ * Combined state store
+ */
+export const contextMenuStore = derived(
+  [contextMenuConfig, selectedText, contextMenuVisible, contextMenuLoading, contextMenuError, enabledActions, viewState],
+  ([$config, $selectedText, $visible, $loading, $error, $enabledActions, $viewState]) => ({
+    config: $config,
+    selectedText: $selectedText,
+    isVisible: $visible,
+    loading: $loading,
+    error: $error,
+    enabledActions: $enabledActions,
+    hasText: $selectedText.length > 0,
+    currentView: $viewState.currentView,
+    viewData: $viewState.viewData
+  })
+);
+
+/**
+ * Update configuration
+ */
+export function updateConfig(config: Partial<ContextMenuConfig>): void {
+  contextMenuConfig.update(current => ({
+    ...current,
+    ...config
+  }));
+}
+
+/**
+ * Show context menu
+ */
+export function showMenu(text: string = ''): void {
+  selectedText.set(text);
+  contextMenuVisible.set(true);
+  contextMenuError.set(null);
+}
+
+/**
+ * Hide context menu
+ */
+export function hideMenu(): void {
+  contextMenuVisible.set(false);
+  selectedText.set('');
+  contextMenuError.set(null);
+}
+
+/**
+ * Set loading state
+ */
+export function setLoading(loading: boolean): void {
+  contextMenuLoading.set(loading);
+}
+
+/**
+ * Set error state
+ */
+export function setError(error: string | null): void {
+  contextMenuError.set(error);
+}
+
+/**
+ * Execute action from store
+ */
+export async function executeAction(actionId: string): Promise<void> {
+  console.log('[Context Menu] Executing action:', actionId);
+  
+  const { getAction } = await import('./actions/registry');
+  const text = await new Promise<string>(resolve => {
+    selectedText.subscribe(value => resolve(value))();
+  });
+  
+  console.log('[Context Menu] Selected text:', text);
+  
+  setLoading(true);
+  setError(null);
+  
+  try {
+    // Get the action from registry
+    const action = getAction(actionId);
+    
+    if (!action) {
+      console.error('[Context Menu] Action not found:', actionId);
+      setError(`Unknown action: ${actionId}`);
+      return;
+    }
+    
+    console.log('[Context Menu] Found action:', action.id, action.name);
+    
+    // Execute the action with context
+    const context = {
+      selectedText: text,
+      hasSelection: text.length > 0
+    };
+    
+    const result = await action.execute(context);
+    
+    if (!result.success) {
+      setError(result.error || 'Action failed');
+    } else {
+      // Action succeeded - it should handle hiding the menu
+      // hideMenu() is called by the action itself if needed
+    }
+  } catch (error) {
+    setError(error instanceof Error ? error.message : 'Unknown error');
+  } finally {
+    setLoading(false);
+  }
 }

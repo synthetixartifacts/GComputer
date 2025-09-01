@@ -133,7 +133,7 @@
     @include m.surface;
     /* Default: fit content with responsive constraints */
     width: max-content;
-    min-width: min(300px, calc(100vw - 2rem));
+    min-width: 80%;
     max-width: min(90vw, 600px); /* default medium */
     padding: 1rem;
     box-shadow: var(--shadow-md);

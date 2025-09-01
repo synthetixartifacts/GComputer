@@ -1,41 +1,81 @@
 /**
- * Context Menu Feature Module
- * Public API exports for the context menu feature
+ * Context Menu Feature
+ * Public API exports
  */
 
-// Types
+// Export types
 export type {
+  ContextMenuConfig,
   ContextMenuAction,
-  ContextMenuPosition,
   ContextMenuState,
   ActionExecutionResult,
-  AIActionOptions,
-  ContextMenuConfig,
-  ActionHandler,
-  ActionHandlerMap,
-  ContextMenuEvent
+  ViewType,
+  ViewState,
+  AlertConfig,
+  ActionContext,
+  ActionModule
 } from './types';
 
-// Actions
+export { DEFAULT_ACTIONS, ACTION_PROMPTS, ALL_AVAILABLE_ACTIONS } from './types';
+
+// Export service functions
 export {
-  defaultActions,
-  actionPrompts,
-  getActionById,
-  getActionsByCategory,
+  getContextMenuConfig,
+  updateContextMenuConfig,
+  getAvailableActions,
+  getEnabledActions,
+  executeContextMenuAction,
   actionRequiresText,
-  getAIActions,
-  canExecuteAction
-} from './actions';
+  getActionById,
+  showContextMenu,
+  hideContextMenu,
+  getSelectedText
+} from './service';
 
-// Service
-export { contextMenuService } from './service';
-
-// Store
+// Export store and store functions
 export {
-  contextMenuStore,
-  contextMenuActions,
-  actionResults,
+  contextMenuConfig,
+  selectedText,
+  contextMenuVisible,
+  contextMenuLoading,
+  contextMenuError,
   enabledActions,
   groupedActions,
-  clearActionResults
+  contextMenuStore,
+  updateConfig,
+  showMenu,
+  hideMenu,
+  setLoading,
+  setError,
+  executeAction
 } from './store';
+
+// Export view manager functions
+export {
+  viewState,
+  navigateToView,
+  goBack,
+  resetToMenu,
+  showAlert,
+  showError,
+  showSuccess,
+  showWarning,
+  showInfo,
+  cleanup,
+  canGoBack,
+  getCurrentView,
+  getViewData
+} from './view-manager';
+
+// Export action registry
+export { 
+  registerAction, 
+  getAction, 
+  getAllActions, 
+  hasAction,
+  initializeActions 
+} from './actions/registry';
+
+// Export base action classes
+export type { BaseAction } from './actions/base-action';
+export { AbstractAction } from './actions/base-action';

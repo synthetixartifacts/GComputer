@@ -13,6 +13,7 @@
   import AboutView from '@views-settings/AboutView.svelte';
   
   import SettingsConfigView from '@views-settings/SettingsConfigView.svelte';
+  import ContextMenuSettingsView from '@views-settings/ContextMenuSettingsView.svelte';
   
   import TestDbTableView from '@views-development/db/TestDbTableView.svelte';
   import { onMount, onDestroy } from 'svelte';
@@ -109,6 +110,8 @@
     <DiscussionChatView />
   {:else if route === 'settings.config'}
     <SettingsConfigView />
+  {:else if route === 'settings.contextmenu'}
+    <ContextMenuSettingsView />
   {:else if route === 'settings.about'}
     <AboutView />
   {:else if canShowRoute(route) && route === 'development.styleguide'}

@@ -1,21 +1,35 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { t } from '@ts/i18n/store';
-  import { contextMenuStore, enabledActions, groupedActions } from '@features/context-menu';
+  import { 
+    contextMenuStore, 
+    enabledActions, 
+    executeAction,
+    hideMenu,
+    showMenu
+  } from '@features/context-menu';
+  import { cleanup as cleanupViewManager } from '@features/context-menu/view-manager';
+  import ViewContainer from '@components/context-menu/ViewContainer.svelte';
   import type { ContextMenuAction } from '@features/context-menu';
-  import ActionItem from '@components/context-menu/ActionItem.svelte';
   
   let menuElement: HTMLDivElement;
   let selectedIndex = 0;
   let isLoading = false;
   
   $: actions = $enabledActions;
-  $: groups = $groupedActions;
   $: selectedText = $contextMenuStore.selectedText;
-  $: hasText = selectedText.length > 0;
   
   // Handle keyboard navigation
   function handleKeydown(event: KeyboardEvent) {
+    // Check if we're in the main menu view
+    if ($contextMenuStore.currentView !== 'menu') {
+      // Only handle Escape in non-menu views
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeMenu();
+      }
+      return;
+    }
+    
     switch (event.key) {
       case 'ArrowUp':
         event.preventDefault();
@@ -30,7 +44,7 @@
       case 'Enter':
         event.preventDefault();
         if (actions[selectedIndex] && actions[selectedIndex].enabled !== false) {
-          executeAction(actions[selectedIndex]);
+          handleActionClick(actions[selectedIndex]);
         }
         break;
       
@@ -47,25 +61,35 @@
         );
         if (action) {
           event.preventDefault();
-          executeAction(action);
+          handleActionClick(action);
         }
         break;
     }
   }
   
-  async function executeAction(action: ContextMenuAction) {
-    if (isLoading || action.enabled === false) return;
+  async function handleActionClick(action: ContextMenuAction) {
+    console.log('[ContextMenuOverlay] Action clicked:', action.id, action);
+    
+    if (isLoading || action.enabled === false) {
+      console.log('[ContextMenuOverlay] Action blocked - loading:', isLoading, 'enabled:', action.enabled);
+      return;
+    }
     
     isLoading = true;
     try {
-      await contextMenuStore.executeAction(action.id);
+      console.log('[ContextMenuOverlay] Executing action:', action.id);
+      await executeAction(action.id);
     } finally {
       isLoading = false;
     }
   }
   
+  function handleIndexChange(index: number) {
+    selectedIndex = index;
+  }
+  
   function closeMenu() {
-    contextMenuStore.hide();
+    hideMenu();
     // Close the window if we're in the overlay
     if (window.opener === null) {
       window.close();
@@ -84,10 +108,30 @@
     if (firstEnabled !== -1) {
       selectedIndex = firstEnabled;
     }
+    
+    // Listen for selected text from main process
+    if (window.gc?.context?.on) {
+      window.gc.context.on('context-menu:set-selected-text', (text: string) => {
+        console.log('[ContextMenuOverlay] Received selected text:', text);
+        showMenu(text);
+      });
+    }
+    
+    // Try to get selected text on mount
+    (async () => {
+      if (window.gc?.context?.getSelected) {
+        const result = await window.gc.context.getSelected();
+        if (result.success && result.text) {
+          console.log('[ContextMenuOverlay] Got selected text on mount:', result.text);
+          showMenu(result.text);
+        }
+      }
+    })();
   });
   
   onDestroy(() => {
     document.removeEventListener('keydown', handleKeydown);
+    cleanupViewManager();
   });
 </script>
 
@@ -96,42 +140,11 @@
   class="context-menu-overlay"
   tabindex="-1"
 >
-  {#if hasText}
-    <div class="selected-text">
-      <span class="label">{$t('contextMenu.selectedText')}:</span>
-      <span class="text">{selectedText.substring(0, 50)}{selectedText.length > 50 ? '...' : ''}</span>
-    </div>
-  {/if}
-  
-  <div class="actions-container">
-    {#each Object.entries(groups) as [category, categoryActions]}
-      {#if categoryActions.length > 0}
-        <div class="action-group">
-          <div class="group-label">{$t(`contextMenu.categories.${category}`)}</div>
-          {#each categoryActions as action, index}
-            <ActionItem
-              {action}
-              isSelected={actions.indexOf(action) === selectedIndex}
-              isDisabled={action.enabled === false}
-              {isLoading}
-              on:click={() => executeAction(action)}
-              on:mouseenter={() => selectedIndex = actions.indexOf(action)}
-            />
-          {/each}
-        </div>
-      {/if}
-    {/each}
-  </div>
-  
-  {#if $contextMenuStore.error}
-    <div class="error-message">
-      {$contextMenuStore.error}
-    </div>
-  {/if}
-  
-  <div class="shortcuts-hint">
-    <span>{$t('contextMenu.shortcuts.navigation')}</span>
-    <span class="separator">•</span>
-    <span>ESC {$t('contextMenu.shortcuts.close')}</span>
-  </div>
+  <ViewContainer 
+    {actions}
+    {selectedText}
+    {selectedIndex}
+    onActionClick={handleActionClick}
+    onIndexChange={handleIndexChange}
+  />
 </div>

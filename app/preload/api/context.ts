@@ -29,6 +29,18 @@ export interface ShortcutResult {
   error?: string;
 }
 
+export interface ContextMenuConfig {
+  enabled: boolean;
+  shortcut: string;
+  actions: string[];
+}
+
+export interface ConfigResult {
+  success: boolean;
+  config?: ContextMenuConfig;
+  error?: string;
+}
+
 /**
  * Context Menu API exposed to renderer process
  */
@@ -76,6 +88,13 @@ export const contextApi = {
   },
 
   /**
+   * Replace selected text in the active application
+   */
+  replaceSelected: (text: string): Promise<{ success: boolean; error?: string }> => {
+    return ipcRenderer.invoke('context:replace-selected', text);
+  },
+
+  /**
    * Get current shortcut configuration
    */
   getShortcuts: (): Promise<ShortcutResult> => {
@@ -90,10 +109,24 @@ export const contextApi = {
   },
 
   /**
+   * Get context menu configuration
+   */
+  getConfig: (): Promise<ConfigResult> => {
+    return ipcRenderer.invoke('context:get-config');
+  },
+
+  /**
+   * Update context menu configuration
+   */
+  updateConfig: (config: Partial<ContextMenuConfig>): Promise<{ success: boolean; error?: string }> => {
+    return ipcRenderer.invoke('context:update-config', config);
+  },
+
+  /**
    * Listen for context menu events from main process
    */
   on: (channel: string, callback: (data: any) => void) => {
-    const validChannels = ['context-menu:show', 'context-menu:hide', 'context-menu:action-result'];
+    const validChannels = ['context-menu:show', 'context-menu:hide', 'context-menu:action-result', 'context-menu:set-selected-text'];
     if (validChannels.includes(channel)) {
       ipcRenderer.on(channel, (_event, data) => callback(data));
     }
