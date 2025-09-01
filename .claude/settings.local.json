@@ -28,7 +28,8 @@
       "Bash(npx tsc:*)",
       "Bash(npm --workspace @gcomputer/db run drizzle:generate)",
       "Bash(npm --workspace @gcomputer/db run drizzle:studio)",
-      "Bash(sed:*)"
+      "Bash(sed:*)",
+      "WebFetch(domain:platform.openai.com)"
     ],
     "defaultMode": "acceptEdits"
   }

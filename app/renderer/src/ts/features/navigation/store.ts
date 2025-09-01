@@ -73,6 +73,9 @@ export const menuItems = derived(configMode, ($configMode) => {
             i18nKey: 'app.menu.ai.label',
             children: [
               { label: 'app.menu.ai.communication', i18nKey: 'app.menu.ai.communication', route: 'development.ai.communication' as Route },
+              { label: 'app.menu.ai.tts', i18nKey: 'app.menu.ai.tts', route: 'development.ai.tts' as Route },
+              { label: 'app.menu.ai.stt', i18nKey: 'app.menu.ai.stt', route: 'development.ai.stt' as Route },
+              { label: 'app.menu.ai.vision', i18nKey: 'app.menu.ai.vision', route: 'development.ai.vision' as Route },
             ],
           },
         ],

@@ -31,6 +31,9 @@
   import AdminAgentView from '@views-admin/entity/llm/AdminAgentView.svelte';
   import AdminConfigurationView from '@views-admin/entity/configuration/AdminConfigurationView.svelte';
   import TestAICommunicationView from '@views-development/ai/TestAICommunicationView.svelte';
+  import TTSView from '@views/dev/ai/TTS.svelte';
+  import STTView from '@views/dev/ai/STT.svelte';
+  import VisionView from '@views/dev/ai/Vision.svelte';
   import DiscussionListView from '@views-discussion/DiscussionListView.svelte';
   import AgentSelectionView from '@views-discussion/AgentSelectionView.svelte';
   import DiscussionChatView from '@views-discussion/DiscussionChatView.svelte';
@@ -153,6 +156,12 @@
     <AdminConfigurationView />
   {:else if canShowRoute(route) && route === 'development.ai.communication'}
     <TestAICommunicationView />
+  {:else if canShowRoute(route) && route === 'development.ai.tts'}
+    <TTSView />
+  {:else if canShowRoute(route) && route === 'development.ai.stt'}
+    <STTView />
+  {:else if canShowRoute(route) && route === 'development.ai.vision'}
+    <VisionView />
   {/if}
 </main>
 

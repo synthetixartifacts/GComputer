@@ -27,6 +27,9 @@ export const DEV_ROUTES = [
   'development.features.saved-local-folder',
   'development.features.capture-screen',
   'development.ai.communication',
+  'development.ai.tts',
+  'development.ai.stt',
+  'development.ai.vision',
 ] as const;
 
 export const ADMIN_ROUTES = [

@@ -21,7 +21,9 @@
       "filter": "Filter",
       "done": "Done",
       "copy": "Copy",
-      "download": "Download"
+      "download": "Download",
+      "edit": "Edit",
+      "clear_all": "Clear All"
     },
     "fields": {
       "code": "Code",
@@ -103,7 +105,10 @@
       },
       "ai": {
         "label": "AI",
-        "communication": "Communication"
+        "communication": "Communication",
+        "tts": "Text-to-Speech",
+        "stt": "Speech-to-Text",
+        "vision": "Vision"
       },
       "admin": {
         "label": "Admin",
@@ -578,6 +583,70 @@
     "table": {
       "clearFilters": "Clear filters"
     }
+  },
+  "dev": {
+    "tts_test": "Text-to-Speech Test",
+    "stt_test": "Speech-to-Text Test",
+    "vision_test": "Vision Test"
+  },
+  "tts": {
+    "voice": "Voice",
+    "model": "Model",
+    "format": "Format",
+    "speed": "Speed",
+    "text_input": "Text Input",
+    "text_placeholder": "Enter text to convert to speech...",
+    "generate": "Generate Speech",
+    "generating": "Generating...",
+    "player": "Audio Player",
+    "play": "Play",
+    "pause": "Pause",
+    "download": "Download",
+    "history": "History",
+    "no_history": "No generation history",
+    "no_audio": "No audio available"
+  },
+  "stt": {
+    "model": "Model",
+    "language": "Language",
+    "options": "Options",
+    "record_audio": "Record Audio",
+    "upload_file": "Upload File",
+    "transcribe": "Transcribe",
+    "transcribing": "Transcribing...",
+    "transcript": "Transcript",
+    "no_transcript": "No transcript available",
+    "duration": "Duration",
+    "segments": "Segments",
+    "history": "History",
+    "no_history": "No transcription history"
+  },
+  "vision": {
+    "upload_images": "Upload Images",
+    "drag_drop": "Drag and drop images here",
+    "or": "or",
+    "browse_files": "Browse Files",
+    "capture_screen": "Capture Screen",
+    "add_more": "Add More",
+    "images": "images",
+    "prompt": "Prompt",
+    "prompt_placeholder": "What would you like to know about these images?",
+    "options": "Options",
+    "model": "Model",
+    "detail_level": "Detail Level",
+    "max_tokens": "Max Tokens",
+    "temperature": "Temperature",
+    "analyze": "Analyze",
+    "analyzing": "Analyzing...",
+    "analysis_result": "Analysis Result",
+    "description": "Description",
+    "objects_detected": "Objects Detected",
+    "text_found": "Text Found",
+    "colors": "Colors",
+    "confidence": "Confidence",
+    "history": "History",
+    "no_history": "No analysis history",
+    "no_analysis": "No analysis available"
   },
   "contextMenu": {
     "selectedText": "Selected text",

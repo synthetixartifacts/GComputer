@@ -185,3 +185,37 @@ export function parseJsonConfiguration(configStr: string): Record<string, any> {
 }
 
 export { stringifyConfiguration };
+
+// Create admin service object for backward compatibility
+export const adminService = {
+  // Providers
+  getProviders: listProviders,
+  createProvider,
+  updateProvider,
+  deleteProvider,
+  
+  // Models
+  getModels: listModels,
+  createModel,
+  updateModel,
+  deleteModel,
+  
+  // Agents
+  getAgents: listAgents,
+  createAgent,
+  updateAgent,
+  deleteAgent,
+  
+  // Configurations
+  getConfigurations: listConfigurations,
+  createConfiguration,
+  updateConfiguration,
+  deleteConfiguration,
+  getConfigurationByCode,
+  updateConfigurationByCode,
+  getAllConfigurationsAsMap,
+  
+  // Utilities
+  parseJsonConfiguration,
+  stringifyConfiguration
+};

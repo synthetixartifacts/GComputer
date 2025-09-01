@@ -10,6 +10,9 @@ import { registerDbIpc } from './db';
 import { registerScreenCaptureIpc } from './screen-capture/index';
 import { initializeDisplayMedia, cleanupDisplayMedia } from './display-media';
 import { initializeContextMenu, cleanupContextMenu } from './context-menu/index';
+import { registerTTSHandlers } from './ipc/tts-handlers';
+import { registerSTTHandlers } from './ipc/stt-handlers';
+import { registerVisionHandlers } from './ipc/vision-handlers';
 
 /**
  * Register all IPC handlers
@@ -29,6 +32,11 @@ export function registerAllIpcHandlers(): void {
   
   // Initialize context menu system
   initializeContextMenu();
+  
+  // Register AI feature handlers
+  registerTTSHandlers();
+  registerSTTHandlers();
+  registerVisionHandlers();
   
   console.log('[ipc] IPC handlers registered successfully');
 }

@@ -1,5 +1,69 @@
 
 
+
+
+# NEW FEATURE/COMPONENT
+
+## Way to plan and execute
+This job is a really really heavy one so your plan must be in consequence. 
+We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something like an MVP.
+
+We need to have a lot of new component and code develop but remind yourself that we want thing to be componant driven and DRY at all time. No scss in files, no overlap of logic in component, each part of our logic will either reuse an existing component or create new independant ones.
+
+We already have a lot of existing component so make sure to list them before you start coding so that you are not recreating something that exist. 
+
+Don't forget about translations.
+
+When you're confident that what you did is at a production ready state, you will verify the key point through unit testing. Once you are at this steps you will need to rething about everything you did and create a new clear and detailed plan just for that. Make it clear in your initial plan that you will have to rethink and replan at this steps because a lot of things will probably differ from your initial plan as you go on and discover things.
+
+We have a lot of up to date documentation you can check at any time to verify things. 
+ Our ./docs/coding_standards.md are always good and you should follow it.
+If you need specific libraries or third-party libraries or you are hitting a wall, do not forget that you can browse and search the web for up to date answer.
+Always ground yourself in the current project and do not overreach.
+
+We need a complete, big and multi step / sub step plan that we can track and follow and be confident that we then at the end have something working and following our best standard from the documentation.
+
+We want to develop a complete new feature.
+We also need to expose a class for all the others to call/use when their is something realated to the "configuration".
+
+We already have a lot of existing component so make sure to list them before you start coding so that you are not recreating something that exist. Don't forget about translations.
+
+When you're confident that what you did is a production ready plan.
+Always ground yourself in the current project and do not overreach.
+
+## New task goal/context
+
+I want to make a new feature testable through the development section 
+Development > AI > TTS
+Development > AI > STT
+Development > AI > Vision
+
+In these new page we will be able to test different tts, stt or vision model using our different component from "talking" to an llm to voice recording to input text etc...
+
+What we want here is to do two main things.
+Create component feature/function that can be called from anywhere and for the need to be able to test it we will also make some view with different component to test/visualize the function/feature we create.
+But the tts/stt/vision feature should be by default like a callable function from the system/app.
+for each feature there will be a llm agent associate to it.
+
+We need to look at the openAI documentation so we can create the model and the agent for these three functions.
+
+All function need their specific own ux/ui to test.
+Most important is the reusability of the feature and then the ability to validate it.
+
+Validate our current code about agent / model management and other needed component. Then plan. Then when its time to configure our new model browse the open ai documentation 2025, then continue onto the plan.
+
+
+
+
+
+
+---------------------
+
+
+
+
+
+
 # Context
 We are currently working on making hotkeys print a specific in context window where we have options.
 

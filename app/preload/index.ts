@@ -16,6 +16,9 @@ import { fsApi } from './api/fs';
 import { screenApi } from './api/screen';
 import { testApi, adminApi, discussionsApi, messagesApi } from './api/db';
 import { contextApi } from './api/context';
+import { ttsApi } from './api/tts';
+import { sttApi } from './api/stt';
+import { visionApi } from './api/vision';
 
 /**
  * Main API object exposed to renderer process
@@ -44,6 +47,11 @@ const gcApi = {
     discussions: discussionsApi,
     messages: messagesApi,
   },
+  
+  // AI features
+  tts: ttsApi,
+  stt: sttApi,
+  vision: visionApi,
 };
 
 // Expose the API to the renderer process in a secure way

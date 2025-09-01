@@ -74,6 +74,21 @@ declare global {
           deleteByDiscussion: (discussionId: number) => Promise<{ ok: true }>;
         };
       };
+      tts?: {
+        generateSpeech: (request: import('@features/tts/types').TTSRequest) => Promise<import('@features/tts/types').TTSResponse>;
+        streamSpeech?: (request: import('@features/tts/types').TTSRequest) => AsyncGenerator<Uint8Array>;
+      };
+      stt?: {
+        transcribe: (request: import('@features/stt/types').STTRequest) => Promise<import('@features/stt/types').STTResponse>;
+      };
+      vision?: {
+        analyze: (request: import('@features/vision/types').VisionRequest) => Promise<import('@features/vision/types').VisionResponse>;
+      };
+      context?: {
+        showMenu: (options?: { x?: number; y?: number }) => Promise<void>;
+        hideMenu: () => Promise<void>;
+        onAction: (callback: (action: string, data?: any) => void) => () => void;
+      };
     };
   }
 }
